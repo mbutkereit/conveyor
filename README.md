@@ -6,11 +6,8 @@
 
 
 Anushavan Melkonyan
-
 Marvin Butkereit
-
 Wilhelm Schumacher
-
 Mona Lüdemann
 
 
