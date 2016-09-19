@@ -5,9 +5,9 @@
 *Gruppe 2.2*
 
 
-Anushavan Melkonyan
-Marvin Butkereit
-Wilhelm Schumacher
+Anushavan Melkonyan,
+Marvin Butkereit,
+Wilhelm Schumacher,
 Mona Lüdemann
 
 
