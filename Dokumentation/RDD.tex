@@ -1,0 +1,296 @@
+% das Papierformat zuerst
+\documentclass[a4paper, 11pt]{article}
+% deutsche Silbentrennung
+\usepackage[ngerman]{babel}
+% wegen deutschen Umlauten
+\usepackage[utf8]{inputenc}
+% andere pdfs einbinden
+\usepackage{pdfpages}
+% um bilder einzubinden
+\usepackage{graphicx}
+% fuer source code listings
+\usepackage{listings}
+% seitenränder
+\usepackage[left=3cm,right=3cm,top=2cm,bottom=2cm]{geometry}
+% um hyperlinks einfügen zu können
+\usepackage{hyperref}
+% um weitere Symbole zu nutzen
+\usepackage{amssymb}
+% um weitere Operatoren zu nutzen
+\usepackage{amsmath}
+%Aufzaehlung
+\usepackage{paralist}
+%Beachtet, ob ein Leerzeichen syntaktisch passt oder nicht
+\usepackage{xspace}
+% um hyperlinks einfügen zu können
+\usepackage{hyperref}
+%um Kopf- und Fußzeile zu bearbeiten
+\usepackage{fancyhdr}
+%um Literaturverzeichnis auch im Inhaltsverzeichnis anzuzeigen
+\usepackage{tocbibind}
+%um Silbentrennungen angeben zu können, welche nicht unterstützt werden
+\RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
+%um Tabellen zu begrenzen, damit sie nicht in den Rand hineinragen
+\usepackage{tabularx}
+%um die landscape Umgebung zu nutzen (Querformat)
+\usepackage{pdflscape}
+
+%ermöglicht Anführungsstriche unten und oben
+\newcommand{\su}{\glqq} %unten
+\newcommand{\so}{\grqq\xspace} %oben mit anschließendem Leerzeichen
+\newcommand{\soo}{\grqq} %nur oben
+
+%ermöglicht eckige Klammern
+\newcommand{\eka}{$<$} %<
+\newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
+
+%Versionsnummer
+\newcommand{\version}{0.0}
+
+% Tabellenabschnitt linksbündig
+\newcommand{\ltab}{\raggedright\arraybackslash}
+% Tabellenabschnitt zentriert
+\newcommand{\ctab}{\centering\arraybackslash}
+% Tabellenabschnitt rechtsbündig
+\newcommand{\rtab}{\raggedleft\arraybackslash}
+
+%Einstellungen für Fuß- und Kopfzeile
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize M. Lüdemann $\cdot$ M. Butkereit $\cdot$ W. Schumacher $\cdot$ A. Melkonyan $\cdot$ M. Colbow $\cdot$ M. Cakir\\ Requirements and Design Documentation $\cdot$ ESEP WS2016(v\version) $\cdot$ HAW Hamburg}
+%\fancyhead[C]{\footnotesize}
+\fancyhead[R]{\footnotesize \today}
+%\renewcommand{\headrulewidth}{0.0pt}
+\fancyfoot[C]{\thepage}
+
+%Stil des Literaturverzeichnisses bestimmen
+\bibliographystyle{unsrt}
+
+\begin{document}
+
+% Den Titel festlegen
+\title
+{
+    Requirements and Design Documentation\\
+    \bigskip
+    (RDD)\\
+    \medskip
+    {\normalsize Version \version}\\
+    \bigskip
+    ESEP - Praktikum - Wintersemester 2016
+}
+
+% Autor/en
+\author
+{
+\begin{tabular}{llll}
+Lüdemann&Mona&xxxxxxx&mona.luedemann@haw-hamburg.de\\
+Butkereit&Marvin&xxxxxxx&marvin.butkereit@haw-hamburg.de\\
+Schumacher&Wilhelm&xxxxxxx&wilhelm.schumacher@haw-hamburg.de\\
+Melkonyan&Anushavan&xxxxxxx&anushavan.melkonyan@haw-hamburg.de\\
+Colbow&Marco&xxxxxxx&marco.colbow@haw-hamburg.de\\
+Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
+\end{tabular}
+}
+
+% Erstelle die Titelseite
+\maketitle
+
+\noindent {\large Änderungshistorie:}
+\begin{table}[h]
+\begin{tabularx}{\textwidth}{|c|c|c|X|}
+\hline
+\textbf{Version} & \textbf{Author} & \textbf{Datum} & \centering\arraybackslash \textbf{Anmerkungen/Änderungen}\\
+\hline
+ &  &  &  \\
+\hline
+\end{tabularx}
+\label{changes}
+\end{table}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Teamorganisation}
+\textcolor{red}{Überlegen sie, welche Regeln sie für die Zusammenarbeit aufstellen wollen und welche Rollen sie im Team verteilen wollen. Dokumentieren sie diese hier zusammen mit weiteren Anmerkungen der Teamorganisation. Listen oder Tabellen sind zum Beispiel ein kompakte und übersichtliche Darstellungsformen für diesen Bereich.}
+
+\subsection{Verantwortlichkeiten}
+\textcolor{red}{Bennen sie Verantwortliche innerhalb des Projekts (Projektleiter, Tester, Implementierer, etc.). Auch hier ist eine Listen- oder Tabellendarstellung angebracht.}
+
+\subsection{Absprachen}
+\textcolor{red}{Listen sie hier die Absprachen im Team auf, z. B. Jour Fixe, Kommunikation, Respond-Latenz, ....}
+
+\subsection{Repository-Konzept}
+\textcolor{red}{Überlegen sie sich, wie sie das Repository und die Ordner organisieren wollen. Welche Regeln wollen sie beim Umgang mit Branches, Auslieferungen, Nachrichten an den Commits usw. im Team einhalten?. Listen sie diese Absprachen hier auf. Überlegen Sie auch, wie die Arbeitsabläufe sein sollen bei der Umsetzung von Arbeitsaufträgen oder bei der Behebung von Fehlern.}
+
+\section{Projektmanagement}
+\textcolor{red}{In diesem Kapitel sollten organisatorische Punkte beschrieben und festgelegt werden.}
+
+\subsection{Prozess}
+\textcolor{red}{Legen Sie den Prozess fest, nach dem Sie das Projekt umsetzen wollen. Geben Sie ggf. grobe Schritte an, wie Planungsrunden, Sprints, oder ähnliches.}
+
+\subsection{PSP/Zeitplan/Tracking}
+\textcolor{red}{Projektstrukturplan, Ressourcenplan, Zeitplan, Abhängigkeiten von Arbeitspaketen, eventueller Zeitverzug, Visualisierung des Projektstandes, etc.}
+
+\subsection{Qualitätssicherung}
+\textcolor{red}{Überlegen sie, wie sie Qualität in ihrem Projekt sicher stellen wollen. Listen sie die Maßnahmen hier auf. Beachten sie, dass diese Maßnahmen für die unterschiedlichen Artefakte und Ebenen entsprechend unterschiedlich sein können.}
+
+\section{Randbedingungen}
+
+\subsection{Entwicklungsumgebung}
+\textcolor{red}{Auflistung der Entwicklungsumgebung (Simulator, Hardware, Betriebssystem etc.)}
+
+\subsection{Werkzeuge}
+\textcolor{red}{Auflistung der im Projekt verwendeten Werkzeuge inkl. ihrer Versionen.}
+
+\subsection{Sprachen}
+\textcolor{red}{Auflistung der Programmiersprachen und Bibliotheken.}
+
+\section{Requirements and Use Cases}
+
+\subsection{Systemebene}
+\textcolor{red}{Die Anforderungen aus der Aufgabenstellung sind nicht vollständig. Die Struktur der nachfolgenden Kapitel soll sie bei der Strukturierung der Analyse unterstützen. Dokumentieren Sie die Ergebnisse der Analysen entsprechend.}
+
+\subsubsection{Stakeholder}
+\textcolor{red}{Ermitteln sie die Stakeholder für das Projekt und listen sie diese hier auf.}
+
+\subsubsection{Anforderungen}
+\textcolor{red}{In der Aufgabenstellung sind Anforderungen an das System gestellt. Arbeiten sie diese hier auf und ergänzen sie diese entsprechend der Absprachen mit dem Betreuer. Achten sie auf die entsprechende Attribuierung. 
+Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.
+}
+
+\subsubsection{Systemkontext}
+\textcolor{red}{Use Cases werden aus einer bestimmten Sicht erstellt. Dokumentieren sie diese mittels Kontextdiagramm oder Use Case Diagramm. Die Use Cases und Test Cases müssen zu der hier verwendeten Nomenklatur konsistent sein.}
+
+\subsubsection{Use Cases}
+\textcolor{red}{Dokumentieren sie hier, welche Use Cases sie auf der Systemebene implementieren müssen. Die Test Cases sollen später zu den Use Cases konsistent sein.}
+
+\subsection{Systemanalyse}
+\textcolor{red}{Ihr technisches System hat aus Sicht der Software bestimmte Eigenschaften. Was muss man für die Entwicklung der Software in Struktur, Schnittstellen, Verhalten und an Besonderheiten wissen? Wählen sie eine Kapitelstruktur, die am besten zur Dokumentation ihrer Ergebnisse geeignet ist.}
+
+\subsection{Softwareebene}
+\textcolor{red}{Sie sollen Software für die Steuerung des technischen Systems erstellen. Aus den Anforderungen auf der Systemebene und der Systemanalyse ergeben sich Anforderungen für Ihre Software. Insbesondere wird sich die Software der beiden Anlagenteile in einigen Punkten unterscheiden. Dokumentieren sie hier die Anforderungen, die sich speziell für die Software ergeben haben.}
+
+\subsubsection{Systemkontext}
+\textcolor{red}{Wie sieht der Kontext Ihrer Software aus? Wie erfolgt die Kommunikation mit Nachbarsystemen? Liste der ein- und ausgehenden Signale/Nachrichten.}
+
+\subsubsection{Anforderungen}
+\textcolor{red}{Welche wesentlichen Anforderungen ergeben sich aus den Systemanforderungen für ihre Software? Achten sie auf die entsprechende Attribuierung. Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.}
+
+\section{Design}
+\textcolor{red}{Anmerkung: Die Implementierung MUSS zu Ihrem Design-Modell konsistent sein. Strukturen, Verhalten und Bezeichner im Code müssen mit dem Modell übereinstimmen. Daher ist ein wohlüberlegtes Design wichtig.}
+
+\subsection{System Architektur}
+\textcolor{red}{Erstellung sie eine Architektur für Ihre Software. Geben sie eine kurze Beschreibung Ihrer Architektur mit den dazugehörenden Komponenten und Schnittstellen an. Dokumentieren sie hier wichtige technische Entscheidungen. Welche Pattern werden gegebenenfalls verwendet? Wie erfolgt die interne Kommunikation?}
+
+\subsection{Datenmodellierung}
+\textcolor{red}{Bestimmen sie das Datenmodell und dokumentieren sie es hier mit Hilfe von UML Klassendiagrammen unter Beachtung der Designprinzipien. Die Modelle können mit Hilfe eines UML-Tools erstellt werden. Hier ist dann ein Übersichtsbild einzufügen.
+Geben sie eine kurze textuelle Beschreibung des Datenmodells und deren wichtigsten Klassen und Methoden an.
+}
+
+\subsection{Verhaltensmodellierung}
+\textcolor{red}{Ihre Software muss zur Bearbeitung der Aufgaben ein Verhalten aufweisen. Überlegen sie sich dieses Verhalten auf Basis der Anforderungen und modellieren sie das Verhalten unter Verwendung von Verhaltensdiagrammen. Sie können für die Spezifikation der Prozess-Lenkung entweder Petri-Netze oder hierarchische Automaten verwenden. Die Modelle können mit Hilfe eines UML-Tools erstellt werden. Hier sind dann kommentierte Übersichtsbilder einzufügen.}
+
+\section{Implementierung}
+\textcolor{red}{Anmerkung: Nur wichtige Implementierungsdetails sollen hier erklärt werden. Code-Beispiele (snippets) können hier aufgelistet werden, um der Erklärung zu dienen. 
+Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
+}
+
+\section{Testen}
+\textcolor{red}{Machen sie sich auf Basis ihrer Überlegungen zur Qualitätssicherung Gedanken darüber, wie sie die Erfüllung der Anforderungen möglichst automatisiert im Rahmen von Unit-Test, Komponententest, Integrationstest, Systemtest, Regressionstest und Abnahmetest überprüfen werden.}
+
+\subsection{Testplan}
+\textcolor{red}{Definieren sie Zeitpunkte für die jeweiligen Teststufen in ihrer Projektplanung. Dazu können sie die Meilensteine zu Hilfe nehmen.}
+
+\subsection{Abnahmetest}
+\textcolor{red}{Leiten sie die Abnahmebedingungen aus den Kunden-Anforderungen her. Dokumentieren sie hier, welche Schritte für die Abnahme erforderlich sind und welches Ergebnis jeweils erwartet wird (Test Cases).}
+
+\subsection{Testprotokolle und Auswertungen}
+\textcolor{red}{Hier fügen sie die Test Protokolle bei, auch wenn Fehler bereits beseitigt worden sind, ist es schön zu wissen, welche Fehler einst aufgetaucht sind. Eventuelle Anmerkung zur Fehlerbehandlung kann für weitere Entwicklungen hilfreich sein.
+Das letzte Testprotokoll ist das Abnahmeprotokoll, das bei der abschließenden Vorführung erstellt wird. Es enthält eine Auflistung der erfolgreich vorgeführten Funktionen des Systems sowie eine Mängelliste mit Erklärungen der Ursachen der Fehlfunktionen und Vorschlägen zur Abhilfe
+}
+
+\section{Lessons Learned}
+\textcolor{red}{Führen sie ein Teammeeting durch in dem gesammelt wird, was gut gelaufen war, was schlecht gelaufen war und was man im nächsten Projekt (z.B. im PO) besser machen will. Listen sie für die Aspekte jeweils mindestens drei Punkte auf. Weitere Erfahrungen und Erkenntnisse können hier ebenso kommentiert werden, auch Anregungen für die Weiterentwicklung des Praktikums.}
+
+\section{Anhang}
+
+\subsection{Glossar}
+\textcolor{red}{Eindeutige Begriffserklärungen}
+
+\subsection{Abkürzungen}
+\textcolor{red}{Listen sie alle Abkürzungen auf, die sie in diesem Dokument benutzt haben.}
+
+\end{document}
+
+% Weitere Syntax für verschiedene Anwendungsfelder
+
+%Aufzählungen
+%\begin{compactenum}[1.]
+%\item
+%\end{compactenum}
+
+%\ref{labelname des zu Referenzierenden Objekts}
+
+%Tabelle
+%\begin{table}[h]
+%\center
+%\begin{tabular}{|l|l|}
+%\hline
+%\textbf{linke Spaltenüberschrift}&\textbf{rechte Spaltenüberschrift}\\
+%\hline
+%1&2\\
+%\hline
+%3&4\\
+%\end{tabular}
+%\caption{Zugriffsoperationen}
+%\label{labelname}
+%\end{table}
+
+%Tabelle mit tabularx
+%\begin{table}[h]
+%\center
+%\begin{tabularx}{\textwidth}{|l|X|}
+%\hline
+%Text in linker Spalte&Text in rechter Spalte der über den Rand hinausragt\\
+%\hline
+%\end{tabularx}
+%\caption{Tabellenunterschrift}
+%\label{labelname}
+%\end{table}
+
+%Grafik einfügen
+%\begin{figure}[h]
+%\centering 
+%\includegraphics[scale=0.3]{Dateiname}
+%\caption{Bildunterschrift}
+%\label{labelname}
+%\end{figure}
+
+%Linksbündig mit definierter Einrückung
+%\begin{flushleft}
+%\leftskip0.6cm
+%\end{flushleft}
+
+%Codelisting
+%\lstset{basicstyle=\ttfamily}
+%\begin{lstlisting}
+%Code
+%\end{lstlisting}
+
+%Erzeugen eines Inhaltsverzeichnisses und ihrer Einträge
+%\tableofcontents
+%\section{•}
+%\subsection{•}
+
+%Vertikaler Abstand
+%\vspace{0cm}
+
+%Etwas zentrieren
+%\centering 
+
+%Literaturverzeichnis anlegen
+%\bibliography{Literaturverzeichnis}
