@@ -2,8 +2,7 @@
 
 *Wintersemester 2016*
 
-*Gruppe 2.2*
-
+*Gruppe 2*
 
 Anushavan Melkonyan,
 Marco Colbow, 
