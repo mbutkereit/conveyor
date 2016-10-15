@@ -1,6 +1,6 @@
-<map id="/Users/marvin/conveyor/Projekt/Hal/HumanMachineInterface.cpp" name="/Users/marvin/conveyor/Projekt/Hal/HumanMachineInterface.cpp">
-<area shape="rect" id="node2" href="$_human_machine_interface_8h.html" title="HumanMachineInterface.h" alt="" coords="122,92,299,117"/>
-<area shape="rect" id="node5" href="$_logger_8h.html" title="Logger/Logger.h" alt="" coords="298,165,416,191"/>
-<area shape="rect" id="node8" href="$_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="113,165,215,191"/>
-<area shape="rect" id="node9" href="$_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="111,239,211,264"/>
+<map id="Hal/HumanMachineInterface.cpp" name="Hal/HumanMachineInterface.cpp">
+<area shape="rect" id="node2" href="$_human_machine_interface_8h.html" title="HumanMachineInterface.h" alt="" coords="122,79,299,104"/>
+<area shape="rect" id="node5" href="$_logger_8h.html" title="Logger/Logger.h" alt="" coords="298,152,416,177"/>
+<area shape="rect" id="node8" href="$_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="113,152,215,177"/>
+<area shape="rect" id="node9" href="$_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="111,225,211,251"/>
 </map>

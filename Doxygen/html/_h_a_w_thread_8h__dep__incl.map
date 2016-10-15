@@ -1,6 +1,6 @@
-<map id="/Users/marvin/conveyor/Projekt/src/lib/HAWThread.h" name="/Users/marvin/conveyor/Projekt/src/lib/HAWThread.h">
-<area shape="rect" id="node2" href="$_conveyor_thread_8h.html" title="/Users/marvin/conveyor\l/Projekt/Thread/ConveyorThread.h" alt="" coords="85,92,311,131"/>
-<area shape="rect" id="node5" href="$_h_a_w_thread_8cpp.html" title="/Users/marvin/conveyor\l/Projekt/src/lib/HAWThread.cpp" alt="" coords="336,92,543,131"/>
-<area shape="rect" id="node3" href="$conveyor_8cc.html" title="/Users/marvin/conveyor\l/Projekt/conveyor.cc" alt="" coords="5,179,167,217"/>
-<area shape="rect" id="node4" href="$_conveyor_thread_8cpp.html" title="/Users/marvin/conveyor\l/Projekt/Thread/ConveyorThread.cpp" alt="" coords="191,179,432,217"/>
+<map id="src/lib/HAWThread.h" name="src/lib/HAWThread.h">
+<area shape="rect" id="node2" href="$_conveyor_thread_8h.html" title="Thread/ConveyorThread.h" alt="" coords="45,79,223,104"/>
+<area shape="rect" id="node5" href="$_h_a_w_thread_8cpp.html" title="src/lib/HAWThread.cpp" alt="" coords="247,79,405,104"/>
+<area shape="rect" id="node3" href="$conveyor_8cc.html" title="conveyor.cc" alt="" coords="5,152,97,177"/>
+<area shape="rect" id="node4" href="$_conveyor_thread_8cpp.html" title="Thread/ConveyorThread.cpp" alt="" coords="121,152,312,177"/>
 </map>
