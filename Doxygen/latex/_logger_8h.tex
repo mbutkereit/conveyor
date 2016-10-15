@@ -1,0 +1,101 @@
+\hypertarget{_logger_8h}{}\section{/\+Users/marvin/conveyor/\+Projekt/\+Logger/\+Logger.h-\/\+Dateireferenz}
+\label{_logger_8h}\index{/\+Users/marvin/conveyor/\+Projekt/\+Logger/\+Logger.\+h@{/\+Users/marvin/conveyor/\+Projekt/\+Logger/\+Logger.\+h}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+Include-\/\+Abhängigkeitsdiagramm für Logger.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{_logger_8h__incl}
+\end{center}
+\end{figure}
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_logger_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Klassen}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_logger}{Logger}
+\end{DoxyCompactItemize}
+\subsection*{Makrodefinitionen}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a}{L\+O\+G\+\_\+\+D\+E\+B\+UG}
+\item 
+\#define \hyperlink{_logger_8h_adf4476a6a4ea6c74231c826e899d7189}{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}
+\item 
+\#define \hyperlink{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08}{L\+O\+G\+\_\+\+E\+R\+R\+OR}
+\end{DoxyCompactItemize}
+\subsection*{Aufzählungen}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+E\+V\+EL} \{ \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{E\+R\+R\+OR}, 
+\hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81}{W\+A\+R\+N\+I\+NG}, 
+\hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f}{D\+E\+B\+UG}
+ \}
+\end{DoxyCompactItemize}
+
+
+\subsection{Makro-\/\+Dokumentation}
+\hypertarget{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a}{}\label{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a} 
+\index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+D\+E\+B\+UG@{L\+O\+G\+\_\+\+D\+E\+B\+UG}}
+\index{L\+O\+G\+\_\+\+D\+E\+B\+UG@{L\+O\+G\+\_\+\+D\+E\+B\+UG}!Logger.\+h@{Logger.\+h}}
+\subsubsection{\texorpdfstring{L\+O\+G\+\_\+\+D\+E\+B\+UG}{LOG\_DEBUG}}
+{\footnotesize\ttfamily \#define L\+O\+G\+\_\+\+D\+E\+B\+UG}
+
+{\bfseries Wert\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(\hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().getLoggingLevel() < \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f}{DEBUG});   \(\backslash\)
+    else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().\hyperlink{class_logger_af8a0b7a8939294ceb2cef39c358dfa9c}{log}()
+\end{DoxyCode}
+\hypertarget{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08}{}\label{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08} 
+\index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+E\+R\+R\+OR@{L\+O\+G\+\_\+\+E\+R\+R\+OR}}
+\index{L\+O\+G\+\_\+\+E\+R\+R\+OR@{L\+O\+G\+\_\+\+E\+R\+R\+OR}!Logger.\+h@{Logger.\+h}}
+\subsubsection{\texorpdfstring{L\+O\+G\+\_\+\+E\+R\+R\+OR}{LOG\_ERROR}}
+{\footnotesize\ttfamily \#define L\+O\+G\+\_\+\+E\+R\+R\+OR}
+
+{\bfseries Wert\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(\hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().getLoggingLevel() < \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{ERROR});  \(\backslash\)
+else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().\hyperlink{class_logger_af8a0b7a8939294ceb2cef39c358dfa9c}{log}()
+\end{DoxyCode}
+\hypertarget{_logger_8h_adf4476a6a4ea6c74231c826e899d7189}{}\label{_logger_8h_adf4476a6a4ea6c74231c826e899d7189} 
+\index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG@{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}}
+\index{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG@{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}!Logger.\+h@{Logger.\+h}}
+\subsubsection{\texorpdfstring{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}{LOG\_WARNING}}
+{\footnotesize\ttfamily \#define L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}
+
+{\bfseries Wert\+:}
+\begin{DoxyCode}
+\textcolor{keywordflow}{if}(\hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().getLoggingLevel() < \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81}{WARNING});  \(\backslash\)
+else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().\hyperlink{class_logger_af8a0b7a8939294ceb2cef39c358dfa9c}{log}()
+\end{DoxyCode}
+
+
+\subsection{Dokumentation der Aufzählungstypen}
+\hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583} 
+\index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+L\+E\+V\+EL@{L\+O\+G\+\_\+\+L\+E\+V\+EL}}
+\index{L\+O\+G\+\_\+\+L\+E\+V\+EL@{L\+O\+G\+\_\+\+L\+E\+V\+EL}!Logger.\+h@{Logger.\+h}}
+\subsubsection{\texorpdfstring{L\+O\+G\+\_\+\+L\+E\+V\+EL}{LOG\_LEVEL}}
+{\footnotesize\ttfamily enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+E\+V\+EL}}
+
+\begin{DoxyEnumFields}{Aufzählungswerte}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{E\+R\+R\+OR@{E\+R\+R\+OR}!Logger.\+h@{Logger.\+h}}\index{Logger.\+h@{Logger.\+h}!E\+R\+R\+OR@{E\+R\+R\+OR}}}\hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90} 
+E\+R\+R\+OR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{W\+A\+R\+N\+I\+NG@{W\+A\+R\+N\+I\+NG}!Logger.\+h@{Logger.\+h}}\index{Logger.\+h@{Logger.\+h}!W\+A\+R\+N\+I\+NG@{W\+A\+R\+N\+I\+NG}}}\hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81} 
+W\+A\+R\+N\+I\+NG&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+B\+UG@{D\+E\+B\+UG}!Logger.\+h@{Logger.\+h}}\index{Logger.\+h@{Logger.\+h}!D\+E\+B\+UG@{D\+E\+B\+UG}}}\hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f} 
+D\+E\+B\+UG&\\
+\hline
+
+\end{DoxyEnumFields}
