@@ -249,19 +249,251 @@ Andere Mitarbeiter&\begin{compactenum}[-]
                    \end{compactenum}\\
 \hline
 \end{tabularx}
-\caption{Tabellenunterschrift}
-\label{labelname}
+\caption{Stakeholder und ihre Interessen}
+\label{stake}
 \end{table}
 
 \newpage
 
 \subsubsection{Anforderungen}
-\textcolor{red}{In der Aufgabenstellung sind Anforderungen an das System gestellt. Arbeiten sie diese hier auf und ergänzen sie diese entsprechend der Absprachen mit dem Betreuer. Achten sie auf die entsprechende Attribuierung. 
-Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.
-}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Ansteuerung der Ampel&Das System soll die Ampel ansteuern können:
+\begin{compactenum}[-]
+\item grünes Licht bei Normalbetrieb, fehlerfrei 
+\item gelbes Licht bei Warnings 
+\item rotes Licht bei Errors 
+\end{compactenum}\\
+\hline
+Ansteuerung der Motoren der Laufbänder&Die Motoren der Laufbänder sollen ansteuerbar sein in folgenden Varianten: 
+\begin{compactenum}[-]
+\item Rechtslauf 
+\item Linkslauf 
+\item Langsam 
+\item Stopp
+\end{compactenum}\\
+\hline
+Ansteuerung der Weiche&Eine prinzipielle Ansteuerung der Weichen soll möglich sein. Außerdem soll beachtet werde, dass die Weichen nur für kurze Zeit auf Durchgang gestellt werden dürfen, um eine Beschädigung des System zu vermeiden.\\
+\hline
+Erkennung von Werkstücken&Das System muss drei Arten von Werkstücke zuordnen können: 
+\begin{compactenum}[-]
+\item Flache Werkstücke 
+\item Werkstücke mit Metalleinsatz (Bohrung liegt nach oben oder unten) 
+\item Werkstücke ohne Metalleinsatz (Bohrung liegt nach oben oder unten)
+\end{compactenum}\\
+\hline
+Aussortierung von Werkstücken&Flache Werkstücke und Werkstücke, bei der die Bohrung nach unten liegt, sollen aussortiert werden. \\
+\hline
+Reihenfolge der Werkstücke&Am Ende von Band 2 sollen die Werkstücke vereinzelt ankommen in der Reihenfolge:\hspace{2cm}
+$Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$ \\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 1)}
+\label{anf1}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Erkennung von Überschlagen der Werkstücke + Aussortierung des betreffenden Werkstücks&Das System soll erkennen, wenn sich Werkstücke bei der Übergabe von Band 1 zu Band 2 überschlägt und das betreffende Werkstück soll anschließend auf Band 2 aussortiert werden.\\
+\hline
+Langsamer Transport bei Höhenmessung&Wenn ein Werkstück durch die Höhenmessung transportiert wird, soll das Förderband langsam laufen.\\
+\hline
+Konsolenausgabe am Ende von Band 2&Wenn ein Werkstück das Ende von Band 2 erreicht, sollen auf der Konsole folgende Werkstückdaten ausgegeben werden:
+\begin{compactenum}[-]
+\item ID 
+\item Typ 
+\item Höhen-Messwert von Band 1 
+\item Höhen-Messwert von Band 2 
+\end{compactenum}\\
+\hline
+Konsolenausgabe am Ende von Band 3&Am Ende des dritten Bandes sollen die Werkstückdaten aller drei Werkstücke ausgegeben werden.\\
+\hline
+Stopp der Bänder bei keinen Werkstücken&Alle drei Bänder sollen jeweils stoppen, wenn sich kein Werkstück auf ihnen befindet.\\
+\hline
+Erkennung voller Rutschen&Volle Rutschen müssen erkannt werden.\\
+\hline
+Rutschen koordinieren&Ist die Rutsche auf Band 1 voll, so soll die Aussortierung über Band 2 erfolgen. Umgekehrt, ist die Rutsche auf Band 2 voll, so soll die Aussortierung bereits auf Band 1 erfolgen.\\
+\hline
+Gebündelter Transport von Werkstückgruppen auf Band 3&Die drei sortierten Werkstücke sollen gebündelt (im Abstand von 0-2cm) an das Ende des dritten Bandes transportiert werden. Der Platz zwischen den Dreiergruppen soll möglichst gering sein.\\
+\hline
+Fehlererfassung: Verschwinden von Werkstücken + Reaktion&Es soll erkannt werden, wenn Werkstücke verschwinden mittels der zu langen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung\\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 2)}
+\label{anf2}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Fehlererfassung: Hinzufügen von Werkstücken + Reaktion&Er soll erkannt werden, wenn Werkstücke hinzugefügt werden mittels der zu kurzen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung \\
+\hline
+Fehlererfassung: Beide Rutschen voll + Reaktion&Es soll erkannt werden, wenn beide Rutschen voll sind. Reaktion: Bandstopp, Fehlermeldung \\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 3)}
+\label{anf3}
+\end{table}
 
 \subsubsection{Systemkontext}
-\textcolor{red}{Use Cases werden aus einer bestimmten Sicht erstellt. Dokumentieren sie diese mittels Kontextdiagramm oder Use Case Diagramm. Die Use Cases und Test Cases müssen zu der hier verwendeten Nomenklatur konsistent sein.}
+\textbf{Port A (Ausgabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+Motor Rechtslauf&\begin{compactenum}[]
+           \item \ttfamily right()
+           \end{compactenum}\\
+\hline
+Motor Linkslauf&\begin{compactenum}[]
+           \item \ttfamily fast()
+           \end{compactenum}\\
+\hline
+Motor Langsam&\begin{compactenum}[]
+           \item \ttfamily stop()
+           \end{compactenum}\\
+\hline
+Motor Stopp&\begin{compactenum}[]
+           \item \ttfamily stop()
+           \end{compactenum}\\
+\hline
+Weiche Auf&\begin{compactenum}[]
+           \item \ttfamily switchOpen()
+           \item \ttfamily switchClosed()
+           \end{compactenum}\\
+\hline
+Ampel Grün&\begin{compactenum}[]
+           \item \ttfamily turnGreenOn()
+           \item \ttfamily turnGrennOff()
+           \end{compactenum}\\
+\hline
+Ampel Gelb&\begin{compactenum}[]
+           \item \ttfamily turnYellowOn()
+           \item \ttfamily turnYellowOff()
+           \end{compactenum}\\
+\hline
+Ampel Rot&\begin{compactenum}[]
+           \item \ttfamily turnRedOn()
+           \item \ttfamily turnRedOff()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port A(Ausgabeport)}
+\label{portA}
+\end{table}
+
+\newpage
+
+\textbf{Port B (Eingabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+Einlauf Werkstück&\begin{compactenum}[]
+           \item \ttfamily isItemRunningIn()
+           \end{compactenum}\\
+\hline
+Werkstück in Höhenmessung&\begin{compactenum}[]
+           \item \ttfamily isItemAltimetry()
+           \end{compactenum}\\
+\hline
+Höhenmessung&\begin{compactenum}[]
+           \item \ttfamily isItemInAltimetryToleranceRange()
+           \end{compactenum}\\
+\hline
+Werkstück in Weiche&\begin{compactenum}[]
+           \item \ttfamily isItemSwitch()
+           \end{compactenum}\\
+\hline
+Werkstück Metall&\begin{compactenum}[]
+           \item \ttfamily isItemMetal()
+           \end{compactenum}\\
+\hline
+Weiche offen&\begin{compactenum}[]
+           \item \ttfamily isSwitchOpen()
+           \end{compactenum}\\
+\hline
+Rutsche voll&\begin{compactenum}[]
+           \item \ttfamily isSkidFull()
+           \end{compactenum}\\
+\hline
+Auslauf Werkstück&\begin{compactenum}[]
+           \item \ttfamily isItemRunningOut()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port B (Eingabeport)}
+\label{portB}
+\end{table}
+
+\newpage
+
+\textbf{Port C (Ein-/Ausgabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+LED Starttaste&\begin{compactenum}[]
+           \item \ttfamily turnLedStartOn()
+           \item \ttfamily turnLedStartOff()
+           \end{compactenum}\\
+\hline
+LED Resettaste&\begin{compactenum}[]
+           \item \ttfamily turnLedResetOn()
+           \item \ttfamily turnLedResetOff()
+           \end{compactenum}\\
+\hline
+LED Q1&\begin{compactenum}[]
+           \item \ttfamily turnLedQ1On()
+           \item \ttfamily turnLedQ1Off()
+           \end{compactenum}\\
+\hline
+LED Q2&\begin{compactenum}[]
+           \item \ttfamily turnLedQ2On()
+           \item \ttfamily turnLedQ2Off()
+           \end{compactenum}\\
+\hline
+Taste Start&\begin{compactenum}[]
+           \item \ttfamily isButtonStartPressed()
+           \end{compactenum}\\
+\hline
+Taste Stopp&\begin{compactenum}[]
+           \item \ttfamily isButtonStopPressed()
+           \end{compactenum}\\
+\hline
+Taste Reset&\begin{compactenum}[]
+           \item \ttfamily isButtonResetPressed()
+           \end{compactenum}\\
+\hline
+Taste E-Stopp&\begin{compactenum}[]
+           \item \ttfamily isButtonEStopPressed()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port C (Ein-/Ausgabeport)}
+\label{portC}
+\end{table}
 
 \subsubsection{Use Cases}
 \textcolor{red}{Dokumentieren sie hier, welche Use Cases sie auf der Systemebene implementieren müssen. Die Test Cases sollen später zu den Use Cases konsistent sein.}
