@@ -84,11 +84,11 @@
 \author
 {
 \begin{tabular}{llll}
-Lüdemann&Mona&xxxxxxx&mona.luedemann@haw-hamburg.de\\
-Butkereit&Marvin&xxxxxxx&marvin.butkereit@haw-hamburg.de\\
-Schumacher&Wilhelm&xxxxxxx&wilhelm.schumacher@haw-hamburg.de\\
-Melkonyan&Anushavan&xxxxxxx&anushavan.melkonyan@haw-hamburg.de\\
-Colbow&Marco&xxxxxxx&marco.colbow@haw-hamburg.de\\
+Lüdemann&Mona&2212744&mona.luedemann1@haw-hamburg.de\\
+Butkereit&Marvin&2247550&marvin.butkereit@haw-hamburg.de\\
+Schumacher&Wilhelm&2245216&wilhelm.schumacher@haw-hamburg.de\\
+Melkonyan&Anushavan&2243668&anushavan.melkonyan@haw-hamburg.de\\
+Colbow&Marco&2177095&marco.colbow@haw-hamburg.de\\
 Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \end{tabular}
 }
@@ -136,47 +136,124 @@ Protkollführung&Alle Teammitglieder&Die Protokollführung wird reihum von einem
 \end{table}
 
 \subsection{Absprachen}
-Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp verwendet. Unstimmigkeiten, Fragen und Inkenntnissetzung können somit interaktiv geklärt bzw. mitgeteilt werden. Es wird erwartet, dass jedes Teammitglied so schnell wie möglich darauf reagiert. In folgender Abbildung \ref{meeting} werden die Termine der Meetings dargestellt:
+Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp verwendet. Unstimmigkeiten, Fragen und Inkenntnissetzung können somit interaktiv geklärt bzw. mitgeteilt werden. Es wird erwartet, dass jedes Teammitglied so schnell wie möglich darauf reagiert. In folgender Abbildung \ref{meets} werden die Termine der Meetings dargestellt:
 \begin{figure}[h]
 \centering 
-\includegraphics[scale=0.3]{Dateiname}
-\caption{Bildunterschrift}
-\label{labelname}
+\includegraphics[scale=0.85]{images/Terminplan_Meetings.png}
+\caption{Terminplan der Meetings}
+\label{meets}
 \end{figure}
 
+\newpage
+
 \subsection{Repository-Konzept}
-Die Quelldateien sowie das RDD 
+Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein Repository auf GitHub angelegt. Erreichbar ist das Repository unter \url{https://github.com/mbutkereit/conveyor}. Änderungen werden lokal auf einem anderen Branch als auf dem Master vorgenommen. Wenn die Änderungen gepusht werden sollen, muss zuvor auf den Master Branch gewechselt und gepullt werden. Nun kann ein Merge mit dem lokal anderen Branch durchgeführt und ggf. Mergekonflikte gelöst werden. Anschließend kann gepusht werden.
 
 \section{Projektmanagement}
-\textcolor{red}{In diesem Kapitel sollten organisatorische Punkte beschrieben und festgelegt werden.}
+Für die Gewährleistung eines guten Managements, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-\textcolor{red}{Legen Sie den Prozess fest, nach dem Sie das Projekt umsetzen wollen. Geben Sie ggf. grobe Schritte an, wie Planungsrunden, Sprints, oder ähnliches.}
+Das Projekt wird auf Grundlage der geforderten Milestones nach und nach umgesetzt. Für jede Implementierung ist zuvor ein geeignetes sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen.
 
 \subsection{PSP/Zeitplan/Tracking}
-\textcolor{red}{Projektstrukturplan, Ressourcenplan, Zeitplan, Abhängigkeiten von Arbeitspaketen, eventueller Zeitverzug, Visualisierung des Projektstandes, etc.}
+Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies möglichst zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann.
 
 \subsection{Qualitätssicherung}
-\textcolor{red}{Überlegen sie, wie sie Qualität in ihrem Projekt sicher stellen wollen. Listen sie die Maßnahmen hier auf. Beachten sie, dass diese Maßnahmen für die unterschiedlichen Artefakte und Ebenen entsprechend unterschiedlich sein können.}
+Hinsichtlich der Qualitätssicherung, werden die vier Punkte Team, Modellierung, Code und Förderband herangezogen.
+\medskip
+\begin{compactenum}[1.]
+\item \textbf{Team:} Jedes Teammitglied sollte über seine eigenen Fähigkeiten im Klaren sein und möglichst nur Aufgaben übernehmen, wofür es sich am besten geeignet fühlt. Darüber hinaus muss jedes Teammitglied bei Möglichkeit stets seine Unterstützung anbieten. Bei Problemen oder Überforderung müssen alle anderen Teammitglieder darüber unterrichtet werden und Aufgaben ggf. neu verteilt werden.
+\medskip
+\item \textbf{Modellierung:} Vor der Implementierung muss eine geeignete Visualisierung erstellt, anderen Teammitgliedern vorgestellt und untereinander diskutiert werden. 
+\medskip
+\item \textbf{Code:} Der Code wird nach beschlossenen Konventionen gefertigt. Dabei werden bekannte Pattern eingesetzt und möglichst einfache sowie übersichtliche Realisierungen angestrebt.
+\medskip
+\item \textbf{Förderband:} Um hohen Durchsatz sowie Effizienz bei der Aussortierung zu erzielen, werden die Komponenten mit der höchstmöglichen Leistung für die jeweilige Situation angetrieben, während die Sicherheit des Bedieners im Vordergrund steht. Dabei werden Fehler- bzw. Ausnahmezustände ggf. durch einfache Signalcodes mithilfe der Ampel dem Bediener mitgeteilt.
+\end{compactenum}
 
 \section{Randbedingungen}
+In diesem Kapitel werden die Bedingungen genannt unter denen das Projekt umgesetzt wird und die Mittel, die für die Umsetzung herangezogen werden.
 
 \subsection{Entwicklungsumgebung}
-\textcolor{red}{Auflistung der Entwicklungsumgebung (Simulator, Hardware, Betriebssystem etc.)}
+Die beiden Förderbänder werden über zwei QNX Systeme gesteuert, die über eine serielle Schnittstelle verbunden sind. Als IDE wird QNX Momentics auf Windows 7 verwendet.
 
 \subsection{Werkzeuge}
-\textcolor{red}{Auflistung der im Projekt verwendeten Werkzeuge inkl. ihrer Versionen.}
+\begin{compactenum}[-]
+\item QNX Momentics IDE 5.0
+\item Latex
+\item Git(GitHub)
+\end{compactenum}
 
 \subsection{Sprachen}
-\textcolor{red}{Auflistung der Programmiersprachen und Bibliotheken.}
+Das System wird in C++ 11 programmiert. Die dazukommenden Bibliotheken sind in folgender Tabelle \ref{bibl} aufgelistet:
+\medskip
+\begin{table}[h]
+\center
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Name}&\textbf{Version}&\textbf{Autor}\\
+\hline
+HWaccess.h&Unknown&Prof. Dr. Stephan Pareigis\\
+\hline
+HAWThread.h&Unknown&Prof. Dr. Stephan Pareigis \\
+\hline
+Lock.h&0.1&Simon Brummer \\
+\hline
+\end{tabular}
+\caption{Verwendete Programmierbibliotheken}
+\label{bibl}
+\end{table}
+
+\newpage
 
 \section{Requirements and Use Cases}
 
 \subsection{Systemebene}
-\textcolor{red}{Die Anforderungen aus der Aufgabenstellung sind nicht vollständig. Die Struktur der nachfolgenden Kapitel soll sie bei der Strukturierung der Analyse unterstützen. Dokumentieren Sie die Ergebnisse der Analysen entsprechend.}
-
 \subsubsection{Stakeholder}
-\textcolor{red}{Ermitteln sie die Stakeholder für das Projekt und listen sie diese hier auf.}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Stakeholder}&\textbf{Interessen}\\
+\hline
+Kunde&\begin{compactenum}[-]
+      \item fehlerfreie Umsetzung der Anforderungen
+      \item erfolgreiche Beendigung des Projektes 
+      \end{compactenum}\\
+\hline
+Designer&\begin{compactenum}[-]
+         \item übersichtliches, leicht erweiterbares Design
+         \item sorgfältige Dokumentation 
+         \end{compactenum}\\ 
+\hline
+Entwickler&\begin{compactenum}[-]
+           \item präzises Design
+           \item sinnvolle Kommentare
+           \item lesbarer Code 
+           \end{compactenum}\\
+\hline
+Tester&\begin{compactenum}[-]
+       \item übersichtliches, vollständiges Testkonzept 
+       \end{compactenum}\\
+\hline
+Bediener (Mitarbeiter, die das Laufband später bedienen sollen)&\begin{compactenum}[-]
+\item einfache und intuitive Bedienung
+\end{compactenum}\\
+\hline
+Instanthalter&\begin{compactenum}[-]
+              \item robustes System
+              \end{compactenum}\\
+\hline
+Andere Mitarbeiter&\begin{compactenum}[-]
+                   \item Kenntnis über System und Funktionsweise
+                   \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{Tabellenunterschrift}
+\label{labelname}
+\end{table}
+
+\newpage
 
 \subsubsection{Anforderungen}
 \textcolor{red}{In der Aufgabenstellung sind Anforderungen an das System gestellt. Arbeiten sie diese hier auf und ergänzen sie diese entsprechend der Absprachen mit dem Betreuer. Achten sie auf die entsprechende Attribuierung. 

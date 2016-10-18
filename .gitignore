@@ -28,4 +28,11 @@
 *.out
 *.app
 
+# TexFiles
+*.aux
+RDD.log
+*.gz
+*.toc
+
 .DS_STORE
+
