@@ -1,0 +1,9 @@
+<map id="Hal/TrafficLight.h" name="Hal/TrafficLight.h">
+<area shape="rect" id="node2" href="$_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="129,152,246,177"/>
+<area shape="rect" id="node6" href="$_hardware_8h.html" title="Hal/Hardware.h" alt="" coords="225,79,339,104"/>
+<area shape="rect" id="node8" href="$_traffic_light_8cpp.html" title="Hal/TrafficLight.cpp" alt="" coords="363,79,499,104"/>
+<area shape="rect" id="node3" href="$conveyor_8cc.html" title="conveyor.cc" alt="" coords="5,225,97,251"/>
+<area shape="rect" id="node4" href="$_hal_builder_8cpp.html" title="Hal/HalBuilder.cpp" alt="" coords="122,225,253,251"/>
+<area shape="rect" id="node5" href="$_conveyor_thread_8cpp.html" title="Thread/ConveyorThread.cpp" alt="" coords="277,225,468,251"/>
+<area shape="rect" id="node7" href="$_hardware_8cpp.html" title="Hal/Hardware.cpp" alt="" coords="270,152,398,177"/>
+</map>

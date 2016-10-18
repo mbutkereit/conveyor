@@ -1,0 +1,8 @@
+[adapter_1]
+foo  = bar
+water= h2o
+
+
+[logger]
+path= /tmp/
+logname = logger.txt

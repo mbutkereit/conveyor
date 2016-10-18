@@ -1,0 +1,178 @@
+\hypertarget{classthread_1_1_h_a_w_thread}{}\section{thread\+:\+:H\+A\+W\+Thread Klassenreferenz}
+\label{classthread_1_1_h_a_w_thread}\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+
+
+{\ttfamily \#include $<$H\+A\+W\+Thread.\+h$>$}
+
+
+
+Klassendiagramm für thread\+:\+:H\+A\+W\+Thread\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{classthread_1_1_h_a_w_thread__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Zusammengehörigkeiten von thread\+:\+:H\+A\+W\+Thread\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classthread_1_1_h_a_w_thread__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Öffentliche Methoden}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classthread_1_1_h_a_w_thread_a7ae3280c8aee6ae6536c736a20d92e8d}{H\+A\+W\+Thread} ()
+\item 
+virtual \hyperlink{classthread_1_1_h_a_w_thread_a84706dda23aa384a43ced901381e795b}{$\sim$\+H\+A\+W\+Thread} ()
+\item 
+virtual void \hyperlink{classthread_1_1_h_a_w_thread_ae08d268c337511a1e67fbbeefcb1e89d}{start} (void $\ast$arg)
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_ae8a89c83fd7e9b9a712c19f636ab2638}{stop} ()
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_adbc0234a7b8eb2271a5cb4a7b8090956}{join} () const
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_a18f2a0cc61833e98b18e56ea541fa38b}{hold} ()
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_a4c480261e3236c90c8de73be55650ba4}{cont} ()
+\end{DoxyCompactItemize}
+\subsection*{Geschützte Methoden}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_a9a3e17be59877d350e310eb19c52679b}{run} (void $\ast$arg)
+\item 
+virtual void \hyperlink{classthread_1_1_h_a_w_thread_ae565cb73c096b246664bd2474b9c8907}{execute} (void $\ast$)=0
+\item 
+virtual void \hyperlink{classthread_1_1_h_a_w_thread_a843ee9493a41cec7e932fdec67a3b244}{shutdown} ()=0
+\item 
+void $\ast$ \hyperlink{classthread_1_1_h_a_w_thread_a87d9850bda803fafa714c32a63c11a89}{Arg} () const
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_a368c07a801fb8f5e7bb181d2453df4be}{Arg} (void $\ast$a)
+\item 
+bool \hyperlink{classthread_1_1_h_a_w_thread_acd3923a840cbe1fea040fc149c4ab749}{is\+Stopped} () const
+\item 
+void \hyperlink{classthread_1_1_h_a_w_thread_a5124385e940aa8d52510a4be10af173c}{shutdown\+All} ()
+\end{DoxyCompactItemize}
+\subsection*{Geschützte, statische Methoden}
+\begin{DoxyCompactItemize}
+\item 
+static void $\ast$ \hyperlink{classthread_1_1_h_a_w_thread_a044da2e1a8884a3e2764f9f1863863c7}{entry\+Point} (void $\ast$)
+\end{DoxyCompactItemize}
+
+
+\subsection{Beschreibung der Konstruktoren und Destruktoren}
+\hypertarget{classthread_1_1_h_a_w_thread_a7ae3280c8aee6ae6536c736a20d92e8d}{}\label{classthread_1_1_h_a_w_thread_a7ae3280c8aee6ae6536c736a20d92e8d} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!H\+A\+W\+Thread@{H\+A\+W\+Thread}}
+\index{H\+A\+W\+Thread@{H\+A\+W\+Thread}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{H\+A\+W\+Thread()}{HAWThread()}}
+{\footnotesize\ttfamily thread\+::\+H\+A\+W\+Thread\+::\+H\+A\+W\+Thread (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor. Initializes members \hypertarget{classthread_1_1_h_a_w_thread_a84706dda23aa384a43ced901381e795b}{}\label{classthread_1_1_h_a_w_thread_a84706dda23aa384a43ced901381e795b} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!````~H\+A\+W\+Thread@{$\sim$\+H\+A\+W\+Thread}}
+\index{````~H\+A\+W\+Thread@{$\sim$\+H\+A\+W\+Thread}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{$\sim$\+H\+A\+W\+Thread()}{~HAWThread()}}
+{\footnotesize\ttfamily thread\+::\+H\+A\+W\+Thread\+::$\sim$\+H\+A\+W\+Thread (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Destructor. Calls Thread\+Destroy. This should shutdown the thread more carefully. \begin{DoxyWarning}{Warnung}
+needs some work! 
+\end{DoxyWarning}
+
+
+\subsection{Dokumentation der Elementfunktionen}
+\hypertarget{classthread_1_1_h_a_w_thread_a87d9850bda803fafa714c32a63c11a89}{}\label{classthread_1_1_h_a_w_thread_a87d9850bda803fafa714c32a63c11a89} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!Arg@{Arg}}
+\index{Arg@{Arg}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{Arg()}{Arg()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void$\ast$ thread\+::\+H\+A\+W\+Thread\+::\+Arg (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+used internally to pass the argument. \hypertarget{classthread_1_1_h_a_w_thread_a368c07a801fb8f5e7bb181d2453df4be}{}\label{classthread_1_1_h_a_w_thread_a368c07a801fb8f5e7bb181d2453df4be} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!Arg@{Arg}}
+\index{Arg@{Arg}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{Arg()}{Arg()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::\+Arg (\begin{DoxyParamCaption}\item[{void $\ast$}]{a }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+used internally to set the arguement. \hypertarget{classthread_1_1_h_a_w_thread_a4c480261e3236c90c8de73be55650ba4}{}\label{classthread_1_1_h_a_w_thread_a4c480261e3236c90c8de73be55650ba4} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!cont@{cont}}
+\index{cont@{cont}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{cont()}{cont()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::cont (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function continues (resumes) the thread. It makes a Thread\+Ctrl call. \hypertarget{classthread_1_1_h_a_w_thread_a044da2e1a8884a3e2764f9f1863863c7}{}\label{classthread_1_1_h_a_w_thread_a044da2e1a8884a3e2764f9f1863863c7} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!entry\+Point@{entry\+Point}}
+\index{entry\+Point@{entry\+Point}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{entry\+Point()}{entryPoint()}}
+{\footnotesize\ttfamily void $\ast$ thread\+::\+H\+A\+W\+Thread\+::entry\+Point (\begin{DoxyParamCaption}\item[{void $\ast$}]{pthis }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [protected]}}
+
+\hypertarget{classthread_1_1_h_a_w_thread_ae565cb73c096b246664bd2474b9c8907}{}\label{classthread_1_1_h_a_w_thread_ae565cb73c096b246664bd2474b9c8907} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!execute@{execute}}
+\index{execute@{execute}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily virtual void thread\+::\+H\+A\+W\+Thread\+::execute (\begin{DoxyParamCaption}\item[{void $\ast$}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+to be implemented in the derived class. The application programmer has to write his own loop. He can check bool \hyperlink{classthread_1_1_h_a_w_thread_acd3923a840cbe1fea040fc149c4ab749}{is\+Stopped()} to see if the thread should exit the loop. \hypertarget{classthread_1_1_h_a_w_thread_a18f2a0cc61833e98b18e56ea541fa38b}{}\label{classthread_1_1_h_a_w_thread_a18f2a0cc61833e98b18e56ea541fa38b} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!hold@{hold}}
+\index{hold@{hold}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{hold()}{hold()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::hold (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This function holds (suspends) the thread. It makes a Thread\+Ctrl call. It shall be used if the thread is not being used for a while but may be used later \hypertarget{classthread_1_1_h_a_w_thread_acd3923a840cbe1fea040fc149c4ab749}{}\label{classthread_1_1_h_a_w_thread_acd3923a840cbe1fea040fc149c4ab749} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!is\+Stopped@{is\+Stopped}}
+\index{is\+Stopped@{is\+Stopped}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{is\+Stopped()}{isStopped()}}
+{\footnotesize\ttfamily bool thread\+::\+H\+A\+W\+Thread\+::is\+Stopped (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+returns the stop-\/status of the thread. This function should be checked by the user function execute regularly. \hypertarget{classthread_1_1_h_a_w_thread_adbc0234a7b8eb2271a5cb4a7b8090956}{}\label{classthread_1_1_h_a_w_thread_adbc0234a7b8eb2271a5cb4a7b8090956} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!join@{join}}
+\index{join@{join}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{join()}{join()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::join (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+Calls join on the thread. \begin{DoxyWarning}{Warnung}
+must be called from the same context as start. 
+\end{DoxyWarning}
+\hypertarget{classthread_1_1_h_a_w_thread_a9a3e17be59877d350e310eb19c52679b}{}\label{classthread_1_1_h_a_w_thread_a9a3e17be59877d350e310eb19c52679b} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!run@{run}}
+\index{run@{run}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::run (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+This is called when the thread is started. It calls execute an shutdown which are the user functions. \hypertarget{classthread_1_1_h_a_w_thread_a843ee9493a41cec7e932fdec67a3b244}{}\label{classthread_1_1_h_a_w_thread_a843ee9493a41cec7e932fdec67a3b244} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily virtual void thread\+::\+H\+A\+W\+Thread\+::shutdown (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+this function must be implemented in the derived class. The function is called once after the thread has been stopped. \hypertarget{classthread_1_1_h_a_w_thread_a5124385e940aa8d52510a4be10af173c}{}\label{classthread_1_1_h_a_w_thread_a5124385e940aa8d52510a4be10af173c} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!shutdown\+All@{shutdown\+All}}
+\index{shutdown\+All@{shutdown\+All}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{shutdown\+All()}{shutdownAll()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::shutdown\+All (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+sets the G\+L\+O\+B\+A\+L\+\_\+\+E\+X\+IT flag to true. \hypertarget{classthread_1_1_h_a_w_thread_ae08d268c337511a1e67fbbeefcb1e89d}{}\label{classthread_1_1_h_a_w_thread_ae08d268c337511a1e67fbbeefcb1e89d} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!start@{start}}
+\index{start@{start}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::start (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Starts the Thread. \begin{DoxyWarning}{Warnung}
+start must be called always from the same context as \hyperlink{classthread_1_1_h_a_w_thread_ae8a89c83fd7e9b9a712c19f636ab2638}{stop()}. 
+
+If Thread is already running, \hyperlink{classthread_1_1_h_a_w_thread_ae08d268c337511a1e67fbbeefcb1e89d}{start()} is a N\+OP. \begin{DoxyItemize}
+\item argument is stored locally as a member. \end{DoxyItemize}
+
+\end{DoxyWarning}
+\hypertarget{classthread_1_1_h_a_w_thread_ae8a89c83fd7e9b9a712c19f636ab2638}{}\label{classthread_1_1_h_a_w_thread_ae8a89c83fd7e9b9a712c19f636ab2638} 
+\index{thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}!stop@{stop}}
+\index{stop@{stop}!thread\+::\+H\+A\+W\+Thread@{thread\+::\+H\+A\+W\+Thread}}
+\subsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily void thread\+::\+H\+A\+W\+Thread\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets the internal flag L\+O\+C\+A\+L\+\_\+\+E\+X\+IT to true. 
+
+Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Dateien\+:\begin{DoxyCompactItemize}
+\item 
+src/lib/\hyperlink{_h_a_w_thread_8h}{H\+A\+W\+Thread.\+h}\item 
+src/lib/\hyperlink{_h_a_w_thread_8cpp}{H\+A\+W\+Thread.\+cpp}\end{DoxyCompactItemize}

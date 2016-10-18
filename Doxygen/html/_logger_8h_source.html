@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foerderband: Logger/Logger.h Quellcode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Foerderband
+   &#160;<span id="projectnumber">0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_965eb9d2edb8cb4296864e8d82ed0861.html">Logger</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Logger.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_logger_8h.html">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Logger.h</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: 09.10.2016</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: marvin</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef LOGGER_H_</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define LOGGER_H_</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div><div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="_logger_8h.html#a6ff63e8955665c4a58b1598f2b07c51a">   14</a></span>&#160;<span class="preprocessor">#define LOG_DEBUG  \</span></div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">    if(Logger::getLogger().getLoggingLevel() &lt; DEBUG);   \</span></div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">    else Logger::getLogger().log()</span></div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div><div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="_logger_8h.html#adf4476a6a4ea6c74231c826e899d7189">   18</a></span>&#160;<span class="preprocessor">#define LOG_WARNING  \</span></div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">if(Logger::getLogger().getLoggingLevel() &lt; WARNING);  \</span></div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">else Logger::getLogger().log()</span></div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div><div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="_logger_8h.html#aced66975c154ea0e2a8ec3bc818b4e08">   22</a></span>&#160;<span class="preprocessor">#define LOG_ERROR  \</span></div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">if(Logger::getLogger().getLoggingLevel() &lt; ERROR);  \</span></div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">else Logger::getLogger().log()</span></div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div><div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">   26</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">LOG_LEVEL</a></div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div><div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81">   28</a></span>&#160;    <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90">ERROR</a>, <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81">WARNING</a>, <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f">DEBUG</a></div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;};</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div><div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_logger.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_logger.html">Logger</a></div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_logger.html#afa2765f0a04e7a50e1efc38cce67a763">   34</a></span>&#160;    <span class="keyword">static</span> <a class="code" href="class_logger.html">Logger</a>&amp; <a class="code" href="class_logger.html#afa2765f0a04e7a50e1efc38cce67a763">getLogger</a>()</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    {</div><div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <span class="keyword">static</span> <a class="code" href="class_logger.html">Logger</a> instances;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">return</span> instances;</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    std::ofstream&amp; <a class="code" href="class_logger.html#af8a0b7a8939294ceb2cef39c358dfa9c">log</a>();</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_logger.html#a3759fa32a4f0c7255f61a2ce6484c194">setLoggingLevel</a>(<a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">LOG_LEVEL</a> level);</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">LOG_LEVEL</a> <a class="code" href="class_logger.html#acce532a939622d2b5c919f5f67236564">getLoggingLevel</a>();</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">private</span>:</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    std::ofstream logfile;</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">LOG_LEVEL</a> logginglevel_;</div><div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="class_logger.html">Logger</a>();</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    ~<a class="code" href="class_logger.html">Logger</a>();</div><div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* LOGGER_H_ */</span><span class="preprocessor"></span></div><div class="ttc" id="class_logger_html_af8a0b7a8939294ceb2cef39c358dfa9c"><div class="ttname"><a href="class_logger.html#af8a0b7a8939294ceb2cef39c358dfa9c">Logger::log</a></div><div class="ttdeci">std::ofstream &amp; log()</div><div class="ttdef"><b>Definition:</b> Logger.cpp:22</div></div>
+<div class="ttc" id="_logger_8h_html_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90"><div class="ttname"><a href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90">ERROR</a></div><div class="ttdef"><b>Definition:</b> Logger.h:28</div></div>
+<div class="ttc" id="class_logger_html"><div class="ttname"><a href="class_logger.html">Logger</a></div><div class="ttdef"><b>Definition:</b> Logger.h:31</div></div>
+<div class="ttc" id="_logger_8h_html_aa5a9053636a30269210c54e734e0d583"><div class="ttname"><a href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583">LOG_LEVEL</a></div><div class="ttdeci">LOG_LEVEL</div><div class="ttdef"><b>Definition:</b> Logger.h:26</div></div>
+<div class="ttc" id="class_logger_html_afa2765f0a04e7a50e1efc38cce67a763"><div class="ttname"><a href="class_logger.html#afa2765f0a04e7a50e1efc38cce67a763">Logger::getLogger</a></div><div class="ttdeci">static Logger &amp; getLogger()</div><div class="ttdef"><b>Definition:</b> Logger.h:34</div></div>
+<div class="ttc" id="_logger_8h_html_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81"><div class="ttname"><a href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81">WARNING</a></div><div class="ttdef"><b>Definition:</b> Logger.h:28</div></div>
+<div class="ttc" id="class_logger_html_acce532a939622d2b5c919f5f67236564"><div class="ttname"><a href="class_logger.html#acce532a939622d2b5c919f5f67236564">Logger::getLoggingLevel</a></div><div class="ttdeci">LOG_LEVEL getLoggingLevel()</div><div class="ttdef"><b>Definition:</b> Logger.cpp:6</div></div>
+<div class="ttc" id="class_logger_html_a3759fa32a4f0c7255f61a2ce6484c194"><div class="ttname"><a href="class_logger.html#a3759fa32a4f0c7255f61a2ce6484c194">Logger::setLoggingLevel</a></div><div class="ttdeci">void setLoggingLevel(LOG_LEVEL level)</div><div class="ttdef"><b>Definition:</b> Logger.cpp:28</div></div>
+<div class="ttc" id="_logger_8h_html_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f"><div class="ttname"><a href="_logger_8h.html#aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f">DEBUG</a></div><div class="ttdef"><b>Definition:</b> Logger.h:28</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>
