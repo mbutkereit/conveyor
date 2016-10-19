@@ -401,7 +401,7 @@ Ampel Rot&\begin{compactenum}[]
 
 \newpage
 
-\textbf{Port B (Eingabeport)}
+\noindent\textbf{Port B (Eingabeport)}
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|X|X|}
@@ -447,7 +447,7 @@ Auslauf Werkstück&\begin{compactenum}[]
 
 \newpage
 
-\textbf{Port C (Ein-/Ausgabeport)}
+\noindent\textbf{Port C (Ein-/Ausgabeport)}
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|X|X|}
@@ -495,8 +495,46 @@ Taste E-Stopp&\begin{compactenum}[]
 \label{portC}
 \end{table}
 
+\newpage
+
 \subsubsection{Use Cases}
-\textcolor{red}{Dokumentieren sie hier, welche Use Cases sie auf der Systemebene implementieren müssen. Die Test Cases sollen später zu den Use Cases konsistent sein.}
+
+\begin{compactenum}[1.]
+\item Flache Werkstücke aussortieren
+\medskip
+
+\textbf{Akteure:} Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
+\medskip
+
+\textbf{Auslösendes Ereignis:} Höhenmessung erkennt das flache Werkstück.
+\medskip
+
+\textbf{Kurzbeschreibung:} Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
+\bigskip
+
+\item Werkstückdaten ausgeben
+\medskip
+
+\textbf{Akteure:} Lichtschranke, Display
+\medskip
+
+\textbf{Auslösendes Ereignis:} Die Lichtschranke auf Band 2 wird durchquert.
+\medskip
+
+\textbf{Kurzbeschreibung:} Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
+\bigskip
+
+\item Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge
+\medskip
+
+\textbf{Akteure:} Lichtschranke, Mitarbeiter (nimmt die Werkstücke im Empfang), Weiche
+\medskip
+
+\textbf{Auslösendes Ereignis:} Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
+\medskip
+
+\textbf{Kurzbeschreibung:} Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$) ausgegeben.
+\end{compactenum}
 
 \subsection{Systemanalyse}
 \textcolor{red}{Ihr technisches System hat aus Sicht der Software bestimmte Eigenschaften. Was muss man für die Entwicklung der Software in Struktur, Schnittstellen, Verhalten und an Besonderheiten wissen? Wählen sie eine Kapitelstruktur, die am besten zur Dokumentation ihrer Ergebnisse geeignet ist.}
@@ -534,6 +572,57 @@ Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
 
 \subsection{Testplan}
 \textcolor{red}{Definieren sie Zeitpunkte für die jeweiligen Teststufen in ihrer Projektplanung. Dazu können sie die Meilensteine zu Hilfe nehmen.}
+
+\subsection{Testkonzept}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+Erkennung der Werkstücke am Anfang des Förderbandes&&\\
+\hline
+Flache Werkstücke werden aussortiert&&\\
+\hline
+Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte&&\\
+\hline
+Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
+\hline
+Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
+\hline
+Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
+\hline
+Stopp beim leeren Förderband&&\\
+\hline
+Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
+\hline
+Am Ende vom Band 2 werden die Werkstückdaten ausgegeben auf der Konsole&&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung(Teil 1)}
+\label{tst1}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
+\hline
+Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung(Teil 2)}
+\label{tst2}
+\end{table}
 
 \subsection{Abnahmetest}
 \textcolor{red}{Leiten sie die Abnahmebedingungen aus den Kunden-Anforderungen her. Dokumentieren sie hier, welche Schritte für die Abnahme erforderlich sind und welches Ergebnis jeweils erwartet wird (Test Cases).}
