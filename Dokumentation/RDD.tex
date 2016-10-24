@@ -84,11 +84,11 @@
 \author
 {
 \begin{tabular}{llll}
-Lüdemann&Mona&xxxxxxx&mona.luedemann@haw-hamburg.de\\
-Butkereit&Marvin&xxxxxxx&marvin.butkereit@haw-hamburg.de\\
-Schumacher&Wilhelm&xxxxxxx&wilhelm.schumacher@haw-hamburg.de\\
-Melkonyan&Anushavan&xxxxxxx&anushavan.melkonyan@haw-hamburg.de\\
-Colbow&Marco&xxxxxxx&marco.colbow@haw-hamburg.de\\
+Lüdemann&Mona&2212744&mona.luedemann1@haw-hamburg.de\\
+Butkereit&Marvin&2247550&marvin.butkereit@haw-hamburg.de\\
+Schumacher&Wilhelm&2245216&wilhelm.schumacher@haw-hamburg.de\\
+Melkonyan&Anushavan&2243668&anushavan.melkonyan@haw-hamburg.de\\
+Colbow&Marco&2177095&marco.colbow@haw-hamburg.de\\
 Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \end{tabular}
 }
@@ -115,58 +115,426 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \newpage
 
 \section{Teamorganisation}
-\textcolor{red}{Überlegen sie, welche Regeln sie für die Zusammenarbeit aufstellen wollen und welche Rollen sie im Team verteilen wollen. Dokumentieren sie diese hier zusammen mit weiteren Anmerkungen der Teamorganisation. Listen oder Tabellen sind zum Beispiel ein kompakte und übersichtliche Darstellungsformen für diesen Bereich.}
+Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Die Aufgaben, dessen Verteilung bei jedem Meeting neu beschlossen wird, richten sich nach den zu bewältigenden Milestones(siehe \cite{esep}) zum jeweiligen Praktikumstermin. Allerdings wurden für die Projektleitung und die Pflege des RDD-Dokuments jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden können.
 
-\subsection{Verantwortlichkeiten}
-\textcolor{red}{Bennen sie Verantwortliche innerhalb des Projekts (Projektleiter, Tester, Implementierer, etc.). Auch hier ist eine Listen- oder Tabellendarstellung angebracht.}
+\subsection{Verantwortlichkeiten}\label{vantw}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Aufgabe}&\textbf{Zuständige/r}&\textbf{Bemerkung}\\
+\hline
+Projektleitung&Mona&Die Projektleitung hält den Fortschritt im Auge und benachrichtigt insbesondere bei Nichteinhalten des Zeitplans alle Teammitglieder. Außerdem hat die Projektleitung bei Unstimmigkeiten immer das letzte Wort. \\
+\hline
+RDD-Pflege&Mehmet&Der Zuständige ist für die Gestaltung und für die Vollständigkeit des RDDs verantwortlich. Er kann andere Gruppenteilnehmer dazu auffordern Inhalte für das Dokument zu erarbeiten und ihm bereit zu stellen. \\
+\hline 
+Protkollführung&Alle Teammitglieder&Die Protokollführung wird reihum von einem anderen Gruppenmitglied übernommen. Dabei wird folgende Reihenfolge eingehalten: $Mona\rightarrow Marvin\rightarrow Marco \rightarrow Wilhelm\rightarrow Mehmet\rightarrow Anushavan$ \\
+\hline
+\end{tabularx}
+\caption{Zuteilung von Verantwortlichkeiten}
+\label{labelname}
+\end{table}
 
 \subsection{Absprachen}
-\textcolor{red}{Listen sie hier die Absprachen im Team auf, z. B. Jour Fixe, Kommunikation, Respond-Latenz, ....}
+Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp verwendet. Unstimmigkeiten, Fragen und Inkenntnissetzung können somit interaktiv geklärt bzw. mitgeteilt werden. Es wird erwartet, dass jedes Teammitglied so schnell wie möglich darauf reagiert. In folgender Abbildung \ref{meets} werden die Termine der Meetings dargestellt:
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.85]{images/Terminplan_Meetings.png}
+\caption{Terminplan der Meetings}
+\label{meets}
+\end{figure}
+
+\newpage
 
 \subsection{Repository-Konzept}
-\textcolor{red}{Überlegen sie sich, wie sie das Repository und die Ordner organisieren wollen. Welche Regeln wollen sie beim Umgang mit Branches, Auslieferungen, Nachrichten an den Commits usw. im Team einhalten?. Listen sie diese Absprachen hier auf. Überlegen Sie auch, wie die Arbeitsabläufe sein sollen bei der Umsetzung von Arbeitsaufträgen oder bei der Behebung von Fehlern.}
+Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein Repository auf GitHub angelegt. Erreichbar ist das Repository unter \url{https://github.com/mbutkereit/conveyor}. Änderungen werden lokal auf einem anderen Branch als auf dem Master vorgenommen. Wenn die Änderungen gepusht werden sollen, muss zuvor auf den Master Branch gewechselt und gepullt werden. Nun kann ein Merge mit dem lokal anderen Branch durchgeführt und ggf. Mergekonflikte gelöst werden. Anschließend kann gepusht werden.
 
 \section{Projektmanagement}
-\textcolor{red}{In diesem Kapitel sollten organisatorische Punkte beschrieben und festgelegt werden.}
+Für die Gewährleistung eines guten Managements, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-\textcolor{red}{Legen Sie den Prozess fest, nach dem Sie das Projekt umsetzen wollen. Geben Sie ggf. grobe Schritte an, wie Planungsrunden, Sprints, oder ähnliches.}
+Das Projekt wird auf Grundlage der geforderten Milestones nach und nach umgesetzt. Für jede Implementierung ist zuvor ein geeignetes sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen.
 
 \subsection{PSP/Zeitplan/Tracking}
-\textcolor{red}{Projektstrukturplan, Ressourcenplan, Zeitplan, Abhängigkeiten von Arbeitspaketen, eventueller Zeitverzug, Visualisierung des Projektstandes, etc.}
+Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies möglichst zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann.
 
 \subsection{Qualitätssicherung}
-\textcolor{red}{Überlegen sie, wie sie Qualität in ihrem Projekt sicher stellen wollen. Listen sie die Maßnahmen hier auf. Beachten sie, dass diese Maßnahmen für die unterschiedlichen Artefakte und Ebenen entsprechend unterschiedlich sein können.}
+Hinsichtlich der Qualitätssicherung, werden die vier Punkte Team, Modellierung, Code und Förderband herangezogen.
+\medskip
+\begin{compactenum}[1.]
+\item \textbf{Team:} Jedes Teammitglied sollte über seine eigenen Fähigkeiten im Klaren sein und möglichst nur Aufgaben übernehmen, wofür es sich am besten geeignet fühlt. Darüber hinaus muss jedes Teammitglied bei Möglichkeit stets seine Unterstützung anbieten. Bei Problemen oder Überforderung müssen alle anderen Teammitglieder darüber unterrichtet werden und Aufgaben ggf. neu verteilt werden.
+\medskip
+\item \textbf{Modellierung:} Vor der Implementierung muss eine geeignete Visualisierung erstellt, anderen Teammitgliedern vorgestellt und untereinander diskutiert werden. 
+\medskip
+\item \textbf{Code:} Der Code wird nach beschlossenen Konventionen gefertigt. Dabei werden bekannte Pattern eingesetzt und möglichst einfache sowie übersichtliche Realisierungen angestrebt.
+\medskip
+\item \textbf{Förderband:} Um hohen Durchsatz sowie Effizienz bei der Aussortierung zu erzielen, werden die Komponenten mit der höchstmöglichen Leistung für die jeweilige Situation angetrieben, während die Sicherheit des Bedieners im Vordergrund steht. Dabei werden Fehler- bzw. Ausnahmezustände ggf. durch einfache Signalcodes mithilfe der Ampel dem Bediener mitgeteilt.
+\end{compactenum}
 
 \section{Randbedingungen}
+In diesem Kapitel werden die Bedingungen genannt unter denen das Projekt umgesetzt wird und die Mittel, die für die Umsetzung herangezogen werden.
 
 \subsection{Entwicklungsumgebung}
-\textcolor{red}{Auflistung der Entwicklungsumgebung (Simulator, Hardware, Betriebssystem etc.)}
+Die beiden Förderbänder werden über zwei QNX Systeme gesteuert, die über eine serielle Schnittstelle verbunden sind. Als IDE wird QNX Momentics auf Windows 7 verwendet.
 
 \subsection{Werkzeuge}
-\textcolor{red}{Auflistung der im Projekt verwendeten Werkzeuge inkl. ihrer Versionen.}
+\begin{compactenum}[-]
+\item QNX Momentics IDE 5.0
+\item Latex
+\item Git(GitHub)
+\end{compactenum}
 
 \subsection{Sprachen}
-\textcolor{red}{Auflistung der Programmiersprachen und Bibliotheken.}
+Das System wird in C++ 11 programmiert. Die dazukommenden Bibliotheken sind in folgender Tabelle \ref{bibl} aufgelistet:
+\medskip
+\begin{table}[h]
+\center
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Name}&\textbf{Version}&\textbf{Autor}\\
+\hline
+HWaccess.h&Unknown&Prof. Dr. Stephan Pareigis\\
+\hline
+HAWThread.h&Unknown&Prof. Dr. Stephan Pareigis \\
+\hline
+Lock.h&0.1&Simon Brummer \\
+\hline
+\end{tabular}
+\caption{Verwendete Programmierbibliotheken}
+\label{bibl}
+\end{table}
+
+\newpage
 
 \section{Requirements and Use Cases}
 
 \subsection{Systemebene}
-\textcolor{red}{Die Anforderungen aus der Aufgabenstellung sind nicht vollständig. Die Struktur der nachfolgenden Kapitel soll sie bei der Strukturierung der Analyse unterstützen. Dokumentieren Sie die Ergebnisse der Analysen entsprechend.}
-
 \subsubsection{Stakeholder}
-\textcolor{red}{Ermitteln sie die Stakeholder für das Projekt und listen sie diese hier auf.}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Stakeholder}&\textbf{Interessen}\\
+\hline
+Kunde&\begin{compactenum}[-]
+      \item fehlerfreie Umsetzung der Anforderungen
+      \item erfolgreiche Beendigung des Projektes 
+      \end{compactenum}\\
+\hline
+Designer&\begin{compactenum}[-]
+         \item übersichtliches, leicht erweiterbares Design
+         \item sorgfältige Dokumentation 
+         \end{compactenum}\\ 
+\hline
+Entwickler&\begin{compactenum}[-]
+           \item präzises Design
+           \item sinnvolle Kommentare
+           \item lesbarer Code 
+           \end{compactenum}\\
+\hline
+Tester&\begin{compactenum}[-]
+       \item übersichtliches, vollständiges Testkonzept 
+       \end{compactenum}\\
+\hline
+Bediener (Mitarbeiter, die das Laufband später bedienen sollen)&\begin{compactenum}[-]
+\item einfache und intuitive Bedienung
+\end{compactenum}\\
+\hline
+Instanthalter&\begin{compactenum}[-]
+              \item robustes System
+              \end{compactenum}\\
+\hline
+Andere Mitarbeiter&\begin{compactenum}[-]
+                   \item Kenntnis über System und Funktionsweise
+                   \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{Stakeholder und ihre Interessen}
+\label{stake}
+\end{table}
+
+\newpage
 
 \subsubsection{Anforderungen}
-\textcolor{red}{In der Aufgabenstellung sind Anforderungen an das System gestellt. Arbeiten sie diese hier auf und ergänzen sie diese entsprechend der Absprachen mit dem Betreuer. Achten sie auf die entsprechende Attribuierung. 
-Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.
-}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Ansteuerung der Ampel&Das System soll die Ampel ansteuern können:
+\begin{compactenum}[-]
+\item grünes Licht bei Normalbetrieb, fehlerfrei 
+\item gelbes Licht bei Warnings 
+\item rotes Licht bei Errors 
+\end{compactenum}\\
+\hline
+Ansteuerung der Motoren der Laufbänder&Die Motoren der Laufbänder sollen ansteuerbar sein in folgenden Varianten: 
+\begin{compactenum}[-]
+\item Rechtslauf 
+\item Linkslauf 
+\item Langsam 
+\item Stopp
+\end{compactenum}\\
+\hline
+Ansteuerung der Weiche&Eine prinzipielle Ansteuerung der Weichen soll möglich sein. Außerdem soll beachtet werde, dass die Weichen nur für kurze Zeit auf Durchgang gestellt werden dürfen, um eine Beschädigung des System zu vermeiden.\\
+\hline
+Erkennung von Werkstücken&Das System muss drei Arten von Werkstücke zuordnen können: 
+\begin{compactenum}[-]
+\item Flache Werkstücke 
+\item Werkstücke mit Metalleinsatz (Bohrung liegt nach oben oder unten) 
+\item Werkstücke ohne Metalleinsatz (Bohrung liegt nach oben oder unten)
+\end{compactenum}\\
+\hline
+Aussortierung von Werkstücken&Flache Werkstücke und Werkstücke, bei der die Bohrung nach unten liegt, sollen aussortiert werden. \\
+\hline
+Reihenfolge der Werkstücke&Am Ende von Band 2 sollen die Werkstücke vereinzelt ankommen in der Reihenfolge:\hspace{2cm}
+$Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$ \\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 1)}
+\label{anf1}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Erkennung von Überschlagen der Werkstücke + Aussortierung des betreffenden Werkstücks&Das System soll erkennen, wenn sich Werkstücke bei der Übergabe von Band 1 zu Band 2 überschlägt und das betreffende Werkstück soll anschließend auf Band 2 aussortiert werden.\\
+\hline
+Langsamer Transport bei Höhenmessung&Wenn ein Werkstück durch die Höhenmessung transportiert wird, soll das Förderband langsam laufen.\\
+\hline
+Konsolenausgabe am Ende von Band 2&Wenn ein Werkstück das Ende von Band 2 erreicht, sollen auf der Konsole folgende Werkstückdaten ausgegeben werden:
+\begin{compactenum}[-]
+\item ID 
+\item Typ 
+\item Höhen-Messwert von Band 1 
+\item Höhen-Messwert von Band 2 
+\end{compactenum}\\
+\hline
+Konsolenausgabe am Ende von Band 3&Am Ende des dritten Bandes sollen die Werkstückdaten aller drei Werkstücke ausgegeben werden.\\
+\hline
+Stopp der Bänder bei keinen Werkstücken&Alle drei Bänder sollen jeweils stoppen, wenn sich kein Werkstück auf ihnen befindet.\\
+\hline
+Erkennung voller Rutschen&Volle Rutschen müssen erkannt werden.\\
+\hline
+Rutschen koordinieren&Ist die Rutsche auf Band 1 voll, so soll die Aussortierung über Band 2 erfolgen. Umgekehrt, ist die Rutsche auf Band 2 voll, so soll die Aussortierung bereits auf Band 1 erfolgen.\\
+\hline
+Gebündelter Transport von Werkstückgruppen auf Band 3&Die drei sortierten Werkstücke sollen gebündelt (im Abstand von 0-2cm) an das Ende des dritten Bandes transportiert werden. Der Platz zwischen den Dreiergruppen soll möglichst gering sein.\\
+\hline
+Fehlererfassung: Verschwinden von Werkstücken + Reaktion&Es soll erkannt werden, wenn Werkstücke verschwinden mittels der zu langen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung\\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 2)}
+\label{anf2}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Titel}&\textbf{Beschreibung}\\
+\hline
+Fehlererfassung: Hinzufügen von Werkstücken + Reaktion&Er soll erkannt werden, wenn Werkstücke hinzugefügt werden mittels der zu kurzen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung \\
+\hline
+Fehlererfassung: Beide Rutschen voll + Reaktion&Es soll erkannt werden, wenn beide Rutschen voll sind. Reaktion: Bandstopp, Fehlermeldung \\
+\hline
+\end{tabularx}
+\caption{Anforderungen(Teil 3)}
+\label{anf3}
+\end{table}
 
 \subsubsection{Systemkontext}
-\textcolor{red}{Use Cases werden aus einer bestimmten Sicht erstellt. Dokumentieren sie diese mittels Kontextdiagramm oder Use Case Diagramm. Die Use Cases und Test Cases müssen zu der hier verwendeten Nomenklatur konsistent sein.}
+\textbf{Port A (Ausgabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+Motor Rechtslauf&\begin{compactenum}[]
+           \item \ttfamily right()
+           \end{compactenum}\\
+\hline
+Motor Linkslauf&\begin{compactenum}[]
+           \item \ttfamily fast()
+           \end{compactenum}\\
+\hline
+Motor Langsam&\begin{compactenum}[]
+           \item \ttfamily stop()
+           \end{compactenum}\\
+\hline
+Motor Stopp&\begin{compactenum}[]
+           \item \ttfamily stop()
+           \end{compactenum}\\
+\hline
+Weiche Auf&\begin{compactenum}[]
+           \item \ttfamily switchOpen()
+           \item \ttfamily switchClosed()
+           \end{compactenum}\\
+\hline
+Ampel Grün&\begin{compactenum}[]
+           \item \ttfamily turnGreenOn()
+           \item \ttfamily turnGrennOff()
+           \end{compactenum}\\
+\hline
+Ampel Gelb&\begin{compactenum}[]
+           \item \ttfamily turnYellowOn()
+           \item \ttfamily turnYellowOff()
+           \end{compactenum}\\
+\hline
+Ampel Rot&\begin{compactenum}[]
+           \item \ttfamily turnRedOn()
+           \item \ttfamily turnRedOff()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port A(Ausgabeport)}
+\label{portA}
+\end{table}
+
+\newpage
+
+\noindent\textbf{Port B (Eingabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+Einlauf Werkstück&\begin{compactenum}[]
+           \item \ttfamily isItemRunningIn()
+           \end{compactenum}\\
+\hline
+Werkstück in Höhenmessung&\begin{compactenum}[]
+           \item \ttfamily isItemAltimetry()
+           \end{compactenum}\\
+\hline
+Höhenmessung&\begin{compactenum}[]
+           \item \ttfamily isItemInAltimetryToleranceRange()
+           \end{compactenum}\\
+\hline
+Werkstück in Weiche&\begin{compactenum}[]
+           \item \ttfamily isItemSwitch()
+           \end{compactenum}\\
+\hline
+Werkstück Metall&\begin{compactenum}[]
+           \item \ttfamily isItemMetal()
+           \end{compactenum}\\
+\hline
+Weiche offen&\begin{compactenum}[]
+           \item \ttfamily isSwitchOpen()
+           \end{compactenum}\\
+\hline
+Rutsche voll&\begin{compactenum}[]
+           \item \ttfamily isSkidFull()
+           \end{compactenum}\\
+\hline
+Auslauf Werkstück&\begin{compactenum}[]
+           \item \ttfamily isItemRunningOut()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port B (Eingabeport)}
+\label{portB}
+\end{table}
+
+\newpage
+
+\noindent\textbf{Port C (Ein-/Ausgabeport)}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|}
+\hline
+\textbf{Ereignis}&\textbf{Methodenname}\\
+\hline
+LED Starttaste&\begin{compactenum}[]
+           \item \ttfamily turnLedStartOn()
+           \item \ttfamily turnLedStartOff()
+           \end{compactenum}\\
+\hline
+LED Resettaste&\begin{compactenum}[]
+           \item \ttfamily turnLedResetOn()
+           \item \ttfamily turnLedResetOff()
+           \end{compactenum}\\
+\hline
+LED Q1&\begin{compactenum}[]
+           \item \ttfamily turnLedQ1On()
+           \item \ttfamily turnLedQ1Off()
+           \end{compactenum}\\
+\hline
+LED Q2&\begin{compactenum}[]
+           \item \ttfamily turnLedQ2On()
+           \item \ttfamily turnLedQ2Off()
+           \end{compactenum}\\
+\hline
+Taste Start&\begin{compactenum}[]
+           \item \ttfamily isButtonStartPressed()
+           \end{compactenum}\\
+\hline
+Taste Stopp&\begin{compactenum}[]
+           \item \ttfamily isButtonStopPressed()
+           \end{compactenum}\\
+\hline
+Taste Reset&\begin{compactenum}[]
+           \item \ttfamily isButtonResetPressed()
+           \end{compactenum}\\
+\hline
+Taste E-Stopp&\begin{compactenum}[]
+           \item \ttfamily isButtonEStopPressed()
+           \end{compactenum}\\
+\hline
+\end{tabularx}
+\caption{API auf Port C (Ein-/Ausgabeport)}
+\label{portC}
+\end{table}
+
+\newpage
 
 \subsubsection{Use Cases}
-\textcolor{red}{Dokumentieren sie hier, welche Use Cases sie auf der Systemebene implementieren müssen. Die Test Cases sollen später zu den Use Cases konsistent sein.}
+
+\begin{compactenum}[1.]
+\item Flache Werkstücke aussortieren
+\medskip
+
+\textbf{Akteure:} Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
+\medskip
+
+\textbf{Auslösendes Ereignis:} Höhenmessung erkennt das flache Werkstück.
+\medskip
+
+\textbf{Kurzbeschreibung:} Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
+\bigskip
+
+\item Werkstückdaten ausgeben
+\medskip
+
+\textbf{Akteure:} Lichtschranke, Display
+\medskip
+
+\textbf{Auslösendes Ereignis:} Die Lichtschranke auf Band 2 wird durchquert.
+\medskip
+
+\textbf{Kurzbeschreibung:} Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
+\bigskip
+
+\item Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge
+\medskip
+
+\textbf{Akteure:} Lichtschranke, Mitarbeiter (nimmt die Werkstücke im Empfang), Weiche
+\medskip
+
+\textbf{Auslösendes Ereignis:} Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
+\medskip
+
+\textbf{Kurzbeschreibung:} Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$) ausgegeben.
+\end{compactenum}
 
 \subsection{Systemanalyse}
 \textcolor{red}{Ihr technisches System hat aus Sicht der Software bestimmte Eigenschaften. Was muss man für die Entwicklung der Software in Struktur, Schnittstellen, Verhalten und an Besonderheiten wissen? Wählen sie eine Kapitelstruktur, die am besten zur Dokumentation ihrer Ergebnisse geeignet ist.}
@@ -204,6 +572,57 @@ Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
 
 \subsection{Testplan}
 \textcolor{red}{Definieren sie Zeitpunkte für die jeweiligen Teststufen in ihrer Projektplanung. Dazu können sie die Meilensteine zu Hilfe nehmen.}
+
+\subsection{Testkonzept}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+Erkennung der Werkstücke am Anfang des Förderbandes&&\\
+\hline
+Flache Werkstücke werden aussortiert&&\\
+\hline
+Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte&&\\
+\hline
+Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
+\hline
+Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
+\hline
+Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
+\hline
+Stopp beim leeren Förderband&&\\
+\hline
+Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
+\hline
+Am Ende vom Band 2 werden die Werkstückdaten ausgegeben auf der Konsole&&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung(Teil 1)}
+\label{tst1}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|X|X|X|}
+\hline
+\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
+\hline
+Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung(Teil 2)}
+\label{tst2}
+\end{table}
 
 \subsection{Abnahmetest}
 \textcolor{red}{Leiten sie die Abnahmebedingungen aus den Kunden-Anforderungen her. Dokumentieren sie hier, welche Schritte für die Abnahme erforderlich sind und welches Ergebnis jeweils erwartet wird (Test Cases).}
