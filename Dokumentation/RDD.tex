@@ -45,7 +45,7 @@
 \newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
 
 %Versionsnummer
-\newcommand{\version}{0.1}
+\newcommand{\version}{0.2}
 
 % Tabellenabschnitt linksbündig
 \newcommand{\ltab}{\raggedright\arraybackslash}
@@ -104,6 +104,8 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \hline
 0.1&Mehmet Cakir&2016-10-18&Kapitel 1-4 und Testkonzept\\
 \hline
+0.2&Mehmet Cakir&2016-10-26&Korrekturen an Formulierung, Visualisierungen noch nicht festgelegt\\
+\hline
 \end{tabularx}
 \label{changes}
 \end{table}
@@ -115,7 +117,7 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \newpage
 
 \section{Teamorganisation}
-Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Die Aufgaben, dessen Verteilung bei jedem Meeting neu beschlossen wird, richten sich nach den zu bewältigenden Milestones(siehe \cite{esep}) zum jeweiligen Praktikumstermin. Allerdings wurden für die Projektleitung und die Pflege des RDD-Dokuments jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden können.
+Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Bei jedem Meeting werden die Aufgaben verteilt, worüber im folgenden Meeting über den Fortschritt diskutiert wird. Falls ein Mitglied seine Aufgabe fertiggestellt hat, übernimmt er eine Neue. Bei Nichteinhaltung des Zeitplans werden entsprechend der Zeitpuffer andere Aufgaben zurückgestellt. Die Aufgaben richten sich nach den zu bewältigenden Milestones(siehe \cite{esep}) zum jeweiligen Praktikumstermin. Für die Projektleitung und die Pflege des RDD-Dokuments wurde jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden können.
 
 \subsection{Verantwortlichkeiten}\label{vantw}
 \begin{table}[h]
@@ -124,11 +126,11 @@ Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Die
 \hline
 \textbf{Aufgabe}&\textbf{Zuständige/r}&\textbf{Bemerkung}\\
 \hline
-Projektleitung&Mona&Die Projektleitung hält den Fortschritt im Auge und benachrichtigt insbesondere bei Nichteinhalten des Zeitplans alle Teammitglieder. Außerdem hat die Projektleitung bei Unstimmigkeiten immer das letzte Wort. \\
+Projektleitung&Mona&Die Projektleitung überwacht den Projektfortschritt und benachrichtigt insbesondere bei Nichteinhalten des Zeitplans alle Teammitglieder. Außerdem hat die Projektleitung bei Unstimmigkeiten immer das letzte Wort. \\
 \hline
-RDD-Pflege&Mehmet&Der Zuständige ist für die Gestaltung und für die Vollständigkeit des RDDs verantwortlich. Er kann andere Gruppenteilnehmer dazu auffordern Inhalte für das Dokument zu erarbeiten und ihm bereit zu stellen. \\
+RDD-Pflege&Mehmet&Der Zuständige ist für die Gestaltung und für die Vollständigkeit des RDDs verantwortlich. Er kann andere Gruppenmitglieder dazu auffordern Inhalte für das Dokument zu erarbeiten und ihm bereit zu stellen. \\
 \hline 
-Protkollführung&Alle Teammitglieder&Die Protokollführung wird reihum von einem anderen Gruppenmitglied übernommen. Dabei wird folgende Reihenfolge eingehalten: $Mona\rightarrow Marvin\rightarrow Marco \rightarrow Wilhelm\rightarrow Mehmet\rightarrow Anushavan$ \\
+Protkollführung&Alle Teammitglieder&Die Protokollführung wird reihum von Gruppenmitgliedern übernommen. Dabei wird folgende Reihenfolge eingehalten: $Mona\rightarrow Marvin\rightarrow Marco \rightarrow Wilhelm\rightarrow Mehmet\rightarrow Anushavan$ \\
 \hline
 \end{tabularx}
 \caption{Zuteilung von Verantwortlichkeiten}
@@ -136,7 +138,7 @@ Protkollführung&Alle Teammitglieder&Die Protokollführung wird reihum von einem
 \end{table}
 
 \subsection{Absprachen}
-Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp verwendet. Unstimmigkeiten, Fragen und Inkenntnissetzung können somit interaktiv geklärt bzw. mitgeteilt werden. Es wird erwartet, dass jedes Teammitglied so schnell wie möglich darauf reagiert. In folgender Abbildung \ref{meets} werden die Termine der Meetings dargestellt:
+Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp verwendet. Unstimmigkeiten, Fragen und Inkenntnissetzung können somit interaktiv geklärt bzw. mitgeteilt werden. Es wird erwartet, dass jedes Teammitglied in einem Zeitfenster von 24 Stunden darauf reagiert. In folgender Abbildung \ref{meets} werden die Termine der Meetings dargestellt:
 \begin{figure}[h]
 \centering 
 \includegraphics[scale=0.85]{images/Terminplan_Meetings.png}
@@ -147,26 +149,26 @@ Zur Kommunikation außerhalb der Praktikumstermine werden Slack und WhatsApp ver
 \newpage
 
 \subsection{Repository-Konzept}
-Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein Repository auf GitHub angelegt. Erreichbar ist das Repository unter \url{https://github.com/mbutkereit/conveyor}. Änderungen werden lokal auf einem anderen Branch als auf dem Master vorgenommen. Wenn die Änderungen gepusht werden sollen, muss zuvor auf den Master Branch gewechselt und gepullt werden. Nun kann ein Merge mit dem lokal anderen Branch durchgeführt und ggf. Mergekonflikte gelöst werden. Anschließend kann gepusht werden.
+Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein Repository auf GitHub angelegt. Erreichbar ist das Repository unter \url{https://github.com/mbutkereit/conveyor}. Änderungen werden lokal auf einem Branch vorgenommen, jedoch nicht auf dem Master. Sind die Änderungen erfolgreich abgeschlossen, kann der Master mit dem lokalen Branch zusammengeführt werden. Bevor ein push durchgeführt wird, muss gepullt werden. Nachdem ggf. Mergekonflikte gelöst wurden, kann vom Masterbranch aus auf das Repository gepusht werden.
 
 \section{Projektmanagement}
 Für die Gewährleistung eines guten Managements, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-Das Projekt wird auf Grundlage der geforderten Milestones nach und nach umgesetzt. Für jede Implementierung ist zuvor ein geeignetes sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen.
+Das Projekt wird auf Grundlage der geforderten Milestones umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen.
 
 \subsection{PSP/Zeitplan/Tracking}
-Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies möglichst zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann.
+Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann.
 
 \subsection{Qualitätssicherung}
 Hinsichtlich der Qualitätssicherung, werden die vier Punkte Team, Modellierung, Code und Förderband herangezogen.
 \medskip
 \begin{compactenum}[1.]
-\item \textbf{Team:} Jedes Teammitglied sollte über seine eigenen Fähigkeiten im Klaren sein und möglichst nur Aufgaben übernehmen, wofür es sich am besten geeignet fühlt. Darüber hinaus muss jedes Teammitglied bei Möglichkeit stets seine Unterstützung anbieten. Bei Problemen oder Überforderung müssen alle anderen Teammitglieder darüber unterrichtet werden und Aufgaben ggf. neu verteilt werden.
+\item \textbf{Team:} Jedes Teammitglied sollte über seine eigenen Fähigkeiten im Klaren sein und möglichst nur Aufgaben übernehmen, wofür es sich am besten geeignet fühlt. Darüber hinaus muss jedes Teammitglied bei Möglichkeit stets seine Unterstützung anbieten. Bei Problemen oder Überforderung müssen alle anderen Teammitglieder darüber unterrichtet und Aufgaben ggf. neu verteilt werden.
 \medskip
-\item \textbf{Modellierung:} Vor der Implementierung muss eine geeignete Visualisierung erstellt, anderen Teammitgliedern vorgestellt und untereinander diskutiert werden. 
+\item \textbf{Modellierung:} Vor der Implementierung muss eine geeignete Visualisierung erstellt, anderen Teammitgliedern vorgestellt und diskutiert werden. 
 \medskip
-\item \textbf{Code:} Der Code wird nach beschlossenen Konventionen gefertigt. Dabei werden bekannte Pattern eingesetzt und möglichst einfache sowie übersichtliche Realisierungen angestrebt.
+\item \textbf{Code:} Der Code wird nach beschlossenen Konventionen gefertigt. Dabei werden bekannte Pattern eingesetzt und verständliche sowie übersichtliche Realisierungen angestrebt. Den Maßstab hierfür setzen die Teammitglieder. Treten beim Code Review keine schwerwiegenden Anmerkungen bzw. Verständnisprobleme auf, gilt der Code als verständlich und übersichtlich.
 \medskip
 \item \textbf{Förderband:} Um hohen Durchsatz sowie Effizienz bei der Aussortierung zu erzielen, werden die Komponenten mit der höchstmöglichen Leistung für die jeweilige Situation angetrieben, während die Sicherheit des Bedieners im Vordergrund steht. Dabei werden Fehler- bzw. Ausnahmezustände ggf. durch einfache Signalcodes mithilfe der Ampel dem Bediener mitgeteilt.
 \end{compactenum}
@@ -175,7 +177,7 @@ Hinsichtlich der Qualitätssicherung, werden die vier Punkte Team, Modellierung,
 In diesem Kapitel werden die Bedingungen genannt unter denen das Projekt umgesetzt wird und die Mittel, die für die Umsetzung herangezogen werden.
 
 \subsection{Entwicklungsumgebung}
-Die beiden Förderbänder werden über zwei QNX Systeme gesteuert, die über eine serielle Schnittstelle verbunden sind. Als IDE wird QNX Momentics auf Windows 7 verwendet.
+Die drei Förderbänder werden über drei QNX Systeme gesteuert, die über eine serielle Schnittstelle verbunden sind. Als IDE wird QNX Momentics auf Windows 7 verwendet.
 
 \subsection{Werkzeuge}
 \begin{compactenum}[-]
@@ -185,7 +187,7 @@ Die beiden Förderbänder werden über zwei QNX Systeme gesteuert, die über ein
 \end{compactenum}
 
 \subsection{Sprachen}
-Das System wird in C++ 11 programmiert. Die dazukommenden Bibliotheken sind in folgender Tabelle \ref{bibl} aufgelistet:
+Das System wird in C++ 03 programmiert. Die dazukommenden Bibliotheken sind in folgender Tabelle \ref{bibl} aufgelistet:
 \medskip
 \begin{table}[h]
 \center
@@ -207,7 +209,7 @@ Lock.h&0.1&Simon Brummer \\
 \newpage
 
 \section{Requirements and Use Cases}
-
+Mithilfe der Requirements werden die Anforderungen an die einzelnen Komponenten des Förderbandes ermittelt. Dabei werden die Interessen der Stakeholder berücksichtigt.
 \subsection{Systemebene}
 \subsubsection{Stakeholder}
 \begin{table}[h]
@@ -262,22 +264,21 @@ Andere Mitarbeiter&\begin{compactenum}[-]
 \hline
 \textbf{Titel}&\textbf{Beschreibung}\\
 \hline
-Ansteuerung der Ampel&Das System soll die Ampel ansteuern können:
+Ansteuerung der Ampeln&Die Software soll die Ampel für folgende Fälle entsprechend ansteuern können:
 \begin{compactenum}[-]
 \item grünes Licht bei Normalbetrieb, fehlerfrei 
-\item gelbes Licht bei Warnings 
-\item rotes Licht bei Errors 
+\item gelbes Licht bei Warnungen 
+\item rotes Licht bei Fehler 
 \end{compactenum}\\
 \hline
-Ansteuerung der Motoren der Laufbänder&Die Motoren der Laufbänder sollen ansteuerbar sein in folgenden Varianten: 
+Ansteuerung der Motoren der Förderbänder&Die Motoren der Förderbänder sollen in folgenden Varianten ansteuerbar sein: 
 \begin{compactenum}[-]
-\item Rechtslauf 
-\item Linkslauf 
-\item Langsam 
+\item Rechtslauf langsam/schnell
+\item Linkslauf langsam/schnell
 \item Stopp
 \end{compactenum}\\
 \hline
-Ansteuerung der Weiche&Eine prinzipielle Ansteuerung der Weichen soll möglich sein. Außerdem soll beachtet werde, dass die Weichen nur für kurze Zeit auf Durchgang gestellt werden dürfen, um eine Beschädigung des System zu vermeiden.\\
+Ansteuerung der Weichen&Die Stellungen \su offen\so und \su geschlossen\so der Weichen müssen angesteuert werden. Außerdem soll beachtet werden, dass die Weichen nur für kurze Zeit die Stellung \su geschlossen\so halten, um eine Beschädigung der Weichen zu vermeiden.\\
 \hline
 Erkennung von Werkstücken&Das System muss drei Arten von Werkstücke zuordnen können: 
 \begin{compactenum}[-]
@@ -289,7 +290,7 @@ Erkennung von Werkstücken&Das System muss drei Arten von Werkstücke zuordnen k
 Aussortierung von Werkstücken&Flache Werkstücke und Werkstücke, bei der die Bohrung nach unten liegt, sollen aussortiert werden. \\
 \hline
 Reihenfolge der Werkstücke&Am Ende von Band 2 sollen die Werkstücke vereinzelt ankommen in der Reihenfolge:\hspace{2cm}
-$Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$ \\
+$\text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben mit Metall}$ \\
 \hline
 \end{tabularx}
 \caption{Anforderungen(Teil 1)}
@@ -304,7 +305,7 @@ $Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung
 \hline
 \textbf{Titel}&\textbf{Beschreibung}\\
 \hline
-Erkennung von Überschlagen der Werkstücke + Aussortierung des betreffenden Werkstücks&Das System soll erkennen, wenn sich Werkstücke bei der Übergabe von Band 1 zu Band 2 überschlägt und das betreffende Werkstück soll anschließend auf Band 2 aussortiert werden.\\
+Erkennung von Überschlagen der Werkstücke + Aussortierung des betreffenden Werkstücks&Das System soll erkennen, wenn sich Werkstücke bei der Übergabe von Band 1 zu Band 2 überschlagen und das betreffende Werkstück soll anschließend auf Band 2 aussortiert werden.\\
 \hline
 Langsamer Transport bei Höhenmessung&Wenn ein Werkstück durch die Höhenmessung transportiert wird, soll das Förderband langsam laufen.\\
 \hline
@@ -316,17 +317,17 @@ Konsolenausgabe am Ende von Band 2&Wenn ein Werkstück das Ende von Band 2 errei
 \item Höhen-Messwert von Band 2 
 \end{compactenum}\\
 \hline
-Konsolenausgabe am Ende von Band 3&Am Ende des dritten Bandes sollen die Werkstückdaten aller drei Werkstücke ausgegeben werden.\\
+Konsolenausgabe am Ende von Band 3&Am Ende des dritten Bandes sollen die Werkstückdaten ankommender Werkstücke ausgegeben werden.\\
 \hline
 Stopp der Bänder bei keinen Werkstücken&Alle drei Bänder sollen jeweils stoppen, wenn sich kein Werkstück auf ihnen befindet.\\
 \hline
-Erkennung voller Rutschen&Volle Rutschen müssen erkannt werden.\\
+Erkennung voller Rutschen&Volle Rutschen müssen mithilfe des Sensors am Rutscheneingang erkannt werden.\\
 \hline
 Rutschen koordinieren&Ist die Rutsche auf Band 1 voll, so soll die Aussortierung über Band 2 erfolgen. Umgekehrt, ist die Rutsche auf Band 2 voll, so soll die Aussortierung bereits auf Band 1 erfolgen.\\
 \hline
-Gebündelter Transport von Werkstückgruppen auf Band 3&Die drei sortierten Werkstücke sollen gebündelt (im Abstand von 0-2cm) an das Ende des dritten Bandes transportiert werden. Der Platz zwischen den Dreiergruppen soll möglichst gering sein.\\
+Gebündelter Transport von Werkstückgruppen auf Band 3&Die drei sortierten Werkstücke sollen gebündelt (im Abstand von 1,5cm) an das Ende des dritten Bandes transportiert werden.\\
 \hline
-Fehlererfassung: Verschwinden von Werkstücken + Reaktion&Es soll erkannt werden, wenn Werkstücke verschwinden mittels der zu langen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung\\
+Fehlererfassung: Verschwinden von Werkstücken + Reaktion&Mittels Zeitmessung soll das Verschwinden von Werkstücken erfasst werden. Wenn zwischen zwei benachbarten Lichtschranken zuviel Zeit vergeht, in der kein Werkstück erfasst wurde, tritt folgende Reaktion auf: Bandstopp, Fehlermeldung.\\
 \hline
 \end{tabularx}
 \caption{Anforderungen(Teil 2)}
@@ -341,7 +342,7 @@ Fehlererfassung: Verschwinden von Werkstücken + Reaktion&Es soll erkannt werden
 \hline
 \textbf{Titel}&\textbf{Beschreibung}\\
 \hline
-Fehlererfassung: Hinzufügen von Werkstücken + Reaktion&Er soll erkannt werden, wenn Werkstücke hinzugefügt werden mittels der zu kurzen Laufzeit zwischen den Lichtschranken. Reaktion: Bandstopp, Fehlermeldung \\
+Fehlererfassung: Hinzufügen von Werkstücken + Reaktion&Mittels Zeitmessung soll das zu schnelle oder fehlerhafte Hinzufügen von Werkstücken erfasst werden. Wenn zwischen zwei benachbarten Lichtschranken die erwartete Zeit unterschritten wird, in der ein Werkstück erfasst werden müsste, dann tritt folgende Reaktion auf: Bandstopp, Fehlermeldung \\
 \hline
 Fehlererfassung: Beide Rutschen voll + Reaktion&Es soll erkannt werden, wenn beide Rutschen voll sind. Reaktion: Bandstopp, Fehlermeldung \\
 \hline
@@ -351,6 +352,7 @@ Fehlererfassung: Beide Rutschen voll + Reaktion&Es soll erkannt werden, wenn bei
 \end{table}
 
 \subsubsection{Systemkontext}
+Im Folgenden sind die Methodennamen der Ereignisse aufgelistet, die zur Ansteuerung der einzelnen Komponenten ausgelöst sowie Ereignisse, die mithilfe der Sensoren erfasst werden. Die Methodennamen der erfassbaren Ereignisse beginnen mit \su is\so. 
 \textbf{Port A (Ausgabeport)}
 \begin{table}[h]
 \center
@@ -363,18 +365,22 @@ Motor Rechtslauf&\begin{compactenum}[]
            \end{compactenum}\\
 \hline
 Motor Linkslauf&\begin{compactenum}[]
-           \item \ttfamily fast()
+           \item \ttfamily left()
            \end{compactenum}\\
 \hline
-Motor Langsam&\begin{compactenum}[]
-           \item \ttfamily stop()
+Motor langsam&\begin{compactenum}[]
+           \item \ttfamily slow()
+           \end{compactenum}\\
+\hline
+Motor schnell&\begin{compactenum}[]
+           \item \ttfamily fast()
            \end{compactenum}\\
 \hline
 Motor Stopp&\begin{compactenum}[]
            \item \ttfamily stop()
            \end{compactenum}\\
 \hline
-Weiche Auf&\begin{compactenum}[]
+Weiche auf/zu&\begin{compactenum}[]
            \item \ttfamily switchOpen()
            \item \ttfamily switchClosed()
            \end{compactenum}\\
@@ -395,7 +401,7 @@ Ampel Rot&\begin{compactenum}[]
            \end{compactenum}\\
 \hline
 \end{tabularx}
-\caption{API auf Port A(Ausgabeport)}
+\caption{API auf Port A(Ausgabeport) - auslösbare Ereignisse}
 \label{portA}
 \end{table}
 
@@ -441,7 +447,7 @@ Auslauf Werkstück&\begin{compactenum}[]
            \end{compactenum}\\
 \hline
 \end{tabularx}
-\caption{API auf Port B (Eingabeport)}
+\caption{API auf Port B (Eingabeport) - erfassbare Ereignisse}
 \label{portB}
 \end{table}
 
@@ -491,7 +497,7 @@ Taste E-Stopp&\begin{compactenum}[]
            \end{compactenum}\\
 \hline
 \end{tabularx}
-\caption{API auf Port C (Ein-/Ausgabeport)}
+\caption{API auf Port C (Ein-/Ausgabeport) - auslösbare/erfassbare Ereignisse}
 \label{portC}
 \end{table}
 
@@ -500,40 +506,40 @@ Taste E-Stopp&\begin{compactenum}[]
 \subsubsection{Use Cases}
 
 \begin{compactenum}[1.]
-\item Flache Werkstücke aussortieren
+\item \textbf{Flache Werkstücke aussortieren}
 \medskip
 
-\textbf{Akteure:} Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
+Akteure: Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
 \medskip
 
-\textbf{Auslösendes Ereignis:} Höhenmessung erkennt das flache Werkstück.
+Auslösendes Ereignis: Höhenmessung erkennt das flache Werkstück.
 \medskip
 
-\textbf{Kurzbeschreibung:} Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
+Kurzbeschreibung: Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
 \bigskip
 
-\item Werkstückdaten ausgeben
+\item \textbf{Werkstückdaten ausgeben}
 \medskip
 
-\textbf{Akteure:} Lichtschranke, Display
+Akteure: Lichtschranke, Display
 \medskip
 
-\textbf{Auslösendes Ereignis:} Die Lichtschranke auf Band 2 wird durchquert.
+Auslösendes Ereignis: Die Lichtschranke auf Band 2 wird durchquert.
 \medskip
 
-\textbf{Kurzbeschreibung:} Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
+Kurzbeschreibung: Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
 \bigskip
 
-\item Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge
+\item \textbf{Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge}
 \medskip
 
-\textbf{Akteure:} Lichtschranke, Mitarbeiter (nimmt die Werkstücke im Empfang), Weiche
+Akteure: Lichtschranke, Mitarbeiter (nimmt die Werkstücke in Empfang), Weiche
 \medskip
 
-\textbf{Auslösendes Ereignis:} Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
+Auslösendes Ereignis: Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
 \medskip
 
-\textbf{Kurzbeschreibung:} Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($Bohrung oben ohne Metall\rightarrow Bohrung oben ohne Metall\rightarrow Bohrung oben mit Metall$) ausgegeben.
+Kurzbeschreibung: Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($\text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben mit Metall}$) ausgegeben.
 \end{compactenum}
 
 \subsection{Systemanalyse}
@@ -572,6 +578,8 @@ Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
 
 \subsection{Testplan}
 \textcolor{red}{Definieren sie Zeitpunkte für die jeweiligen Teststufen in ihrer Projektplanung. Dazu können sie die Meilensteine zu Hilfe nehmen.}
+
+\newpage
 
 \subsection{Testkonzept}
 \begin{table}[h]
