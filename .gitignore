@@ -34,5 +34,8 @@ RDD.log
 *.gz
 *.toc
 
+# mehkir specific ignores
+Dokumentation/Teildokumente/
+
 .DS_STORE
 
