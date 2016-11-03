@@ -45,7 +45,7 @@
 \newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
 
 %Versionsnummer
-\newcommand{\version}{0.2}
+\newcommand{\version}{0.3}
 
 % Tabellenabschnitt linksbündig
 \newcommand{\ltab}{\raggedright\arraybackslash}
@@ -106,6 +106,8 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \hline
 0.2&Mehmet Cakir&2016-10-26&Korrekturen an Formulierung, Visualisierungen noch nicht festgelegt\\
 \hline
+0.3&Mehmet Cakir&2016-11-03&Testtabellen umformatiert. Tests zu Grundfunktionen, HAL\_UML, Systemgrenzen, Systemarchitektur und Visualisierungsentscheidung sowie entsprechend kurzen Text hinzugefügt.\\
+\hline
 \end{tabularx}
 \label{changes}
 \end{table}
@@ -155,7 +157,24 @@ Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein
 Für die Gewährleistung eines guten Managements, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-Das Projekt wird auf Grundlage der geforderten Milestones umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen.
+Das Projekt wird auf Grundlage der geforderten Milestones umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie größtenteils selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Bestenfalls sollte die Visualisierung vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen sowie sie zu lösen. Die nachfolgende Tabelle \ref{visuals} listet für die jeweiligen Spezifikationen die im Team beschlossene Modellierung.
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Spezifikation}&\textbf{Modellierung}\\
+\hline
+Codestruktur&UML Diagramm\\
+\hline
+Verhalten bzw. logische Abläufe&Zustandsautomat\\
+\hline
+Systemarchitektur&Komponentendiagramm\\
+\hline
+\end{tabularx}
+\caption{Festgelegte Modellierung zur jeweiligen Spezifikation}
+\label{visuals}
+\end{table}
 
 \subsection{PSP/Zeitplan/Tracking}
 Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann. Dazu wurden Arbeitspakete definiert
@@ -549,8 +568,63 @@ Kurzbeschreibung: Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der rich
 \subsection{Softwareebene}
 \textcolor{red}{Sie sollen Software für die Steuerung des technischen Systems erstellen. Aus den Anforderungen auf der Systemebene und der Systemanalyse ergeben sich Anforderungen für Ihre Software. Insbesondere wird sich die Software der beiden Anlagenteile in einigen Punkten unterscheiden. Dokumentieren sie hier die Anforderungen, die sich speziell für die Software ergeben haben.}
 
+\newpage
+
 \subsubsection{Systemkontext}
-\textcolor{red}{Wie sieht der Kontext Ihrer Software aus? Wie erfolgt die Kommunikation mit Nachbarsystemen? Liste der ein- und ausgehenden Signale/Nachrichten.}
+Die nachfolgende Abbildung \ref{syskont} visualisiert die Systemgrenzen der Förderbandanlage. Dabei sind die dazugehörigen Sensoren und Aktoren abgebildet durch welche eine Förderbandanlage mit der Umwelt und seiner Nachbarsysteme kommuniziert. Die Tabellen \ref{senstasks} und \ref{acttasks} listen die Aufgaben der Sensoren und Aktoren auf.
+
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.6]{images/Systemkontext.pdf}
+\caption{Systemgrenzen der Förderbandanlage mit Sensoren und Aktoren}
+\label{syskont}
+\end{figure}
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Sensor}&\textbf{Aufgabe}\\
+\hline
+4 Lichtschranken&Erfassen, ob sich gerade ein Werkstück sich auf der Höhe der jeweiligen Lichtschranke befindet.\\
+\hline
+Induktiver Näherungssensor&Stellt fest, ob es sich um ein metallisches Werkstück handelt.\\
+\hline
+Höhensensor&Misst die Höhe des Werkstücks.\\
+\hline
+Serielle Schnittstelle&Ermöglicht den Empfang von Datenpaketen anderer Nachbarsysteme.\\
+\hline
+Taster&Löst je nach Programmierung entsprechende Aktion aus.\\
+\hline
+E-Stop&Schaltet alle Förderbänderbänder bedingungslos aus.\\
+\hline
+\end{tabularx}
+\caption{Sensoren und deren Aufgaben}
+\label{senstasks}
+\end{table}
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Aktor}&\textbf{Aufgabe}\\
+\hline
+Motor&Treibt das band der Förderbandanlagen an.\\
+\hline
+Ampel&Signalisiert entsprechend anliegender Ereignisse.\\
+\hline
+Weiche&Sortiert bei falscher Reihung Werkstücke aus.\\
+\hline
+HumanInterface Leds&Signalisieren dem Bediener Sensorereignisse\\
+\hline
+Serielle Schnittstelle&Ermöglicht das Versenden von Datenpaketen an andere Nachbarsysteme\\
+\hline
+\end{tabularx}
+\caption{Aktoren und deren Aufgaben}
+\label{acttasks}
+\end{table}
+
+\newpage
 
 \subsubsection{Anforderungen}
 \textcolor{red}{Welche wesentlichen Anforderungen ergeben sich aus den Systemanforderungen für ihre Software? Achten sie auf die entsprechende Attribuierung. Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.}
@@ -558,13 +632,89 @@ Kurzbeschreibung: Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der rich
 \section{Design}
 \textcolor{red}{Anmerkung: Die Implementierung MUSS zu Ihrem Design-Modell konsistent sein. Strukturen, Verhalten und Bezeichner im Code müssen mit dem Modell übereinstimmen. Daher ist ein wohlüberlegtes Design wichtig.}
 
-\subsection{System Architektur}
-\textcolor{red}{Erstellung sie eine Architektur für Ihre Software. Geben sie eine kurze Beschreibung Ihrer Architektur mit den dazugehörenden Komponenten und Schnittstellen an. Dokumentieren sie hier wichtige technische Entscheidungen. Welche Pattern werden gegebenenfalls verwendet? Wie erfolgt die interne Kommunikation?}
+\newpage
 
-\subsection{Datenmodellierung}
-\textcolor{red}{Bestimmen sie das Datenmodell und dokumentieren sie es hier mit Hilfe von UML Klassendiagrammen unter Beachtung der Designprinzipien. Die Modelle können mit Hilfe eines UML-Tools erstellt werden. Hier ist dann ein Übersichtsbild einzufügen.
-Geben sie eine kurze textuelle Beschreibung des Datenmodells und deren wichtigsten Klassen und Methoden an.
-}
+\subsection{Systemarchitektur}
+Die Systemarchitektur setzt sich aus den internen Architekturen der drei Förderbänder und der Architektur des Gesamtsystems, welche die Schnittstellen der drei Förderbänder zueinander darstellt, zusammen.
+
+\subsubsection{Förderband intern}
+
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.7]{images/SW_Architektur/Foerderband.jpg}
+\caption{Interne Systemarchitektur eines Förderbandes}
+\label{archintern}
+\end{figure}
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Komponente}&\textbf{Aufgabe}\\
+\hline
+Interrupt Verarbeiter&Verarbeitet Interrupts aus Timer, Signal Verarbeiter und Hardware.\\
+\hline
+Timer&Zeiterfassung für zeitkritische Abläufe.\\
+\hline
+Signal Verarbeiter&Verarbeitet Signale aus Interrupt Verarbeiter, Timer, Statemachine und Kommunikation seriell.\\
+\hline
+Statemachine&Steuert den logischen Ablauf.\\
+\hline
+Kommunikation seriell&Bildet die Schnittstelle zwischen Förderband und Gesamtsystem.\\
+\hline
+HAL&Hardwareabstraktionsschicht zur Ansteuerung der Komponenten eines Förderbandes.\\
+\hline
+Hardware&Hardware des Förderbandes\\
+\hline
+\end{tabularx}
+\caption{Aufgaben der Komponenten eines Förderbandes}
+\label{archinterntcomp}
+\end{table}
+
+\newpage
+
+\subsubsection{Gesamtsystem}
+
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.60]{images/SW_Architektur/Gesamtsystem.jpg}
+\caption{Systemarchitektur des Gesamtsystems}
+\label{archtotal}
+\end{figure}
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+\textbf{Komponente}&\textbf{Aufgabe}\\
+\hline
+Band 1&Erstes Förderband, welches die Sortierung entsprechend der Reihung durchführt.\\
+\hline
+Band 2&Zweites Förderband, welches die Sortierung entsprechend der Reihung durchführt.\\
+\hline
+Band 3&Drittes Förderband, welches die Gruppierung der Werkstücke übernimmt und anschließend übergibt.\\
+\hline
+Serialisierer/Deserialisierer&Serialisiert bzw. deserialisiert Datenpakete zur Kommunikation.\\
+\hline
+Interband Kommunikation&Empfängt bzw. versendet serialisierte Datenpakete.\\
+\hline
+\end{tabularx}
+\caption{Aufgaben der Komponenten des Gesamtsystems}
+\label{archtotalcomp}
+\end{table}
+
+\newpage
+
+\subsection{Datenmodellierung} 
+Die Modellierung der Klassen und dessen Methoden sind mithilfe von UML-Diagrammen realisiert.
+\subsubsection{HAL}
+Mit Der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuert. Dabei wird jede Hardwarekomponente nach dem Singleton-Pattern instanziiert. Abbildung \ref{haluml} stellt alle Klassen zur HAL mit ihren Methoden dar.
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.6]{images/HAL_UML.pdf}
+\caption{UML-Diagramm zur HAL}
+\label{haluml}
+\end{figure}
 
 \subsection{Verhaltensmodellierung}
 \textcolor{red}{Ihre Software muss zur Bearbeitung der Aufgaben ein Verhalten aufweisen. Überlegen sie sich dieses Verhalten auf Basis der Anforderungen und modellieren sie das Verhalten unter Verwendung von Verhaltensdiagrammen. Sie können für die Spezifikation der Prozess-Lenkung entweder Petri-Netze oder hierarchische Automaten verwenden. Die Modelle können mit Hilfe eines UML-Tools erstellt werden. Hier sind dann kommentierte Übersichtsbilder einzufügen.}
@@ -583,55 +733,113 @@ Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
 \newpage
 
 \subsection{Testkonzept}
+Bei den Tests werden zum Einen die Grundfunktionen bzw. die Ansteuerung aller einzelnen Komponenten in Tabelle \ref{tstg1} und zum Anderen der logische Ablauf in Tabelle \ref{tstl1} zur Sortierung überprüft.
+\subsubsection{Grundfunktionen}
 \begin{table}[h]
 \center
-\begin{tabularx}{\textwidth}{|X|X|X|}
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
 \hline
-Erkennung der Werkstücke am Anfang des Förderbandes&&\\
+1&Rote Lampe an&Ja&\\
 \hline
-Flache Werkstücke werden aussortiert&&\\
+2&Rote Lampe aus&Ja&\\
 \hline
-Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte&&\\
+3&Gelbe Lampe an&Ja&\\
 \hline
-Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
+4&Gelbe Lampe aus&Ja&\\
 \hline
-Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
+5&Grüne Lampe an&Ja&\\
 \hline
-Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
+6&Grüne Lampe aus&Ja&\\
 \hline
-Stopp beim leeren Förderband&&\\
+7&Motor langsam&Ja&\\
 \hline
-Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+8&Motor schnell&Ja&\\
 \hline
-Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+9&Motor links&Ja&\\
 \hline
-Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
+10&Motor rechts&Ja&\\
 \hline
-Am Ende vom Band 2 werden die Werkstückdaten ausgegeben auf der Konsole&&\\
+11&Motor stoppen&Ja&\\
+\hline
+12&Weiche auf&Ja&\\
+\hline
+13&Weiche zu&Ja&\\
+\hline
+14&Led Start an&Ja&\\
+\hline
+15&Led Start aus&Ja&\\
+\hline
+16&Led Reset an&Ja&\\
+\hline
+17&Led Reset aus&Ja&\\
+\hline
+18&Led Q1 an&Ja&\\
+\hline
+19&Led Q1 aus&Ja&\\
+\hline
+20&Led Q2 an&Ja&\\
+\hline
+21&Led Q2 aus&Ja&\\
 \hline
 \end{tabularx}
-\caption{Testauswertung(Teil 1)}
-\label{tst1}
+\caption{Testauswertung zur Grundfunktion}
+\label{tstg1}
+\end{table}
+
+\subsubsection{Logischer Ablauf} 
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
+\hline
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+1&Erkennung der Werkstücke am Anfang des Förderbandes&&\\
+\hline
+2&Flache Werkstücke werden aussortiert&&\\
+\hline
+3&Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte&&\\
+\hline
+4&Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung zum logischen Ablauf(Teil 1)}
+\label{tstl1}
 \end{table}
 
 \newpage
 
 \begin{table}[h]
 \center
-\begin{tabularx}{\textwidth}{|X|X|X|}
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{Funktion:}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
 \hline
-Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
+5&Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
 \hline
-Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
+6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
+\hline
+7&Stopp beim leeren Förderband&&\\
+\hline
+8&Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+9&Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+\hline
+10&Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
+\hline
+11&Am Ende vom Band 2 werden die Werkstückdaten ausgegeben auf der Konsole&&\\
+\hline
+12&Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
+\hline
+13&Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
 \hline
 \end{tabularx}
-\caption{Testauswertung(Teil 2)}
-\label{tst2}
+\caption{Testauswertung zum logischen Ablauf(Teil 2)}
+\label{tstl2}
 \end{table}
+
+\newpage
 
 \subsection{Abnahmetest}
 \textcolor{red}{Leiten sie die Abnahmebedingungen aus den Kunden-Anforderungen her. Dokumentieren sie hier, welche Schritte für die Abnahme erforderlich sind und welches Ergebnis jeweils erwartet wird (Test Cases).}
@@ -651,6 +859,7 @@ Das letzte Testprotokoll ist das Abnahmeprotokoll, das bei der abschließenden V
 
 \subsection{Abkürzungen}
 \textcolor{red}{Listen sie alle Abkürzungen auf, die sie in diesem Dokument benutzt haben.}
+
 \end{document}
 
 % Weitere Syntax für verschiedene Anwendungsfelder
@@ -718,6 +927,19 @@ Das letzte Testprotokoll ist das Abnahmeprotokoll, das bei der abschließenden V
 
 %Etwas zentrieren
 %\centering 
+
+%Um PDFs skaliert einzufügen und Seitenzahl sowie header beizubehalten 
+%\includepdf[pages={2}, nup=1x1, scale=0.9, pagecommand={}]{file.pdf}
+
+%Um PDFs ohne Skalierung einzufügen und Seitenzahl sowie header beizubehalten 
+%\label{labelname}\hypertarget{haluml}{}
+%\includepdf[pages=1,pagecommand={}]{file.pdf}
+
+%Um PDFs einfach einzufügen, Seitenzahl, header und footer werden überlagert
+%\includepdf[landscape=true,pages=-]{file.pdf}
+
+%Um PDFs mit vorangehendem Text einzufügen mit Skalierung
+%\includepdf[scale=0.8,pages=1,pagecommand=\subsection{Kapitel} Text]{file.pdf}
 
 %Literaturverzeichnis anlegen
 %\bibliography{Literaturverzeichnis}
