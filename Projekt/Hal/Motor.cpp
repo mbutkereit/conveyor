@@ -21,7 +21,7 @@ uint8_t Motor::right(){
 	adapter->removeBitMask(motorleftBitmask_);
 
 	adapter->setBitMask(motorrightBitmask__);
-    LOG_DEBUG << " Motor bewegt sich nach rechts.";
+    LOG_DEBUG << " Motor bewegt sich nach rechts. \n";
     return 0;
 
 }
@@ -30,21 +30,21 @@ uint8_t Motor::left(){
 	adapter->removeBitMask(motorrightBitmask__);
 
 	adapter->setBitMask(motorleftBitmask_);
-    LOG_DEBUG << " Motor bewegt sich nach links.";
+    LOG_DEBUG << " Motor bewegt sich nach links. \n";
     return 0;
 }
 uint8_t Motor::slow(){
 	adapter->removeBitMask(motorstoppBitmask_);
 
 	adapter->setBitMask(motorlangsamBitmask_);
-    LOG_DEBUG << " Motor bewegt sich langsam.";
+    LOG_DEBUG << " Motor bewegt sich langsam. \n";
     return 0;
 }
 uint8_t Motor::fast(){
 	adapter->removeBitMask(motorstoppBitmask_);
 
 	adapter->removeBitMask(motorlangsamBitmask_);
-    LOG_DEBUG << "Der Motor läuft jetzt schnell.";
+    LOG_DEBUG << "Der Motor läuft jetzt schnell. \n";
     return 0;
 }
 uint8_t Motor::stop(){
@@ -54,12 +54,12 @@ uint8_t Motor::stop(){
 }
 uint8_t Motor::switchOpen(){
 	adapter->setBitMask(weicheaufBitmask_);
-    LOG_DEBUG << "Die Weiche ist jetzt offen.";
+    LOG_DEBUG << "Die Weiche ist jetzt offen. \n";
     return 0;
 }
 uint8_t Motor::switchClosed(){
 	adapter->removeBitMask(weicheaufBitmask_);
-    LOG_DEBUG << "Die Weiche ist jetzt geschlossen.";
+    LOG_DEBUG << "Die Weiche ist jetzt geschlossen. \n";
     return 0;
 }
 

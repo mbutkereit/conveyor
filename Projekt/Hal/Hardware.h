@@ -12,15 +12,17 @@
 #include "Hal/HumanMachineInterface.h"
 #include "Hal/MeasuringTool.h"
 #include "Hal/TrafficLight.h"
+#include "Hal/Altimetry.h"
 
 class Hardware
 {
 	public:
-		Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt);
+		Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am);
 		~Hardware();
 		HumanMachineInterface* getHMI();
 		Motor* getMotor();
 		TrafficLight* getTL();
+		Altimetry* getAltimetry();
 		MeasuringTool* getMT();
 
 	private:
@@ -28,6 +30,7 @@ class Hardware
 		Motor* motor;
 		TrafficLight* tl;
 		MeasuringTool* mt;
+		Altimetry* am;
 };
 
 #endif /* HARDWARE_H_ */

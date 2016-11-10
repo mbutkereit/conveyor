@@ -1,11 +1,10 @@
 #include <HumanMachineInterface.h>
 
 HumanMachineInterface::HumanMachineInterface(Adapter* adapt):adapter(adapt) {
-	registerAddress_  = 0x300;
 	hmiLedStartBitmask_ = 0x01;
 	hmiLedResetBitmask_ = 0x02;
-	hmiLedQ1Bitmask_ = 0x08;
-	hmiLedQ2Bitmask_ = 0x04;
+	hmiLedQ1Bitmask_ = 0x04;
+	hmiLedQ2Bitmask_ = 0x08;
 	hmiButtonStartBitmask_ = 0x10;
 	hmiButtonStopBitmask_ = 0x20;
 	hmiButtonResetBitmask_ = 0x40;
@@ -59,23 +58,15 @@ uint8_t HumanMachineInterface::turnLedQ2Off() {
 }
 
 uint8_t HumanMachineInterface::isButtonStartPressed() {
-	// todo status rein schreiben.
-	LOG_DEBUG << "Button Start aus.";
 	return adapter->checkBitMask(hmiButtonStartBitmask_);
 }
 uint8_t HumanMachineInterface::isButtonStopPressed() {
-	// todo status rein schreiben.
-	LOG_DEBUG << "Button Stop aus.";
 	return adapter->checkBitMask(hmiButtonStopBitmask_);
 }
 uint8_t HumanMachineInterface::isButtonResetPressed(){
-	// todo status rein schreiben.
-	LOG_DEBUG << "Button Reset aus.";
 	return adapter->checkBitMask(hmiButtonResetBitmask_);
 }
 uint8_t HumanMachineInterface::isButtonEStopPressed(){
-	// todo status rein schreiben.
-	LOG_DEBUG << "Button EStop aus.";
 	return adapter->checkBitMask(hmiButtonEStopBitmask_);
 }
 

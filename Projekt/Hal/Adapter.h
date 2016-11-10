@@ -23,6 +23,8 @@ public:
     void setBitMask(uint8_t bitmask);
     void removeBitMask(uint8_t bitmask);
     uint8_t checkBitMask(uint8_t bitmask);
+    void forceBitmask(uint8_t bitmask,uint16_t offset);
+    uint8_t getValuefromAddress(uint8_t offset);
 
 
 

@@ -77,7 +77,7 @@ ConfigFile::ConfigFile(std::string const& configFileName)
 
             if (atof(value.c_str())) {
                 LOG_DEBUG <<"Double :: "<< atof(value.c_str()) << "\n";
-                new Parameter<double>(atof(value.c_str()),"name");
+            //    new Parameter<double>(atof(value.c_str()),"name");
 
                 ParameterList::getParameterList().showParameters();
             }

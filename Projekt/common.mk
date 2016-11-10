@@ -23,10 +23,13 @@ EXTRA_SRCVPATH+= \
 	$(PROJECT_ROOT)/stateMachine  \
 	$(PROJECT_ROOT)/ConfigManagement  \
 	$(PROJECT_ROOT)/Hal \
+	$(PROJECT_ROOT)/Hal/ISR \
+	$(PROJECT_ROOT)/Hal/SerialInterface \
 	$(PROJECT_ROOT)/Entity  \
 	$(PROJECT_ROOT)/Thread  \
 	$(PROJECT_ROOT)/Controller  \
 	$(PROJECT_ROOT)/Serializer  \
+	$(PROJECT_ROOT)/FSM  \
 	$(QNX_TARGET)/usr/include
 
 #===== LDFLAGS - add the flags to the linker command line.

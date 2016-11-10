@@ -33,8 +33,6 @@ public:
     uint8_t isButtonEStopPressed();
 
 private:
-    //todo adresse finden.
-    uint16_t registerAddress_;
     uint8_t hmiLedStartBitmask_;
     uint8_t hmiLedResetBitmask_;
     uint8_t hmiLedQ1Bitmask_;

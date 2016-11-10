@@ -15,9 +15,15 @@
 #include "Hal/MeasuringTool.h"
 #include "Hal/TrafficLight.h"
 #include "Hal/Mutexo.h"
+
+
 #define BASEADRESS_A 0x300
-#define BASEADRESS_B 0x320
-#define BASEADRESS_C 0x340 //?????????????????????????????????????????????????
+#define BASEADRESS_B 0x301
+#define BASEADRESS_C 0x302
+#define BASEADRESS_D 0x320
+
+#define CONTROL_ADDRESS_0 0x303
+#define CONTROL_BITMASK 0x8A
 
 class HalBuilder
 {
@@ -29,11 +35,13 @@ private:
     Adapter* adapterA;
     Adapter* adapterB;
     Adapter* adapterC;
+    Adapter* adapterD;
     Hardware* buildHardware();
     HumanMachineInterface* buildHumanMachineInterface();
     Motor* buildMotor();
     TrafficLight* buildTrafficLights();
     MeasuringTool* buildMeasuringTool();
+    Altimetry* buildAltimetry();
 	static Hardware* instance_;
 	Mutexo mutex;
 };

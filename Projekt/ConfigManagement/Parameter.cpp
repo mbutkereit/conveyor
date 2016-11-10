@@ -3,7 +3,7 @@
  *
  *  Created on: 10.10.2016
  *      Author: marvin
- */
+
 
 #include <ConfigManagement/Parameter.h>
 #include <string>
@@ -30,5 +30,5 @@ void Parameter<T>::showValue()
 }
 
 template class Parameter<double> ;
-template class Parameter<std::string>;
+template class Parameter<std::string>; */
 

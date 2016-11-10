@@ -1,10 +1,3 @@
-/*
- * Serial.h
- *
- *  Created on: 11.10.2016
- *      Author: marvin
- */
-
 #ifndef SERIAL_H_
 #define SERIAL_H_
 
@@ -14,9 +7,10 @@
 #include <termios.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Logger/Logger.h>
+
 using namespace std;
 
-// Begin of .h-File
 typedef struct {
     uint8_t data;
 }Packet;
@@ -27,7 +21,7 @@ private:
     int fdesc_;
 
 public:
-    Serial();
+    Serial(string deviceName);
     ~Serial();
     void config(void);
     int sendPacket(Packet* p);
@@ -37,4 +31,5 @@ private:
     Serial(const Serial& other);
     Serial& operator=(const Serial& other);
 };
-#endif /* SERIAL_H_ */
+
+#endif

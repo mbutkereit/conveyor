@@ -34,12 +34,49 @@ void ConveyorThread::execute(void*) {
 	//out8(ioControlAddress_, ioControlBitmask_);
 	HalBuilder hb;
 	Hardware* hw = hb.getHardware();
-    hw->getMotor()->stop();
-    	if( (int)hb.getHardware()->getMT()->isItemMetal()){
-    		cerr << "So nicht toll";
-    	}
 
-   // hw->getMotor()->fast();
+	hw->getTL()->turnRedOn();
+	sleep(1);
+	hw->getTL()->turnRedOff();
+	sleep(1);
+	hw->getTL()->turnYellowOn();
+	sleep(1);
+	hw->getTL()->turnYellowOff();
+	sleep(1);
+	hw->getTL()->turnGreenOn();
+	sleep(1);
+	hw->getTL()->turnGreenOff();
+
+//	hw->getMotor()->slow();
+//	hw->getMotor()->fast();
+//	sleep(5);
+//	hw->getMotor()->left();
+//	hw->getMotor()->right();
+//	sleep(5);
+//	sleep(5);
+//	hw->getMotor()->slow();
+//	sleep(5);
+//	hw->getMotor()->stop();
+//	sleep(5);
+//	hw->getMotor()->switchOpen();
+//	sleep(5);
+//	hw->getMotor()->switchClosed();
+//
+//	hw->getHMI()->turnLedStartOn();
+//	sleep(5);
+//	hw->getHMI()->turnLedStartOff();
+//	sleep(5);
+//	hw->getHMI()->turnLedResetOn();
+//	sleep(5);
+//	hw->getHMI()->turnLedResetOff();
+//	sleep(5);
+//	hw->getHMI()->turnLedQ1On();
+//	sleep(5);
+//	hw->getHMI()->turnLedQ1Off();
+//	sleep(5);
+//	hw->getHMI()->turnLedQ2On();
+//	sleep(5);
+//	hw->getHMI()->turnLedQ2Off();
 
 }
 

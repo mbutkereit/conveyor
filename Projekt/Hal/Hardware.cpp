@@ -7,12 +7,13 @@
 
 #include <Hal/Hardware.h>
 
-Hardware::Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt)
+Hardware::Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am)
 {
 	this->hmi = hmi;
 	this->motor = motor;
 	this->tl = tl;
 	this->mt = mt;
+	this->am = am;
 
 }
 
@@ -32,5 +33,9 @@ TrafficLight* Hardware::getTL(){
 }
 MeasuringTool* Hardware::getMT(){
 	return mt;
+}
+
+Altimetry* Hardware::getAltimetry(){
+	return am;
 }
 

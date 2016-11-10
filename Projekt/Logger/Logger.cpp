@@ -10,7 +10,7 @@ LOG_LEVEL Logger::getLoggingLevel()
 
 Logger::Logger(): logginglevel_(ERROR)
 {
-    logfile.open("logging.txt", std::ios_base::app);
+   logfile.open("/tmp/wi_logging.txt", std::ios_base::app);
 
 }
 
@@ -21,7 +21,7 @@ Logger::~Logger()
 
 std::ofstream& Logger::log()
 {
-    logfile << __TIME__;
+    logfile << __TIME__ << ' ';
     return logfile;
 }
 

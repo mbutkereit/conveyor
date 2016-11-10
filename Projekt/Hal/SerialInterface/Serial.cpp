@@ -1,16 +1,15 @@
 /*
  * Serial.cpp
- *
- *  Created on: 11.10.2016
- *      Author: marvin
  */
 
 #include <SerialInterface/Serial.h>
-Serial::Serial(){
+
+Serial::Serial(string deviceName){
     // Open File descriptor
-    this->dev_ = "/dev/ser1";
+    this->dev_ = deviceName.c_str();
     this->fdesc_ = open(this->dev_, O_RDWR);
     if(this->fdesc_ == -1){
+        LOG_ERROR << "Seriale Interface kann nicht geoeffnet werden. \n";
         exit(-1);
     }
 
@@ -21,6 +20,7 @@ Serial::Serial(){
 Serial::~Serial(){
     // Close File descriptor
     if( close(this->fdesc_) < 0 ){
+        LOG_ERROR << "Seriale Interface kann nicht geschlossen werden. \n";
         exit(-1);
     }
 }
@@ -42,13 +42,13 @@ void Serial::config(void){
 
 int Serial::sendPacket(Packet* p){
     write(this->fdesc_, p, sizeof(Packet));
+    LOG_DEBUG<< "Serial::recvPacket() Send Packet : " << p->data << "\n" ;
     return 0;
 }
 
 int Serial::recvPacket(Packet* p){
-    if( readcond(this->fdesc_, p, sizeof(Packet), sizeof(Packet), 0, 0) > 0) {
-        return 0;
-    }
+    read(this->fdesc_,p, sizeof(Packet));
+    LOG_DEBUG<< "Serial::recvPacket() Inhalt der nachricht : " << p->data << "\n" ;
     return -1;
 }
 
