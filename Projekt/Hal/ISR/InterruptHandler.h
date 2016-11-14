@@ -24,19 +24,25 @@ extern int isrtChannel_;
 extern int coid2;
 extern struct sigevent isrtEvent_2;
 
-
-
 const struct sigevent* ISR_DIO(void* arg, int id);
 const struct sigevent* ISR_AIO(void* arg, int id);
 
 void registerISR(void);
 void unregisterISR(void);
 
+#define INTERRUPT_RESET_DIO 0x30F ///< Addresse um den Interrupt der DIO zurueck zu nehmen.
+#define INTERRUPT_RESET_AIO 0x320 ///< Addresse um den Interrupt der AIO zurueck zu nehmen.
+
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um die Ampel des Foerderbandes zu Steuern.
+ */
 class InterruptHandler {
 public:
 	InterruptHandler();
 	virtual ~InterruptHandler();
-
 };
 
 #endif /* INTERRUPTHANDLER_H_ */

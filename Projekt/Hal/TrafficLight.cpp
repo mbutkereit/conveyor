@@ -1,16 +1,7 @@
-/*
- * TrafficLight.cpp
- *
- *  Created on: 11.10.2016
- *      Author: marvin
- */
-
 #include <TrafficLight.h>
-#include <Logger/Logger.h>
 
 TrafficLight::TrafficLight(Adapter* adapt):adapter(adapt)
 {
-  //  registerAddress_  = 0x300;
     redLightBitmask_ = 0x80;
     greenLightBitmask_ = 0x20;
     yellowLightBitmask_ = 0x40;

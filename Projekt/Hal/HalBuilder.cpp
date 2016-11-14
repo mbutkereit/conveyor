@@ -1,11 +1,4 @@
-/*
- * HalBuilder.cpp
- *
- *  Created on: 12.10.2016
- *      Author: marvin
- */
-
-#include <HalBuilder.h>
+#include "Hal/HalBuilder.h"
 
 Hardware* HalBuilder::instance_ = NULL;
 
@@ -14,13 +7,16 @@ HalBuilder::HalBuilder():adapterA(new Adapter(BASEADRESS_A)), adapterB(new Adapt
 
 }
 
-HalBuilder::~HalBuilder()
-{
-    // TODO Auto-generated destructor stub
-}
+HalBuilder::~HalBuilder(){}
 
 Hardware* HalBuilder::buildHardware(){
-	return new Hardware(buildHumanMachineInterface(), buildMotor(), buildTrafficLights(), buildMeasuringTool(), buildAltimetry());
+	return new Hardware(
+	        buildHumanMachineInterface(),
+	        buildMotor(),
+	        buildTrafficLights(),
+	        buildMeasuringTool(),
+	        buildAltimetry()
+	      );
 }
 
 Hardware* HalBuilder::getHardware(){
@@ -55,8 +51,3 @@ MeasuringTool* HalBuilder::buildMeasuringTool(){
 Altimetry* HalBuilder::buildAltimetry(){
 	return new Altimetry(adapterD);
 }
-
-
-
-
-

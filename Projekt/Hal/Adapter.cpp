@@ -1,20 +1,10 @@
-/*
- * Adapter.cpp
- *
- *  Created on: 09.10.2016
- *      Author: marvin
- */
-
-#include <Hal/Adapter.h>
+#include "Hal/Adapter.h"
 
 Adapter::Adapter(uint16_t base):baseaddress(base) {
 	synchronizer = new Mutexo();
-
 }
 
-Adapter::~Adapter() {
-}
-
+Adapter::~Adapter() {}
 
 void Adapter::setBitMask(uint8_t bitmask){
 	synchronizer->lock();
@@ -39,7 +29,6 @@ uint8_t Adapter::checkBitMask(uint8_t bitmask){
 	result = (in8(baseaddress) &  bitmask);
 	return result;
 }
-
 
 uint8_t Adapter::getValuefromAddress(uint8_t offset){
 	return in8(baseaddress + offset);

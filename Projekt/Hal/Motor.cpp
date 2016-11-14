@@ -1,8 +1,7 @@
-#include <Motor.h>
+#include "Hal/Motor.h"
 
 Motor::Motor(Adapter* adapt):adapter(adapt)
 {
-	registerAddress_  = 0x300;
 	motorrightBitmask__ = 0x01;
 	motorleftBitmask_ = 0x02;
 	motorstoppBitmask_ = 0x08;
@@ -22,6 +21,7 @@ uint8_t Motor::right(){
 
 	adapter->setBitMask(motorrightBitmask__);
     LOG_DEBUG << " Motor bewegt sich nach rechts. \n";
+
     return 0;
 
 }
@@ -31,6 +31,7 @@ uint8_t Motor::left(){
 
 	adapter->setBitMask(motorleftBitmask_);
     LOG_DEBUG << " Motor bewegt sich nach links. \n";
+
     return 0;
 }
 uint8_t Motor::slow(){
@@ -38,29 +39,32 @@ uint8_t Motor::slow(){
 
 	adapter->setBitMask(motorlangsamBitmask_);
     LOG_DEBUG << " Motor bewegt sich langsam. \n";
+
     return 0;
 }
 uint8_t Motor::fast(){
 	adapter->removeBitMask(motorstoppBitmask_);
-
 	adapter->removeBitMask(motorlangsamBitmask_);
-    LOG_DEBUG << "Der Motor läuft jetzt schnell. \n";
+    LOG_DEBUG << "Der Motor lï¿½uft jetzt schnell. \n";
+
     return 0;
 }
 uint8_t Motor::stop(){
 	adapter->setBitMask(motorstoppBitmask_);
     LOG_DEBUG << " Motor stoppt.";
+
     return 0;
 }
 uint8_t Motor::switchOpen(){
 	adapter->setBitMask(weicheaufBitmask_);
     LOG_DEBUG << "Die Weiche ist jetzt offen. \n";
+
     return 0;
 }
 uint8_t Motor::switchClosed(){
 	adapter->removeBitMask(weicheaufBitmask_);
     LOG_DEBUG << "Die Weiche ist jetzt geschlossen. \n";
+
     return 0;
 }
-
 

@@ -14,7 +14,12 @@
 #include "src/lib/HAWThread.h"
 using namespace thread;
 
-
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * .
+ */
 class ConveyorThread: public HAWThread {
 public:
 	ConveyorThread();

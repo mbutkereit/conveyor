@@ -1,14 +1,3 @@
-/**
- * @file    Lock.cpp
- * @author  Simon Brummer
- * @version 0.1
- *
- * Einfache implementierung des scoped locking patterns.
- * Der Konstruktoraufruf belegt einen Mutex, der
- * Dekonstruktor gibt den Mutex frei.
- */
-
-#include <pthread.h>
 #include "Hal/Mutexo.h"
 
 
@@ -28,6 +17,3 @@ int Mutexo::lock() {
 int Mutexo::unlock() {
     return pthread_mutex_unlock(&pmutex_);
 }
-
-
-

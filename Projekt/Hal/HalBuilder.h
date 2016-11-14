@@ -1,10 +1,3 @@
-/*
- * HalBuilder.h
- *
- *  Created on: 12.10.2016
- *      Author: marvin
- */
-
 #ifndef HALBUILDER_H_
 #define HALBUILDER_H_
 
@@ -17,33 +10,75 @@
 #include "Hal/Mutexo.h"
 
 
-#define BASEADRESS_A 0x300
-#define BASEADRESS_B 0x301
-#define BASEADRESS_C 0x302
-#define BASEADRESS_D 0x320
+#define BASEADRESS_A 0x300 ///<
+#define BASEADRESS_B 0x301 ///<
+#define BASEADRESS_C 0x302 ///<
+#define BASEADRESS_D 0x320 ///<
 
-#define CONTROL_ADDRESS_0 0x303
-#define CONTROL_BITMASK 0x8A
+#define CONTROL_ADDRESS_0 0x303 ///<
+#define CONTROL_BITMASK 0x8A    ///<
 
 class HalBuilder
 {
 public:
     HalBuilder();
-    Hardware* getHardware();
     virtual ~HalBuilder();
+
+    /**
+     * Oeffnet den .
+     *
+     * @return Gibt Konstant 0 zurueck.
+     */
+    Hardware* getHardware();
 private:
-    Adapter* adapterA;
-    Adapter* adapterB;
-    Adapter* adapterC;
-    Adapter* adapterD;
+    Adapter* adapterA; ///<
+    Adapter* adapterB; ///<
+    Adapter* adapterC; ///<
+    Adapter* adapterD; ///<
+    static Hardware* instance_; ///<
+    Mutexo mutex; ///<
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     Hardware* buildHardware();
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     HumanMachineInterface* buildHumanMachineInterface();
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     Motor* buildMotor();
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     TrafficLight* buildTrafficLights();
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     MeasuringTool* buildMeasuringTool();
+
+    /**
+         * Oeffnet den .
+         *
+         * @return Gibt Konstant 0 zurueck.
+         */
     Altimetry* buildAltimetry();
-	static Hardware* instance_;
-	Mutexo mutex;
 };
 
 #endif /* HALBUILDER_H_ */

@@ -1,5 +1,5 @@
 #include "MeasuringTool.h"
-#include <iostream>
+
 MeasuringTool::MeasuringTool(Adapter* adapt):adapter(adapt) {
 	itemRunningBitmask__ = 0x01;
 	itemAltimetryBitmask_ = 0x02;

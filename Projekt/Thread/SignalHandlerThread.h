@@ -17,20 +17,6 @@
 #include "FSM/Context.h"
 using namespace thread;
 
-extern int coid;
-extern struct sigevent isrtEvent_;
-extern int isrtConnection_;
-
-class SignalHandlerThread : public HAWThread {
-
-public:
-	SignalHandlerThread();
-	virtual ~SignalHandlerThread();
-private:
-	SignalHandlerThread(const SignalHandlerThread& b);
-	virtual void execute(void*);
-	virtual void shutdown();
-};
 
 
 #define ESTOP 0x400
@@ -52,5 +38,25 @@ private:
 #define LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED 0x8
 #define LIGHT_BARRIER_SKID_NOT_INTERRUPTED 0x80
 
+extern int coid;
+extern struct sigevent isrtEvent_;
+extern int isrtConnection_;
+
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um die Signale zu verarbeiten.
+ */
+class SignalHandlerThread : public HAWThread {
+
+public:
+	SignalHandlerThread();
+	virtual ~SignalHandlerThread();
+private:
+	SignalHandlerThread(const SignalHandlerThread& b);
+	virtual void execute(void*);
+	virtual void shutdown();
+};
 
 #endif /* SIGNALHANDLERTHREAD_H_ */

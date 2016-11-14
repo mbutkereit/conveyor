@@ -17,14 +17,14 @@ int main(int argc, char *argv[]) {
     c1.join();
     registerISR();
 
-    cerr << "Lets go !\n";
+
    	SignalHandlerThread c2;
    	c2.start(NULL);
-       // Cleanup
     c2.join();
     unregisterISR();
 
-       return 0;
+    return 0;
+
 	/*Packet p;
 	p.data=0x08;
 	LOG_DEBUG << "Recieve \n";
@@ -34,6 +34,4 @@ int main(int argc, char *argv[]) {
 	//Serial* serial_output = new Serial("/dev/ser2");
 	//serial_output->recvPacket(&p);
 
-
-	return EXIT_SUCCESS;
 }

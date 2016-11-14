@@ -24,18 +24,14 @@ SignalHandlerThread::~SignalHandlerThread() {
 void SignalHandlerThread::execute(void*) {
 
 	Context context;
+    struct _pulse pulse;
 
     if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1){
         exit(EXIT_FAILURE);
     }
-    struct _pulse pulse;
-
-	//LOG_DEBUG << "Test Signal";
-    // Wait for Pulse Message
 
     do{
     	MsgReceivePulse(isrtChannel_,&pulse,sizeof(pulse),NULL);
-        //cerr  << "Interrupt, value: " <<  pulse.value.sival_int << "\n"  <<endl;
 
         int code =pulse.value.sival_int;
 
@@ -43,7 +39,6 @@ void SignalHandlerThread::execute(void*) {
           context.signalEStop();
         }
 
-       //LOG_DEBUG  << "Nicht so toll: " << code << "\n"  <<endl;
 
         if(code & LIGHT_BARRIER_BEGIN_INTERRUPTED){
               context.signalLBBeginInterrupted();
@@ -68,7 +63,6 @@ void SignalHandlerThread::execute(void*) {
         if(code & LIGHT_BARRIER_SKID_INTERRUPTED){
           	context.signalLBSkidInterrupted();
         }
-
 
         if(code & LIGHT_BARRIER_SKID_NOT_INTERRUPTED){
         	context.signalLBSkidNotInterrupted();

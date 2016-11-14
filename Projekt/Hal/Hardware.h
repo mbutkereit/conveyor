@@ -1,10 +1,3 @@
-/*
- * Hardware.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef HARDWARE_H_
 #define HARDWARE_H_
 
@@ -19,10 +12,40 @@ class Hardware
 	public:
 		Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am);
 		~Hardware();
+
+	    /**
+	     * Oeffnet den .
+	     *
+	     * @return Gibt Konstant 0 zurueck.
+	     */
 		HumanMachineInterface* getHMI();
+
+	    /**
+	     * Oeffnet den .
+	     *
+	     * @return Gibt Konstant 0 zurueck.
+	     */
 		Motor* getMotor();
+
+	    /**
+	     * Oeffnet den .
+	     *
+	     * @return Gibt Konstant 0 zurueck.
+	     */
 		TrafficLight* getTL();
+
+	    /**
+	     * Oeffnet den .
+	     *
+	     * @return Gibt Konstant 0 zurueck.
+	     */
 		Altimetry* getAltimetry();
+
+	    /**
+	     * Oeffnet den .
+	     *
+	     * @return Gibt Konstant 0 zurueck.
+	     */
 		MeasuringTool* getMT();
 
 	private:

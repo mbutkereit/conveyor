@@ -1,11 +1,4 @@
-/*
- * Hardware.cpp
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
-#include <Hal/Hardware.h>
+#include "Hal/Hardware.h"
 
 Hardware::Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am)
 {
@@ -14,13 +7,9 @@ Hardware::Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, Me
 	this->tl = tl;
 	this->mt = mt;
 	this->am = am;
-
 }
 
-Hardware::~Hardware()
-{
-    // TODO Auto-generated destructor stub
-}
+Hardware::~Hardware(){}
 
 HumanMachineInterface* Hardware::getHMI(){
 	return hmi;

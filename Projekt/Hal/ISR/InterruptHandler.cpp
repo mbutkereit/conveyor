@@ -1,29 +1,18 @@
-/*
- * InterruptHandler.cpp
- *
- *  Created on: 08.11.2016
- *      Author: abx827
- */
-
 #include "InterruptHandler.h"
 
+InterruptHandler::InterruptHandler() {}
 
-
-InterruptHandler::InterruptHandler() {
-	// TODO Auto-generated constructor stub
-
-}
-
-InterruptHandler::~InterruptHandler() {
-	// TODO Auto-generated destructor stub
-}
-
+InterruptHandler::~InterruptHandler() {}
 
 const struct sigevent* ISR_DIO(void* arg, int id) {
     struct sigevent* event = (struct sigevent*) arg;
     Hardware* hw = hb.getHardware();
-    static char interruptflags = 0;
     int code = 0;
+
+    // Hilfs Variable um Positive und Negative Interrupts ab zu fangen.
+    static char interruptflags = 0;
+
+    // Lichtschranken Interrupts.
 
     if(hw->getMT()->isItemRunningIn()==0 && (interruptflags & 0x1) == 0){
       code=code+1;
@@ -66,7 +55,6 @@ const struct sigevent* ISR_DIO(void* arg, int id) {
       interruptflags=interruptflags-0x8;
     }
 
-
     if(hw->getMT()->isItemRunningOut()==0 && (interruptflags & 0x10) == 0){
       code=code+256;
       interruptflags=interruptflags | 0x10;
@@ -77,8 +65,7 @@ const struct sigevent* ISR_DIO(void* arg, int id) {
       interruptflags=interruptflags-0x10;
     }
 
-
-
+// Button Interrupts.
 
     if(hw->getHMI()->isButtonEStopPressed()==0){
       code=code+1024;
@@ -93,12 +80,13 @@ const struct sigevent* ISR_DIO(void* arg, int id) {
     	code=code+8192;
     }
 
+    //Hinweise:
     //http://www.qnx.com/developers/docs/660/index.jsp?topic=%2Fcom.qnx.doc.neutrino.getting_started%2Ftopic%2Fs1_timer_how_sigev.html
 
     event->sigev_notify = SIGEV_PULSE;
     event->sigev_value.sival_int = code;
 
-    out8(0x30F, 0);
+    out8(INTERRUPT_RESET_DIO, 0);
 
     if(code != 0){
     	return event;
@@ -118,7 +106,7 @@ const struct sigevent* ISR_AIO(void* arg, int id) {
 
     event->sigev_value.sival_int = code;
     out8(0x321,0b00000100);
-    out8(0x320, 0);
+    out8(INTERRUPT_RESET_AIO, 0);
 
     if(code != 0){
     	return event;
@@ -139,7 +127,7 @@ void registerISR(void){
         exit(EXIT_FAILURE);
     }
 
-    out8(0x30F, 0);
+    out8(INTERRUPT_RESET_DIO, 0);
     out8(0x30B, 0b11111001);
 
     SIGEV_PULSE_INIT(&isrtEvent_, isrtConnection_, SIGEV_PULSE_PRIO_INHERIT, 0, 0);
@@ -148,7 +136,7 @@ void registerISR(void){
         exit(EXIT_FAILURE);
     }
 
-    out8(0x320, 0);
+    out8(INTERRUPT_RESET_AIO, 0);
     out8(0x321, 0b10000100);
 
     SIGEV_PULSE_INIT(&isrtEvent_2, isrtConnection_, SIGEV_PULSE_PRIO_INHERIT, 0, 0);
@@ -158,19 +146,18 @@ void registerISR(void){
     }
 }
 
-
 void unregisterISR(void){
     if( InterruptDetach(coid) == -1 ){
         exit(EXIT_FAILURE);
     }
 
     out8(0x30B, 0b11111111);
-    out8(0x30F,0);
+    out8(INTERRUPT_RESET_DIO,0);
 
     if( InterruptDetach(coid2) == -1 ){
         exit(EXIT_FAILURE);
     }
 
     out8(0x321,  0b11111111);
-    out8(0x320, 0);
+    out8(INTERRUPT_RESET_AIO, 0);
 }
