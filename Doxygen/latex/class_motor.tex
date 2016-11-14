@@ -43,13 +43,13 @@ uint8\+\_\+t \hyperlink{class_motor_a38af68cbad8be09b85afc86f156f0f89}{switch\+C
 \subsubsection{\texorpdfstring{Motor()}{Motor()}}
 {\footnotesize\ttfamily Motor\+::\+Motor (\begin{DoxyParamCaption}\item[{\hyperlink{class_adapter}{Adapter} $\ast$}]{adapt }\end{DoxyParamCaption})}
 
-\hypertarget{class_motor_a2e57c7b2681efea1d3b7f253ee88ecd4}{}\label{class_motor_a2e57c7b2681efea1d3b7f253ee88ecd4} 
+Constructor des Motors. \hypertarget{class_motor_a2e57c7b2681efea1d3b7f253ee88ecd4}{}\label{class_motor_a2e57c7b2681efea1d3b7f253ee88ecd4} 
 \index{Motor@{Motor}!````~Motor@{$\sim$\+Motor}}
 \index{````~Motor@{$\sim$\+Motor}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{$\sim$\+Motor()}{~Motor()}}
 {\footnotesize\ttfamily Motor\+::$\sim$\+Motor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
-
+Destructor des Motors. 
 
 \subsection{Dokumentation der Elementfunktionen}
 \hypertarget{class_motor_a09b1a5376d1ea0eb39dff2ebcc325bde}{}\label{class_motor_a09b1a5376d1ea0eb39dff2ebcc325bde} 
@@ -58,42 +58,77 @@ uint8\+\_\+t \hyperlink{class_motor_a38af68cbad8be09b85afc86f156f0f89}{switch\+C
 \subsubsection{\texorpdfstring{fast()}{fast()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::fast (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Laesst den \hyperlink{class_motor}{Motor} schnell fahren.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_ae8af72c3a398bb959090d0be1083f5d7}{}\label{class_motor_ae8af72c3a398bb959090d0be1083f5d7} 
 \index{Motor@{Motor}!left@{left}}
 \index{left@{left}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{left()}{left()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::left (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Laesst den \hyperlink{class_motor}{Motor} in die Linke richtung fahren.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_a517e585f6a9a335347f9a1230d2fc0e1}{}\label{class_motor_a517e585f6a9a335347f9a1230d2fc0e1} 
 \index{Motor@{Motor}!right@{right}}
 \index{right@{right}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{right()}{right()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::right (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Laesst den \hyperlink{class_motor}{Motor} in die Rechte richtung fahren.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_a960a19729dc479265b1e5fea243de4c0}{}\label{class_motor_a960a19729dc479265b1e5fea243de4c0} 
 \index{Motor@{Motor}!slow@{slow}}
 \index{slow@{slow}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{slow()}{slow()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::slow (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Laesst den \hyperlink{class_motor}{Motor} langsam fahren.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_aab732159d4adf537bbcd3bcf9371d03b}{}\label{class_motor_aab732159d4adf537bbcd3bcf9371d03b} 
 \index{Motor@{Motor}!stop@{stop}}
 \index{stop@{stop}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{stop()}{stop()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Stoppt den \hyperlink{class_motor}{Motor}.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_a38af68cbad8be09b85afc86f156f0f89}{}\label{class_motor_a38af68cbad8be09b85afc86f156f0f89} 
 \index{Motor@{Motor}!switch\+Closed@{switch\+Closed}}
 \index{switch\+Closed@{switch\+Closed}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{switch\+Closed()}{switchClosed()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::switch\+Closed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Schliesst die Weiche.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 \hypertarget{class_motor_a35c0d7c6350b9f670dc243d31ea40263}{}\label{class_motor_a35c0d7c6350b9f670dc243d31ea40263} 
 \index{Motor@{Motor}!switch\+Open@{switch\+Open}}
 \index{switch\+Open@{switch\+Open}!Motor@{Motor}}
 \subsubsection{\texorpdfstring{switch\+Open()}{switchOpen()}}
 {\footnotesize\ttfamily uint8\+\_\+t Motor\+::switch\+Open (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Oeffnet die Weiche.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
 
 
 Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Dateien\+:\begin{DoxyCompactItemize}

@@ -7,9 +7,7 @@ TrafficLight::TrafficLight(Adapter* adapt):adapter(adapt)
     yellowLightBitmask_ = 0x40;
 }
 
-TrafficLight::~TrafficLight()
-{
-}
+TrafficLight::~TrafficLight(){}
 
 uint8_t TrafficLight::turnGreenOn()
 {

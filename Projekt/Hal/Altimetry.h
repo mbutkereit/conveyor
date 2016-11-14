@@ -1,10 +1,3 @@
-/*
- * Altimetry.h
- *
- *  Created on: 10.11.2016
- *      Author: abx827
- */
-
 #ifndef ALTIMETRY_H_
 #define ALTIMETRY_H_
 

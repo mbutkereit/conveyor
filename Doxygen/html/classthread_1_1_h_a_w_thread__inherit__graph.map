@@ -1,3 +1,4 @@
 <map id="thread::HAWThread" name="thread::HAWThread">
-<area shape="rect" id="node2" href="$class_conveyor_thread.html" title="{ConveyorThread\n||+ ConveyorThread()\l+ ~ConveyorThread()\l}" alt="" coords="5,313,154,400"/>
+<area shape="rect" id="node2" href="$class_conveyor_thread.html" title="{ConveyorThread\n||+ ConveyorThread()\l+ ~ConveyorThread()\l+ ConveyorThread()\l+ ~ConveyorThread()\l}" alt="" coords="5,313,154,427"/>
+<area shape="rect" id="node3" href="$class_signal_handler_thread.html" title="{SignalHandlerThread\n||+ SignalHandlerThread()\l+ ~SignalHandlerThread()\l+ SignalHandlerThread()\l+ ~SignalHandlerThread()\l}" alt="" coords="179,313,354,427"/>
 </map>

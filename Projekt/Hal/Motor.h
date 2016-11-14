@@ -62,25 +62,25 @@ public:
     uint8_t stop();
 
     /**
-     * Oeffnet den .
+     * Oeffnet die Weiche.
      *
      * @return Gibt Konstant 0 zurueck.
      */
     uint8_t switchOpen();
 
     /**
-     * .
+     * Schliesst die Weiche.
      *
      * @return Gibt Konstant 0 zurueck.
      */
     uint8_t switchClosed();
 
 private:
-    uint8_t motorrightBitmask__;  ///<
-    uint8_t motorleftBitmask_;    ///<
-    uint8_t motorstoppBitmask_;   ///<
-    uint8_t motorlangsamBitmask_; ///<
-    uint8_t weicheaufBitmask_;    ///<
+    uint8_t motorrightBitmask__;  ///< Bitmask um den Motor nach Rechtsfahren zu lassen.
+    uint8_t motorleftBitmask_;    ///< Bitmask um den Motor nach Linksfahren zu lassen.
+    uint8_t motorstoppBitmask_;   ///< Bitmask die den Motor anhalten laesst.
+    uint8_t motorlangsamBitmask_; ///< Bitmask um den Motor langsam zu machen.
+    uint8_t weicheaufBitmask_;    ///< Bitmask um die Weiche auf zu machen.
 
     Adapter* adapter;             ///< Der Adapter mit der Baseadresse.
 };

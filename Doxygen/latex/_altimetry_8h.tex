@@ -1,0 +1,61 @@
+\hypertarget{_altimetry_8h}{}\section{Hal/\+Altimetry.h-\/\+Dateireferenz}
+\label{_altimetry_8h}\index{Hal/\+Altimetry.\+h@{Hal/\+Altimetry.\+h}}
+{\ttfamily \#include $<$hw/inout.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Logger/\+Logger.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Hal/\+Adapter.\+h\char`\"{}}\newline
+Include-\/\+Abhängigkeitsdiagramm für Altimetry.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_altimetry_8h__incl}
+\end{center}
+\end{figure}
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_altimetry_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Klassen}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_altimetry}{Altimetry}
+\end{DoxyCompactItemize}
+\subsection*{Makrodefinitionen}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_altimetry_8h_af5f248978814b43f265459187d85217f}{A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN}~0b10000100
+\begin{DoxyCompactList}\small\item\em Befehl um die Interrupts bei dem A\+DC zu aktivieren. \end{DoxyCompactList}\item 
+\#define \hyperlink{_altimetry_8h_a66517a19dec0aa83aeda71c205a4dd2c}{A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET}~0x01
+\begin{DoxyCompactList}\small\item\em Offset zu dem A\+DC Config Register. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Ausführliche Beschreibung}
+\hypertarget{_config_updater_thread_8h_DESCRIPTION}{}\subsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{_config_updater_thread_8h_DESCRIPTION}
+Eine Klasse um die Ampel des Foerderbandes zu Steuern. 
+
+\subsection{Makro-\/\+Dokumentation}
+\hypertarget{_altimetry_8h_af5f248978814b43f265459187d85217f}{}\label{_altimetry_8h_af5f248978814b43f265459187d85217f} 
+\index{Altimetry.\+h@{Altimetry.\+h}!A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN@{A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN}}
+\index{A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN@{A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN}!Altimetry.\+h@{Altimetry.\+h}}
+\subsubsection{\texorpdfstring{A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN}{ACTIVATE\_ADC\_IN}}
+{\footnotesize\ttfamily \#define A\+C\+T\+I\+V\+A\+T\+E\+\_\+\+A\+D\+C\+\_\+\+IN~0b10000100}
+
+
+
+Befehl um die Interrupts bei dem A\+DC zu aktivieren. 
+
+\hypertarget{_altimetry_8h_a66517a19dec0aa83aeda71c205a4dd2c}{}\label{_altimetry_8h_a66517a19dec0aa83aeda71c205a4dd2c} 
+\index{Altimetry.\+h@{Altimetry.\+h}!A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET@{A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET}}
+\index{A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET@{A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET}!Altimetry.\+h@{Altimetry.\+h}}
+\subsubsection{\texorpdfstring{A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET}{ADC\_IN\_OFFSET}}
+{\footnotesize\ttfamily \#define A\+D\+C\+\_\+\+I\+N\+\_\+\+O\+F\+F\+S\+ET~0x01}
+
+
+
+Offset zu dem A\+DC Config Register. 
+

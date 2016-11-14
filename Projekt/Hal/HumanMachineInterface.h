@@ -6,10 +6,24 @@
 #include "Logger/Logger.h"
 #include "Hal/Adapter.h"
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class HumanMachineInterface
 {
 public:
+
+    /**
+     *  Constructor des Motors.
+     */
     HumanMachineInterface(Adapter* adapt);
+
+    /**
+     *  Constructor des Motors.
+     */
     virtual ~HumanMachineInterface();
 
     /**

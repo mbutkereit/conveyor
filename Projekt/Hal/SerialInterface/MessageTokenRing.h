@@ -1,19 +1,19 @@
 /*
- * MessageTokenRing.h
- *
- *  Created on: 23.10.2016
- *      Author: marvin
-
-
 #ifndef MESSAGETOKENRING_H_
 #define MESSAGETOKENRING_H_
 
-#include <Hal/SerialInterface/Serial.h>
-#include <Hal/SerialInterface/MessageTokenRing.h>
-#include <Serializer/Serializer.h>
-//#include <Messages/RingMessage.h>
 #include <map>
+#include "Hal/SerialInterface/Serial.h"
+#include "Hal/SerialInterface/MessageTokenRing.h"
+#include "Serializer/Serializer.h"
+#include "Messages/RingMessage.h"
 
+/ **
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * /
 class MessageTokenRing
 {
 private:

@@ -1,22 +1,9 @@
 /*
- * MessageTokenRing.cpp
- *
- *  Created on: 23.10.2016
- *      Author: marvin
+#include "Hal/SerialInterface/MessageTokenRing.h"
 
+MessageTokenRing::MessageTokenRing(Serial* input,Serial* output):input(input),output(output),serializer(){}
 
-#include <SerialInterface/MessageTokenRing.h>
-
-MessageTokenRing::MessageTokenRing(Serial* input,Serial* output):input(input),output(output),serializer()
-{
-    // TODO Auto-generated constructor stub
-
-}
-
-MessageTokenRing::~MessageTokenRing()
-{
-    // TODO Auto-generated destructor stub
-}
+MessageTokenRing::~MessageTokenRing(){}
 
 uint8_t MessageTokenRing::sendMessage(RingMessage* message)
 {

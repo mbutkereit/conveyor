@@ -86,6 +86,10 @@ Zusammengehörigkeiten von Adapter:</div>
 <tr class="separator:a655de45764223d7b1b3847170cc405a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b1478082798b063a0c04d98fdea06a2"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adapter.html#a8b1478082798b063a0c04d98fdea06a2">checkBitMask</a> (uint8_t bitmask)</td></tr>
 <tr class="separator:a8b1478082798b063a0c04d98fdea06a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc0aa429b5f6cdd52a7e78045b3c459c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adapter.html#afc0aa429b5f6cdd52a7e78045b3c459c">forceBitmask</a> (uint8_t bitmask, uint16_t offset)</td></tr>
+<tr class="separator:afc0aa429b5f6cdd52a7e78045b3c459c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8b131f521892341ff7a2959bf56e004"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_adapter.html#af8b131f521892341ff7a2959bf56e004">getValuefromAddress</a> (uint8_t offset)</td></tr>
+<tr class="separator:af8b131f521892341ff7a2959bf56e004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Beschreibung der Konstruktoren und Destruktoren</h2>
 <a id="ae2c6ad0390905b82cac4077642b36620"></a>
@@ -103,6 +107,13 @@ Zusammengehörigkeiten von Adapter:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Constructor des Adapters.</p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">baseaddress</td><td>Die Baseaddress die verwenden werden soll. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -120,6 +131,7 @@ Zusammengehörigkeiten von Adapter:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Destructor des Adapters. </p>
 
 </div>
 </div>
@@ -139,6 +151,70 @@ Zusammengehörigkeiten von Adapter:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Checkt ob die Uebergebene Bitmask in der Baseadress vorhanden ist.</p>
+<dl class="section return"><dt>Rückgabe</dt><dd>Gibt 0 bei nicht Enthalten und ein Wert &gt; 0 bei Enthalten zurueck. </dd></dl>
+
+</div>
+</div>
+<a id="afc0aa429b5f6cdd52a7e78045b3c459c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc0aa429b5f6cdd52a7e78045b3c459c">&sect;&nbsp;</a></span>forceBitmask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Adapter::forceBitmask </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bitmask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>offset</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Setzt den Bitmask Wert an die Speicheradresse Baseadress + Offset. (Vorherige werte werden einfach ueberschrieben.)</p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bitmask</td><td>Eine Bitmask die uebernommen werden soll. </td></tr>
+    <tr><td class="paramname">offset</td><td>Ein Offset um die Baseadress zu erweitern. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af8b131f521892341ff7a2959bf56e004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8b131f521892341ff7a2959bf56e004">&sect;&nbsp;</a></span>getValuefromAddress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Adapter::getValuefromAddress </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>offset</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Lade ein Wert aus einer Speicheradresse.</p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offset</td><td>Ein offset fuer die Baseaddress</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Rückgabe</dt><dd>Gibt den Wert aus der Baseaddress + Offset zurueck. </dd></dl>
 
 </div>
 </div>
@@ -157,6 +233,13 @@ Zusammengehörigkeiten von Adapter:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Entfernt eine Bitmask von der Baseaddress</p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bitmask</td><td>Eine Bitmask die entfernt werden soll. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -175,6 +258,13 @@ Zusammengehörigkeiten von Adapter:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>Uebernimmt die Bits aus der Bitmask in die Baseaddress. (Adaptiv, die Bits die schon gesetzt waren bleiben bestehen)</p>
+<dl class="params"><dt>Parameter</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bitmask</td><td>Eine Bitmask die gesetzt werden soll. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

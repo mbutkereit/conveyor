@@ -1,0 +1,427 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foerderband: Thread/SignalHandlerThread.h-Dateireferenz</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Foerderband
+   &#160;<span id="projectnumber">0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_c211989d999a6a303a2b08461c3c22b8.html">Thread</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Klassen</a> &#124;
+<a href="#define-members">Makrodefinitionen</a> &#124;
+<a href="#var-members">Variablen</a>  </div>
+  <div class="headertitle">
+<div class="title">SignalHandlerThread.h-Dateireferenz</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;pthread.h&gt;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;hw/inout.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="_logger_8h_source.html">Logger/Logger.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_h_waccess_8h_source.html">src/lib/HWaccess.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_h_a_w_thread_8h_source.html">src/lib/HAWThread.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_context_8h_source.html">FSM/Context.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include-Abhängigkeitsdiagramm für SignalHandlerThread.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="_signal_handler_thread_8h__incl.png" border="0" usemap="#_thread_2_signal_handler_thread_8h" alt=""/></div>
+<map name="_thread_2_signal_handler_thread_8h" id="_thread_2_signal_handler_thread_8h">
+<area shape="rect" id="node6" href="_logger_8h.html" title="Logger/Logger.h" alt="" coords="617,372,735,397"/>
+<area shape="rect" id="node8" href="_h_waccess_8h.html" title="src/lib/HWaccess.h" alt="" coords="42,372,176,397"/>
+<area shape="rect" id="node11" href="_h_a_w_thread_8h.html" title="src/lib/HAWThread.h" alt="" coords="200,372,344,397"/>
+<area shape="rect" id="node12" href="_context_8h.html" title="FSM/Context.h" alt="" coords="418,79,528,104"/>
+<area shape="rect" id="node13" href="_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="1090,152,1206,177"/>
+<area shape="rect" id="node14" href="_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="1113,372,1215,397"/>
+<area shape="rect" id="node16" href="_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="1114,445,1214,471"/>
+<area shape="rect" id="node17" href="_hardware_8h.html" title="Hal/Hardware.h" alt="" coords="1022,225,1136,251"/>
+<area shape="rect" id="node18" href="_motor_8h.html" title="Hal/Motor.h" alt="" coords="1291,299,1381,324"/>
+<area shape="rect" id="node19" href="_human_machine_interface_8h.html" title="Hal/HumanMachineInterface.h" alt="" coords="789,299,990,324"/>
+<area shape="rect" id="node20" href="_measuring_tool_8h.html" title="Hal/MeasuringTool.h" alt="" coords="622,299,765,324"/>
+<area shape="rect" id="node21" href="_traffic_light_8h.html" title="Hal/TrafficLight.h" alt="" coords="1146,299,1267,324"/>
+<area shape="rect" id="node22" href="_altimetry_8h.html" title="Hal/Altimetry.h" alt="" coords="1014,299,1122,324"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält:</div>
+<div class="dyncontent">
+<div class="center"><img src="_signal_handler_thread_8h__dep__incl.png" border="0" usemap="#_thread_2_signal_handler_thread_8hdep" alt=""/></div>
+<map name="_thread_2_signal_handler_thread_8hdep" id="_thread_2_signal_handler_thread_8hdep">
+<area shape="rect" id="node2" href="conveyor_8cc.html" title="conveyor.cc" alt="" coords="5,79,97,104"/>
+<area shape="rect" id="node3" href="_signal_handler_thread_8cpp.html" title="Thread/SignalHandlerThread.cpp" alt="" coords="121,79,339,104"/>
+</map>
+</div>
+</div>
+<p><a href="_signal_handler_thread_8h_source.html">gehe zum Quellcode dieser Datei</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Klassen</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_signal_handler_thread.html">SignalHandlerThread</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Makrodefinitionen</h2></td></tr>
+<tr class="memitem:aabdbe5a94653ed44948a15bbf036879a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#aabdbe5a94653ed44948a15bbf036879a">ESTOP</a>&#160;&#160;&#160;0x400</td></tr>
+<tr class="separator:aabdbe5a94653ed44948a15bbf036879a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab702106cf3b3e96750b6845ded4e0299"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#ab702106cf3b3e96750b6845ded4e0299">RESET</a>&#160;&#160;&#160;0x800</td></tr>
+<tr class="separator:ab702106cf3b3e96750b6845ded4e0299"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3018c7600b7bb9866400596a56a57af7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a3018c7600b7bb9866400596a56a57af7">START</a>&#160;&#160;&#160;0x1000</td></tr>
+<tr class="separator:a3018c7600b7bb9866400596a56a57af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae19b6bb2940d2fbe0a79852b070eeafd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#ae19b6bb2940d2fbe0a79852b070eeafd">STOP</a>&#160;&#160;&#160;0x2000</td></tr>
+<tr class="separator:ae19b6bb2940d2fbe0a79852b070eeafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9d94366567c4133fe6f387674374952"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#ad9d94366567c4133fe6f387674374952">ALTIMETRY_COMPLETED</a>&#160;&#160;&#160;0x4000</td></tr>
+<tr class="separator:ad9d94366567c4133fe6f387674374952"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a600d1e2412a5e1cd7d26e9d0c97ec961"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a600d1e2412a5e1cd7d26e9d0c97ec961">LIGHT_BARRIER_BEGIN_INTERRUPTED</a>&#160;&#160;&#160;0x1</td></tr>
+<tr class="separator:a600d1e2412a5e1cd7d26e9d0c97ec961"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d93678f5db5275b2f02ed3284654c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a23d93678f5db5275b2f02ed3284654c9">LIGHT_BARRIER_END_INTERRUPTED</a>&#160;&#160;&#160;0x100</td></tr>
+<tr class="separator:a23d93678f5db5275b2f02ed3284654c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21fd62a2b41998c58196bf4f500521f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#ac21fd62a2b41998c58196bf4f500521f">LIGHT_BARRIER_SWITCH_INTERRUPTED</a>&#160;&#160;&#160;0x10</td></tr>
+<tr class="separator:ac21fd62a2b41998c58196bf4f500521f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db01668a51133f2ecc97869433e7494"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a5db01668a51133f2ecc97869433e7494">LIGHT_BARRIER_ALTIMETRY_INTERRUPTED</a>&#160;&#160;&#160;0x4</td></tr>
+<tr class="separator:a5db01668a51133f2ecc97869433e7494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d58c404d85b6bbdd8340c87880e0e6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#af4d58c404d85b6bbdd8340c87880e0e6">LIGHT_BARRIER_SKID_INTERRUPTED</a>&#160;&#160;&#160;0x40</td></tr>
+<tr class="separator:af4d58c404d85b6bbdd8340c87880e0e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8d11530f588337b473b7f878383b4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#aad8d11530f588337b473b7f878383b4f">LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED</a>&#160;&#160;&#160;0x2</td></tr>
+<tr class="separator:aad8d11530f588337b473b7f878383b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1866cb55284f0549b00763459fc529"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#abe1866cb55284f0549b00763459fc529">LIGHT_BARRIER_END_NOT_INTERRUPTED</a>&#160;&#160;&#160;0x200</td></tr>
+<tr class="separator:abe1866cb55284f0549b00763459fc529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58af236b436e5c9d4398f648b193a970"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a58af236b436e5c9d4398f648b193a970">LIGHT_BARRIER_SWITCH_NOT_INTERRUPTED</a>&#160;&#160;&#160;0x20</td></tr>
+<tr class="separator:a58af236b436e5c9d4398f648b193a970"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c8a5f4a435da678aa014bc7de2c4a21"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a1c8a5f4a435da678aa014bc7de2c4a21">LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED</a>&#160;&#160;&#160;0x8</td></tr>
+<tr class="separator:a1c8a5f4a435da678aa014bc7de2c4a21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa214896edf04214f7e4e222662c3c76b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#aa214896edf04214f7e4e222662c3c76b">LIGHT_BARRIER_SKID_NOT_INTERRUPTED</a>&#160;&#160;&#160;0x80</td></tr>
+<tr class="separator:aa214896edf04214f7e4e222662c3c76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variablen</h2></td></tr>
+<tr class="memitem:a6d681673a747ebd2a1081956c60eab7d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a6d681673a747ebd2a1081956c60eab7d">coid</a></td></tr>
+<tr class="separator:a6d681673a747ebd2a1081956c60eab7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a098cf06afe8e07f0e3a7b627dff0c552"><td class="memItemLeft" align="right" valign="top">struct sigevent&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#a098cf06afe8e07f0e3a7b627dff0c552">isrtEvent_</a></td></tr>
+<tr class="separator:a098cf06afe8e07f0e3a7b627dff0c552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab83e6ae3fe04c77821d71057e99990e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_signal_handler_thread_8h.html#ab83e6ae3fe04c77821d71057e99990e4">isrtConnection_</a></td></tr>
+<tr class="separator:ab83e6ae3fe04c77821d71057e99990e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Ausführliche Beschreibung</h2>
+<div class="textblock"><h1><a class="anchor" id="DESCRIPTION"></a>
+DESCRIPTION</h1>
+<p>Eine Klasse um die Signale zu verarbeiten. </p>
+</div><h2 class="groupheader">Makro-Dokumentation</h2>
+<a id="ad9d94366567c4133fe6f387674374952"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9d94366567c4133fe6f387674374952">&sect;&nbsp;</a></span>ALTIMETRY_COMPLETED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ALTIMETRY_COMPLETED&#160;&#160;&#160;0x4000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aabdbe5a94653ed44948a15bbf036879a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabdbe5a94653ed44948a15bbf036879a">&sect;&nbsp;</a></span>ESTOP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ESTOP&#160;&#160;&#160;0x400</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5db01668a51133f2ecc97869433e7494"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db01668a51133f2ecc97869433e7494">&sect;&nbsp;</a></span>LIGHT_BARRIER_ALTIMETRY_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_ALTIMETRY_INTERRUPTED&#160;&#160;&#160;0x4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c8a5f4a435da678aa014bc7de2c4a21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c8a5f4a435da678aa014bc7de2c4a21">&sect;&nbsp;</a></span>LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED&#160;&#160;&#160;0x8</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a600d1e2412a5e1cd7d26e9d0c97ec961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a600d1e2412a5e1cd7d26e9d0c97ec961">&sect;&nbsp;</a></span>LIGHT_BARRIER_BEGIN_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_BEGIN_INTERRUPTED&#160;&#160;&#160;0x1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aad8d11530f588337b473b7f878383b4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad8d11530f588337b473b7f878383b4f">&sect;&nbsp;</a></span>LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED&#160;&#160;&#160;0x2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a23d93678f5db5275b2f02ed3284654c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23d93678f5db5275b2f02ed3284654c9">&sect;&nbsp;</a></span>LIGHT_BARRIER_END_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_END_INTERRUPTED&#160;&#160;&#160;0x100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abe1866cb55284f0549b00763459fc529"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe1866cb55284f0549b00763459fc529">&sect;&nbsp;</a></span>LIGHT_BARRIER_END_NOT_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_END_NOT_INTERRUPTED&#160;&#160;&#160;0x200</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4d58c404d85b6bbdd8340c87880e0e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4d58c404d85b6bbdd8340c87880e0e6">&sect;&nbsp;</a></span>LIGHT_BARRIER_SKID_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_SKID_INTERRUPTED&#160;&#160;&#160;0x40</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa214896edf04214f7e4e222662c3c76b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa214896edf04214f7e4e222662c3c76b">&sect;&nbsp;</a></span>LIGHT_BARRIER_SKID_NOT_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_SKID_NOT_INTERRUPTED&#160;&#160;&#160;0x80</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac21fd62a2b41998c58196bf4f500521f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21fd62a2b41998c58196bf4f500521f">&sect;&nbsp;</a></span>LIGHT_BARRIER_SWITCH_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_SWITCH_INTERRUPTED&#160;&#160;&#160;0x10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a58af236b436e5c9d4398f648b193a970"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58af236b436e5c9d4398f648b193a970">&sect;&nbsp;</a></span>LIGHT_BARRIER_SWITCH_NOT_INTERRUPTED</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LIGHT_BARRIER_SWITCH_NOT_INTERRUPTED&#160;&#160;&#160;0x20</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab702106cf3b3e96750b6845ded4e0299"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab702106cf3b3e96750b6845ded4e0299">&sect;&nbsp;</a></span>RESET</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define RESET&#160;&#160;&#160;0x800</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3018c7600b7bb9866400596a56a57af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3018c7600b7bb9866400596a56a57af7">&sect;&nbsp;</a></span>START</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define START&#160;&#160;&#160;0x1000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae19b6bb2940d2fbe0a79852b070eeafd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae19b6bb2940d2fbe0a79852b070eeafd">&sect;&nbsp;</a></span>STOP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define STOP&#160;&#160;&#160;0x2000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variablen-Dokumentation</h2>
+<a id="a6d681673a747ebd2a1081956c60eab7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d681673a747ebd2a1081956c60eab7d">&sect;&nbsp;</a></span>coid</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int coid</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab83e6ae3fe04c77821d71057e99990e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab83e6ae3fe04c77821d71057e99990e4">&sect;&nbsp;</a></span>isrtConnection_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int isrtConnection_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a098cf06afe8e07f0e3a7b627dff0c552"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a098cf06afe8e07f0e3a7b627dff0c552">&sect;&nbsp;</a></span>isrtEvent_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct sigevent isrtEvent_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

@@ -1,11 +1,3 @@
-/*
- * ConveyorThread.h
- *
- *  Created on: 13.10.2016
- *      Author: abx827
- */
-
-
 #ifndef CONVEYORTHREAD_H_
 #define CONVEYORTHREAD_H_
 
@@ -18,7 +10,7 @@ using namespace thread;
  * @file
  * @section DESCRIPTION
  *
- * .
+ * Eine Klasse um die Signale zu verarbeiten.
  */
 class ConveyorThread: public HAWThread {
 public:

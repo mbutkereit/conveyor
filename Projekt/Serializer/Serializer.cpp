@@ -1,23 +1,8 @@
-/*
- * Serializer.cpp
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
+#include "Serializer/Serializer.h""
 
-#include <Serializer/Serializer.h>
-#include <Serializer/SerializerInterface.h>
+Serializer::Serializer(){}
 
-Serializer::Serializer()
-{
-    // TODO Auto-generated constructor stub
-
-}
-
-Serializer::~Serializer()
-{
-    // TODO Auto-generated destructor stub
-}
+Serializer::~Serializer(){}
 
 std::string Serializer::serialize(){
     return "test serialize";

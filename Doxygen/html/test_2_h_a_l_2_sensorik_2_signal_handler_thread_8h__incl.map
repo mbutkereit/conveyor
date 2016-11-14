@@ -1,0 +1,16 @@
+<map id="test/HAL/Sensorik/SignalHandlerThread.h" name="test/HAL/Sensorik/SignalHandlerThread.h">
+<area shape="rect" id="node4" href="$_logger_8h.html" title="Logger/Logger.h" alt="" coords="998,385,1117,411"/>
+<area shape="rect" id="node8" href="$_h_waccess_8h.html" title="src/lib/HWaccess.h" alt="" coords="734,92,868,117"/>
+<area shape="rect" id="node11" href="$_h_a_w_thread_8h.html" title="src/lib/HAWThread.h" alt="" coords="1325,92,1469,117"/>
+<area shape="rect" id="node13" href="$_f_s_m_2_context_8h.html" title="FSM/Context.h" alt="" coords="1192,92,1302,117"/>
+<area shape="rect" id="node24" href="$_interrupt_handler_8h.html" title="Hal/ISR/InterruptHandler.h" alt="" coords="439,92,617,117"/>
+<area shape="rect" id="node14" href="$_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="630,165,746,191"/>
+<area shape="rect" id="node15" href="$_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="620,385,722,411"/>
+<area shape="rect" id="node17" href="$_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="1102,459,1202,484"/>
+<area shape="rect" id="node18" href="$_hardware_8h.html" title="Hal/Hardware.h" alt="" coords="679,239,793,264"/>
+<area shape="rect" id="node19" href="$_motor_8h.html" title="Hal/Motor.h" alt="" coords="347,312,437,337"/>
+<area shape="rect" id="node20" href="$_human_machine_interface_8h.html" title="Hal/HumanMachineInterface.h" alt="" coords="955,312,1157,337"/>
+<area shape="rect" id="node21" href="$_measuring_tool_8h.html" title="Hal/MeasuringTool.h" alt="" coords="461,312,603,337"/>
+<area shape="rect" id="node22" href="$_traffic_light_8h.html" title="Hal/TrafficLight.h" alt="" coords="810,312,931,337"/>
+<area shape="rect" id="node23" href="$_altimetry_8h.html" title="Hal/Altimetry.h" alt="" coords="678,312,786,337"/>
+</map>

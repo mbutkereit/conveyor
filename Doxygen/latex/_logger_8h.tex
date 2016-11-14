@@ -2,12 +2,13 @@
 \label{_logger_8h}\index{Logger/\+Logger.\+h@{Logger/\+Logger.\+h}}
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
 Include-\/\+Abhängigkeitsdiagramm für Logger.\+h\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=202pt]{_logger_8h__incl}
+\includegraphics[width=260pt]{_logger_8h__incl}
 \end{center}
 \end{figure}
 Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
@@ -27,20 +28,24 @@ class \hyperlink{class_logger}{Logger}
 \begin{DoxyCompactItemize}
 \item 
 \#define \hyperlink{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a}{L\+O\+G\+\_\+\+D\+E\+B\+UG}
-\item 
+\begin{DoxyCompactList}\small\item\em This is an enum class. \end{DoxyCompactList}\item 
 \#define \hyperlink{_logger_8h_adf4476a6a4ea6c74231c826e899d7189}{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}
-\item 
+\begin{DoxyCompactList}\small\item\em This is an enum class. \end{DoxyCompactList}\item 
 \#define \hyperlink{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08}{L\+O\+G\+\_\+\+E\+R\+R\+OR}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This is an enum class. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Aufzählungen}
 \begin{DoxyCompactItemize}
 \item 
 enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+E\+V\+EL} \{ \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{E\+R\+R\+OR}, 
 \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a984de77c680eaff141ec910e25568a81}{W\+A\+R\+N\+I\+NG}, 
 \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f}{D\+E\+B\+UG}
- \}
+ \}\begin{DoxyCompactList}\small\item\em This is an enum class. \end{DoxyCompactList}
 \end{DoxyCompactItemize}
 
+
+\subsection{Ausführliche Beschreibung}
+\hypertarget{_config_updater_thread_8h_DESCRIPTION}{}\subsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{_config_updater_thread_8h_DESCRIPTION}
+Eine Klasse um den \hyperlink{class_adapter}{Adapter(\+Ports)} zugriff zu Managen. 
 
 \subsection{Makro-\/\+Dokumentation}
 \hypertarget{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a}{}\label{_logger_8h_a6ff63e8955665c4a58b1598f2b07c51a} 
@@ -54,6 +59,10 @@ enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+
 \textcolor{keywordflow}{if}(\hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().getLoggingLevel() < \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a0593585da9181e972974c1274d8f2b4f}{DEBUG});   \(\backslash\)
     else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().\hyperlink{class_logger_af8a0b7a8939294ceb2cef39c358dfa9c}{log}()
 \end{DoxyCode}
+
+
+This is an enum class. 
+
 \hypertarget{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08}{}\label{_logger_8h_aced66975c154ea0e2a8ec3bc818b4e08} 
 \index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+E\+R\+R\+OR@{L\+O\+G\+\_\+\+E\+R\+R\+OR}}
 \index{L\+O\+G\+\_\+\+E\+R\+R\+OR@{L\+O\+G\+\_\+\+E\+R\+R\+OR}!Logger.\+h@{Logger.\+h}}
@@ -65,6 +74,10 @@ enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+
 \textcolor{keywordflow}{if}(\hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().getLoggingLevel() < \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{ERROR});  \(\backslash\)
 else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogger}().\hyperlink{class_logger_af8a0b7a8939294ceb2cef39c358dfa9c}{log}()
 \end{DoxyCode}
+
+
+This is an enum class. 
+
 \hypertarget{_logger_8h_adf4476a6a4ea6c74231c826e899d7189}{}\label{_logger_8h_adf4476a6a4ea6c74231c826e899d7189} 
 \index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG@{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}}
 \index{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG@{L\+O\+G\+\_\+\+W\+A\+R\+N\+I\+NG}!Logger.\+h@{Logger.\+h}}
@@ -78,12 +91,20 @@ else \hyperlink{class_logger_afa2765f0a04e7a50e1efc38cce67a763}{Logger::getLogge
 \end{DoxyCode}
 
 
+This is an enum class. 
+
+
+
 \subsection{Dokumentation der Aufzählungstypen}
 \hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583} 
 \index{Logger.\+h@{Logger.\+h}!L\+O\+G\+\_\+\+L\+E\+V\+EL@{L\+O\+G\+\_\+\+L\+E\+V\+EL}}
 \index{L\+O\+G\+\_\+\+L\+E\+V\+EL@{L\+O\+G\+\_\+\+L\+E\+V\+EL}!Logger.\+h@{Logger.\+h}}
 \subsubsection{\texorpdfstring{L\+O\+G\+\_\+\+L\+E\+V\+EL}{LOG\_LEVEL}}
 {\footnotesize\ttfamily enum \hyperlink{_logger_8h_aa5a9053636a30269210c54e734e0d583}{L\+O\+G\+\_\+\+L\+E\+V\+EL}}
+
+
+
+This is an enum class. 
 
 \begin{DoxyEnumFields}{Aufzählungswerte}
 \raisebox{\heightof{T}}[0pt][0pt]{\index{E\+R\+R\+OR@{E\+R\+R\+OR}!Logger.\+h@{Logger.\+h}}\index{Logger.\+h@{Logger.\+h}!E\+R\+R\+OR@{E\+R\+R\+OR}}}\hypertarget{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90}{}\label{_logger_8h_aa5a9053636a30269210c54e734e0d583a2fd6f336d08340583bd620a7f5694c90} 

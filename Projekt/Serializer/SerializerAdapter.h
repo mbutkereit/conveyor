@@ -1,12 +1,12 @@
-/*
- * SerializerAdapter.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef SERIALIZERADAPTER_H_
 #define SERIALIZERADAPTER_H_
+
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Adapter(Ports) zugriff zu Managen.
+ */
 template<class T>
 class SerializerAdapter
 {

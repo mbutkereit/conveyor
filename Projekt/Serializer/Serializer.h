@@ -1,15 +1,14 @@
-/*
- * Serializer.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef SERIALIZER_H_
 #define SERIALIZER_H_
 
 #include "Serializer/SerializerInterface.h";
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Adapter(Ports) zugriff zu Managen.
+ */
 class Serializer
 {
 public:

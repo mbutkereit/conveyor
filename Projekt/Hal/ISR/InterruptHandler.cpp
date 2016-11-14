@@ -1,9 +1,5 @@
 #include "InterruptHandler.h"
 
-InterruptHandler::InterruptHandler() {}
-
-InterruptHandler::~InterruptHandler() {}
-
 const struct sigevent* ISR_DIO(void* arg, int id) {
     struct sigevent* event = (struct sigevent*) arg;
     Hardware* hw = hb.getHardware();
@@ -14,70 +10,70 @@ const struct sigevent* ISR_DIO(void* arg, int id) {
 
     // Lichtschranken Interrupts.
 
-    if(hw->getMT()->isItemRunningIn()==0 && (interruptflags & 0x1) == 0){
-      code=code+1;
-      interruptflags=interruptflags | 0x1;
+    if(hw->getMT()->isItemRunningIn()==0 && (interruptflags & IS_RUNNING_IN_STATE) == 0){
+      code=code+LIGHT_BARRIER_BEGIN_INTERRUPTED;
+      interruptflags=interruptflags | IS_RUNNING_IN_STATE;
     }
 
-    if(hw->getMT()->isItemRunningIn()!=0 && (interruptflags & 0x1) != 0){
-      code=code+2;
-      interruptflags=interruptflags-0x1;
+    if(hw->getMT()->isItemRunningIn()!=0 && (interruptflags & IS_RUNNING_IN_STATE) != 0){
+      code=code+LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED;
+      interruptflags=interruptflags-IS_RUNNING_IN_STATE;
     }
 
-    if(hw->getMT()->isItemAltimetry()==0 && (interruptflags & 0x2) == 0){
-      code=code+4;
-      interruptflags=interruptflags | 0x2;
+    if(hw->getMT()->isItemAltimetry()==0 && (interruptflags & IS_IN_ALTIMETRY_STATE) == 0){
+      code=code+LIGHT_BARRIER_ALTIMETRY_INTERRUPTED;
+      interruptflags=interruptflags | IS_IN_ALTIMETRY_STATE;
     }
 
-    if(hw->getMT()->isItemAltimetry()!=0 && (interruptflags & 0x2) != 0){
-      code=code+8;
-      interruptflags=interruptflags-0x2;
+    if(hw->getMT()->isItemAltimetry()!=0 && (interruptflags & IS_IN_ALTIMETRY_STATE) != 0){
+      code=code+LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED;
+      interruptflags=interruptflags-IS_IN_ALTIMETRY_STATE;
     }
 
-    if(hw->getMT()->isItemSwitch()==0 && (interruptflags & 0x4) == 0){
-      code=code+16;
-      interruptflags=interruptflags | 0x4;
+    if(hw->getMT()->isItemSwitch()==0 && (interruptflags & IS_IN_SWITCH_STATE) == 0){
+      code=code+LIGHT_BARRIER_SWITCH_INTERRUPTED;
+      interruptflags=interruptflags | IS_IN_SWITCH_STATE;
     }
 
-    if(hw->getMT()->isItemSwitch()!=0 && (interruptflags & 0x4) != 0){
-      code=code+32;
-      interruptflags=interruptflags-0x4;
+    if(hw->getMT()->isItemSwitch()!=0 && (interruptflags & IS_IN_SWITCH_STATE) != 0){
+      code=code+LIGHT_BARRIER_SWITCH_NOT_INTERRUPTED;
+      interruptflags=interruptflags-IS_IN_SWITCH_STATE;
     }
 
 
-    if(hw->getMT()->isSkidFull()==0 && (interruptflags & 0x8) == 0){
-      code=code+64;
-      interruptflags=interruptflags | 0x8;
+    if(hw->getMT()->isSkidFull()==0 && (interruptflags & IS_SKID_FULL_STATE) == 0){
+      code=code+LIGHT_BARRIER_SKID_INTERRUPTED;
+      interruptflags=interruptflags | IS_SKID_FULL_STATE;
     }
 
-    if(hw->getMT()->isSkidFull()!=0 && (interruptflags & 0x8) != 0){
-      code=code+128;
-      interruptflags=interruptflags-0x8;
+    if(hw->getMT()->isSkidFull()!=0 && (interruptflags & IS_SKID_FULL_STATE) != 0){
+      code=code+LIGHT_BARRIER_SKID_NOT_INTERRUPTED;
+      interruptflags=interruptflags-IS_SKID_FULL_STATE;
     }
 
-    if(hw->getMT()->isItemRunningOut()==0 && (interruptflags & 0x10) == 0){
-      code=code+256;
-      interruptflags=interruptflags | 0x10;
+    if(hw->getMT()->isItemRunningOut()==0 && (interruptflags & IS_RUNNING_OUT_STATE) == 0){
+      code=code+LIGHT_BARRIER_END_INTERRUPTED;
+      interruptflags=interruptflags | IS_RUNNING_OUT_STATE;
     }
 
     if(hw->getMT()->isItemRunningOut()!=0 && (interruptflags & 0x10) != 0){
-      code=code+512;
+      code=code+LIGHT_BARRIER_END_NOT_INTERRUPTED;
       interruptflags=interruptflags-0x10;
     }
 
 // Button Interrupts.
 
-    if(hw->getHMI()->isButtonEStopPressed()==0){
-      code=code+1024;
+    if(hw->getHMI()->isButtonEStopPressed() == 0){
+      code=code+ESTOP;
     }
     if(hw->getHMI()->isButtonResetPressed() > 0){
-    	code=code+2048;
+    	code=code+RESET;
     }
     if(hw->getHMI()->isButtonStartPressed() > 0){
-    	code=code+4096;
+    	code=code+START;
     }
-    if(hw->getHMI()->isButtonStopPressed() ==0){
-    	code=code+8192;
+    if(hw->getHMI()->isButtonStopPressed() == 0){
+    	code=code+STOP;
     }
 
     //Hinweise:
@@ -101,7 +97,7 @@ const struct sigevent* ISR_AIO(void* arg, int id) {
     int code = 0;
 
     if(in8(0x321) & 0x80){
-    	code = code + 16384;
+    	code = code + ALTIMETRY_COMPLETED;
     }
 
     event->sigev_value.sival_int = code;
@@ -114,6 +110,7 @@ const struct sigevent* ISR_AIO(void* arg, int id) {
 
     return NULL;
 }
+
 void registerISR(void){
 
     if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1){

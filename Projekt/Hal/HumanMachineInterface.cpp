@@ -51,6 +51,7 @@ uint8_t HumanMachineInterface::turnLedQ1Off() {
 	LOG_DEBUG << "Led Q10 aus.";
 	return 0;
 }
+
 uint8_t HumanMachineInterface::turnLedQ2On() {
 	adapter->setBitMask(hmiLedQ2Bitmask_);
 	LOG_DEBUG << "Led Q20 an.";

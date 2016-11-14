@@ -1,7 +1,4 @@
-#include <Logger/Logger.h>
-#include <iostream>
-#include <fstream>
-#include <string>
+#include "Logger/Logger.h"
 
 LOG_LEVEL Logger::getLoggingLevel()
 {

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foerderband: Thread/SignalHandlerThread.h Quellcode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Foerderband
+   &#160;<span id="projectnumber">0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_c211989d999a6a303a2b08461c3c22b8.html">Thread</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">SignalHandlerThread.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_thread_2_signal_handler_thread_8h.html">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef SIGNALHANDLERTHREAD_H_</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define SIGNALHANDLERTHREAD_H_</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;hw/inout.h&gt;</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_logger_8h.html">Logger/Logger.h</a>&quot;</span></div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_h_waccess_8h.html">src/lib/HWaccess.h</a>&quot;</span></div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_h_a_w_thread_8h.html">src/lib/HAWThread.h</a>&quot;</span></div><div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_f_s_m_2_context_8h.html">FSM/Context.h</a>&quot;</span></div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_interrupt_handler_8h.html">Hal/ISR/InterruptHandler.h</a>&quot;</span></div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">using namespace </span><a class="code" href="namespacethread.html">thread</a>;</div><div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div><div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code" href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#a6d681673a747ebd2a1081956c60eab7d">coid</a>;</div><div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">extern</span> <span class="keyword">struct </span>sigevent <a class="code" href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#a098cf06afe8e07f0e3a7b627dff0c552">isrtEvent_</a>;</div><div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">int</span> <a class="code" href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#ab83e6ae3fe04c77821d71057e99990e4">isrtConnection_</a>;</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div><div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">class </span><a class="code" href="class_signal_handler_thread.html">SignalHandlerThread</a> : <span class="keyword">public</span> <a class="code" href="classthread_1_1_h_a_w_thread.html">HAWThread</a> {</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div><div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="class_signal_handler_thread.html">SignalHandlerThread</a>();</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="class_signal_handler_thread.html">SignalHandlerThread</a>();</div><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">private</span>:</div><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_signal_handler_thread.html">SignalHandlerThread</a>(<span class="keyword">const</span> <a class="code" href="class_signal_handler_thread.html">SignalHandlerThread</a>&amp; b);</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> execute(<span class="keywordtype">void</span>*);</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> shutdown();</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SIGNALHANDLERTHREAD_H_ */</span><span class="preprocessor"></span></div><div class="ttc" id="classthread_1_1_h_a_w_thread_html"><div class="ttname"><a href="classthread_1_1_h_a_w_thread.html">thread::HAWThread</a></div><div class="ttdef"><b>Definition:</b> HAWThread.h:30</div></div>
+<div class="ttc" id="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h_html_a6d681673a747ebd2a1081956c60eab7d"><div class="ttname"><a href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#a6d681673a747ebd2a1081956c60eab7d">coid</a></div><div class="ttdeci">int coid</div><div class="ttdef"><b>Definition:</b> SignalHandlerThread.cpp:3</div></div>
+<div class="ttc" id="_h_a_w_thread_8h_html"><div class="ttname"><a href="_h_a_w_thread_8h.html">HAWThread.h</a></div></div>
+<div class="ttc" id="_interrupt_handler_8h_html"><div class="ttname"><a href="_interrupt_handler_8h.html">InterruptHandler.h</a></div></div>
+<div class="ttc" id="class_signal_handler_thread_html"><div class="ttname"><a href="class_signal_handler_thread.html">SignalHandlerThread</a></div><div class="ttdef"><b>Definition:</b> SignalHandlerThread.h:24</div></div>
+<div class="ttc" id="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h_html_a098cf06afe8e07f0e3a7b627dff0c552"><div class="ttname"><a href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#a098cf06afe8e07f0e3a7b627dff0c552">isrtEvent_</a></div><div class="ttdeci">struct sigevent isrtEvent_</div><div class="ttdef"><b>Definition:</b> SignalHandlerThread.cpp:9</div></div>
+<div class="ttc" id="_logger_8h_html"><div class="ttname"><a href="_logger_8h.html">Logger.h</a></div></div>
+<div class="ttc" id="_h_waccess_8h_html"><div class="ttname"><a href="_h_waccess_8h.html">HWaccess.h</a></div></div>
+<div class="ttc" id="_f_s_m_2_context_8h_html"><div class="ttname"><a href="_f_s_m_2_context_8h.html">Context.h</a></div></div>
+<div class="ttc" id="namespacethread_html"><div class="ttname"><a href="namespacethread.html">thread</a></div><div class="ttdef"><b>Definition:</b> HAWThread.cpp:17</div></div>
+<div class="ttc" id="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h_html_ab83e6ae3fe04c77821d71057e99990e4"><div class="ttname"><a href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html#ab83e6ae3fe04c77821d71057e99990e4">isrtConnection_</a></div><div class="ttdeci">int isrtConnection_</div><div class="ttdef"><b>Definition:</b> SignalHandlerThread.cpp:7</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

@@ -1,13 +1,12 @@
-/*
- * ConfigUpdaterThread.h
- *
- *  Created on: 11.10.2016
- *      Author: marvin
- */
-
 #ifndef CONFIGUPDATERTHREAD_H_
 #define CONFIGUPDATERTHREAD_H_
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um die Signale zu verarbeiten.
+ */
 class ConfigUpdaterThread
 {
 public:

@@ -1,13 +1,4 @@
-/*
- * ParameterList.cpp
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
 #include "ConfigManagement/ParameterList.h"
-#include <vector>
-#include <Logger/Logger.h>
 
 void ParameterList::showParameters()
 {

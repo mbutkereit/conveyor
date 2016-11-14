@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foerderband: FSM/Context.h Quellcode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Foerderband
+   &#160;<span id="projectnumber">0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_ffa6bce6df141826c96ab6faab07a6f6.html">FSM</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle">
+<div class="title">Context.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="_f_s_m_2_context_8h.html">gehe zur Dokumentation dieser Datei</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef CONTEXT_H_</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define CONTEXT_H_</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_logger_8h.html">Logger/Logger.h</a>&quot;</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_hal_builder_8h.html">Hal/HalBuilder.h</a>&quot;</span></div><div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_hal_builder.html">HalBuilder</a> <a class="code" href="_f_s_m_2_context_8h.html#a150c49d0f49ad0bbff3e8e7c1e32aef5">hb</a>; </div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div><div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_context.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_context.html">Context</a> {</div><div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div><div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">public</span>:</div><div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_context.html#a652cdcd2eedc8dbd9110bd284c5d5cf0">Context</a>();</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_context.html#a2d34e4556448e40693f61d15e091b604">~Context</a>();</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a08df75859b851d2eca2d8e379214d6b5">signalLBBeginInterrupted</a>();</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a9e9d5d85cafe8b295193f01fd2b7a8ee">signalLBEndInterrupted</a>();</div><div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div><div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#af78ea1902addcf137e8e7d99431592c6">signalLBAltimetryInterrupted</a>();</div><div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#afdd121a466cf690038ede9b8c2a04160">signalLBSwitchInterrupted</a>();</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a9528945480d5072126031a6ce0d20b99">signalLBBeginNotInterrupted</a>();</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a6debf81836f13909119658b40e32fe1c">signalLBEndNotInterrupted</a>();</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#acf97db4d70e7246a1d06e4166ece5de5">signalLBAltimetryNotInterrupted</a>();</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a4fd603eec47acc8a3671b7bdd3bdfe6d">signalLBSwitchNotInterrupted</a>();</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a18bc1a709e3db9477e133f545f7cf66a">signalEStop</a>();</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a9fbe4299614bae2f11e92ed56cde640c">signalStart</a>();</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#ac729f3e2184382006588a438622f235f">signalStop</a>();</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a59ea683658907374dbe23125c11b1e93">signalReset</a>();</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a41c95a05dffe3e6d89ebe5a6522e3a6a">signalLBSkidInterrupted</a>();</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a54d07729fce18877b7fa671e5622c2cd">signalLBSkidNotInterrupted</a>();</div><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div><div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_context.html#a01e833c79e6ca0d21b419b3f6af9bbdc">signalAltimetryCompleted</a>();</div><div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;};</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* CONTEXT_H_ */</span><span class="preprocessor"></span></div><div class="ttc" id="class_context_html_a652cdcd2eedc8dbd9110bd284c5d5cf0"><div class="ttname"><a href="class_context.html#a652cdcd2eedc8dbd9110bd284c5d5cf0">Context::Context</a></div><div class="ttdeci">Context()</div><div class="ttdef"><b>Definition:</b> Context.cpp:3</div></div>
+<div class="ttc" id="class_context_html_a6debf81836f13909119658b40e32fe1c"><div class="ttname"><a href="class_context.html#a6debf81836f13909119658b40e32fe1c">Context::signalLBEndNotInterrupted</a></div><div class="ttdeci">void signalLBEndNotInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:18</div></div>
+<div class="ttc" id="_f_s_m_2_context_8h_html_a150c49d0f49ad0bbff3e8e7c1e32aef5"><div class="ttname"><a href="_f_s_m_2_context_8h.html#a150c49d0f49ad0bbff3e8e7c1e32aef5">hb</a></div><div class="ttdeci">HalBuilder hb</div><div class="ttdef"><b>Definition:</b> conveyor.cc:9</div></div>
+<div class="ttc" id="class_context_html_afdd121a466cf690038ede9b8c2a04160"><div class="ttname"><a href="class_context.html#afdd121a466cf690038ede9b8c2a04160">Context::signalLBSwitchInterrupted</a></div><div class="ttdeci">void signalLBSwitchInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:31</div></div>
+<div class="ttc" id="class_context_html_acf97db4d70e7246a1d06e4166ece5de5"><div class="ttname"><a href="class_context.html#acf97db4d70e7246a1d06e4166ece5de5">Context::signalLBAltimetryNotInterrupted</a></div><div class="ttdeci">void signalLBAltimetryNotInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:26</div></div>
+<div class="ttc" id="class_context_html_a18bc1a709e3db9477e133f545f7cf66a"><div class="ttname"><a href="class_context.html#a18bc1a709e3db9477e133f545f7cf66a">Context::signalEStop</a></div><div class="ttdeci">void signalEStop()</div><div class="ttdef"><b>Definition:</b> Context.cpp:39</div></div>
+<div class="ttc" id="class_context_html_a9fbe4299614bae2f11e92ed56cde640c"><div class="ttname"><a href="class_context.html#a9fbe4299614bae2f11e92ed56cde640c">Context::signalStart</a></div><div class="ttdeci">void signalStart()</div><div class="ttdef"><b>Definition:</b> Context.cpp:42</div></div>
+<div class="ttc" id="class_context_html_a9e9d5d85cafe8b295193f01fd2b7a8ee"><div class="ttname"><a href="class_context.html#a9e9d5d85cafe8b295193f01fd2b7a8ee">Context::signalLBEndInterrupted</a></div><div class="ttdeci">void signalLBEndInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:15</div></div>
+<div class="ttc" id="class_context_html_a41c95a05dffe3e6d89ebe5a6522e3a6a"><div class="ttname"><a href="class_context.html#a41c95a05dffe3e6d89ebe5a6522e3a6a">Context::signalLBSkidInterrupted</a></div><div class="ttdeci">void signalLBSkidInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:52</div></div>
+<div class="ttc" id="class_context_html_a2d34e4556448e40693f61d15e091b604"><div class="ttname"><a href="class_context.html#a2d34e4556448e40693f61d15e091b604">Context::~Context</a></div><div class="ttdeci">virtual ~Context()</div><div class="ttdef"><b>Definition:</b> Context.cpp:5</div></div>
+<div class="ttc" id="class_context_html_a59ea683658907374dbe23125c11b1e93"><div class="ttname"><a href="class_context.html#a59ea683658907374dbe23125c11b1e93">Context::signalReset</a></div><div class="ttdeci">void signalReset()</div><div class="ttdef"><b>Definition:</b> Context.cpp:48</div></div>
+<div class="ttc" id="_logger_8h_html"><div class="ttname"><a href="_logger_8h.html">Logger.h</a></div></div>
+<div class="ttc" id="class_context_html_a08df75859b851d2eca2d8e379214d6b5"><div class="ttname"><a href="class_context.html#a08df75859b851d2eca2d8e379214d6b5">Context::signalLBBeginInterrupted</a></div><div class="ttdeci">void signalLBBeginInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:7</div></div>
+<div class="ttc" id="class_context_html_ac729f3e2184382006588a438622f235f"><div class="ttname"><a href="class_context.html#ac729f3e2184382006588a438622f235f">Context::signalStop</a></div><div class="ttdeci">void signalStop()</div><div class="ttdef"><b>Definition:</b> Context.cpp:45</div></div>
+<div class="ttc" id="_hal_builder_8h_html"><div class="ttname"><a href="_hal_builder_8h.html">HalBuilder.h</a></div></div>
+<div class="ttc" id="class_context_html_a9528945480d5072126031a6ce0d20b99"><div class="ttname"><a href="class_context.html#a9528945480d5072126031a6ce0d20b99">Context::signalLBBeginNotInterrupted</a></div><div class="ttdeci">void signalLBBeginNotInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:11</div></div>
+<div class="ttc" id="class_context_html_af78ea1902addcf137e8e7d99431592c6"><div class="ttname"><a href="class_context.html#af78ea1902addcf137e8e7d99431592c6">Context::signalLBAltimetryInterrupted</a></div><div class="ttdeci">void signalLBAltimetryInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:22</div></div>
+<div class="ttc" id="class_hal_builder_html"><div class="ttname"><a href="class_hal_builder.html">HalBuilder</a></div><div class="ttdef"><b>Definition:</b> HalBuilder.h:27</div></div>
+<div class="ttc" id="class_context_html_a01e833c79e6ca0d21b419b3f6af9bbdc"><div class="ttname"><a href="class_context.html#a01e833c79e6ca0d21b419b3f6af9bbdc">Context::signalAltimetryCompleted</a></div><div class="ttdeci">void signalAltimetryCompleted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:59</div></div>
+<div class="ttc" id="class_context_html"><div class="ttname"><a href="class_context.html">Context</a></div><div class="ttdef"><b>Definition:</b> Context.h:16</div></div>
+<div class="ttc" id="class_context_html_a54d07729fce18877b7fa671e5622c2cd"><div class="ttname"><a href="class_context.html#a54d07729fce18877b7fa671e5622c2cd">Context::signalLBSkidNotInterrupted</a></div><div class="ttdeci">void signalLBSkidNotInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:55</div></div>
+<div class="ttc" id="class_context_html_a4fd603eec47acc8a3671b7bdd3bdfe6d"><div class="ttname"><a href="class_context.html#a4fd603eec47acc8a3671b7bdd3bdfe6d">Context::signalLBSwitchNotInterrupted</a></div><div class="ttdeci">void signalLBSwitchNotInterrupted()</div><div class="ttdef"><b>Definition:</b> Context.cpp:35</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>

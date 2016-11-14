@@ -2,10 +2,7 @@
 
 Hardware* HalBuilder::instance_ = NULL;
 
-HalBuilder::HalBuilder():adapterA(new Adapter(BASEADRESS_A)), adapterB(new Adapter(BASEADRESS_B)), adapterC(new Adapter(BASEADRESS_C)),adapterD(new Adapter(BASEADRESS_D))
-{
-
-}
+HalBuilder::HalBuilder():adapterA(new Adapter(BASEADRESS_A)), adapterB(new Adapter(BASEADRESS_B)), adapterC(new Adapter(BASEADRESS_C)),adapterD(new Adapter(BASEADRESS_D)){}
 
 HalBuilder::~HalBuilder(){}
 

@@ -7,6 +7,12 @@
 #include "Hal/TrafficLight.h"
 #include "Hal/Altimetry.h"
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class Hardware
 {
 	public:

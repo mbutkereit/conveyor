@@ -1,10 +1,3 @@
-/*
- * Altimetry.cpp
- *
- *  Created on: 10.11.2016
- *      Author: abx827
- */
-
 #include "Altimetry.h"
 
 Altimetry::Altimetry(Adapter* adapt):adapter(adapt) {

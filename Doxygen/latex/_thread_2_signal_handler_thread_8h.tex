@@ -1,0 +1,64 @@
+\hypertarget{_thread_2_signal_handler_thread_8h}{}\section{Thread/\+Signal\+Handler\+Thread.h-\/\+Dateireferenz}
+\label{_thread_2_signal_handler_thread_8h}\index{Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}}
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$hw/inout.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Logger/\+Logger.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}src/lib/\+H\+Waccess.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}src/lib/\+H\+A\+W\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}F\+S\+M/\+Context.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Hal/\+I\+S\+R/\+Interrupt\+Handler.\+h\char`\"{}}\newline
+Include-\/\+Abhängigkeitsdiagramm für Signal\+Handler\+Thread.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_thread_2_signal_handler_thread_8h__incl}
+\end{center}
+\end{figure}
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{_thread_2_signal_handler_thread_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Klassen}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_signal_handler_thread}{Signal\+Handler\+Thread}
+\end{DoxyCompactItemize}
+\subsection*{Variablen}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_thread_2_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d}{coid}
+\item 
+struct sigevent \hyperlink{_thread_2_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552}{isrt\+Event\+\_\+}
+\item 
+int \hyperlink{_thread_2_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4}{isrt\+Connection\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Ausführliche Beschreibung}
+\hypertarget{_config_updater_thread_8h_DESCRIPTION}{}\subsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{_config_updater_thread_8h_DESCRIPTION}
+Eine Klasse um die Signale zu verarbeiten. 
+
+\subsection{Variablen-\/\+Dokumentation}
+\hypertarget{_thread_2_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d}{}\label{_thread_2_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d} 
+\index{Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}!coid@{coid}}
+\index{coid@{coid}!Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{coid}{coid}}
+{\footnotesize\ttfamily int coid}
+
+\hypertarget{_thread_2_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4}{}\label{_thread_2_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4} 
+\index{Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}!isrt\+Connection\+\_\+@{isrt\+Connection\+\_\+}}
+\index{isrt\+Connection\+\_\+@{isrt\+Connection\+\_\+}!Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{isrt\+Connection\+\_\+}{isrtConnection\_}}
+{\footnotesize\ttfamily int isrt\+Connection\+\_\+}
+
+\hypertarget{_thread_2_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552}{}\label{_thread_2_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552} 
+\index{Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}!isrt\+Event\+\_\+@{isrt\+Event\+\_\+}}
+\index{isrt\+Event\+\_\+@{isrt\+Event\+\_\+}!Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{isrt\+Event\+\_\+}{isrtEvent\_}}
+{\footnotesize\ttfamily struct sigevent isrt\+Event\+\_\+}
+

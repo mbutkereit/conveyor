@@ -1,21 +1,4 @@
-/*
- * ConfigFile.cpp
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
-#include <ConfigManagement/ConfigFile.h>
-#include "ConfigFile.h"
-
-#include <fstream>
-#include <iostream>
-#include <Logger/Logger.h>
-
-#include <stdlib.h>
-#include <ConfigManagement/ParameterBase.h>
-#include <ConfigManagement/Parameter.h>
-#include <ConfigManagement/ParameterList.h>
+#include "ConfigManagement/ConfigFile.h"
 
 std::string trim(std::string const& source, char const* delims = " \t\r\n")
 {

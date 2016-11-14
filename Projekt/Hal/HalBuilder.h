@@ -18,6 +18,12 @@
 #define CONTROL_ADDRESS_0 0x303 ///<
 #define CONTROL_BITMASK 0x8A    ///<
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class HalBuilder
 {
 public:
