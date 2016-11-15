@@ -9,11 +9,12 @@
 #include "src/lib/HAWThread.h"
 #include "FSM/Context.h"
 #include "Hal/ISR/InterruptHandler.h"
+
 using namespace thread;
 
-extern int coid;
-extern struct sigevent isrtEvent_;
-extern int isrtConnection_;
+extern int coid; ///<
+extern struct sigevent isrtEvent_; ///<
+extern int isrtConnection_; ///<
 
 /**
  * @file

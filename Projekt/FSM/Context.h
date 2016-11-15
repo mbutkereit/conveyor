@@ -5,60 +5,57 @@
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 
-extern HalBuilder hb; ///<
+extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 /**
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * Eine Klasse die einen Context aus dem State Pattern darstellt.
+ * (Soll verwendet werden um den ersten Automaten zu Implementieren.)
  */
 class Context {
 
 public:
+
+    /**
+     *  Constructor des Contexts.
+     */
 	Context();
+
+    /**
+      *  Destructor des Contexts.
+      */
     virtual ~Context();
 
     /**
-         *  Constructor des Adapters.
-         *
-         *  @param baseaddress Die Baseaddress die verwenden werden soll.
-         */
+ * @todo Ausstehende implementierung Dokumentieren.
+     */
 	void signalLBBeginInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	     */
+ * @todo Ausstehende implementierung Dokumentieren.
+	 */
 	void signalLBEndInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	     */
+ * @todo Ausstehende implementierung Dokumentieren.
+	 */
 	void signalLBAltimetryInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	     */
+ * @todo Ausstehende implementierung Dokumentieren.
+	 */
 	void signalLBSwitchInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	     */
+ * @todo Ausstehende implementierung Dokumentieren.
+	 */
 	void signalLBBeginNotInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	     */
+     * @todo Ausstehende implementierung Dokumentieren.
+	 */
 	void signalLBEndNotInterrupted();
 
 	/**
@@ -69,58 +66,42 @@ public:
 	void signalLBAltimetryNotInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalLBSwitchNotInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalEStop();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalStart();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalStop();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalReset();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalLBSkidInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalLBSkidNotInterrupted();
 
 	/**
-	     *  Constructor des Adapters.
-	     *
-	     *  @param baseaddress Die Baseaddress die verwenden werden soll.
+ * @todo Ausstehende implementierung Dokumentieren.
 	     */
 	void signalAltimetryCompleted();
 };

@@ -5,7 +5,7 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um die Signale zu verarbeiten.
+ * Eine Klasse um die Config zur laufzeit neu ein zu lesen.
  */
 class ConfigUpdaterThread
 {

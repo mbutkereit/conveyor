@@ -16,7 +16,7 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * Eine Klasse um ein Config file zu verwalten.
  */
 class ConfigFile {
 

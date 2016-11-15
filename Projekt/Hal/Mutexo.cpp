@@ -1,13 +1,10 @@
 #include "Hal/Mutexo.h"
 
-
 Mutexo::Mutexo(){
 	pmutex_ = PTHREAD_MUTEX_INITIALIZER;
 }
 
-Mutexo::~Mutexo(){
-
-}
+Mutexo::~Mutexo(){}
 
 int Mutexo::lock() {
     return pthread_mutex_lock(&pmutex_);

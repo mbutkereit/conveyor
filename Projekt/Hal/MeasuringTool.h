@@ -10,13 +10,15 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * Eine Klasse um den Zustand der Messinstrumente auszulesen.
  */
 class MeasuringTool {
 public:
 
     /**
      *  Constructor des MeasuringTools.
+     *
+     *  @param adapt Adapter für die Steuerung des Measuring Tools.
      */
 	MeasuringTool(Adapter* adapt);
 
@@ -26,63 +28,66 @@ public:
 	virtual ~MeasuringTool();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob ein Item aktuell die Anfangs LS unterbricht.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemRunningIn();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob ein Item aktuell die Hoehenmessungs LS unterbricht.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemAltimetry();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob ein Item in der Hoehenmessung im Toleranz berreich ist.
+     *
+     *  0 = Werkstück zu klein oder zu groß
+     *  1 = Werkstückhöhe ist im Toleranzbereich
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemInAltimetryToleranceRange();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob ein Item aktuell die Weichen LS unterbricht.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemSwitch();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob das Item unter dem ... aus Metal ist.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemMetal();
 
     /**
-     * Oeffnet den .
+     *  Ueberprueft ob die Weiche offen ist.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isSwitchOpen();
 
     /**
-     * Oeffnet den .
+     *  Checkt ob ein Item aktuell die Rutschen LS unterbricht.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isSkidFull();
 
     /**
-     *  .
+     *  Checkt ob ein Item aktuell die End LS unterbricht.
      *
      * @return Gibt 0 zurueck bei FALSE ansonsten ein Wert >0.
      */
     uint8_t isItemRunningOut();
 
 private:
-    uint8_t itemRunningBitmask__; ///< Bitmask um herauszufinde ob ein Item in der Anfangs LR ist.
+    uint8_t itemRunningBitmask_; ///< Bitmask um herauszufinde ob ein Item in der Anfangs LR ist.
     uint8_t itemAltimetryBitmask_; ///< Bitmask um herauszufinde ob ein Item in der Hoehenmessung ist.
     uint8_t itemInAltimetryToleranceRangeBitmask_; ///< Bitmask um herauszufinde ob ein Item in der Hoehenmessung im Toleranzbereich ist.
     uint8_t itemSwitchBitmask_; ///< Bitmask um herauszufinde ob ein Item in der Weiche ist.

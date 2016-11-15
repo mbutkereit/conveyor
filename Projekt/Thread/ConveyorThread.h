@@ -4,13 +4,15 @@
 #include <pthread.h>
 #include "src/lib/HWaccess.h"
 #include "src/lib/HAWThread.h"
+#include "Hal/HalBuilder.h"
+
 using namespace thread;
 
 /**
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um die Signale zu verarbeiten.
+ * Eine Klasse um einen Thread fuer die Ample stuerung zu starten.
  */
 class ConveyorThread: public HAWThread {
 public:

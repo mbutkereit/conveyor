@@ -18,6 +18,8 @@ public:
 
     /**
      *  Constructor des Motors.
+     *
+   *  @param adapt Adapter für die Steuerung des Motors.
      */
     Motor(Adapter* adapt);
 

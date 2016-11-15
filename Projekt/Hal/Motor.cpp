@@ -9,11 +9,7 @@ Motor::Motor(Adapter* adapt):adapter(adapt)
 	weicheaufBitmask_ = 0x10;
 }
 
-Motor::~Motor()
-{
-
-}
-
+Motor::~Motor(){}
 
 uint8_t Motor::right(){
 	adapter->removeBitMask(motorstoppBitmask_);

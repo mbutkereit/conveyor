@@ -60,8 +60,3 @@ void Context::signalAltimetryCompleted(){
     LOG_DEBUG  << "Hoehenmessung: " << hb.getHardware()->getAltimetry()->getHeight() << "\n"  <<std::endl;
 	LOG_DEBUG  << "Signal Hoehenmessung ist fertig.!!" <<std::endl;
 }
-
-
-
-
-

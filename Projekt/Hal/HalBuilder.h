@@ -22,67 +22,75 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * Eine Klasse um ein Hardware Objekt zu erstellen (Singelton like).
  */
 class HalBuilder
 {
 public:
+
+    /**
+     *  Constructor des HalBuilders.
+     */
     HalBuilder();
+
+    /**
+     *  Destructor des HalBuilders
+     */
     virtual ~HalBuilder();
 
     /**
-     * Oeffnet den .
+     * Getter fuer die Hardware.
      *
-     * @return Gibt Konstant 0 zurueck.
+     * @return Gibt das Singelton der fertigen Hardware zurueck.
      */
     Hardware* getHardware();
 private:
-    Adapter* adapterA; ///<
-    Adapter* adapterB; ///<
-    Adapter* adapterC; ///<
-    Adapter* adapterD; ///<
-    static Hardware* instance_; ///<
-    Mutexo mutex; ///<
+    Adapter* adapterA; ///< Adapter fuer den Port A der DIO.
+    Adapter* adapterB; ///< Adapter fuer den Port D der DIO.
+    Adapter* adapterC; ///< Adapter fuer den Port C der DIO.
+    Adapter* adapterD; ///< Adapter fuer den Port A der AIO.
+    static Hardware* instance_; ///< Singleton Speicher.
+    Mutexo mutex; ///< Mutex um die instanzierung des Singelton sicher zustellen.
 
     /**
-         * Oeffnet den .
+         * Baut die Hardware aus den Unterobjekten.
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt die gebaute Hardware zurueck.
          */
     Hardware* buildHardware();
 
     /**
          * Oeffnet den .
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt das gebaute HumanMachineInterface zurueck.
          */
     HumanMachineInterface* buildHumanMachineInterface();
 
     /**
          * Oeffnet den .
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt das gebaute Motor zurueck.
          */
     Motor* buildMotor();
 
     /**
          * Oeffnet den .
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt das gebaute TrafficLight zurueck.
          */
     TrafficLight* buildTrafficLights();
 
     /**
          * Oeffnet den .
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt das gebaute MeasuringTool zurueck.
          */
     MeasuringTool* buildMeasuringTool();
 
     /**
          * Oeffnet den .
          *
-         * @return Gibt Konstant 0 zurueck.
+         * @return Gibt das gebaute Altimetry zurueck.
          */
     Altimetry* buildAltimetry();
 };

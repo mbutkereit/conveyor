@@ -1,7 +1,7 @@
 #include "MeasuringTool.h"
 
 MeasuringTool::MeasuringTool(Adapter* adapt):adapter(adapt) {
-	itemRunningBitmask__ = 0x01;
+	itemRunningBitmask_ = 0x01;
 	itemAltimetryBitmask_ = 0x02;
 	itemInAltimetryToleranceRangeBitmask_ = 0x04;
 	itemSwitchBitmask_ = 0x08;

@@ -109,4 +109,3 @@ void ConfigFile::refresehConfig(){
     }
     file.close();
 }
-
