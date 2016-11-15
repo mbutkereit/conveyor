@@ -5,16 +5,14 @@
 {\ttfamily \#include $<$cstdlib$>$}\newline
 {\ttfamily \#include $<$hw/inout.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Hal/\+Hal\+Builder.\+h\char`\"{}}\newline
-Include-\/\+Abhängigkeitsdiagramm für Interrupt\+Handler.\+h\+:
-\nopagebreak
+Include-\/\+Abhängigkeitsdiagramm für Interrupt\+Handler.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_interrupt_handler_8h__incl}
 \end{center}
 \end{figure}
-Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
-\nopagebreak
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -83,7 +81,7 @@ void \hyperlink{_interrupt_handler_8h_a6b47b94bea6857baac4d86fabea1cc67}{unregis
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_hal_builder}{Hal\+Builder} \hyperlink{_interrupt_handler_8h_a150c49d0f49ad0bbff3e8e7c1e32aef5}{hb}
-\item 
+\begin{DoxyCompactList}\small\item\em Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. \end{DoxyCompactList}\item 
 int \hyperlink{_interrupt_handler_8h_a6d681673a747ebd2a1081956c60eab7d}{coid}
 \item 
 struct sigevent \hyperlink{_interrupt_handler_8h_a098cf06afe8e07f0e3a7b627dff0c552}{isrt\+Event\+\_\+}
@@ -290,6 +288,10 @@ Entfernt die beiden I\+SR vom System.
 \index{hb@{hb}!Interrupt\+Handler.\+h@{Interrupt\+Handler.\+h}}
 \subsubsection{\texorpdfstring{hb}{hb}}
 {\footnotesize\ttfamily \hyperlink{class_hal_builder}{Hal\+Builder} hb}
+
+
+
+Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. 
 
 \hypertarget{_interrupt_handler_8h_abc70f26448dcffe2152c77bc02ff62a3}{}\label{_interrupt_handler_8h_abc70f26448dcffe2152c77bc02ff62a3} 
 \index{Interrupt\+Handler.\+h@{Interrupt\+Handler.\+h}!isrt\+Channel\+\_\+@{isrt\+Channel\+\_\+}}

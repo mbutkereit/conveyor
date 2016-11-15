@@ -8,7 +8,8 @@ var indexSectionsWithContent =
   5: "cdhinpv",
   6: "l",
   7: "dew",
-  8: "abceilrs"
+  8: "abceilrs",
+  9: "a"
 };
 
 var indexSectionNames =
@@ -21,7 +22,8 @@ var indexSectionNames =
   5: "variables",
   6: "enums",
   7: "enumvalues",
-  8: "defines"
+  8: "defines",
+  9: "pages"
 };
 
 var indexSectionLabels =
@@ -34,6 +36,7 @@ var indexSectionLabels =
   5: "Variablen",
   6: "Aufzählungen",
   7: "Aufzählungswerte",
-  8: "Makrodefinitionen"
+  8: "Makrodefinitionen",
+  9: "Seiten"
 };
 

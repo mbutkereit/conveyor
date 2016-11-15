@@ -3,16 +3,14 @@
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include \char`\"{}Logger/\+Logger.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Hal/\+Hal\+Builder.\+h\char`\"{}}\newline
-Include-\/\+Abhängigkeitsdiagramm für Context.\+h\+:
-\nopagebreak
+Include-\/\+Abhängigkeitsdiagramm für Context.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_f_s_m_2_context_8h__incl}
 \end{center}
 \end{figure}
-Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
-\nopagebreak
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,12 +26,12 @@ class \hyperlink{class_context}{Context}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{class_hal_builder}{Hal\+Builder} \hyperlink{_f_s_m_2_context_8h_a150c49d0f49ad0bbff3e8e7c1e32aef5}{hb}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Ausführliche Beschreibung}
 \hypertarget{_config_updater_thread_8h_DESCRIPTION}{}\subsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{_config_updater_thread_8h_DESCRIPTION}
-Eine Klasse um den \hyperlink{class_motor}{Motor} des Foerderbandes an zu sprechen. 
+Eine Klasse die einen \hyperlink{class_context}{Context} aus dem State Pattern darstellt. (Soll verwendet werden um den ersten Automaten zu Implementieren.) 
 
 \subsection{Variablen-\/\+Dokumentation}
 \hypertarget{_f_s_m_2_context_8h_a150c49d0f49ad0bbff3e8e7c1e32aef5}{}\label{_f_s_m_2_context_8h_a150c49d0f49ad0bbff3e8e7c1e32aef5} 
@@ -41,4 +39,8 @@ Eine Klasse um den \hyperlink{class_motor}{Motor} des Foerderbandes an zu sprech
 \index{hb@{hb}!F\+S\+M/\+Context.\+h@{F\+S\+M/\+Context.\+h}}
 \subsubsection{\texorpdfstring{hb}{hb}}
 {\footnotesize\ttfamily \hyperlink{class_hal_builder}{Hal\+Builder} hb}
+
+
+
+Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. 
 

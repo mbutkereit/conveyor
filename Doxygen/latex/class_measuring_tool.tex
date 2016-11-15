@@ -45,7 +45,14 @@ uint8\+\_\+t \hyperlink{class_measuring_tool_a0941de19234c2026359e4cc973f7bb1b}{
 \subsubsection{\texorpdfstring{Measuring\+Tool()}{MeasuringTool()}}
 {\footnotesize\ttfamily Measuring\+Tool\+::\+Measuring\+Tool (\begin{DoxyParamCaption}\item[{\hyperlink{class_adapter}{Adapter} $\ast$}]{adapt }\end{DoxyParamCaption})}
 
-Constructor des Measuring\+Tools. \hypertarget{class_measuring_tool_a35667285cd41bda48fcc747194c862cd}{}\label{class_measuring_tool_a35667285cd41bda48fcc747194c862cd} 
+Constructor des Measuring\+Tools.
+
+
+\begin{DoxyParams}{Parameter}
+{\em adapt} & \hyperlink{class_adapter}{Adapter} für die Steuerung des Measuring Tools. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_measuring_tool_a35667285cd41bda48fcc747194c862cd}{}\label{class_measuring_tool_a35667285cd41bda48fcc747194c862cd} 
 \index{Measuring\+Tool@{Measuring\+Tool}!````~Measuring\+Tool@{$\sim$\+Measuring\+Tool}}
 \index{````~Measuring\+Tool@{$\sim$\+Measuring\+Tool}!Measuring\+Tool@{Measuring\+Tool}}
 \subsubsection{\texorpdfstring{$\sim$\+Measuring\+Tool()}{~MeasuringTool()}}
@@ -60,7 +67,7 @@ Destructor der Ampel.
 \subsubsection{\texorpdfstring{is\+Item\+Altimetry()}{isItemAltimetry()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+Altimetry (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob ein Item aktuell die Hoehenmessungs LS unterbricht.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -71,7 +78,9 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Item\+In\+Altimetry\+Tolerance\+Range()}{isItemInAltimetryToleranceRange()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+In\+Altimetry\+Tolerance\+Range (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob ein Item in der Hoehenmessung im Toleranz berreich ist.
+
+0 = Werkstück zu klein oder zu groß 1 = Werkstückhöhe ist im Toleranzbereich
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -82,7 +91,7 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Item\+Metal()}{isItemMetal()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+Metal (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob das Item unter dem ... aus Metal ist.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -93,7 +102,7 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Item\+Running\+In()}{isItemRunningIn()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+Running\+In (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob ein Item aktuell die Anfangs LS unterbricht.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -104,6 +113,8 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Item\+Running\+Out()}{isItemRunningOut()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+Running\+Out (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Checkt ob ein Item aktuell die End LS unterbricht.
+
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
 \end{DoxyReturn}
@@ -113,7 +124,7 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Item\+Switch()}{isItemSwitch()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Item\+Switch (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob ein Item aktuell die Weichen LS unterbricht.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -124,7 +135,7 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Skid\+Full()}{isSkidFull()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Skid\+Full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Checkt ob ein Item aktuell die Rutschen LS unterbricht.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
@@ -135,7 +146,7 @@ Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0.
 \subsubsection{\texorpdfstring{is\+Switch\+Open()}{isSwitchOpen()}}
 {\footnotesize\ttfamily uint8\+\_\+t Measuring\+Tool\+::is\+Switch\+Open (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Oeffnet den .
+Ueberprueft ob die Weiche offen ist.
 
 \begin{DoxyReturn}{Rückgabe}
 Gibt 0 zurueck bei F\+A\+L\+SE ansonsten ein Wert $>$0. 
