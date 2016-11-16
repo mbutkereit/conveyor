@@ -15,7 +15,7 @@ MeasuringTool::~MeasuringTool() {
 }
 
 uint8_t MeasuringTool::isItemRunningIn() {
-	return adapter->checkBitMask(itemRunningBitmask__);
+	return adapter->checkBitMask(itemRunningBitmask_);
 }
 ;
 uint8_t MeasuringTool::isItemAltimetry() {
