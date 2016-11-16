@@ -96,11 +96,15 @@ const struct sigevent* ISR_AIO(void* arg, int id) {
     event->sigev_notify = SIGEV_PULSE;
     int code = 0;
 
+    //@todo Ueberlegen ob man dort irgendwie noch ein Adapter benutzt.
     if(in8(0x321) & 0x80){
     	code = code + ALTIMETRY_COMPLETED;
     }
 
     event->sigev_value.sival_int = code;
+
+    //@todo Ueberlegen ob man das nicht besser auslagern kann.
+    // Entfernen der Interrupts fuer den ADC.
     out8(0x321,0b00000100);
     out8(INTERRUPT_RESET_AIO, 0);
 
@@ -124,7 +128,11 @@ void registerISR(void){
         exit(EXIT_FAILURE);
     }
 
+
     out8(INTERRUPT_RESET_DIO, 0);
+
+    //@todo Ueberlegen ob man das nicht besser auslagern kann.
+    // Einstellen der Interrupts fuer die DIO.
     out8(0x30B, 0b11111001);
 
     SIGEV_PULSE_INIT(&isrtEvent_, isrtConnection_, SIGEV_PULSE_PRIO_INHERIT, 0, 0);
@@ -134,6 +142,10 @@ void registerISR(void){
     }
 
     out8(INTERRUPT_RESET_AIO, 0);
+
+
+    //@todo Ueberlegen ob man das nicht besser auslagern kann.
+    // Aktivieren der AIO.
     out8(0x321, 0b10000100);
 
     SIGEV_PULSE_INIT(&isrtEvent_2, isrtConnection_, SIGEV_PULSE_PRIO_INHERIT, 0, 0);
@@ -148,6 +160,8 @@ void unregisterISR(void){
         exit(EXIT_FAILURE);
     }
 
+    //@todo Ueberlegen ob man das nicht besser auslagern kann.
+    // Reset der Interrupt konfiguration fuer die DIO.
     out8(0x30B, 0b11111111);
     out8(INTERRUPT_RESET_DIO,0);
 
@@ -155,6 +169,8 @@ void unregisterISR(void){
         exit(EXIT_FAILURE);
     }
 
+    //@todo Ueberlegen ob man das nicht besser auslagern kann.
+    // Reset der Interrupt konfiguration fuer die AIO.
     out8(0x321,  0b11111111);
     out8(INTERRUPT_RESET_AIO, 0);
 }

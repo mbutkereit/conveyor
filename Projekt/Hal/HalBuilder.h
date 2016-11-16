@@ -10,13 +10,13 @@
 #include "Hal/Mutexo.h"
 
 
-#define BASEADRESS_A 0x300 ///<
-#define BASEADRESS_B 0x301 ///<
-#define BASEADRESS_C 0x302 ///<
-#define BASEADRESS_D 0x320 ///<
+#define BASEADRESS_A 0x300 ///< Die Basisaddresse um auf den Port A zu zugreifen.
+#define BASEADRESS_B 0x301 ///< Die Basisaddresse um auf den Port B zu zugreifen.
+#define BASEADRESS_C 0x302 ///< Die Basisaddresse um auf den Port C zu zugreifen.
+#define BASEADRESS_D 0x320 ///< Die Basisaddresse um auf die AIO zu zugreifen.
 
-#define CONTROL_ADDRESS_0 0x303 ///<
-#define CONTROL_BITMASK 0x8A    ///<
+#define CONTROL_ADDRESS_0 0x303 ///< Controll Addresse um die Ports A - C zu konfigurieren als In oder Out.
+#define CONTROL_BITMASK 0x8A    ///< Die benoetigte Configuration fuer die Controll Addresse.
 
 /**
  * @file
@@ -60,35 +60,35 @@ private:
     Hardware* buildHardware();
 
     /**
-         * Oeffnet den .
+         * Baut das HumanMachineInterface aus den Unterobjekten.
          *
          * @return Gibt das gebaute HumanMachineInterface zurueck.
          */
     HumanMachineInterface* buildHumanMachineInterface();
 
     /**
-         * Oeffnet den .
+         * Baut den Motor aus den Unterobjekten.
          *
          * @return Gibt das gebaute Motor zurueck.
          */
     Motor* buildMotor();
 
     /**
-         * Oeffnet den .
+         * Baut die TrafficLights aus den Unterobjekten.
          *
          * @return Gibt das gebaute TrafficLight zurueck.
          */
     TrafficLight* buildTrafficLights();
 
     /**
-         * Oeffnet den .
+         * Baut das MeasuringTool aus den Unterobjekten.
          *
          * @return Gibt das gebaute MeasuringTool zurueck.
          */
     MeasuringTool* buildMeasuringTool();
 
     /**
-         * Oeffnet den .
+         * Baut die Altimetry aus den Unterobjekten.
          *
          * @return Gibt das gebaute Altimetry zurueck.
          */

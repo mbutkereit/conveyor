@@ -13,43 +13,42 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um die Ampel des Foerderbandes zu Steuern.
+ * Eine Klasse um die Hoehenmessung des Foerderbandes zu Steuern.
  */
 class Altimetry {
 public:
 
     /**
-     *  Constructor der Ampel
+     *  Constructor der Altimetry.
      *
      *  @param adapt Adapter für die Steuerung der Ampel.
      */
 	Altimetry(Adapter* adapt);
 
 	  /**
-	   *  Constructor der Ampel
-	   *
-	   *  @param adapt Adapter für die Steuerung der Ampel.
+	   *  Destructor der Altimetry.
 	   */
 	virtual ~Altimetry();
 
 	/**
-	     * Oeffnet den .
+	     * Gibt die aktuell berechnete hoehe zurueck.
+	     *(Dieses ist ein uint16_t wert hat aber nur maximal 12 bit gesetzt).
 	     *
-	     * @return Gibt Konstant 0 zurueck.
+	     * @return Gibt den Wert aus der Letzten Hoehenmessung zurueck.
 	     */
 	uint16_t getHeight();
 
 	/**
-	 * Oeffnet den .
-	 *
-	 * @return Gibt Konstant 0 zurueck.
+	 * Gibt die Berechnung der Hoehe frei welche
+	 * wenn das Ergebnis berechnet ist eine
+	 * Pulse Message an den SignalHandler schickt.
 	 */
 	void startAltimetry();
 private:
-    uint8_t readLowAddressOffset;  ///<
-    uint8_t readHighAddressOffset; ///<
-    uint8_t	startConversionOpCode; ///<
-    uint16_t only12BitBitmask;     ///<
+    uint8_t readLowAddressOffset;  ///< Addresse um die Niederwertigen Anteil des Ergebenises aus zu lesen.
+    uint8_t readHighAddressOffset; ///< Addresse um den Hoeherwertigen Anteil des Ergebenises aus zu lesen.
+    uint8_t	startConversionOpCode; ///< Befehl um die Hoehenmessung zu starten.
+    uint16_t only12BitBitmask;     ///< Helfer Bitmask um die Ueberfluessigen Bits zu entfernen. (Besser auswertbare Ergebnise)
 
     Adapter* adapter;              ///< Der Adapter mit der Baseadresse.
 };

@@ -17,12 +17,12 @@ class HumanMachineInterface
 public:
 
     /**
-     *  Constructor des HumanMachineInterface
+     *  Constructor des HumanMachineInterface.
      */
     HumanMachineInterface(Adapter* adapt);
 
     /**
-     *  Constructor des HumanMachineInterface
+     *  Constructor des HumanMachineInterface.
      */
     virtual ~HumanMachineInterface();
 

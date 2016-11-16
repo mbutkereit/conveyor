@@ -11,7 +11,7 @@
  * @file
  * @section DESCRIPTION
  *
- * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ * Eine Klasse um einen einfach Zugriff auf die Hal zu ermöglichen
  */
 class Hardware
 {
