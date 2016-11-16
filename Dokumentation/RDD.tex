@@ -1,5 +1,7 @@
 % das Papierformat zuerst
 \documentclass[a4paper, 11pt]{article}
+%more colors
+\usepackage[dvipsnames]{xcolor}
 % deutsche Silbentrennung
 \usepackage[ngerman]{babel}
 % wegen deutschen Umlauten
@@ -34,6 +36,9 @@
 \usepackage{tabularx}
 %um die landscape Umgebung zu nutzen (Querformat)
 \usepackage{pdflscape}
+%Stellt eine caption-Anweisung mit direkter Angabe des Gleitumgebungstyps bereit.
+\usepackage{capt-of}
+\usepackage{caption}
 
 %ermöglicht Anführungsstriche unten und oben
 \newcommand{\su}{\glqq} %unten
@@ -108,6 +113,8 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \hline
 0.3&Mehmet Cakir&2016-11-03&Testtabellen umformatiert. Tests zu Grundfunktionen, HAL\_UML, Systemgrenzen, Systemarchitektur und Visualisierungsentscheidung sowie entsprechend kurzen Text hinzugefügt.\\
 \hline
+0.4&Mehmet Cakir&2016-11-16&Neugliederung der Kapitel 4 und 7, Systemkontexte zusammengeführt, verwendete Werkzeuge ergänzt, Zeitmessung und FSM/HSM eingepflegt, diverse Umformulierungen.\\
+\hline
 \end{tabularx}
 \label{changes}
 \end{table}
@@ -177,7 +184,7 @@ Systemarchitektur&Komponentendiagramm\\
 \end{table}
 
 \subsection{PSP/Zeitplan/Tracking}
-Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann. Dazu wurden Arbeitspakete definiert
+Zu jedem Praktikumstermin wird erwartet, dass die verteilten Aufgaben bzw. Milestones erfüllt werden. Um dies zu gewährleisten, muss jedes Teammitglied bei Schwierigkeiten andere Teammitglieder darüber sofort in Kenntnis setzen, damit frühzeitig ausgeholfen werden kann. Dazu wurden Arbeitspakete definiert und als Milestones in einem Gantt-Diagramm festgehalten.
 \subsection{Qualitätssicherung}
 Hinsichtlich der Qualitätssicherung, werden die vier Punkte Team, Modellierung, Code und Förderband herangezogen.
 \medskip
@@ -200,12 +207,15 @@ Die drei Förderbänder werden über drei QNX Systeme gesteuert, die über eine 
 \subsection{Werkzeuge}
 \begin{compactenum}[-]
 \item QNX Momentics IDE 5.0
-\item Latex
-\item Git(GitHub)
+\item Latex(MiKTeX 2.9, Texmaker 4.5)
+\item Git 2.8.1
+\item Visual Paradigm 13.2
+\item Gantt Project 2.8.1
+\item Microsoft Visio 2016
 \end{compactenum}
 
 \subsection{Sprachen}
-Das System wird in C++ 03 programmiert. Die dazukommenden Bibliotheken sind in folgender Tabelle \ref{bibl} aufgelistet:
+Das System wird in C++ 03 programmiert. Dabei werden vorgegebene Bibliotheken verwendet, welche in folgender Tabelle \ref{bibl} aufgelistet sind:
 \medskip
 \begin{table}[h]
 \center
@@ -228,8 +238,7 @@ Lock.h&0.1&Simon Brummer \\
 
 \section{Requirements and Use Cases}
 Mithilfe der Requirements werden die Anforderungen an die einzelnen Komponenten des Förderbandes ermittelt. Dabei werden die Interessen der Stakeholder berücksichtigt.
-\subsection{Systemebene}
-\subsubsection{Stakeholder}
+\subsection{Stakeholder}
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|X|X|}
@@ -260,7 +269,7 @@ Bediener (Mitarbeiter, die das Laufband später bedienen sollen)&\begin{compacte
 \item einfache und intuitive Bedienung
 \end{compactenum}\\
 \hline
-Instanthalter&\begin{compactenum}[-]
+Instandhalter&\begin{compactenum}[-]
               \item robustes System
               \end{compactenum}\\
 \hline
@@ -275,7 +284,7 @@ Andere Mitarbeiter&\begin{compactenum}[-]
 
 \newpage
 
-\subsubsection{Anforderungen}
+\subsection{Anforderungen}
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|X|X|}
@@ -370,9 +379,11 @@ Fehlererfassung: Beide Rutschen voll + Reaktion&Es soll erkannt werden, wenn bei
 \end{table}
 
 \newpage
+\subsection{Systemkontext}
+Zum Systemkontext fallen Anforderungen aus Sicht der Software und des Systems an. Während bei der Software die Ansteuerung der Komponenten eines Förderbandes und die dazugehörigen Schnittstellen anfallen, ist aus Sicht der Systemebene die Kommunikation der Komponenten eines Förderbandes unter sich aber auch die der drei Förderbänder miteinander nötig. 
 
-\subsubsection{Systemkontext}
-Im Folgenden sind die Methodennamen der Ereignisse aufgelistet, die zur Ansteuerung der einzelnen Komponenten ausgelöst sowie Ereignisse, die mithilfe der Sensoren erfasst werden. Die Methodennamen der erfassbaren Ereignisse beginnen mit \su is\so. 
+\subsubsection{Softwareebene}
+Im Folgenden sind die Schnittstellen der Ereignisse aufgelistet, die zur Ansteuerung der einzelnen Komponenten ausgelöst sowie Ereignisse, die mithilfe der Sensoren erfasst werden. Die Methodennamen der erfassbaren Ereignisse beginnen mit \su is\so. 
 \textbf{Port A (Ausgabeport)}
 \begin{table}[h]
 \center
@@ -523,58 +534,11 @@ Taste E-Stopp&\begin{compactenum}[]
 
 \newpage
 
-\subsubsection{Use Cases}
-
-\begin{compactenum}[1.]
-\item \textbf{Flache Werkstücke aussortieren}
-\medskip
-
-Akteure: Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
-\medskip
-
-Auslösendes Ereignis: Höhenmessung erkennt das flache Werkstück.
-\medskip
-
-Kurzbeschreibung: Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
-\bigskip
-
-\item \textbf{Werkstückdaten ausgeben}
-\medskip
-
-Akteure: Lichtschranke, Display
-\medskip
-
-Auslösendes Ereignis: Die Lichtschranke auf Band 2 wird durchquert.
-\medskip
-
-Kurzbeschreibung: Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
-\bigskip
-
-\item \textbf{Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge}
-\medskip
-
-Akteure: Lichtschranke, Mitarbeiter (nimmt die Werkstücke in Empfang), Weiche
-\medskip
-
-Auslösendes Ereignis: Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
-\medskip
-
-Kurzbeschreibung: Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($\text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben mit Metall}$) ausgegeben.
-\end{compactenum}
-
-\subsection{Systemanalyse}
-\textcolor{red}{Ihr technisches System hat aus Sicht der Software bestimmte Eigenschaften. Was muss man für die Entwicklung der Software in Struktur, Schnittstellen, Verhalten und an Besonderheiten wissen? Wählen sie eine Kapitelstruktur, die am besten zur Dokumentation ihrer Ergebnisse geeignet ist.}
-
-\subsection{Softwareebene}
-\textcolor{red}{Sie sollen Software für die Steuerung des technischen Systems erstellen. Aus den Anforderungen auf der Systemebene und der Systemanalyse ergeben sich Anforderungen für Ihre Software. Insbesondere wird sich die Software der beiden Anlagenteile in einigen Punkten unterscheiden. Dokumentieren sie hier die Anforderungen, die sich speziell für die Software ergeben haben.}
-
-\newpage
-
-\subsubsection{Systemkontext}
+\subsubsection{Systemebene}
 Die nachfolgende Abbildung \ref{syskont} visualisiert die Systemgrenzen der Förderbandanlage. Dabei sind die dazugehörigen Sensoren und Aktoren abgebildet durch welche eine Förderbandanlage mit der Umwelt und seiner Nachbarsysteme kommuniziert. Die Tabellen \ref{senstasks} und \ref{acttasks} listen die Aufgaben der Sensoren und Aktoren auf.
 
 \begin{figure}[h]
-\centering 
+\hspace{-1.2cm}
 \includegraphics[scale=0.6]{images/Systemkontext.pdf}
 \caption{Systemgrenzen der Förderbandanlage mit Sensoren und Aktoren}
 \label{syskont}
@@ -626,13 +590,57 @@ Serielle Schnittstelle&Ermöglicht das Versenden von Datenpaketen an andere Nach
 
 \newpage
 
-\subsubsection{Anforderungen}
-\textcolor{red}{Welche wesentlichen Anforderungen ergeben sich aus den Systemanforderungen für ihre Software? Achten sie auf die entsprechende Attribuierung. Berücksichtigen sie auch mögliche Fehlbedienungen und Fehlverhalten des Systems.}
+\subsection{Use Cases}
 
-\section{Design}
-\textcolor{red}{Anmerkung: Die Implementierung MUSS zu Ihrem Design-Modell konsistent sein. Strukturen, Verhalten und Bezeichner im Code müssen mit dem Modell übereinstimmen. Daher ist ein wohlüberlegtes Design wichtig.}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{X}
+
+\begin{compactenum}[1.]
+\item \textbf{Flache Werkstücke aussortieren}
+\medskip
+
+Akteure: Mitarbeiter (legt die Werkstücke auf das Band), Höhenmessung, Weiche
+\medskip
+
+Auslösendes Ereignis: Höhenmessung erkennt das flache Werkstück.
+\medskip
+
+Kurzbeschreibung: Die flachen Werkstücke werden auf Band 1 mit der Höhenmessung erkannt und über die Weiche aussortiert.
+\bigskip
+
+\item \textbf{Werkstückdaten ausgeben}
+\medskip
+
+Akteure: Lichtschranke, Display
+\medskip
+
+Auslösendes Ereignis: Die Lichtschranke auf Band 2 wird durchquert.
+\medskip
+
+Kurzbeschreibung: Wenn ein Werkstück das Ende von Band 2 erreicht, werden die Werkstückdaten auf dem Display ausgegeben.
+\bigskip
+
+\item \textbf{Ausgabe der Werkstücke auf Band 3 in der richtigen Reihenfolge}
+\medskip
+
+Akteure: Lichtschranke, Mitarbeiter (nimmt die Werkstücke in Empfang), Weiche
+\medskip
+
+Auslösendes Ereignis: Es sind die drei richtigen Werkstücke auf Band 3 vorhanden.
+\medskip
+
+Kurzbeschreibung: Auf Band 3 werden jeweils 3 Werkstücke gebündelt in der richtigen Reihenfolge ($\text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben ohne Metall}\rightarrow \text{Bohrung oben mit Metall}$) ausgegeben.
+\end{compactenum}
+\end{tabularx}
+%\caption{Tabellenunterschrift}
+\label{ucs}
+\end{table}
 
 \newpage
+
+\section{Design}
+Im Designentwurf sind Systemarchitektur, Datenmodellierung und Verhaltensmodellierung der Förderbänder enthalten.
 
 \subsection{Systemarchitektur}
 Die Systemarchitektur setzt sich aus den internen Architekturen der drei Förderbänder und der Architektur des Gesamtsystems, welche die Schnittstellen der drei Förderbänder zueinander darstellt, zusammen.
@@ -705,36 +713,77 @@ Interband Kommunikation&Empfängt bzw. versendet serialisierte Datenpakete.\\
 
 \newpage
 
-\subsection{Datenmodellierung} 
+\subsection{Datenmodellierung}
 Die Modellierung der Klassen und dessen Methoden sind mithilfe von UML-Diagrammen realisiert.
 \subsubsection{HAL}
-Mit Der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuert. Dabei wird jede Hardwarekomponente nach dem Singleton-Pattern instanziiert. Abbildung \ref{haluml} stellt alle Klassen zur HAL mit ihren Methoden dar.
+Mit Der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuert. Dabei wird jede Hardwarekomponente nach dem Singleton-Pattern instanziiert. Die nachfolgende Abbildung \hyperref[sec:umlhal]{5} stellt alle Klassen zur HAL mit ihren Methoden dar.
+\newpage
+
+\includepdf[scale=1,pages=1,offset=0 50, pagecommand=
+\vspace*{21.5cm}
+\hspace*{3cm} Abbildung 5: UML-Diagramm zur HAL]{images/HAL_UML.pdf}\label{sec:umlhal}
+\newpage
+
+\subsection{Zeitmessung}
+Auf allen Förderbändern muss jeweils eine Zeitmessung durchgeführt werden, um Zeiten zu erfassen, mit denen im Normalbetrieb unsachgemäß hinzugefügte Werkstücke oder das Verschwinden von Werkstücken erkannt werden kann.
+
+\subsubsection{Vorbedingungen}
+Für die Zeitmessung muss eine ähnliche Routine laufen, die auch im Normalbetrieb für die Förderbänder ablaufen wird, wobei Messvorgänge ausgelassen werden und ggf. das Werkstück bedingungslos durchgelassen wird. Falls in der Routine Geschwindigkeitsänderungen des Bandes vorliegen, müssen diese jedoch miteinbezogen werden, nur die aktive Messung nicht.
+Da das Band der jeweiligen Förderbänder nicht perfekt geführt wird und der Timer eine relativ hohe Zeitauflösung hat, müssen \textbf{best} und \textbf{worst case} Zeiten ermittelt werden. 
+
+\subsubsection{Ausführung}
+Für den \textbf{\textcolor{ForestGreen}{best case}} wird das Werkstück beim Hinzufügen von der ersten Lichtschranke aus gesehen am \textbf{\textcolor{ForestGreen}{linken Rand}} der Führung angelegt, während beim \textbf{\textcolor{OrangeRed}{worst case}} am \textbf{\textcolor{OrangeRed}{rechten Rand}} angelegt werden muss. Dabei muss das Werkstück die erste Lichtschranke auch unterbrechen, was trivialerweise auch im Normalbetrieb beim Hinzufügen weiterer Werkstücke beachtet werden muss! Die Zeitmessung beginnt, nachdem das Werkstück die Lichtschranke am Anfang nicht mehr unterbricht. Unterbricht das Werkstück die nachfolgenden Lichtschranken, wird jeweils die Zeit gestoppt. Die nachfolgende Abbildung \hyperref[sec:Messpunkte]{6} zeigt wann die Zeiten $t_0, t_H, t_W$ und $t_E$ erfasst werden.
+
 \begin{figure}[h]
 \centering 
-\includegraphics[scale=0.6]{images/HAL_UML.pdf}
-\caption{UML-Diagramm zur HAL}
-\label{haluml}
+\includegraphics[scale=0.6]{images/Zeitmessung_Platzierung.png}
+\caption*{Abbildung 6: Stoppen der Zeit an den Lichtschranken: \textit{LS\_A, LS\_H, LS\_W, LS\_E}}
+\label{sec:Messpunkte}
 \end{figure}
+\noindent \textit{LS\_A}: Lichtschranke-Anfang, 
+\textit{LS\_H}: Lichtschranke-Höhenmessung, 
+\textit{LS\_W}: Lichtschranke-Weiche, 
+\textit{LS\_E}: Lichtschranke-Ende.\\
+
+\noindent Auf der nachfolgenden Seite ist der endliche Automat in Abbildung \hyperref[sec:timemeasure]{7} zur Zeitmessung abgebildet.
+
+\includepdf[scale=0.9,pages=1, landscape=true, offset=0 20, pagecommand=
+\vspace*{25cm}
+\hspace*{3cm} Abbildung 7: FSM zur Zeitmessung]{images/Zeitmessung_FSM.pdf}\label{sec:timemeasure}
+
+\newpage
 
 \subsection{Verhaltensmodellierung}
-\textcolor{red}{Ihre Software muss zur Bearbeitung der Aufgaben ein Verhalten aufweisen. Überlegen sie sich dieses Verhalten auf Basis der Anforderungen und modellieren sie das Verhalten unter Verwendung von Verhaltensdiagrammen. Sie können für die Spezifikation der Prozess-Lenkung entweder Petri-Netze oder hierarchische Automaten verwenden. Die Modelle können mit Hilfe eines UML-Tools erstellt werden. Hier sind dann kommentierte Übersichtsbilder einzufügen.}
+Das Verhalten der drei Förderbänder ist mithilfe von hierarchischen Zustandsautomaten realisiert. Nach der Durchführung einer Zeitmessung, sind alle drei Förderbänder bereit für den Normalbetrieb. Die Abbildungen \hyperref[sec:hsm1]{8}, \hyperref[sec:hsm2]{9} und \hyperref[sec:hsm3]{10} auf den folgenden Seiten bilde die Förderbänder 1, 2 und 3 ab.
 
+\newpage
+
+\includepdf[scale=0.87,pages=2, landscape=true, offset=0 13, pagecommand=
+\vspace*{25cm}
+\hspace*{3cm} Abbildung 8: HSM zu Förderband 1]{FSM/Statemachines.pdf}\label{sec:hsm1}
+
+\newpage
+
+\includepdf[scale=0.86,pages=4, landscape=true, offset=0 15, pagecommand=
+\vspace*{24.9cm}
+\hspace*{3cm} Abbildung 9: HSM zu Förderband 2]{FSM/Statemachines.pdf}\label{sec:hsm2}
+
+\newpage
+
+\includepdf[scale=0.86,pages=6, landscape=true, offset=0 13, pagecommand=
+\vspace*{24.9cm}
+\hspace*{3cm} Abbildung 10: HSM zu Förderband 3]{FSM/Statemachines.pdf}\label{sec:hsm3}
+
+\newpage
 \section{Implementierung}
 \textcolor{red}{Anmerkung: Nur wichtige Implementierungsdetails sollen hier erklärt werden. Code-Beispiele (snippets) können hier aufgelistet werden, um der Erklärung zu dienen. 
 Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
 }
 
 \section{Testen}
-\textcolor{red}{Machen sie sich auf Basis ihrer Überlegungen zur Qualitätssicherung Gedanken darüber, wie sie die Erfüllung der Anforderungen möglichst automatisiert im Rahmen von Unit-Test, Komponententest, Integrationstest, Systemtest, Regressionstest und Abnahmetest überprüfen werden.}
+Das Testen der Förderbänder findet nach Fertigstellung von Milestones statt, welche die Ansteuerung der Förderbänder sowie deren Kommunikation untereinander enthalten. Die Tests reichen von essentiellen Ansteuerungstests einzelner Komponenten der Förderbänder bis hin zur Ablaufsteuerung über alle drei Bänder. Für die Abnahme werden speziell komplexere Tests durchgeführt.
 
-\subsection{Testplan}
-\textcolor{red}{Definieren sie Zeitpunkte für die jeweiligen Teststufen in ihrer Projektplanung. Dazu können sie die Meilensteine zu Hilfe nehmen.}
-
-\newpage
-
-\subsection{Testkonzept}
-Bei den Tests werden zum Einen die Grundfunktionen bzw. die Ansteuerung aller einzelnen Komponenten in Tabelle \ref{tstg1} und zum Anderen der logische Ablauf in Tabelle \ref{tstl1} zur Sortierung überprüft.
-\subsubsection{Grundfunktionen}
+\subsection{HAL der Aktorik}
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|l|X|X|X|}
@@ -784,11 +833,23 @@ Bei den Tests werden zum Einen die Grundfunktionen bzw. die Ansteuerung aller ei
 21&Led Q2 aus&Ja&\\
 \hline
 \end{tabularx}
-\caption{Testauswertung zur Grundfunktion}
+\caption{Testauswertung zur HAL der Aktorik}
 \label{tstg1}
 \end{table}
 
-\subsubsection{Logischer Ablauf} 
+\subsection{HAL der Sensorik}
+\textcolor{red}{Hier erscheinen bald die Tests zu der HAL der Sensorik sowie deren Auswertung.}
+
+\subsection{Serielle Schnittstelle}
+\textcolor{red}{Hier erscheinen bald die Tests zu der seriellen Schnittstelle sowie deren Auswertung.}
+
+\subsection{Anlagensteuerung pro Band}
+\textcolor{red}{Hier erscheinen bald die Tests zur Anlagensteuerung pro Band sowie deren Auswertung.}
+
+\subsection{Ablaufsteuerung über alle drei Bänder}
+\textcolor{red}{Hier erscheinen bald die Tests zur Ablaufsteuerung über alle drei Bänder sowie deren Auswertung.}
+
+\subsection{Testkonzept für die Abnahme} 
 \begin{table}[h]
 \center
 \begin{tabularx}{\textwidth}{|l|X|X|X|}
@@ -803,19 +864,6 @@ Bei den Tests werden zum Einen die Grundfunktionen bzw. die Ansteuerung aller ei
 \hline
 4&Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
 \hline
-\end{tabularx}
-\caption{Testauswertung zum logischen Ablauf(Teil 1)}
-\label{tstl1}
-\end{table}
-
-\newpage
-
-\begin{table}[h]
-\center
-\begin{tabularx}{\textwidth}{|l|X|X|X|}
-\hline
-\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
-\hline
 5&Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
 \hline
 6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
@@ -828,26 +876,28 @@ Bei den Tests werden zum Einen die Grundfunktionen bzw. die Ansteuerung aller ei
 \hline
 10&Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
 \hline
-11&Am Ende vom Band 2 werden die Werkstückdaten ausgegeben auf der Konsole&&\\
+\end{tabularx}
+\caption{Testauswertung der Abnahmetests(Teil 1)}
+\label{tstl1}
+\end{table}
+
+\newpage
+
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\hline
+
 12&Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
 \hline
 13&Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
 \hline
 \end{tabularx}
-\caption{Testauswertung zum logischen Ablauf(Teil 2)}
+\caption{Testauswertung der Abnahmetests(Teil 2)}
 \label{tstl2}
 \end{table}
-
-\newpage
-
-\subsection{Abnahmetest}
-\textcolor{red}{Leiten sie die Abnahmebedingungen aus den Kunden-Anforderungen her. Dokumentieren sie hier, welche Schritte für die Abnahme erforderlich sind und welches Ergebnis jeweils erwartet wird (Test Cases).}
-
-\subsection{Testprotokolle und Auswertungen}
-\textcolor{red}{Hier fügen sie die Test Protokolle bei, auch wenn Fehler bereits beseitigt worden sind, ist es schön zu wissen, welche Fehler einst aufgetaucht sind. Eventuelle Anmerkung zur Fehlerbehandlung kann für weitere Entwicklungen hilfreich sein.
-Das letzte Testprotokoll ist das Abnahmeprotokoll, das bei der abschließenden Vorführung erstellt wird. Es enthält eine Auflistung der erfolgreich vorgeführten Funktionen des Systems sowie eine Mängelliste mit Erklärungen der Ursachen der Fehlfunktionen und Vorschlägen zur Abhilfe
-}
 
 \section{Lessons Learned}
 \textcolor{red}{Führen sie ein Teammeeting durch in dem gesammelt wird, was gut gelaufen war, was schlecht gelaufen war und was man im nächsten Projekt (z.B. im PO) besser machen will. Listen sie für die Aspekte jeweils mindestens drei Punkte auf. Weitere Erfahrungen und Erkenntnisse können hier ebenso kommentiert werden, auch Anregungen für die Weiterentwicklung des Praktikums.}
