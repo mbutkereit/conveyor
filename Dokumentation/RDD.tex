@@ -50,7 +50,7 @@
 \newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
 
 %Versionsnummer
-\newcommand{\version}{0.3}
+\newcommand{\version}{0.5}
 
 % Tabellenabschnitt linksbündig
 \newcommand{\ltab}{\raggedright\arraybackslash}
@@ -109,11 +109,13 @@ Cakir&Mehmet&2195657&mehmet.cakir@haw-hamburg.de
 \hline
 0.1&Mehmet Cakir&2016-10-18&Kapitel 1-4 und Testkonzept\\
 \hline
-0.2&Mehmet Cakir&2016-10-26&Korrekturen an Formulierung, Visualisierungen noch nicht festgelegt\\
+0.2&Mehmet Cakir&2016-10-26&Korrekturen an Formulierung, Visualisierungen noch nicht festgelegt.\\
 \hline
 0.3&Mehmet Cakir&2016-11-03&Testtabellen umformatiert. Tests zu Grundfunktionen, HAL\_UML, Systemgrenzen, Systemarchitektur und Visualisierungsentscheidung sowie entsprechend kurzen Text hinzugefügt.\\
 \hline
 0.4&Mehmet Cakir&2016-11-16&Neugliederung der Kapitel 4 und 7, Systemkontexte zusammengeführt, verwendete Werkzeuge ergänzt, Zeitmessung und FSM/HSM eingepflegt, Abbildung 6 zur Zeiterfassung aktualisiert, diverse Umformulierungen.\\
+\hline
+0.5&Mehmet Cakir&2016-11-17&Aktualisiertes UML-Klassendiagramm der HAL und Tests der Sensorik eingefügt.\\
 \hline
 \end{tabularx}
 \label{changes}
@@ -716,12 +718,12 @@ Interband Kommunikation&Empfängt bzw. versendet serialisierte Datenpakete.\\
 \subsection{Datenmodellierung}
 Die Modellierung der Klassen und dessen Methoden sind mithilfe von UML-Diagrammen realisiert.
 \subsubsection{HAL}
-Mit Der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuert. Dabei wird jede Hardwarekomponente nach dem Singleton-Pattern instanziiert. Die nachfolgende Abbildung \hyperref[sec:umlhal]{5} stellt alle Klassen zur HAL mit ihren Methoden dar.
+Mit der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuert. Dabei wird jede Hardwarekomponente nach dem Singleton-Pattern instanziiert. Die nachfolgende Abbildung \hyperref[sec:umlhal]{5} stellt alle Klassen zur HAL mit ihren Methoden dar.
 \newpage
 
-\includepdf[scale=1,pages=1,offset=0 50, pagecommand=
-\vspace*{21.5cm}
-\hspace*{3cm} Abbildung 5: UML-Diagramm zur HAL]{images/HAL_UML.pdf}\label{sec:umlhal}
+\includepdf[scale=1, landscape=true, pages=1,offset=0 0, pagecommand=
+\vspace*{25cm}
+\hspace*{3cm} Abbildung 5: UML-Diagramm zur HAL]{images/HAL_UML.jpg}\label{sec:umlhal}
 \newpage
 
 \subsection{Zeitmessung}
@@ -777,7 +779,7 @@ Das Verhalten der drei Förderbänder ist mithilfe von hierarchischen Zustandsau
 \newpage
 \section{Implementierung}
 \textcolor{red}{Anmerkung: Nur wichtige Implementierungsdetails sollen hier erklärt werden. Code-Beispiele (snippets) können hier aufgelistet werden, um der Erklärung zu dienen. 
-Anmerkung: Bitte KEINE ganze Programme hierhin kopieren!
+Anmerkung: Bitte KEINE ganzen Programme hierhin kopieren!
 }
 
 \section{Testen}
@@ -788,57 +790,102 @@ Das Testen der Förderbänder findet nach Fertigstellung von Milestones statt, w
 \center
 \begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
 \hline
-1&Rote Lampe an&Ja&\\
+1&Rote Lampe an.&Ja&\\
 \hline
-2&Rote Lampe aus&Ja&\\
+2&Rote Lampe aus.&Ja&\\
 \hline
-3&Gelbe Lampe an&Ja&\\
+3&Gelbe Lampe an.&Ja&\\
 \hline
-4&Gelbe Lampe aus&Ja&\\
+4&Gelbe Lampe aus.&Ja&\\
 \hline
-5&Grüne Lampe an&Ja&\\
+5&Grüne Lampe an.&Ja&\\
 \hline
-6&Grüne Lampe aus&Ja&\\
+6&Grüne Lampe aus.&Ja&\\
 \hline
-7&Motor langsam&Ja&\\
+7&Motor langsam.&Ja&\\
 \hline
-8&Motor schnell&Ja&\\
+8&Motor schnell.&Ja&\\
 \hline
-9&Motor links&Ja&\\
+9&Motor links.&Ja&\\
 \hline
-10&Motor rechts&Ja&\\
+10&Motor rechts.&Ja&\\
 \hline
-11&Motor stoppen&Ja&\\
+11&Motor stoppen.&Ja&\\
 \hline
-12&Weiche auf&Ja&\\
+12&Weiche auf.&Ja&\\
 \hline
-13&Weiche zu&Ja&\\
+13&Weiche zu.&Ja&\\
 \hline
-14&Led Start an&Ja&\\
+14&Led Start an.&Ja&\\
 \hline
-15&Led Start aus&Ja&\\
+15&Led Start aus.&Ja&\\
 \hline
-16&Led Reset an&Ja&\\
+16&Led Reset an.&Ja&\\
 \hline
-17&Led Reset aus&Ja&\\
+17&Led Reset aus.&Ja&\\
 \hline
-18&Led Q1 an&Ja&\\
+18&Led Q1 an.&Ja&\\
 \hline
-19&Led Q1 aus&Ja&\\
+19&Led Q1 aus.&Ja&\\
 \hline
-20&Led Q2 an&Ja&\\
+20&Led Q2 an.&Ja&\\
 \hline
-21&Led Q2 aus&Ja&\\
+21&Led Q2 aus.&Ja&\\
 \hline
 \end{tabularx}
 \caption{Testauswertung zur HAL der Aktorik}
-\label{tstg1}
+\label{tsthal}
 \end{table}
 
+\newpage
+
 \subsection{HAL der Sensorik}
-\textcolor{red}{Hier erscheinen bald die Tests zu der HAL der Sensorik sowie deren Auswertung.}
+\begin{table}[h]
+\center
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
+\hline
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
+\hline
+1&Lichtschranke Anfang unterbrochen.&Ja&\\
+\hline
+2&Lichtschranke Anfang nicht mehr unterbrochen.&Ja&\\
+\hline
+3&Lichtschranke Höhenmessung unterbrochen&Ja&\\
+\hline
+4&Lichtschranke Höhenmessung nicht mehr unterbrochen&Ja&\\
+\hline
+5&Lichtschranke Weiche unterbrochen&Ja&\\
+\hline
+6&Lichtschranke Weiche nicht mehr unterbrochen&Ja&\\
+\hline
+7&Lichtschranke Ende unterbrochen&Ja&\\
+\hline
+8&Lichtschranke Ende nicht mehr unterbrochen&Ja&\\
+\hline
+9&Lichtschranke Rutsche unterbrochen&Ja&\\
+\hline
+10&Lichtschranke Rutsche nicht mehr unterbrochen&Ja&\\
+\hline
+11&E-Stopp betätigt&Ja&\\
+\hline
+12&Stopp betätigt&Ja&\\
+\hline
+13&Start betätigt&Ja&\\
+\hline
+14&Reset betätigt&Ja&\\
+\hline
+15&Korrekte Höhenmessung&Ja&\\
+\hline
+16&Metalldetektion&Ja&\\
+\hline
+\end{tabularx}
+\caption{Testauswertung zur HAL der Sensorik}
+\label{tstsens}
+\end{table}
+
+\newpage
 
 \subsection{Serielle Schnittstelle}
 \textcolor{red}{Hier erscheinen bald die Tests zu der seriellen Schnittstelle sowie deren Auswertung.}
@@ -854,27 +901,27 @@ Das Testen der Förderbänder findet nach Fertigstellung von Milestones statt, w
 \center
 \begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
 \hline
-1&Erkennung der Werkstücke am Anfang des Förderbandes&&\\
+1&Erkennung der Werkstücke am Anfang des Förderbandes.&&\\
 \hline
-2&Flache Werkstücke werden aussortiert&&\\
+2&Flache Werkstücke werden aussortiert.&&\\
 \hline
-3&Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte&&\\
+3&Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte.&&\\
 \hline
-4&Werkstücke mit der Bohrung nach unten werden aussortiert&&\\
+4&Werkstücke mit der Bohrung nach unten werden aussortiert.&&\\
 \hline
-5&Bei Förderband 1, Fehlermeldung bei voller Rutsche&&\\
+5&Bei Förderband 1, Fehlermeldung bei voller Rutsche.&&\\
 \hline
-6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche&&\\
+6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche.&&\\
 \hline
-7&Stopp beim leeren Förderband&&\\
+7&Stopp beim leeren Förderband.&&\\
 \hline
-8&Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+8&Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
 \hline
-9&Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt&&\\
+9&Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
 \hline
-10&Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen&&\\
+10&Am Ende von Band 2 soll die gewünschte Reihenfolge der Werkstücke entstehen.&&\\
 \hline
 \end{tabularx}
 \caption{Testauswertung der Abnahmetests(Teil 1)}
@@ -887,10 +934,10 @@ Das Testen der Förderbänder findet nach Fertigstellung von Milestones statt, w
 \center
 \begin{tabularx}{\textwidth}{|l|X|X|X|}
 \hline
-\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich}&\textbf{Anmerkung}\\
+\textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
 \hline
 
-12&Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole&&\\
+12&Am Ende vom Band 3 werden die Werkstückdaten als 3er Gruppe ausgegeben auf der Konsole.&&\\
 \hline
 13&Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
 \hline
