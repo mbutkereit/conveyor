@@ -14,7 +14,6 @@ USEFILE=
 
 EXTRA_SUFFIXES+=cxx cpp
 
-
 #===== EXTRA_SRCVPATH - a space-separated list of directories to search for source files.
 EXTRA_SRCVPATH+= \
 	$(PROJECT_ROOT)/src  \
@@ -22,9 +21,9 @@ EXTRA_SRCVPATH+= \
 	$(PROJECT_ROOT)/Logger  \
 	$(PROJECT_ROOT)/stateMachine  \
 	$(PROJECT_ROOT)/ConfigManagement  \
-	$(PROJECT_ROOT)/Hal \
-	$(PROJECT_ROOT)/Hal/ISR \
-	$(PROJECT_ROOT)/Hal/SerialInterface \
+	$(PROJECT_ROOT)/Hal  \
+	$(PROJECT_ROOT)/Hal/ISR  \
+	$(PROJECT_ROOT)/Hal/SerialInterface  \
 	$(PROJECT_ROOT)/Entity  \
 	$(PROJECT_ROOT)/Thread  \
 	$(PROJECT_ROOT)/Controller  \
@@ -37,6 +36,9 @@ LDFLAGS+=-lang-c++ -Y _gpp
 
 #===== CCFLAGS - add the flags to the C compiler command line. 
 CCFLAGS+=-Y _gpp
+
+#===== LIBS - a space-separated list of library items to be included in the link.
+LIBS+=cpt_terminal ph phrender
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL
