@@ -7,35 +7,63 @@
 
 #ifndef PUCK_H_
 #define PUCK_H_
+#define NOT_DEFINED -1
 
-	enum Pucktype
+	enum Puckmaterial
 	{
-		METAL, PLASTIC, DRILL_HOLE_UPSIDE, NO_DRILL_HOLE, TYPE404
+		METAL, PLASTIC, TYPE404PM
 	};
+
+	enum Puckdrillhole
+	{
+		DRILL_HOLE_UPSIDE, NO_DRILL_HOLE, TYPE404PH
+	};
+
 class Puck {
 public:
-	Puck(int id, Pucktype t, int h1, int h2): ID(id), ptype(t), heightReading_1(h1), heightReading_2(h2){}
+	Puck(int id): ID(id), puckmaterial(TYPE404PM), puckdrillhole(TYPE404PH), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED){}
 	virtual ~Puck();
 
 	int getHeightReading1() const {
 		return heightReading_1;
 	}
 
+	void setHeightReading1(int heightReading1) {
+		heightReading_1 = heightReading1;
+	}
+
 	int getHeightReading2() const {
 		return heightReading_2;
+	}
+
+	void setHeightReading2(int heightReading2) {
+		heightReading_2 = heightReading2;
 	}
 
 	int getId() const {
 		return ID;
 	}
 
-	Pucktype getPtype() const {
-		return ptype;
+	Puckdrillhole getPuckdrillhole() const {
+		return puckdrillhole;
+	}
+
+	void setPuckdrillhole(Puckdrillhole puckdrillhole) {
+		this->puckdrillhole = puckdrillhole;
+	}
+
+	Puckmaterial getPuckmaterial() const {
+		return puckmaterial;
+	}
+
+	void setPuckmaterial(Puckmaterial puckmaterial) {
+		this->puckmaterial = puckmaterial;
 	}
 
 private:
 	int ID;
-	Pucktype ptype;
+	Puckmaterial puckmaterial;
+	Puckdrillhole puckdrillhole;
 	int heightReading_1;
 	int heightReading_2;
 };

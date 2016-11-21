@@ -15,16 +15,18 @@
 
 #include <iostream>
 #include <ctime>
-#include <vector>
-#include "FSM/Puck.h"
+#include <queue>
+#include <unistd.h>
+#include "Puck.h"
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
+#include "ContextSorting.h"
 using namespace std;
 
 extern HalBuilder hb;
 class Context {
 public:
-	Context(): statePtr(&stateMember)  // assigning start state
+	Context(): statePtr(&stateMember)// assigning start state
     {
 		id++;
     }
@@ -77,7 +79,7 @@ private:
 			hs = *statePtr;
 			if(signalLBSkidNotInterrupted())
 			{
-				if(puckvector.size() >= MAXIMUM_PUCKS)
+				if(puckqueue.size() >= MAXIMUM_PUCKS)
 				{
 					new (this) ConveyorFull;
 				}
@@ -92,14 +94,15 @@ private:
 
 	struct ConveyorFull: public PuckOnConveyor1 {
 		virtual void transact() {
-			while(puckvector.size() >= MAXIMUM_PUCKS)
-			{}
+			hs = *statePtr;
+			while(puckqueue.size() >= MAXIMUM_PUCKS){}
 			new (this) PuckNotInEntry;
 		}
 	};
 
 	struct PuckNotInEntry: public PuckOnConveyor1 {
 		virtual void transact() {
+			hs = *statePtr;
 			hb.getHardware()->getTL()->turnGreenOn();
 			while(signalLBBeginNotInterrupted()){}
 			new (this) MotorOn;
@@ -108,10 +111,12 @@ private:
 
 	struct MotorOn: public PuckOnConveyor1 {
 		virtual void transact() {
+			hs = *statePtr;
 			hb.getHardware()->getMotor()->right();
 			hb.getHardware()->getMotor()->fast();
-			Puck puck(id, TYPE404, -1, -1);
-			puckvector.push_back(puck);
+			puck(id);
+			id++;
+			puckqueue.push(puck);
 			while(signalLBBeginInterrupted()){}
 			t1 = clock();
 			new (this) TransportToHeightMeasurement;
@@ -120,83 +125,189 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
 		virtual void transact() {
+			hs = *statePtr;
 			while(signalLBAltimetryNotInterrupted()){}
-			hb.getHardware()->getMotor()->slow();
+			//t_0 and t_H
 			t2 = clock();
 			delta = t2 - t1;
+			hb.getHardware()->getMotor()->right();
+			hb.getHardware()->getMotor()->slow();
+			//Factor for CLOCK missing!
+			if(delta < DELTA_T0_TH)
+			{
+				new (this) PuckAdded;
+			}
+			else if(delta > DELTA_T0_TH)
+			{
+				new (this) PuckLost;
+			}
+			else
+			{
+				new (this) PuckInHeightMeasurement;
+			}
 		}
 	};
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor1 {
 		virtual void transact() {
-			if (1) // choice point
-				new (this) TransPortToSkid;
+			hs = *statePtr;
+			int height = hb.getHardware()->getAltimetry()->getHeight();
+			puck.setHeightReading1(height);
+			//Height measurementvalues missing!
+			if(height > 1)
+			{
+				puck.setPuckdrillhole(NO_DRILL_HOLE);
+			}
+			else
+			{
+				puck.setPuckdrillhole(DRILL_HOLE_UPSIDE);
+			}
+			while(signalLBAltimetryInterrupted()){}
+			hb.getHardware()->getMotor()->right();
+			hb.getHardware()->getMotor()->fast();
+			new (this) TransPortToSkid;
 		}
 	};
 
 	struct TransPortToSkid: public PuckOnConveyor1 {
 		virtual void transact() {
+			hs = *statePtr;
+			while(signalLBSwitchNotInterrupted()){}
+			//t_h and t_w
+			t1 = t2;
+			t2 = clock();
+			delta = t2 - t1;
 			new (this) MetalDetection;
 		}
 	};
 
 	struct MetalDetection: public PuckOnConveyor1 {
-		virtual void transact() { //TRANSITION IS NOT DEFINED
-			if (hb.getHardware()->getMT()->isItemMetal()) {
-				//Code if puck is metal
+		virtual void transact() {
+			hs = *statePtr;
+			if(hb.getHardware()->getMT()->isItemMetal())
+			{
+				puck.setPuckmaterial(METAL);
 			}
-			if (1) { //Delta von t_h und t_w ok and both skids NOT full
+			else
+			{
+				puck.setPuckmaterial(PLASTIC);
+			}
+			if(signalLBSkidInterrupted())
+			{
+				new (this) BothSkidsFull;
+			}
+			else if(delta < DELTA_TH_TW)
+			{
+				new (this) PuckAdded;
+			}
+			else if(delta > DELTA_TH_TW)
+			{
+				new (this) PuckLost;
+			}
+			else
+			{
 				new (this) Sorting;
-			} else if (11) { //Delta von t_h und t_w NOT ok
-
-			} else { // Skid 1 and skid 2 full / turnGreenOff(), turnRedOn()
-				//new (this) BothSkidsFull;
 			}
 		}
 	};
 
 	struct Sorting: public PuckOnConveyor1 {
 		virtual void transact() { //TRANSITION IS NOT DEFINED
-			if (1){}
-				//new (this) StateA;
+			cs.setCurrentPh(puck.getPuckdrillhole());
+			cs.setCurrentPm(puck.getPuckmaterial());
+			cs.transact();
+			if (sequenceOK)
+			{
+				new (this) TransportToDelivery;
+			}
 			else
-			{}
-				//new (this) StateB;
+			{
+				if(signalLBSkidNotInterrupted())
+				{
+					new (this) SortOutThroughSkid;
+				}
+				else
+				{
+					hb.getHardware()->getTL()->turnYellowOn();
+					new (this) TransportToDelivery;
+				}
+			}
+
 		}
 	};
 
 	struct TransportToDelivery: public PuckOnConveyor1 {
 		virtual void transact() {
-			if (1) { //Delta von t_w und t_e ok
+			hb.getHardware()->getMotor()->switchOpen();
+			t1 = t2;
+			while(signalLBEndInNotInterrupted()){}
+			t2 = clock();
+			delta = t2 - t1;
+			if(delta > DELTA_TW_TE)
+			{
+				hb.getHardware()->getTL()->turnGreenOff();
+				hb.getHardware()->getTL()->turnYellowOff();
+				new (this) PuckLost;
+			}
+			else if(delta < DELTA_TW_TE)
+			{
+				hb.getHardware()->getTL()->turnGreenOff();
+		        hb.getHardware()->getTL()->turnYellowOff();
+		        new (this) PuckAdded;
+			}
+			else
+			{
 				new (this) DeliveryToConveyor2;
-			} else if (11) { //Delta von t_w und t_e too high
-				//new (this) PuckLost;
-			} else { //Delta von t_w und t_e too low
-				//new (this) PuckAdded;
 			}
 		}
 	};
 
 	struct DeliveryToConveyor2: public PuckOnConveyor1 {
-		virtual void transact() { //TRANSITION NOT DEFINED
+		virtual void transact() {
+			//Check for conveyor2 isFree() missing!
 			new (this) TransportToConveyor2;
 		}
 	};
 
 	struct TransportToConveyor2: public PuckOnConveyor1 {
 		virtual void transact() {
-			if (1) { // conveyor1NotEmpty
-				//new (this) NULL;
-			} else if (0) { // conveyorEmpty
+			while(signalLBEndInterrupted());
+			usleep(4000000);
+			puckqueue.pop();
+			if(puckqueue.empty())
+			{
 				hb.getHardware()->getMotor()->stop();
-				//new (this) NULL;
 			}
+			new (this) NULL;
+		}
+	};
+
+	struct BothSkidsFull : public PuckOnConveyor1 {
+		virtual void transact()
+		{
+
+		}
+	};
+
+	struct PuckLost : public PuckOnConveyor1 {
+		virtual void transact()
+		{
+
+		}
+	};
+
+	struct PuckAdded : public PuckOnConveyor1 {
+		virtual void transact()
+		{
+
 		}
 	};
 
 	StateStart stateMember; //The memory for the state is part of context object
+	ContextSorting cs;
 	HistoryState hs;
-	vector<Puck> puckvector;
+	Puck puck;
+	queue<Puck> puckqueue;
 	static int id = 0;
 	clock_t t1;
 	clock_t t2;
