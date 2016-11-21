@@ -8,14 +8,29 @@
 #ifndef CONTEXT_H_
 #define CONTEXT_H_
 
-#include "Logger/Logger.h"
+#define DELTA_T0_TH 0
+#define DELTA_TH_TW 0
+#define DELTA_TW_TE 0
+#define MAXIMUM_PUCKS 5
+
 #include <iostream>
+#include <ctime>
+#include <vector>
+#include "FSM/Puck.h"
+#include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
+using namespace std;
 
 extern HalBuilder hb;
 class Context {
 public:
-	Context();
+	Context(): statePtr(&stateMember)  // assigning start state
+    {
+		id++;
+    }
+
+	void transact(){statePtr->transact();} // context delegates signals to state
+
 	void signalLBBeginInterrupted();
 	void signalLBEndInterrupted();
 	void signalLBAltimetryInterrupted();
@@ -36,128 +51,156 @@ public:
 
 	void signalAltimetryCompleted();
 
-	virtual ~Context();
+	//virtual ~Context();
 
 
 private:
 	struct PuckOnConveyor1 { //top-level state
 		virtual void signalEStop() {
+			hb.getHardware()->getMotor()->stop();
+			//E-Stopp unlock missing
+			while(1)
+			{
+				if(signalReset())
+				{
+					stateptr = &hs;
+					break;
+				}
+			}
+
 		} //put code here for signalEStop in superstate
+		virtual void transact() {}
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct Conveyor1Full: public State {
-		virtual void signalConveyor1Free() {
+	struct StateStart : public PuckOnConveyor1 {
+		virtual void transact(){
+			hs = *statePtr;
+			if(signalLBSkidNotInterrupted())
+			{
+				if(puckvector.size() >= MAXIMUM_PUCKS)
+				{
+					new (this) ConveyorFull;
+				}
+				else
+				{
+					new (this) PuckNotInEntry;
+				}
+			}
+		}
+	};
+
+
+	struct ConveyorFull: public PuckOnConveyor1 {
+		virtual void transact() {
+			while(puckvector.size() >= MAXIMUM_PUCKS)
+			{}
 			new (this) PuckNotInEntry;
 		}
 	};
 
-	struct PuckNotInEntry: public State {
-		virtual void signalLBBeginInterrupted() {
-		    new (this) MotorOn;
+	struct PuckNotInEntry: public PuckOnConveyor1 {
+		virtual void transact() {
+			hb.getHardware()->getTL()->turnGreenOn();
+			while(signalLBBeginNotInterrupted()){}
+			new (this) MotorOn;
 		}
 	};
 
-	struct MotorOn: public State {
-		virtual void signalLBBeginNotInterrupted() {
+	struct MotorOn: public PuckOnConveyor1 {
+		virtual void transact() {
+			hb.getHardware()->getMotor()->right();
+			hb.getHardware()->getMotor()->fast();
+			Puck puck(id, TYPE404, -1, -1);
+			puckvector.push_back(puck);
+			while(signalLBBeginInterrupted()){}
+			t1 = clock();
 			new (this) TransportToHeightMeasurement;
 		}
 	};
 
-	struct TransportToHeightMeasurement: public State {
-		virtual void signalLBAltimetryInterrupted() {
-			if (1){ // Delta von t_0 und t_H OK
-				new (this) PuckInHeightMeasurement;
-			}
-			else if (11){ //Delta von t_0 und t_H zu klein
-				new (this) PuckAdded;
-			}
-			else{ ////Delta von t_0 und t_H zu groß
-				new (this) PuckLost;
-			}
+	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
+		virtual void transact() {
+			while(signalLBAltimetryNotInterrupted()){}
+			hb.getHardware()->getMotor()->slow();
+			t2 = clock();
+			delta = t2 - t1;
 		}
 	};
 
-	struct PuckInHeightMeasurement: public State {
-		virtual void signalLBAltimetryNotInterrupted() {
-			if (data->data1 > 10) // choice point
+	struct PuckInHeightMeasurement: public PuckOnConveyor1 {
+		virtual void transact() {
+			if (1) // choice point
 				new (this) TransPortToSkid;
 		}
 	};
 
-	struct TransPortToSkid: public State {
-		virtual void signalLBSwitchInterrupted() {
+	struct TransPortToSkid: public PuckOnConveyor1 {
+		virtual void transact() {
 			new (this) MetalDetection;
 		}
 	};
 
-	struct MetalDetection: public State {
-		virtual void signalNotDefined() { //TRANSITION IS NOT DEFINED
-			if (hb.getHardware()->getMT()->isItemMetal()){
+	struct MetalDetection: public PuckOnConveyor1 {
+		virtual void transact() { //TRANSITION IS NOT DEFINED
+			if (hb.getHardware()->getMT()->isItemMetal()) {
 				//Code if puck is metal
 			}
-			if(1){ //Delta von t_h und t_w ok and both skids NOT full
+			if (1) { //Delta von t_h und t_w ok and both skids NOT full
 				new (this) Sorting;
-			}
-			else if(11){ //Delta von t_h und t_w NOT ok
+			} else if (11) { //Delta von t_h und t_w NOT ok
 
-			}
-			else{// Skid 1 and skid 2 full / turnGreenOff(), turnRedOn()
-				new (this) BothSkidsFull;
+			} else { // Skid 1 and skid 2 full / turnGreenOff(), turnRedOn()
+				//new (this) BothSkidsFull;
 			}
 		}
 	};
 
-	struct Sorting: public State {
-		virtual void signalA() { //TRANSITION IS NOT DEFINED
-			if (data->data1 > 10)
-				new (this) StateA;
+	struct Sorting: public PuckOnConveyor1 {
+		virtual void transact() { //TRANSITION IS NOT DEFINED
+			if (1){}
+				//new (this) StateA;
 			else
-				new (this) StateB;
+			{}
+				//new (this) StateB;
 		}
 	};
 
-	struct TransportToDelivery: public State {
-		virtual void signalLBEndInterrupted() {
+	struct TransportToDelivery: public PuckOnConveyor1 {
+		virtual void transact() {
 			if (1) { //Delta von t_w und t_e ok
 				new (this) DeliveryToConveyor2;
 			} else if (11) { //Delta von t_w und t_e too high
-                  new (this) PuckLost;
+				//new (this) PuckLost;
 			} else { //Delta von t_w und t_e too low
-				new (this) PuckAdded;
+				//new (this) PuckAdded;
 			}
 		}
 	};
 
-	struct DeliveryToConveyor2: public State {
-		virtual void signalNotDefined() { //TRANSITION NOT DEFINED
+	struct DeliveryToConveyor2: public PuckOnConveyor1 {
+		virtual void transact() { //TRANSITION NOT DEFINED
 			new (this) TransportToConveyor2;
 		}
 	};
 
-	struct TransportToConveyor2: public State {
-		virtual void signalLBEndInNotInterrupted() {
-			if (1){ // conveyor1NotEmpty
-				new (this) NULL;
-			}
-			else if (0){ // conveyorEmpty
+	struct TransportToConveyor2: public PuckOnConveyor1 {
+		virtual void transact() {
+			if (1) { // conveyor1NotEmpty
+				//new (this) NULL;
+			} else if (0) { // conveyorEmpty
 				hb.getHardware()->getMotor()->stop();
-				new (this) NULL;
+				//new (this) NULL;
 			}
 		}
 	};
 
-		StateA stateMember;//The memory for the state is part of context object
-		Data contextdata;  //Data is also kept inside the context object
-
-		public:
-		Context()
-		: statePtr(&stateMember) // assigning start state
-		, contextdata(0)         // initializing data
-		{
-			statePtr->data = &contextdata; // connecting state->data with the context data
-		}
-
-		void signalA(){statePtr->signalA();} // context delegates signals to state
+	StateStart stateMember; //The memory for the state is part of context object
+	HistoryState hs;
+	vector<Puck> puckvector;
+	static int id = 0;
+	clock_t t1;
+	clock_t t2;
+	clock_t delta;
 };
 
 #endif /* CONTEXT_H_ */

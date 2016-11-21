@@ -7,16 +7,6 @@
 
 #include "Context.h"
 
-Context::Context() {
-	// TODO Auto-generated constructor stub
-
-}
-
-Context::~Context() {
-	// TODO Auto-generated destructor stub
-
-}
-
 void Context::signalLBBeginInterrupted(){
 	LOG_DEBUG  << "Signal Anfang!!" <<std::endl;
 }
