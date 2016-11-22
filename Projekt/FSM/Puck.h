@@ -44,6 +44,10 @@ public:
 		return ID;
 	}
 
+	void setId(int id) {
+			ID = id;
+	}
+
 	Puckdrillhole getPuckdrillhole() const {
 		return puckdrillhole;
 	}

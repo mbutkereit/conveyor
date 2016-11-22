@@ -12,92 +12,91 @@
 #include "Puck.h"
 using namespace std;
 
+struct Datacs{
+	Datacs(): currentPm(TYPE404PM), currentPh(TYPE404PH), sequenceOK(0){}
+	Puckmaterial currentPm;
+	Puckdrillhole currentPh;
+	int sequenceOK;
+};
+
 class ContextSorting {
 public:
-	ContextSorting(): statePtr(&stateMember), currentPm(TYPE404PM), currentPh(TYPE404PH), sequenceOK(0)// assigning start state
-    {}
+	ContextSorting() : statePtr(&stateMember), csdata() // assigning start state
+	{
+		statePtr->data = &csdata;
+	}
 
-	void transact(){statePtr->transact();} // context delegates signals to state
+	~ContextSorting(){};
+
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
 
 	void setCurrentPh(Puckdrillhole currentPh) {
-		this->currentPh = currentPh;
+		csdata.currentPh = currentPh;
 	}
 
 	void setCurrentPm(Puckmaterial currentPm) {
-		this->currentPm = currentPm;
+		csdata.currentPm = currentPm;
 	}
 
 	int getSequenceOk() const {
-		return sequenceOK;
+		return csdata.sequenceOK;
 	}
 
 private:
 	struct Sorting { //top-level state
+		Datacs* data;
 		virtual void transact() {
 		}
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct StateStart: public Sorting {
 		virtual void transact() {
-			if(currentPh == DRILL_HOLE_UPSIDE && currentPh == PLASTIC)
-			{
-				sequenceOK = 1;
+			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal1;
-			}
-			else
-			{
-				sequenceOK = 0;
+			} else {
+				data->sequenceOK = 0;
 			}
 		}
 	};
 
-		struct DrillHoleUpSideWoMetal1: public Sorting {
-			virtual void transact() {
-				if (currentPh == DRILL_HOLE_UPSIDE && currentPh == PLASTIC)
-				{
-					sequenceOK = 1;
-					new (this) DrillHoleUpSideWoMetal2;
-				}
-				else
-				{
-					sequenceOK = 0;
-				}
+	struct DrillHoleUpSideWoMetal1: public Sorting {
+		virtual void transact() {
+			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+				data->sequenceOK = 1;
+				new (this) DrillHoleUpSideWoMetal2;
+			} else {
+				data->sequenceOK = 0;
 			}
-		};
+		}
+	};
 
-		struct DrillHoleUpSideWoMetal2: public Sorting
-		{
-			virtual void transact() {
-				if (currentPh == DRILL_HOLE_UPSIDE && currentPh == METAL)
-				{
-					sequenceOK = 1;
-					new (this) DrillHoleUpSideMetal;
-				}
-				else
-				{
-					sequenceOK = 0;
-				}
+	struct DrillHoleUpSideWoMetal2: public Sorting {
+		virtual void transact() {
+			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == METAL) {
+				data->sequenceOK = 1;
+				new (this) DrillHoleUpSideMetal;
+			} else {
+				data->sequenceOK = 0;
 			}
-		};
+		}
+	};
 
-		struct DrillHoleUpSideMetal: public Sorting
-		{
-			virtual void transact() {
-				if (currentPh == DRILL_HOLE_UPSIDE && currentPh == PLASTIC) {
-					sequenceOK = 1;
-					new (this) DrillHoleUpSideWoMetal1;
-				}
-				else
-				{
-					sequenceOK = 0;
-				}
+	struct DrillHoleUpSideMetal: public Sorting {
+		virtual void transact() {
+			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+				data->sequenceOK = 1;
+				new (this) DrillHoleUpSideWoMetal1;
+			} else {
+				data->sequenceOK = 0;
 			}
-		};
+		}
+	};
 
-		StateStart stateMember; //The memory for the state is part of context object
-		Puckmaterial currentPm;
-		Puckdrillhole currentPh;
-		int sequenceOK;
+	StateStart stateMember; //The memory for the state is part of context object
+	Datacs csdata;
 };
 
 #endif /* CONTEXTSORTING_H_ */
