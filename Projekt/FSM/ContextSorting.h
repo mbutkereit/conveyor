@@ -21,13 +21,6 @@ struct Datacs{
 
 class ContextSorting {
 public:
-	ContextSorting() : statePtr(&stateMember), csdata() // assigning start state
-	{
-		statePtr->data = &csdata;
-	}
-
-	~ContextSorting(){};
-
 	void transact() {
 		statePtr->transact();
 	} // context delegates signals to state
@@ -95,8 +88,17 @@ private:
 		}
 	};
 
+	static ContextSorting* instance;
 	StateStart stateMember; //The memory for the state is part of context object
 	Datacs csdata;
+
+	ContextSorting() : statePtr(&stateMember), csdata() // assigning start state
+	{
+		statePtr->data = &csdata;
+	}
+	ContextSorting(const ContextSorting& other);
+	ContextSorting& operator=(const ContextSorting& other);
+	~ContextSorting(){};
 };
 
 #endif /* CONTEXTSORTING_H_ */
