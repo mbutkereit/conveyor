@@ -12,43 +12,43 @@
 #define DELTA_TH_TW 0
 #define DELTA_TW_TE 0
 #define MAXIMUM_PUCKS 1
+#define HM1_HM2_TOLERANCE 0
 
 #include <iostream>
 #include <ctime>
-#include <queue>
+#include <map>
 #include <unistd.h>
 #include "Puck.h"
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 #include "ContextSorting.h"
+#include "ErrorStates.h"
+
 using namespace std;
 
 extern HalBuilder hb;
 
+
+
+
+
 struct Datac {
 	Datac() :
-			hb(), cs(getInstance()), puck(-1), puckqueue(), es(), id(0), t1(0), t2(0), delta(0) {
+			hb(), cs(NULL), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
 	}
 	HalBuilder hb;
-	ContextSorting cs;
+	ContextSorting* cs = ContextSorting::getInstance();
 	Puck puck;
-	queue<Puck> puckqueue;
+	map<int,Puck> puckmap;
 	ErrorStates es;
 	int id;
+	int height;
 	clock_t t1;
 	clock_t t2;
 	clock_t delta;
 };
 
-static ContextSorting* getInstance();
 
-ContextSorting* ContextSorting::instance_ = NULL;
-ContextSorting* ContextSorting::getInstance() {
-	if (instance_ == NULL) {
-		instance_ = new ContextSorting();
-	}
-	return instance_;
-}
 
 class Context {
 public:
@@ -105,41 +105,33 @@ private:
 
 	struct StateStart: public PuckOnConveyor2 {
 		virtual void transact() {
-			if (data->hb.getHardware()->getMT()->isSkidFull()) {
-				if (data->puckqueue.size() >= MAXIMUM_PUCKS) {
-					new (this) ConveyorFull;
-				} else {
-					new (this) PuckNotInEntry;
-				}
+			if (data->hb.getHardware()->getMT()->isSkidFull()) { //Rutsche 1 voll Abfrage fehlt!
+				data->es.bothSkidsFull();
+				new (this) TransportToEntry;
+			}
+			else
+			{
+				new (this) TransportToEntry;
 			}
 		}
 	};
 
-	struct ConveyorFull: public PuckOnConveyor2 {
-		virtual void transact() {
-			while (data->puckqueue.size() >= MAXIMUM_PUCKS) {
-			}
-			new (this) PuckNotInEntry;
-		}
-	};
-
-	struct PuckNotInEntry: public PuckOnConveyor2 {
+	struct TransportToEntry: public PuckOnConveyor2 {
 		virtual void transact() {
 			data->hb.getHardware()->getTL()->turnGreenOn();
-			while (data->hb.getHardware()->getMT()->isItemRunningIn()) {}
+			while (data->hb.getHardware()->getMT()->isItemRunningIn()) {}//LS_E BAND 1 müsste stattdessen geprüft werden!
 			new (this) MotorOn;
 		}
 	};
 
-	struct MotorOn: public PuckOnConveyor2 {
+	struct MotorOn: public PuckOnConveyor2 {//ID wird von Band1 vergeben
 		virtual void transact() {
 			int id = (data->id);
 			Puck puck(id);
 			data->puck = puck;
 			data->hb.getHardware()->getMotor()->right();
 			data->hb.getHardware()->getMotor()->fast();
-			data->id++;
-			data->puckqueue.push(puck);
+			data->puckmap.insert(pair<int,Puck>(id,puck));
 			while (!(data->hb.getHardware()->getMT()->isItemRunningIn())) {
 			}
 			data->t1 = clock();
@@ -153,7 +145,7 @@ private:
 			//t_0 and t_H
 			data->t2 = clock();
 			data->delta = data->t2 - data->t1;
-			data->hb.getHardware()->getMotor()->right();
+			//data->hb.getHardware()->getMotor()->right();
 			data->hb.getHardware()->getMotor()->slow();
 			//Factor for CLOCK missing!
 			if (data->delta < DELTA_T0_TH) {
@@ -176,7 +168,8 @@ private:
 			} else {
 				data->puck.setPuckdrillhole(NO_DRILL_HOLE);
 			}
-			while (!(data->hb.getHardware()->getMT()->isItemAltimetry())) {}
+			while (!(data->hb.getHardware()->getMT()->isItemAltimetry())) {
+			}
 			data->hb.getHardware()->getMotor()->right();
 			data->hb.getHardware()->getMotor()->fast();
 			new (this) TransPortToSkid;
@@ -208,8 +201,9 @@ private:
 			} else if (data->delta < DELTA_TH_TW) {
 				new (this) PuckAdded;
 			} else if (data->delta > DELTA_TH_TW) {
+				data->puckmap.erase(data->puck.getId());
 				data->es.puckLost();
-				new (this) Sorting;
+				new (this) StateStart;
 				//new (this) PuckLost;
 			} else {
 				new (this) Sorting;
@@ -219,10 +213,10 @@ private:
 
 	struct Sorting: public PuckOnConveyor2 {
 		virtual void transact() { //TRANSITION IS NOT DEFINED
-			data->cs.setCurrentPh(data->puck.getPuckdrillhole());
-			data->cs.setCurrentPm(data->puck.getPuckmaterial());
-			data->cs.transact();
-			if (data->cs.getSequenceOk()) {
+			data->cs->setCurrentPh(data->puck.getPuckdrillhole());
+			data->cs->setCurrentPm(data->puck.getPuckmaterial());
+			data->cs->transact();
+			if (data->cs->getSequenceOk()) {
 				new (this) TransportToDelivery;
 			} else {
 				if (data->hb.getHardware()->getMT()->isSkidFull()) {
@@ -271,8 +265,8 @@ private:
 		virtual void transact() {
 			while (!(data->hb.getHardware()->getMT()->isItemRunningOut())){}
 			usleep(4000000);
-			data->puckqueue.pop();
-			if (data->puckqueue.empty()) {
+			data->puckmap.erase(data->puck.getId());
+			if (data->puckmap.empty()) {
 				data->hb.getHardware()->getMotor()->stop();
 			}
 			new (this) Finish;
@@ -317,7 +311,8 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void transact() {
-			csdata->hb.getHardware()->getMotor()->stop();
+
+			data->hb.getHardware()->getMotor()->stop();
 			//Errormessage implementation missing
 			while(!(data->hb.getHardware()->getHMI()->isButtonStartPressed()))
 			{
@@ -327,7 +322,7 @@ private:
 				usleep(500000);
 			}
 			data->hb.getHardware()->getTL()->turnRedOff();
-			data->puckqueue.pop();
+			data->puckmap.erase(data->puck.getId());
 			new (this) StateStart;
 		}
 	};
@@ -340,39 +335,6 @@ private:
 
 	StateStart stateMember; //The memory for the state is part of context object
 	Datac cdata;
-};
-
-class ErrorStates{
-
-public:
-	ErrorStates();
-	~ErrorStates();
-
-	void puckLost() {
-		hb.getHardware()->getMotor()->stop();
-		//Errormessage implementation missing
-		while (!(hb.getHardware()->getHMI()->isButtonStartPressed())) {
-			hb.getHardware()->getTL()->turnYellowOn();
-			usleep(500000);
-			hb.getHardware()->getTL()->turnYellowOff();
-			usleep(500000);
-		}
-		hb.getHardware()->getTL()->turnYellowOff();
-		hb.getHardware()->getTL()->turnGreenOn();
-	}
-
-	void bothSkidsFull() {
-		hb.getHardware()->getMotor()->stop();
-		hb.getHardware()->getTL()->turnGreenOff();
-		//Errormessage impelementation missing
-		while (!(hb.getHardware()->getHMI()->isButtonStartPressed())) {
-			hb.getHardware()->getTL()->turnRedOn();
-			usleep(500000);
-			hb.getHardware()->getTL()->turnRedOff();
-			usleep(500000);
-		}
-		hb.getHardware()->getTL()->turnGreenOn();
-	}
 };
 
 #endif /* CONTEXT_H_ */

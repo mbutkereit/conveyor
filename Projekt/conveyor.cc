@@ -5,11 +5,19 @@
 #include "Thread/SignalHandlerThread.h"
 #include "Hal/SerialInterface/Serial.h"
 #include "Hal/ISR/InterruptHandler.h"
+#include "FSM/ContextTimeMeasurement.h"
 
 HalBuilder hb;
 
 int main(int argc, char *argv[]) {
 	Logger::getLogger().setLoggingLevel(DEBUG);
+	hb.getHardware()->getTL()->turnGreenOn();
+
+	ContextTimeMeasurement ct;
+	while(1)
+	{
+		ct.transact();
+	}
 
 
 	ConveyorThread c1;

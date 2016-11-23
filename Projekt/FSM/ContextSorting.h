@@ -21,6 +21,8 @@ struct Datacs{
 
 class ContextSorting {
 public:
+	static ContextSorting* getInstance();
+
 	void transact() {
 		statePtr->transact();
 	} // context delegates signals to state
@@ -36,6 +38,8 @@ public:
 	int getSequenceOk() const {
 		return csdata.sequenceOK;
 	}
+
+	~ContextSorting(){};
 
 private:
 	struct Sorting { //top-level state
@@ -88,7 +92,7 @@ private:
 		}
 	};
 
-	static ContextSorting* instance;
+	static ContextSorting* instance_;
 	StateStart stateMember; //The memory for the state is part of context object
 	Datacs csdata;
 
@@ -98,7 +102,6 @@ private:
 	}
 	ContextSorting(const ContextSorting& other);
 	ContextSorting& operator=(const ContextSorting& other);
-	~ContextSorting(){};
 };
 
 #endif /* CONTEXTSORTING_H_ */

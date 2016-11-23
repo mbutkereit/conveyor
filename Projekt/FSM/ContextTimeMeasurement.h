@@ -19,7 +19,7 @@ extern HalBuilder hb;
 
 struct Datactm {
 	Datactm() :
-			hb(), cs(getInstance()), puck(-1), puckqueue(), es(), id(0), t1(0), t2(0), delta(0), deltaT0TH(0), deltaTHTW(0), deltaTWTE(0) {
+			hb(), t1(0), t2(0), delta(0), deltaT0TH(0), deltaTHTW(0), deltaTWTE(0) {
 	}
 	HalBuilder hb;
 	clock_t t1;
@@ -119,7 +119,7 @@ private:
 			new (this) Finish;
 		}
 	};
-	struct PuckRunningOut: public Timereading {
+	struct Finish: public Timereading {
 		virtual void transact() {
 		}
 	};
