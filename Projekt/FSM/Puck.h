@@ -21,7 +21,6 @@
 
 class Puck {
 public:
-	Puck(){}
 	Puck(int id): ID(id), puckmaterial(TYPE404PM), puckdrillhole(TYPE404PH), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED){}
 	virtual ~Puck(){}
 

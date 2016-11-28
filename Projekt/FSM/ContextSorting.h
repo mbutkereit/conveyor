@@ -39,7 +39,7 @@ public:
 		return csdata.sequenceOK;
 	}
 
-	~ContextSorting(){};
+	virtual ~ContextSorting(){};
 
 private:
 	struct Sorting { //top-level state
