@@ -33,11 +33,11 @@ extern HalBuilder hb;
 
 
 struct Datac {
-	Datac() :
-			hb(), cs(NULL), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
+	Datac(ContextSorting* csorting) :
+			hb(), cs(csorting), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
 	}
 	HalBuilder hb;
-	ContextSorting* cs = ContextSorting::getInstance();
+	ContextSorting* cs;
 	Puck puck;
 	map<int,Puck> puckmap;
 	ErrorStates es;
@@ -52,8 +52,8 @@ struct Datac {
 
 class Context {
 public:
-	Context() :
-			statePtr(&stateMember), cdata() // assigning start state
+	Context(ContextSorting* csorting) :
+			statePtr(&stateMember), cdata(csorting) // assigning start state
 	{
 		statePtr->data = &cdata;
 	}
