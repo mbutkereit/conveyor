@@ -15,6 +15,7 @@
 #include "src/lib/HWaccess.h"
 #include "src/lib/HAWThread.h"
 #include "FSM/Context.h"
+#include "FSM/ContextSorting.h"
 using namespace thread;
 
 extern int coid;

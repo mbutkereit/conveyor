@@ -37,6 +37,8 @@ LDFLAGS+=-lang-c++ -Y _gpp
 #===== CCFLAGS - add the flags to the C compiler command line. 
 CCFLAGS+=-Y _gpp
 
+#===== LIBS - a space-separated list of library items to be included in the link.
+LIBS+=cpt_terminal
 
 include $(MKFILES_ROOT)/qmacros.mk
 ifndef QNX_INTERNAL
