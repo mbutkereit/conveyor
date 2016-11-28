@@ -19,6 +19,9 @@ class ContextTimer {
 public:
 	static ContextTimer* getInstance();
 	virtual ~ContextTimer(){};
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
 private:
 	struct Timer { //top-level state
 			Datact* data;

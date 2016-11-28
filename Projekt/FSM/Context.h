@@ -25,12 +25,7 @@
 #include "ErrorStates.h"
 
 using namespace std;
-
 extern HalBuilder hb;
-
-
-
-
 
 struct Datac {
 	Datac(ContextSorting* csorting) :
@@ -52,6 +47,9 @@ struct Datac {
 
 class Context {
 public:
+	StateStart stateMember; //The memory for the state is part of context object
+	Datac cdata;
+
 	Context(ContextSorting* csorting) :
 			statePtr(&stateMember), cdata(csorting) // assigning start state
 	{
@@ -332,9 +330,6 @@ private:
 
 		}
 	};
-
-	StateStart stateMember; //The memory for the state is part of context object
-	Datac cdata;
 };
 
 #endif /* CONTEXT_H_ */

@@ -19,6 +19,9 @@ class ContextTimeout {
 public:
 	static ContextTimeout* getInstance();
 	virtual ~ContextTimeout(){};
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
 private:
 	struct TimeOut { //top-level state
 			Datacto* data;

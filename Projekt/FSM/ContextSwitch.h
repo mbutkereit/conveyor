@@ -19,6 +19,9 @@ class ContextSwitch {
 public:
 	static ContextSwitch* getInstance();
     virtual ~ContextSwitch(){};
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
     
 private:
 	struct Switch { //top-level state

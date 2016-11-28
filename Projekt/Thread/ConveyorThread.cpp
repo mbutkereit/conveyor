@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include "ConveyorThread.h"
 #include "Hal/HalBuilder.h"
+#include "FSM/ContextTimeMeasurement.h"
 
 ConveyorThread::ConveyorThread() {
 	// TODO Auto-generated constructor stub
@@ -34,12 +35,18 @@ void ConveyorThread::execute(void*) {
 	//out8(ioControlAddress_, ioControlBitmask_);
 	HalBuilder hb;
 	Hardware* hw = hb.getHardware();
-    hw->getMotor()->stop();
-    	if( (int)hb.getHardware()->getMT()->isItemMetal()){
-    		cerr << "So nicht toll";
-    	}
+	if ((int) hb.getHardware()->getMT()->isItemMetal()) {
+		cerr << "So nicht toll";
+	}
+	ContextTimeMeasurement cst;
+	hw->getMotor()->stop();
 
-   // hw->getMotor()->fast();
+	/*
+	while(!cst.isFinished())
+	{
+		cst.transact();
+	}
+	*/
 
 }
 

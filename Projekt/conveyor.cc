@@ -11,28 +11,20 @@ HalBuilder hb;
 
 int main(int argc, char *argv[]) {
 	Logger::getLogger().setLoggingLevel(DEBUG);
-	hb.getHardware()->getTL()->turnGreenOn();
-
-	ContextTimeMeasurement ct;
-	while(1)
-	{
-		ct.transact();
-	}
-
-
 	ConveyorThread c1;
 	c1.start(NULL);
     c1.join();
     registerISR();
-
     cerr << "Lets go !\n";
+
+    /*
    	SignalHandlerThread c2;
    	c2.start(NULL);
        // Cleanup
     c2.join();
     unregisterISR();
-
-       return 0;
+    */
+    return 0;
 	/*Packet p;
 	p.data=0x08;
 	LOG_DEBUG << "Recieve \n";

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <ctime>
 #include <unistd.h>
+#include <iostream>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 using namespace std;
@@ -19,9 +20,10 @@ extern HalBuilder hb;
 
 struct Datactm {
 	Datactm() :
-			hb(), t1(0), t2(0), delta(0), deltaT0TH(0), deltaTHTW(0), deltaTWTE(0) {
+			hb(), finishFlag(0), t1(0), t2(0), delta(0), deltaT0TH(0), deltaTHTW(0), deltaTWTE(0) {
 	}
 	HalBuilder hb;
+	int finishFlag;
 	clock_t t1;
 	clock_t t2;
 	clock_t delta;
@@ -43,6 +45,11 @@ public:
 		statePtr->transact();
 	} // context delegates signals to state
 
+	int isFinished()
+	{
+		return ctmdata.finishFlag;
+	}
+
 
 private:
 	struct Timereading { //top-level state
@@ -53,6 +60,7 @@ private:
 
 	struct StateStart: public Timereading {
 		virtual void transact() {
+			printf("StateStart\n");
 			while(!(data->hb.getHardware()->getMT()->isItemRunningIn())){}
 			new (this) PuckNotInEntry;
 		}
@@ -60,6 +68,7 @@ private:
 
 	struct PuckNotInEntry: public Timereading {
 		virtual void transact() {
+			printf("PuckNotInEntry\n");
 			data->hb.getHardware()->getMotor()->stop();
 			while(data->hb.getHardware()->getMT()->isItemRunningIn()){}
 			new (this) MotorOn;
@@ -68,6 +77,7 @@ private:
 
 	struct MotorOn: public Timereading {
 		virtual void transact() {
+			printf("MotorOn\n");
 			data->hb.getHardware()->getMotor()->right();
 			data->hb.getHardware()->getMotor()->fast();
 			while(!(data->hb.getHardware()->getMT()->isItemRunningIn())){}
@@ -77,6 +87,7 @@ private:
 	};
 	struct TransportToHeightMeasurement: public Timereading {
 		virtual void transact() {
+			printf("TransportToHeightMeasurement\n");
 			while(data->hb.getHardware()->getMT()->isItemAltimetry()){}
 			data->t2 = clock();
 			data->deltaT0TH = data->t2 - data->t1;
@@ -86,12 +97,15 @@ private:
 	};
 	struct PuckInHeightMeasurement: public Timereading {
 		virtual void transact() {
+			printf("PuckInHeightMeasurement\n");
 			while(!(data->hb.getHardware()->getMT()->isItemAltimetry())){}
 			data->hb.getHardware()->getMotor()->fast();
+			new (this) TransPortToSkid;
 		}
 	};
 	struct TransPortToSkid: public Timereading {
 		virtual void transact() {
+			printf("TransportToSkid\n");
 			while(data->hb.getHardware()->getMT()->isItemSwitch()){}
 			data->t1 = data->t2;
 			data->t2 = clock();
@@ -101,6 +115,7 @@ private:
 	};
 	struct PuckInSkid: public Timereading {
 		virtual void transact() {
+			printf("PuckInSkid\n");
 			data->hb.getHardware()->getMotor()->switchOpen();
 			while(data->hb.getHardware()->getMT()->isItemRunningOut()){}
 			data->t1 = data->t2;
@@ -113,17 +128,19 @@ private:
 		virtual void transact() {
 			data->hb.getHardware()->getMotor()->switchClosed();
 			data->hb.getHardware()->getMotor()->stop();
-			printf("Delta t_0 und t_H: %d", data->deltaT0TH);
-			printf("Delta t_H und t_W: %d", data->deltaTHTW);
-			printf("Delta t_W und t_E: %d", data->deltaTWTE);
+			printf("Delta t_0 und t_H: Ticks: %d, Seconds: %d\n", data->deltaT0TH, data->deltaT0TH/CLOCK_REALTIME);
+			printf("Delta t_H und t_W: Ticks: %d, Seconds: %d\n", data->deltaTHTW, data->deltaTHTW/CLOCK_REALTIME);
+			printf("Delta t_W und t_E: Ticks: %d, Seconds: %d\n", data->deltaTWTE, data->deltaTWTE/CLOCK_REALTIME);
 			new (this) Finish;
 		}
 	};
 	struct Finish: public Timereading {
 		virtual void transact() {
+			printf("Finish\n");
+			data->hb.getHardware()->getMotor()->stop();
+			new (this) StateStart;
 		}
 	};
-
 
 	StateStart stateMember; //The memory for the state is part of context object
 	Datactm ctmdata;
