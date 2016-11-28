@@ -26,6 +26,7 @@ private:
 			}
 		}*statePtr;   // a pointer to current state. Used for polymorphism.
 
+
 		struct StateStart: public TimeOut {
 			virtual void transact() {
 			}

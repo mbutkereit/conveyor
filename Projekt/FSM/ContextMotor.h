@@ -21,15 +21,30 @@ public:
 	virtual ~ContextMotor(){};
 private:
 	struct Motor { //top-level state
-			Datacm* data;
-			virtual void transact() {
-			}
-		}*statePtr;   // a pointer to current state. Used for polymorphism.
+		Datacm* data;
+		virtual void transact() {
+		}
+	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-		struct StateStart: public Motor {
-			virtual void transact() {
-			}
-		};
+	struct StateStart: public Motor {
+		virtual void transact() {
+		}
+	};
+
+	struct Fast: public Motor{
+		virtual void transact() {
+		}
+	};
+
+	struct Slow: public Motor {
+		virtual void transact() {
+		}
+	};
+
+	struct Stop: public Motor {
+		virtual void transact() {
+		}
+	};
 
 	static ContextMotor* instance_;
 	StateStart stateMember; //The memory for the state is part of context object
