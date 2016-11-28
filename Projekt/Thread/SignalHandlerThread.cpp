@@ -32,7 +32,7 @@ void SignalHandlerThread::execute(void*) {
 
 	//LOG_DEBUG << "Test Signal";
     // Wait for Pulse Message
-
+//PRG while(!isStopped()) ...
     do{
     	MsgReceivePulse(isrtChannel_,&pulse,sizeof(pulse),NULL);
         //cerr  << "Interrupt, value: " <<  pulse.value.sival_int << "\n"  <<endl;

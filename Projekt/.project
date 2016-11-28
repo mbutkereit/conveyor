@@ -69,4 +69,11 @@
 		<nature>com.qnx.tools.ide.qde.core.qnxnature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>EXTRA_SRCVPATH_include</name>
+			<type>2</type>
+			<location>C:/qnx660/target/qnx6/usr/include</location>
+		</link>
+	</linkedResources>
 </projectDescription>

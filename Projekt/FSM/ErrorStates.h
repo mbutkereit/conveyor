@@ -16,8 +16,8 @@ extern HalBuilder hb;
 class ErrorStates{
 
 public:
-	ErrorStates();
-	~ErrorStates();
+	ErrorStates(){}
+	~ErrorStates(){}
 
 	void puckLost() {
 		hb.getHardware()->getMotor()->stop();

@@ -21,8 +21,9 @@
 
 class Puck {
 public:
+	Puck(){}
 	Puck(int id): ID(id), puckmaterial(TYPE404PM), puckdrillhole(TYPE404PH), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED){}
-	virtual ~Puck();
+	virtual ~Puck(){}
 
 	int getHeightReading1() const {
 		return heightReading_1;
