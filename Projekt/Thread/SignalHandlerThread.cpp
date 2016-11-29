@@ -23,7 +23,8 @@ SignalHandlerThread::~SignalHandlerThread() {
 
 void SignalHandlerThread::execute(void*) {
     ContextSorting* cs = ContextSorting::getInstance();
-	Context context(cs);
+    ContextMotor* cm = ContextMotor::getInstance();
+	Context context(cs,cm);
 
     if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1){
         exit(EXIT_FAILURE);

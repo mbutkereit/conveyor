@@ -23,16 +23,19 @@
 #include "Hal/HalBuilder.h"
 #include "ContextSorting.h"
 #include "ErrorStates.h"
+#include "FSM/ContextMotor.h"
+#include "FSM/MotorOptions.h"
 
 using namespace std;
 extern HalBuilder hb;
 
 struct Datac {
-	Datac(ContextSorting* csorting) :
-			hb(), cs(csorting), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
+	Datac(ContextSorting* csorting, ContextMotor* cmotor) :
+			hb(), cs(csorting), cm(cmotor), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
 	}
 	HalBuilder hb;
 	ContextSorting* cs;
+	ContextMotor* cm;
 	Puck puck;
 	map<int,Puck> puckmap;
 	ErrorStates es;
@@ -43,58 +46,22 @@ struct Datac {
 	clock_t delta;
 };
 
-
-
 class Context {
-public:
-	StateStart stateMember; //The memory for the state is part of context object
+private:
 	Datac cdata;
 
-	Context(ContextSorting* csorting) :
-			statePtr(&stateMember), cdata(csorting) // assigning start state
-	{
-		statePtr->data = &cdata;
-	}
-
-	~Context(){};
-
-	void transact() {
-		statePtr->transact();
-	} // context delegates signals to state
-
-	void signalLBBeginInterrupted();
-	void signalLBEndInterrupted();
-	void signalLBAltimetryInterrupted();
-	void signalLBSwitchInterrupted();
-
-	void signalLBBeginNotInterrupted();
-	void signalLBEndInNotInterrupted();
-	void signalLBAltimetryNotInterrupted();
-	void signalLBSwitchNotInterrupted();
-
-	void signalEStop();
-	void signalStart();
-	void signalStop();
-	void signalReset();
-
-	void signalLBSkidInterrupted();
-	void signalLBSkidNotInterrupted();
-
-	void signalAltimetryCompleted();
-
-private:
 	struct PuckOnConveyor2 { //top-level state
 		Datac* data;
 		virtual void signalEStop() {
 			//struct PuckOnConveyor1* hs;
-			data->hb.getHardware()->getMotor()->stop();
+			data->cm->setSpeed(STOP);
 			//E-Stopp unlock missing
 			/*while (1) {
-				if (0) {
-					break;
-				}
-			}
-			*/
+			 if (0) {
+			 break;
+			 }
+			 }
+			 */
 
 		} //put code here for signalEStop in superstate
 		virtual void transact() {
@@ -106,30 +73,31 @@ private:
 			if (data->hb.getHardware()->getMT()->isSkidFull()) { //Rutsche 1 voll Abfrage fehlt!
 				data->es.bothSkidsFull();
 				new (this) TransportToEntry;
-			}
-			else
-			{
+			} else {
 				new (this) TransportToEntry;
 			}
 		}
 	};
 
+	StateStart stateMember; //The memory for the state is part of context object
+
 	struct TransportToEntry: public PuckOnConveyor2 {
 		virtual void transact() {
 			data->hb.getHardware()->getTL()->turnGreenOn();
-			while (data->hb.getHardware()->getMT()->isItemRunningIn()) {}//LS_E BAND 1 müsste stattdessen geprüft werden!
+			while (data->hb.getHardware()->getMT()->isItemRunningIn()) {
+			} //LS_E BAND 1 müsste stattdessen geprüft werden!
 			new (this) MotorOn;
 		}
 	};
 
-	struct MotorOn: public PuckOnConveyor2 {//ID wird von Band1 vergeben
+	struct MotorOn: public PuckOnConveyor2 { //ID wird von Band1 vergeben
 		virtual void transact() {
 			int id = (data->id);
 			Puck puck(id);
 			data->puck = puck;
 			data->hb.getHardware()->getMotor()->right();
 			data->hb.getHardware()->getMotor()->fast();
-			data->puckmap.insert(pair<int,Puck>(id,puck));
+			data->puckmap.insert(pair<int, Puck>(id, puck));
 			while (!(data->hb.getHardware()->getMT()->isItemRunningIn())) {
 			}
 			data->t1 = clock();
@@ -139,7 +107,8 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void transact() {
-			while (data->hb.getHardware()->getMT()->isItemAltimetry()) {}
+			while (data->hb.getHardware()->getMT()->isItemAltimetry()) {
+			}
 			//t_0 and t_H
 			data->t2 = clock();
 			data->delta = data->t2 - data->t1;
@@ -176,7 +145,8 @@ private:
 
 	struct TransPortToSkid: public PuckOnConveyor2 {
 		virtual void transact() {
-			while (data->hb.getHardware()->getMT()->isItemSwitch()) {}
+			while (data->hb.getHardware()->getMT()->isItemSwitch()) {
+			}
 			//t_h and t_w
 			data->t1 = data->t2;
 			data->t2 = clock();
@@ -234,14 +204,15 @@ private:
 		virtual void transact() {
 			data->hb.getHardware()->getMotor()->switchOpen();
 			data->t1 = data->t2;
-			while (data->hb.getHardware()->getMT()->isItemRunningOut()) {}
+			while (data->hb.getHardware()->getMT()->isItemRunningOut()) {
+			}
 			data->t2 = clock();
 			data->delta = data->t2 - data->t1;
 			if (data->delta > DELTA_TW_TE) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnYellowOff();
 				data->es.puckLost();
-				new (this) DeliveryToConveyor3;//delta checks evtl. erneut nötig?
+				new (this) DeliveryToConveyor3; //delta checks evtl. erneut nötig?
 				//new (this) PuckLost;
 			} else if (data->delta < DELTA_TW_TE) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
@@ -261,7 +232,8 @@ private:
 
 	struct TransportToConveyor3: public PuckOnConveyor2 {
 		virtual void transact() {
-			while (!(data->hb.getHardware()->getMT()->isItemRunningOut())){}
+			while (!(data->hb.getHardware()->getMT()->isItemRunningOut())) {
+			}
 			usleep(4000000);
 			data->puckmap.erase(data->puck.getId());
 			if (data->puckmap.empty()) {
@@ -271,14 +243,12 @@ private:
 		}
 	};
 
-
 	struct BothSkidsFull: public PuckOnConveyor2 {
 		virtual void transact() {
 			data->hb.getHardware()->getMotor()->stop();
 			data->hb.getHardware()->getTL()->turnGreenOff();
 			//Errormessage impelementation missing
-			while(!(data->hb.getHardware()->getHMI()->isButtonStartPressed()))
-			{
+			while (!(data->hb.getHardware()->getHMI()->isButtonStartPressed())) {
 				data->hb.getHardware()->getTL()->turnRedOn();
 				usleep(500000);
 				data->hb.getHardware()->getTL()->turnRedOff();
@@ -293,8 +263,7 @@ private:
 		virtual void transact() {
 			data->hb.getHardware()->getMotor()->stop();
 			//Errormessage implementation missing
-			while(!(data->hb.getHardware()->getHMI()->isButtonStartPressed()))
-			{
+			while (!(data->hb.getHardware()->getHMI()->isButtonStartPressed())) {
 				data->hb.getHardware()->getTL()->turnYellowOn();
 				usleep(500000);
 				data->hb.getHardware()->getTL()->turnYellowOff();
@@ -306,14 +275,12 @@ private:
 		}
 	};
 
-
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void transact() {
 
 			data->hb.getHardware()->getMotor()->stop();
 			//Errormessage implementation missing
-			while(!(data->hb.getHardware()->getHMI()->isButtonStartPressed()))
-			{
+			while (!(data->hb.getHardware()->getHMI()->isButtonStartPressed())) {
 				data->hb.getHardware()->getTL()->turnRedOn();
 				usleep(500000);
 				data->hb.getHardware()->getTL()->turnRedOff();
@@ -330,6 +297,40 @@ private:
 
 		}
 	};
+
+public:
+
+	Context(ContextSorting* csorting, ContextMotor* cmotor) :
+			statePtr(&stateMember), cdata(csorting, cmotor) // assigning start state
+	{
+		statePtr->data = &cdata;
+	}
+
+	~Context(){};
+
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
+
+	void signalLBBeginInterrupted();
+	void signalLBEndInterrupted();
+	void signalLBAltimetryInterrupted();
+	void signalLBSwitchInterrupted();
+
+	void signalLBBeginNotInterrupted();
+	void signalLBEndInNotInterrupted();
+	void signalLBAltimetryNotInterrupted();
+	void signalLBSwitchNotInterrupted();
+
+	void signalEStop();
+	void signalStart();
+	void signalStop();
+	void signalReset();
+
+	void signalLBSkidInterrupted();
+	void signalLBSkidNotInterrupted();
+
+	void signalAltimetryCompleted();
 };
 
 #endif /* CONTEXT_H_ */

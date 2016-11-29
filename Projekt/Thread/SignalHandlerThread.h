@@ -16,6 +16,7 @@
 #include "src/lib/HAWThread.h"
 #include "FSM/Context.h"
 #include "FSM/ContextSorting.h"
+#include "FSM/ContextMotor.h"
 using namespace thread;
 
 extern int coid;
