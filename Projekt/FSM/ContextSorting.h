@@ -10,7 +10,6 @@
 
 #include <iostream>
 #include "Puck.h"
-using namespace std;
 
 struct Datacs{
 	Datacs(): currentPm(TYPE404PM), currentPh(TYPE404PH), sequenceOK(0){}

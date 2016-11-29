@@ -1,7 +1,7 @@
 /*
  * ContextMotor.h
  *
- *  Created on: 28.11.2016
+ *  Created on: 29.11.2016
  *      Author: abs949
  */
 
@@ -9,152 +9,126 @@
 #define CONTEXTMOTOR_H_
 
 #include <iostream>
-#include <queue>
-#include <pthread.h>
 #include "Hal/HalBuilder.h"
-#include "FSM/ContextTimer.h"
-#include "FSM/MotorOptions.h"
-#include "FSM/Puck.h"
-using namespace std;
-
-extern HalBuilder hb;
+#include "MotorOptions.h"
 
 struct Datacm{
-	Datacm(ContextTimer ctimer): hb(), ct(ctimer), highestPuckPriorityID(-1), dissolveID(-1), fastQueue(), slowQueue(), stopQueue(){
-	}
-		HalBuilder hb;
-		ContextTimer ct;
-		int highestPuckPriorityID;
-		int dissolveID;
-		queue<int, MotorOptions> fastQueue;
-		queue<int, MotorOptions> slowQueue;
-		queue<int, MotorOptions> stopQueue;
+	Datacm(): hb(), fastFlag(0), slowCounter(0), stopCounter(0){}
+	    HalBuilder hb;
+		int fastFlag;
+		int slowCounter;
+		int stopCounter;
 };
+
 
 class ContextMotor {
 public:
 	static ContextMotor* getInstance();
-	virtual ~ContextMotor(){};
-
-	void setSpeed(int puckID, MotorOptions mo)
-	{
-		switch (mo) {
-		case MotorOptions::FAST:
-			cmdata.fastQueue.push(make_pair(puckID,puck));
-			fast();
-			break;
-		case MotorOptions::SLOW:
-			cmdata.slowQueue.push(make_pair(puckID,puck));
-			slow();
-			break;
-		default:
-			cmdata.stopQueue.push(make_pair(puckID,puck));
-			stop();
-			break;
-		}
-	}
-
-	void dissolve(int dissolveID)
-	{
-		cmdata.dissolveID = dissolveID;
-	}
 
 	void transact() {
 		statePtr->transact();
 	} // context delegates signals to state
 
+	void setSpeed(MotorOptions mo) {
+		switch (mo) {
+		case FAST:
+			cmdata.fastFlag = 1;
+			break;
+		case SLOW:
+			cmdata.slowCounter++;
+			break;
+		default:
+			cmdata.stopCounter++;
+			break;
+		}
+	}
+
+	void resetSpeed(MotorOptions mo)
+	{
+		switch (mo) {
+		case SLOW:
+			cmdata.slowCounter--;
+			break;
+		default:
+			cmdata.stopCounter--;
+			break;
+		}
+	}
+
+	virtual ~ContextMotor(){};
 private:
-	struct Motor { //top-level state
+	struct MotorOfConveyor { //top-level state
 		Datacm* data;
 		virtual void transact() {
 		}
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct StateStart: public Motor {
+	struct StateStart: public MotorOfConveyor {
 		virtual void transact() {
-			if(data->stopMap.size() > 0)
+			data->hb.getHardware()->getMotor()->stop();
+			if(data->stopCounter > 0)
 			{
-				hb.getHardware()->getMotor()->stop();
+				data->hb.getHardware()->getMotor()->stop();
 				new (this) Stop;
 			}
-			else if (data->slowMap.size() > 0)
+			else if (data->slowCounter > 0)
 			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->slow();
+				data->hb.getHardware()->getMotor()->slow();
 				new (this) Slow;
 			}
-			else if (data->fastMap.size() > 0)
+			else if(data->fastFlag)
 			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->fast();
+				data->fastFlag = 0;
+				data->hb.getHardware()->getMotor()->fast();
 				new (this) Fast;
 			}
 		}
 	};
 
-	struct Fast: public Motor{
+	struct Fast: public MotorOfConveyor {
 		virtual void transact() {
-			if(data->stopMap.size() > 0)
+			if (data->stopCounter > 0)
 			{
-				hb.getHardware()->getMotor()->stop();
+				data->hb.getHardware()->getMotor()->stop();
 				new (this) Stop;
 			}
-			else if (data->slowMap.size() > 0)
+			else if (data->slowCounter > 0)
 			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->slow();
+				data->hb.getHardware()->getMotor()->slow();
 				new (this) Slow;
 			}
-			else if (data->fastMap.size() > 0)
+		}
+	};
+
+	struct Slow: public MotorOfConveyor {
+		virtual void transact() {
+			if (data->stopCounter > 0)
 			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->fast();
+				data->hb.getHardware()->getMotor()->stop();
+				new (this) Stop;
+			}
+			else if(data->slowCounter == 0)
+			{
+				data->hb.getHardware()->getMotor()->fast();
 				new (this) Fast;
 			}
 		}
 	};
 
-	struct Slow: public Motor {
+	struct Stop: public MotorOfConveyor {
 		virtual void transact() {
-			if(data->stopMap.size() > 0)
+			if(data->stopCounter == 0)
 			{
-				hb.getHardware()->getMotor()->stop();
-				new (this) Stop;
-			}
-			else if (data->slowMap.size() > 0)
-			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->slow();
-				new (this) Slow;
-			}
-			else if (data->fastMap.size() > 0)
-			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->fast();
-				new (this) Fast;
-			}
-		}
-	};
-
-	struct Stop: public Motor {
-		virtual void transact() {
-
-			if(data->stopMap.size() > 0)
-			{
-				hb.getHardware()->getMotor()->stop();
-				new (this) Stop;
-			}
-			else if (data->slowMap.size() > 0)
-			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->slow();
-				new (this) Slow;
-			}
-			else if (data->fastMap.size() > 0)
-			{
-				hb.getHardware()->getMotor()->right();
-				hb.getHardware()->getMotor()->fast();
-				new (this) Fast;
+				if(data->slowCounter > 0)
+				{
+					data->hb.getHardware()->getMotor()->slow();
+					new (this) Slow;
+				}
+				else if(data->slowCounter == 0)
+				{
+					data->hb.getHardware()->getMotor()->fast();
+					new (this) Fast;
+				}
 			}
 		}
 	};
@@ -163,13 +137,12 @@ private:
 	StateStart stateMember; //The memory for the state is part of context object
 	Datacm cmdata;
 
-	ContextMotor() :
-			statePtr(&stateMember), cmdata(ContextTimer::getInstance()) // assigning start state
+	ContextMotor(): statePtr(&stateMember), cmdata() // assigning start state
 	{
 		statePtr->data = &cmdata;
 	}
-
 	ContextMotor(const ContextMotor& other);
 	ContextMotor& operator=(const ContextMotor& other);
 };
+
 #endif /* CONTEXTMOTOR_H_ */
