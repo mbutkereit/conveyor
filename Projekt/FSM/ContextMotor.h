@@ -48,6 +48,7 @@ private:
             {
                 data->ct->setTimerSpeed(TIMER_SLOW);
                 data->ct->transact();
+                data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->slow();
                 new (this) Slow;
             }
@@ -56,6 +57,7 @@ private:
                 data->ct->setTimerSpeed(TIMER_FAST);
                 data->ct->transact();
                 data->fastFlag = 0;
+                data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->fast();
                 new (this) Fast;
             }
@@ -75,6 +77,7 @@ private:
             {
                 data->ct->setTimerSpeed(TIMER_SLOW);
                 data->ct->transact();
+                data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->slow();
                 new (this) Slow;
             }
@@ -94,6 +97,7 @@ private:
             {
                 data->ct->setTimerSpeed(TIMER_FAST);
                 data->ct->transact();
+                data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->fast();
                 new (this) Fast;
             }
@@ -108,6 +112,7 @@ private:
                 {
                     data->ct->setTimerSpeed(TIMER_SLOW);
                     data->ct->transact();
+                    data->hb.getHardware()->getMotor()->right();
                     data->hb.getHardware()->getMotor()->slow();
                     new (this) Slow;
                 }
@@ -115,6 +120,7 @@ private:
                 {
                     data->ct->setTimerSpeed(TIMER_FAST);
                     data->ct->transact();
+                    data->hb.getHardware()->getMotor()->right();
                     data->hb.getHardware()->getMotor()->fast();
                     new (this) Fast;
                 }

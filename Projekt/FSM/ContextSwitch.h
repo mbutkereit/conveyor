@@ -27,12 +27,12 @@ public:
 		statePtr->transact();
 	} // context delegates signals to state
     
-    void setSkidOpen()
+    void setSwitchOpen()
     {
         cswdata.openCounter++;
     }
 
-    void resetSkidOpen()
+    void resetSwitchOpen()
     {
         cswdata.openCounter--;
     }
@@ -65,6 +65,7 @@ private:
 		    if(data->openCounter > 0)
 		    {
 		        data->hb.getHardware()->getMotor()->switchOpen();
+		        data->hb.getHardware()->getMT()->isSwitchOpen();
 		        new (this) Open;
 		    }
 		}

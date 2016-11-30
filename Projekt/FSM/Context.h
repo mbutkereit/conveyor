@@ -25,16 +25,20 @@
 #include "ErrorStates.h"
 #include "FSM/ContextMotor.h"
 #include "FSM/MotorOptions.h"
+#include "FSM/ContextTimer.h"
+#include "FSM/ContextSwitch.h"
 
 using namespace std;
 extern HalBuilder hb;
 
 struct Datac {
 	Datac(ContextSorting* csorting, ContextMotor* cmotor) :
-			hb(), cs(csorting), cm(cmotor), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
+			hb(), cs(csorting), cswitch(ContextSwitch::getInstance()), ct(ContextTimer::getInstance()), cm(cmotor), puck(-1), puckmap(), es(), id(0), height(-1), t1(0), t2(0), delta(0) {
 	}
 	HalBuilder hb;
 	ContextSorting* cs;
+	ContextSwitch* cswitch;
+	ContextTimer* ct;
 	ContextMotor* cm;
 	Puck puck;
 	map<int,Puck> puckmap;
@@ -49,11 +53,12 @@ struct Datac {
 class Context {
 private:
 
-	struct PuckOnConveyor2 { //top-level state
+	struct PuckOnConveyor1 { //top-level state
 		Datac* data;
 		virtual void signalEStop() {
 			//struct PuckOnConveyor1* hs;
 			data->cm->setSpeed(MOTOR_STOP);
+			data->cm->transact();
 			//E-Stopp unlock missing
 			/*while (1) {
 			 if (0) {
@@ -67,18 +72,7 @@ private:
 		}
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct StateStart: public PuckOnConveyor2 {
-		virtual void transact() {
-			if (data->hb.getHardware()->getMT()->isSkidFull()) { //Rutsche 1 voll Abfrage fehlt!
-				data->es.bothSkidsFull();
-				new (this) TransportToEntry;
-			} else {
-				new (this) TransportToEntry;
-			}
-		}
-	};
-
-	struct TransportToEntry: public PuckOnConveyor2 {
+	struct TransportToEntry: public PuckOnConveyor1 {
 		virtual void transact() {
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			while (data->hb.getHardware()->getMT()->isItemRunningIn()) {
@@ -87,43 +81,38 @@ private:
 		}
 	};
 
-	struct MotorOn: public PuckOnConveyor2 { //ID wird von Band1 vergeben
+	struct MotorOn: public PuckOnConveyor1 { //ID wird von Band1 vergeben
 		virtual void transact() {
 			int id = (data->id);
 			Puck puck(id);
 			data->puck = puck;
-			data->hb.getHardware()->getMotor()->right();
-			data->hb.getHardware()->getMotor()->fast();
+			data->cm->setSpeed(MOTOR_FAST);
+			data->cm->transact();
 			data->puckmap.insert(pair<int, Puck>(id, puck));
 			while (!(data->hb.getHardware()->getMT()->isItemRunningIn())) {
 			}
-			data->t1 = clock();
+			data->t1 = data->ct->giveTime();
 			new (this) TransportToHeightMeasurement;
 		}
 	};
 
-	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
+	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
 		virtual void transact() {
 			while (data->hb.getHardware()->getMT()->isItemAltimetry()) {
 			}
-			//t_0 and t_H
-			data->t2 = clock();
+			data->t2 = data->ct->giveTime();
 			data->delta = data->t2 - data->t1;
-			//data->hb.getHardware()->getMotor()->right();
-			data->hb.getHardware()->getMotor()->slow();
-			//Factor for CLOCK missing!
+			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->transact();
 			if (data->delta < DELTA_T0_TH) {
 				new (this) PuckAdded;
-			} else if (data->delta > DELTA_T0_TH) {
-				data->es.puckLost();
-				new (this) PuckInHeightMeasurement;
 			} else {
 				new (this) PuckInHeightMeasurement;
 			}
 		}
 	};
 
-	struct PuckInHeightMeasurement: public PuckOnConveyor2 {
+	struct PuckInHeightMeasurement: public PuckOnConveyor1 {
 		virtual void transact() {
 			int height = data->hb.getHardware()->getAltimetry()->getHeight();
 			data->puck.setHeightReading1(height);
@@ -134,25 +123,25 @@ private:
 			}
 			while (!(data->hb.getHardware()->getMT()->isItemAltimetry())) {
 			}
-			data->hb.getHardware()->getMotor()->right();
-			data->hb.getHardware()->getMotor()->fast();
+			data->cm->resetSpeed(MOTOR_SLOW);
+			data->cm->transact();
 			new (this) TransPortToSkid;
 		}
 	};
 
-	struct TransPortToSkid: public PuckOnConveyor2 {
+	struct TransPortToSkid: public PuckOnConveyor1 {
 		virtual void transact() {
 			while (data->hb.getHardware()->getMT()->isItemSwitch()) {
 			}
 			//t_h and t_w
 			data->t1 = data->t2;
-			data->t2 = clock();
+			data->t2 = data->ct->giveTime();
 			data->delta = data->t2 - data->t1;
 			new (this) MetalDetection;
 		}
 	};
 
-	struct MetalDetection: public PuckOnConveyor2 {
+	struct MetalDetection: public PuckOnConveyor1 {
 		virtual void transact() {
 			if (data->hb.getHardware()->getMT()->isItemMetal()) {
 				data->puck.setPuckmaterial(METAL);
@@ -160,24 +149,18 @@ private:
 				data->puck.setPuckmaterial(PLASTIC);
 			}
 			if (!(data->hb.getHardware()->getMT()->isSkidFull())) {
-				data->es.bothSkidsFull();
-				new (this) Sorting;
-				//new (this) BothSkidsFull;
-			} else if (data->delta < DELTA_TH_TW) {
+                data->es.bothSkidsFull();
+			}
+			if (data->delta < DELTA_TH_TW) {
 				new (this) PuckAdded;
-			} else if (data->delta > DELTA_TH_TW) {
-				data->puckmap.erase(data->puck.getId());
-				data->es.puckLost();
-				new (this) StateStart;
-				//new (this) PuckLost;
 			} else {
 				new (this) Sorting;
 			}
 		}
 	};
 
-	struct Sorting: public PuckOnConveyor2 {
-		virtual void transact() { //TRANSITION IS NOT DEFINED
+	struct Sorting: public PuckOnConveyor1 {
+		virtual void transact() {
 			data->cs->setCurrentPh(data->puck.getPuckdrillhole());
 			data->cs->setCurrentPm(data->puck.getPuckmaterial());
 			data->cs->transact();
@@ -194,55 +177,83 @@ private:
 		}
 	};
 
-	struct SortOutThroughSkid: public PuckOnConveyor2 {
+	struct SortOutThroughSkid: public PuckOnConveyor1 {
+        virtual void transact() {
+            while (data->hb.getHardware()->getMT()->isSkidFull()){
+            }
+            if (data->puckmap.size() > 0)
+            {
+                new (this) Finish;
+            }
+            else
+            {
+                new (this) Conveyor1Empty;
+            }
+        }
 	};
 
-	struct TransportToDelivery: public PuckOnConveyor2 {
+	struct Conveyor1Empty: public PuckOnConveyor1 {
+	    virtual void transact() {
+	        data->cm->setSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        data->cm->resetSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        new (this) Finish;
+	    }
+	};
+
+	struct TransportToDelivery: public PuckOnConveyor1 {
 		virtual void transact() {
-			data->hb.getHardware()->getMotor()->switchOpen();
+		    data->cswitch->setSwitchOpen();
+		    data->cswitch->transact();
 			data->t1 = data->t2;
 			while (data->hb.getHardware()->getMT()->isItemRunningOut()) {
 			}
-			data->t2 = clock();
+			data->t2 = data->ct->giveTime();
 			data->delta = data->t2 - data->t1;
-			if (data->delta > DELTA_TW_TE) {
-				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnYellowOff();
-				data->es.puckLost();
-				new (this) DeliveryToConveyor3; //delta checks evtl. erneut nötig?
-				//new (this) PuckLost;
-			} else if (data->delta < DELTA_TW_TE) {
+			data->cswitch->resetSwitchOpen();
+			data->cswitch->transact();
+			if (data->delta < DELTA_TW_TE) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				new (this) PuckAdded;
 			} else {
-				new (this) DeliveryToConveyor3;
+				new (this) DeliveryToConveyor2;
 			}
 		}
 	};
 
-	struct DeliveryToConveyor3: public PuckOnConveyor2 {
+	struct DeliveryToConveyor2: public PuckOnConveyor1 {
 		virtual void transact() {
-			//Check for conveyor3 isFree() missing!
-			new (this) TransportToConveyor3;
+		    data->cm->setSpeed(MOTOR_STOP);
+		    data->cm->transact();
+			/*Check for conveyor2 isFree() missing!
+			 * while(conveyor2NotFree){}
+			 * data->cm->resetSpeed(MOTOR_STOP);
+             * data->cm->transact();
+			 */
+			new (this) TransportToConveyor2;
 		}
 	};
 
-	struct TransportToConveyor3: public PuckOnConveyor2 {
+	struct TransportToConveyor2: public PuckOnConveyor1 {
 		virtual void transact() {
 			while (!(data->hb.getHardware()->getMT()->isItemRunningOut())) {
-			}
+			}//CHECK FOR LS_A OF CONVEYOR2 IS NEEDED
 			usleep(4000000);
 			data->puckmap.erase(data->puck.getId());
 			if (data->puckmap.empty()) {
-				data->hb.getHardware()->getMotor()->stop();
+			    new (this) Conveyor1Empty;
 			}
-			new (this) Finish;
+			else
+			{
+			    new (this) Finish;
+			}
 		}
 	};
 
-	struct BothSkidsFull: public PuckOnConveyor2 {
+	struct BothSkidsFull: public PuckOnConveyor1 {
 		virtual void transact() {
-			data->hb.getHardware()->getMotor()->stop();
+		    data->cm->setSpeed(MOTOR_STOP);
 			data->hb.getHardware()->getTL()->turnGreenOff();
 			//Errormessage impelementation missing
 			while (!(data->hb.getHardware()->getHMI()->isButtonStartPressed())) {
@@ -256,9 +267,9 @@ private:
 		}
 	};
 
-	struct PuckLost: public PuckOnConveyor2 {
+	struct PuckLost: public PuckOnConveyor1 {
 		virtual void transact() {
-			data->hb.getHardware()->getMotor()->stop();
+		    data->cm->setSpeed(MOTOR_STOP);
 			//Errormessage implementation missing
 			while (!(data->hb.getHardware()->getHMI()->isButtonStartPressed())) {
 				data->hb.getHardware()->getTL()->turnYellowOn();
@@ -272,7 +283,7 @@ private:
 		}
 	};
 
-	struct PuckAdded: public PuckOnConveyor2 {
+	struct PuckAdded: public PuckOnConveyor1 {
 		virtual void transact() {
 
 			data->hb.getHardware()->getMotor()->stop();
@@ -285,19 +296,18 @@ private:
 			}
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->puckmap.erase(data->puck.getId());
-			new (this) StateStart;
+			new (this) Finish;
 		}
 	};
 
-	struct Finish: public PuckOnConveyor2 {
+	struct Finish: public PuckOnConveyor1 {
 		virtual void transact() {
-
 		}
 	};
 
 public:
 	Datac cdata;
-	StateStart stateMember; //The memory for the state is part of context object
+	TransportToEntry stateMember; //The memory for the state is part of context object
 
 	Context(ContextSorting* csorting, ContextMotor* cmotor) :
 			statePtr(&stateMember), cdata(csorting, cmotor) // assigning start state

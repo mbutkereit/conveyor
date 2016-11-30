@@ -48,15 +48,15 @@ private:
 
     struct StateStart: public TimerOfConveyor {
         virtual void transact() {
-            if(ctdata.currentSpeed == TIMER_FAST)
+            if(data->currentSpeed == TIMER_FAST)
             {
-                ctdata.pastTime += clock();
+                data->pastTime += (clock() - data->pastTime);
                 new (this) Fast;
-            }else if(ctdata.currentSpeed == TIMER_SLOW)
+            }else if(data->currentSpeed == TIMER_SLOW)
             {
-                ctdata.pastTime += (clock()/SLOW_FACTOR);
+                data->pastTime += ((clock() - data->pastTime)/SLOW_FACTOR);
                 new (this) Slow;
-            }else if(ctdata.currentSpeed == TIMER_STOP)
+            }else if(data->currentSpeed == TIMER_STOP)
             {
                 new (this) Stop;
             }
@@ -65,11 +65,11 @@ private:
 
     struct Fast: public TimerOfConveyor {
         virtual void transact() {
-            ctdata.pastTime += clock();
-            if (ctdata.currentSpeed == TIMER_SLOW)
+            data->pastTime += (clock() - data->pastTime);
+            if (data->currentSpeed == TIMER_SLOW)
             {
                 new (this) Slow;
-            } else if (ctdata.currentSpeed == TIMER_STOP)
+            } else if (data->currentSpeed == TIMER_STOP)
             {
                 new (this) Stop;
             }
@@ -78,28 +78,28 @@ private:
 
     struct Slow: public TimerOfConveyor {
         virtual void transact() {
-            ctdata.pastTime += (clock()/SLOW_FACTOR);
-            if (ctdata.currentSpeed == TIMER_FAST)
+            data->pastTime += ((clock() - data->pastTime)/SLOW_FACTOR);
+            if (data->currentSpeed == TIMER_FAST)
             {
                 new (this) Fast;
-            } else if (ctdata.currentSpeed == TIMER_STOP)
+            } else if (data->currentSpeed == TIMER_STOP)
             {
                 new (this) Stop;
             } else
             {
-                ctdata.pastTime += (clock()/SLOW_FACTOR);
+                data->pastTime += ((clock() - data->pastTime)/SLOW_FACTOR);
             }
         }
     };
 
     struct Stop: public TimerOfConveyor {
         virtual void transact() {
-            if (ctdata.currentSpeed == FAST)
+            if (data->currentSpeed == TIMER_FAST)
             {
-                new (this) FAST;
-            } else if (ctdata.currentSpeed == SLOW)
+                new (this) Fast;
+            } else if (data->currentSpeed == TIMER_SLOW)
             {
-                new (this) SLOW;
+                new (this) Slow;
             }
         }
     };
