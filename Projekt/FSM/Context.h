@@ -48,7 +48,6 @@ struct Datac {
 
 class Context {
 private:
-	Datac cdata;
 
 	struct PuckOnConveyor2 { //top-level state
 		Datac* data;
@@ -78,8 +77,6 @@ private:
 			}
 		}
 	};
-
-	StateStart stateMember; //The memory for the state is part of context object
 
 	struct TransportToEntry: public PuckOnConveyor2 {
 		virtual void transact() {
@@ -299,6 +296,8 @@ private:
 	};
 
 public:
+	Datac cdata;
+	StateStart stateMember; //The memory for the state is part of context object
 
 	Context(ContextSorting* csorting, ContextMotor* cmotor) :
 			statePtr(&stateMember), cdata(csorting, cmotor) // assigning start state

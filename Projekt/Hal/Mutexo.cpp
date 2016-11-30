@@ -22,7 +22,6 @@ Mutexo::~Mutexo(){
 
 int Mutexo::lock() {
     return pthread_mutex_lock(&pmutex_);
-
 }
 
 int Mutexo::unlock() {
