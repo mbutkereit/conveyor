@@ -53,7 +53,7 @@ private:
 		Datac* data;
 		virtual void signalEStop() {
 			//struct PuckOnConveyor1* hs;
-			data->cm->setSpeed(STOP);
+			data->cm->setSpeed(MOTOR_STOP);
 			//E-Stopp unlock missing
 			/*while (1) {
 			 if (0) {

@@ -8,6 +8,6 @@
 #ifndef MOTOROPTIONS_H_
 #define MOTOROPTIONS_H_
 
-enum MotorOptions {FAST, SLOW, STOP};
+enum MotorOptions {MOTOR_FAST, MOTOR_SLOW, MOTOR_STOP};
 
 #endif /* MOTOROPTIONS_H_ */

@@ -12,7 +12,7 @@ ContextMotor* ContextMotor::instance_ = NULL;
 
 ContextMotor* ContextMotor::getInstance() {
 	if (instance_ == NULL) {
-		instance_ = new ContextMotor();
+		instance_ = new ContextMotor(ContextTimer::getInstance());
 	}
 	return instance_;
 }
