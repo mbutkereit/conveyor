@@ -9,31 +9,76 @@
 #define CONTEXTSWITCH_H_
 
 #include <iostream>
-using namespace std;
+#include "Hal/HalBuilder.h"
 
 struct Datacsw{
-	Datacsw(){}
+	Datacsw(): hb(), openCounter(0), closeCounter(0){}
+	HalBuilder hb;
+	int openCounter;
+	int closeCounter;
 };
 
 class ContextSwitch {
 public:
 	static ContextSwitch* getInstance();
     virtual ~ContextSwitch(){};
-	void transact() {
+
+    void transact() {
 		statePtr->transact();
 	} // context delegates signals to state
     
-private:
-	struct Switch { //top-level state
-			Datacsw* data;
-			virtual void transact() {
-			}
-		}*statePtr;   // a pointer to current state. Used for polymorphism.
+    void setSkidOpen()
+    {
+        cswdata.openCounter++;
+    }
 
-		struct StateStart: public Switch {
-			virtual void transact() {
-			}
-		};
+    void resetSkidOpen()
+    {
+        cswdata.openCounter--;
+    }
+
+private:
+	struct SwitchOfConveyor { //top-level state
+		Datacsw* data;
+		virtual void transact() {
+		}
+	}*statePtr;   // a pointer to current state. Used for polymorphism.
+
+    struct StateStart: public SwitchOfConveyor {
+        virtual void transact() {
+            data->hb.getHardware()->getMotor()->switchClosed();
+            if (data->openCounter > 0)
+            {
+                data->hb.getHardware()->getMotor()->switchOpen();
+                new (this) Open;
+            }
+            else
+            {
+                data->hb.getHardware()->getMotor()->switchClosed();
+                new (this) Close;
+            }
+        }
+    };
+
+	struct Close: public SwitchOfConveyor {
+		virtual void transact() {
+		    if(data->openCounter > 0)
+		    {
+		        data->hb.getHardware()->getMotor()->switchOpen();
+		        new (this) Open;
+		    }
+		}
+	};
+
+	struct Open: public SwitchOfConveyor {
+		virtual void transact() {
+		    if(data->openCounter == 0)
+		    {
+		        data->hb.getHardware()->getMotor()->switchClosed();
+		        new (this) Close;
+		    }
+		}
+	};
 
 	static ContextSwitch* instance_;
 	StateStart stateMember; //The memory for the state is part of context object
