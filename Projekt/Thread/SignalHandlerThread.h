@@ -9,6 +9,8 @@
 #include "src/lib/HAWThread.h"
 #include "FSM/Context.h"
 #include "Hal/ISR/InterruptHandler.h"
+#include "Dispatcher.h"
+#include  <queue>
 
 using namespace thread;
 

@@ -1,4 +1,5 @@
 #include "SignalHandlerThread.h"
+//#include "Dispatcher.h"
 
 int coid = 0;
 int coid2 = 0;
@@ -18,8 +19,14 @@ SignalHandlerThread::~SignalHandlerThread() {
 
 void SignalHandlerThread::execute(void*) {
 
-	Context context;
+
 	struct _pulse pulse;
+	//TODO delete von Dispatcher fehlt noch
+	Dispatcher* disp = new Dispatcher();
+	std::vector<Context* >contextContainer;
+
+
+
 
 	if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1) {
 		LOG_DEBUG << "SignalHandlerThread kann keine rechte bekommen.";
@@ -40,58 +47,101 @@ void SignalHandlerThread::execute(void*) {
 			int code = pulse.value.sival_int;
 
 			if (code & ESTOP) {
-				context.signalEStop();
+				disp->callListeners(ESTOPSIGNAL);
 			}
 
 			if (code & LIGHT_BARRIER_BEGIN_INTERRUPTED) {
-				context.signalLBBeginInterrupted();
+				Context* context = new Context();
+				//TODO extract Method
+				disp->addListener(context, LBBEGININTERRUPTED);
+				disp->addListener(context, LBBEGINNOTINTERRUPTED);
+				disp->addListener(context, LBENDINTERRUPTED);
+				disp->addListener(context, LBENDNOTINTERRUPTED);
+				disp->addListener(context, LBALTIMETRYINTERRUPTED);
+				disp->addListener(context, LBALTIMETRYNOTINTERRUPTED);
+				disp->addListener(context, LBSKIDINTERRUPTED);
+				disp->addListener(context, LBSKIDNOTINTERRUPTED);
+				disp->addListener(context, LBSWITCHINTERRUPTED);
+				disp->addListener(context, LBSWITCHNOTINTERRUPTED);
+				disp->addListener(context, RESETSIGNAL);
+				disp->addListener(context, STARTSIGNAL);
+				disp->addListener(context, ESTOPSIGNAL);
+				disp->addListener(context, STOPSIGNAL);
+				disp->addListener(context, ALTEMETRYCOMPLETE);
+				contextContainer.push_back(context);
+				disp->callListeners(LBBEGININTERRUPTED);
 			}
 			if (code & LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED) {
-				context.signalLBBeginNotInterrupted();
+				disp->callListeners(LBBEGINNOTINTERRUPTED);
 			}
 			if (code & LIGHT_BARRIER_ALTIMETRY_INTERRUPTED) {
-				context.signalLBAltimetryInterrupted();
+				disp->callListeners(LBALTIMETRYINTERRUPTED);
 			}
 			if (code & LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED) {
-				context.signalLBAltimetryNotInterrupted();
+				disp->callListeners(LBALTIMETRYNOTINTERRUPTED);
 			}
 			if (code & LIGHT_BARRIER_SWITCH_INTERRUPTED) {
-				context.signalLBSwitchInterrupted();
+				disp->callListeners(LBSWITCHINTERRUPTED);
 			}
 
 			if (code & LIGHT_BARRIER_SWITCH_NOT_INTERRUPTED) {
-				context.signalLBSwitchNotInterrupted();
+				disp->callListeners(LBSWITCHNOTINTERRUPTED);
 			}
 
 			if (code & LIGHT_BARRIER_SKID_INTERRUPTED) {
-				context.signalLBSkidInterrupted();
+				disp->callListeners(LBSKIDINTERRUPTED);
 			}
 
 			if (code & LIGHT_BARRIER_SKID_NOT_INTERRUPTED) {
-				context.signalLBSkidNotInterrupted();
+				disp->callListeners(LBSKIDNOTINTERRUPTED);
 			}
 
 			if (code & LIGHT_BARRIER_END_INTERRUPTED) {
-				context.signalLBEndInterrupted();
+				disp->callListeners(LBENDINTERRUPTED);
 			}
 
 			if (code & LIGHT_BARRIER_END_NOT_INTERRUPTED) {
-				context.signalLBEndNotInterrupted();
+				disp->callListeners(LBENDNOTINTERRUPTED);
 			}
 
 			if (code & ALTIMETRY_COMPLETED) {
-				context.signalAltimetryCompleted();
+				disp->callListeners(ALTEMETRYCOMPLETE);
 			}
 
 			if (code & START) {
-				context.signalStart();
+				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
-				context.signalReset();
+				disp->callListeners(RESETSIGNAL);
 			}
 			if (code & STOP) {
-				context.signalStop();
+				disp->callListeners(STOPSIGNAL);
 			}
+			
+			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gelöscht.
+			for(int i=0;i < contextContainer.size();i++ ){
+				if(contextContainer[i]->isContextimEnzustand()){
+					//TODO extract Method
+					disp->remListeners(contextContainer[i],LBBEGININTERRUPTED);
+					disp->remListeners(contextContainer[i], LBBEGINNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBENDINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBENDNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBALTIMETRYINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBALTIMETRYNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBSKIDINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBSKIDNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBSWITCHINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBSWITCHNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], RESETSIGNAL);
+					disp->remListeners(contextContainer[i], STARTSIGNAL);
+					disp->remListeners(contextContainer[i], ESTOPSIGNAL);
+					disp->remListeners(contextContainer[i], STOPSIGNAL);
+					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
+					delete (context*)contextContainer[i];
+					contextContainer.erase[i];
+				}
+			}
+			
 		}else{
 			LOG_WARNING << "Einen nicht bekannten Code erhalten." << pulsecode << "\n" ;
 		}

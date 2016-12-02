@@ -59,6 +59,7 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
+
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
@@ -140,6 +141,12 @@ public:
 	 *  Destructor des Contexts.
 	 */
 	virtual ~Context();
+	
+	/**
+	*
+	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
+	*/
+	bool isContextimEnzustand();
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
