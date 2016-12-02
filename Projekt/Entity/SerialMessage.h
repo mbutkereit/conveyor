@@ -1,13 +1,12 @@
-/*
- * SerialMessage.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef SERIALMESSAGE_H_
 #define SERIALMESSAGE_H_
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class SerialMessage
 {
 public:

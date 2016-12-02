@@ -1,18 +1,19 @@
-/*
- * ParameterList.h
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
 #ifndef PARAMETERLIST_H_
 #define PARAMETERLIST_H_
 
 #include <vector>
 #include "ConfigManagement/ParameterBase.h"
+#include "Logger/Logger.h"
+
 //todo find a better implementation
 class ParameterBase;
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class ParameterList
 {
 public:

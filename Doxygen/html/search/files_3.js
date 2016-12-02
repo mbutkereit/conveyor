@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['logger_2ecpp',['Logger.cpp',['../_logger_8cpp.html',1,'']]],
-  ['logger_2eh',['Logger.h',['../_logger_8h.html',1,'']]]
+  ['interrupthandler_2ecpp',['InterruptHandler.cpp',['../_interrupt_handler_8cpp.html',1,'']]],
+  ['interrupthandler_2eh',['InterruptHandler.h',['../_interrupt_handler_8h.html',1,'']]]
 ];

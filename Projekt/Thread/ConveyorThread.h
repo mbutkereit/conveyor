@@ -1,20 +1,19 @@
-/*
- * ConveyorThread.h
- *
- *  Created on: 13.10.2016
- *      Author: abx827
- */
-
-
 #ifndef CONVEYORTHREAD_H_
 #define CONVEYORTHREAD_H_
 
 #include <pthread.h>
 #include "src/lib/HWaccess.h"
 #include "src/lib/HAWThread.h"
+#include "Hal/HalBuilder.h"
+
 using namespace thread;
 
-
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um einen Thread fuer die Ample stuerung zu starten.
+ */
 class ConveyorThread: public HAWThread {
 public:
 	ConveyorThread();

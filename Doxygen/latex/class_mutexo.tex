@@ -33,13 +33,13 @@ virtual \hyperlink{class_mutexo_af8942ad328e7c91931f63e6a243081d1}{$\sim$\+Mutex
 \subsubsection{\texorpdfstring{Mutexo()}{Mutexo()}}
 {\footnotesize\ttfamily Mutexo\+::\+Mutexo (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-\hypertarget{class_mutexo_af8942ad328e7c91931f63e6a243081d1}{}\label{class_mutexo_af8942ad328e7c91931f63e6a243081d1} 
+Constructor des Mutex. \hypertarget{class_mutexo_af8942ad328e7c91931f63e6a243081d1}{}\label{class_mutexo_af8942ad328e7c91931f63e6a243081d1} 
 \index{Mutexo@{Mutexo}!````~Mutexo@{$\sim$\+Mutexo}}
 \index{````~Mutexo@{$\sim$\+Mutexo}!Mutexo@{Mutexo}}
 \subsubsection{\texorpdfstring{$\sim$\+Mutexo()}{~Mutexo()}}
 {\footnotesize\ttfamily Mutexo\+::$\sim$\+Mutexo (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
-
+Destructor des Mutex. 
 
 \subsection{Dokumentation der Elementfunktionen}
 \hypertarget{class_mutexo_a22aac64070af68adc9acc1fef3d3f4aa}{}\label{class_mutexo_a22aac64070af68adc9acc1fef3d3f4aa} 
@@ -48,12 +48,22 @@ virtual \hyperlink{class_mutexo_af8942ad328e7c91931f63e6a243081d1}{$\sim$\+Mutex
 \subsubsection{\texorpdfstring{lock()}{lock()}}
 {\footnotesize\ttfamily int Mutexo\+::lock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Locked den Mutex.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt den erfolg des Lockes zurück. 
+\end{DoxyReturn}
 \hypertarget{class_mutexo_a9f51083616ed99edc2add313f840016c}{}\label{class_mutexo_a9f51083616ed99edc2add313f840016c} 
 \index{Mutexo@{Mutexo}!unlock@{unlock}}
 \index{unlock@{unlock}!Mutexo@{Mutexo}}
 \subsubsection{\texorpdfstring{unlock()}{unlock()}}
 {\footnotesize\ttfamily int Mutexo\+::unlock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
+Unlocked den Mutex.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt den erfolg des Unlockes zurück. 
+\end{DoxyReturn}
 
 
 Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Dateien\+:\begin{DoxyCompactItemize}

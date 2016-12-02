@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['log_5fdebug',['LOG_DEBUG',['../_logger_8h.html#a6ff63e8955665c4a58b1598f2b07c51a',1,'Logger.h']]],
-  ['log_5ferror',['LOG_ERROR',['../_logger_8h.html#aced66975c154ea0e2a8ec3bc818b4e08',1,'Logger.h']]],
-  ['log_5fwarning',['LOG_WARNING',['../_logger_8h.html#adf4476a6a4ea6c74231c826e899d7189',1,'Logger.h']]]
+  ['baseadress_5fa',['BASEADRESS_A',['../_hal_builder_8h.html#ad736ed16a7169899ab9d6025889d5058',1,'HalBuilder.h']]],
+  ['baseadress_5fb',['BASEADRESS_B',['../_hal_builder_8h.html#acc5f003906c7554a5b88497f199cb389',1,'HalBuilder.h']]],
+  ['baseadress_5fc',['BASEADRESS_C',['../_hal_builder_8h.html#acc425eae8132245edae734f9d29bef3c',1,'HalBuilder.h']]],
+  ['baseadress_5fd',['BASEADRESS_D',['../_hal_builder_8h.html#a1e248eb700ba9d3d9a2e1319566a4984',1,'HalBuilder.h']]]
 ];

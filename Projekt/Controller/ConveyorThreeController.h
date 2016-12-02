@@ -1,13 +1,12 @@
-/*
- * ConveyorThreeController.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef CONVEYORTHREECONTROLLER_H_
 #define CONVEYORTHREECONTROLLER_H_
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class ConveyorThreeController
 {
 public:

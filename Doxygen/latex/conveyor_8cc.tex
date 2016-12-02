@@ -2,8 +2,11 @@
 \label{conveyor_8cc}\index{conveyor.\+cc@{conveyor.\+cc}}
 {\ttfamily \#include $<$cstdlib$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include \char`\"{}Hal/\+Hal\+Builder.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$hw/inout.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Thread/\+Conveyor\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Thread/\+Signal\+Handler\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Hal/\+Serial\+Interface/\+Serial.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Hal/\+I\+S\+R/\+Interrupt\+Handler.\+h\char`\"{}}\newline
 Include-\/\+Abhängigkeitsdiagramm für conveyor.\+cc\+:
 \nopagebreak
 \begin{figure}[H]
@@ -17,6 +20,11 @@ Include-\/\+Abhängigkeitsdiagramm für conveyor.\+cc\+:
 \item 
 int \hyperlink{conveyor_8cc_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
 \end{DoxyCompactItemize}
+\subsection*{Variablen}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_hal_builder}{Hal\+Builder} \hyperlink{conveyor_8cc_a150c49d0f49ad0bbff3e8e7c1e32aef5}{hb}
+\begin{DoxyCompactList}\small\item\em Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Dokumentation der Funktionen}
@@ -25,4 +33,17 @@ int \hyperlink{conveyor_8cc_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, 
 \index{main@{main}!conveyor.\+cc@{conveyor.\+cc}}
 \subsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variablen-\/\+Dokumentation}
+\hypertarget{conveyor_8cc_a150c49d0f49ad0bbff3e8e7c1e32aef5}{}\label{conveyor_8cc_a150c49d0f49ad0bbff3e8e7c1e32aef5} 
+\index{conveyor.\+cc@{conveyor.\+cc}!hb@{hb}}
+\index{hb@{hb}!conveyor.\+cc@{conveyor.\+cc}}
+\subsubsection{\texorpdfstring{hb}{hb}}
+{\footnotesize\ttfamily \hyperlink{class_hal_builder}{Hal\+Builder} hb}
+
+
+
+Der \hyperlink{class_hal_builder}{Hal\+Builder} um sicher und zentral auf die \hyperlink{class_hardware}{Hardware} zuzugreifen. 
 

@@ -1,14 +1,10 @@
-/*
- * Parameter.h
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
 #ifndef PARAMETER_H_
 #define PARAMETER_H_
-#include "ConfigManagement/ParameterBase.h"
+
 #include <string>
+#include "ConfigManagement/ParameterBase.h"
+#include "Logger/Logger.h"
+
 template<class T>
 class Parameter : public ParameterBase
 {

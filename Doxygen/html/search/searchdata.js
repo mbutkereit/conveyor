@@ -3,12 +3,13 @@ var indexSectionsWithContent =
   0: "abcdefghijlmnoprstuvw~",
   1: "achlmpst",
   2: "t",
-  3: "achlmpst",
+  3: "achilmpst",
   4: "acefghijlmoprstu~",
-  5: "dnpv",
+  5: "cdhinpv",
   6: "l",
   7: "dew",
-  8: "bl"
+  8: "abceilrs",
+  9: "a"
 };
 
 var indexSectionNames =
@@ -21,7 +22,8 @@ var indexSectionNames =
   5: "variables",
   6: "enums",
   7: "enumvalues",
-  8: "defines"
+  8: "defines",
+  9: "pages"
 };
 
 var indexSectionLabels =
@@ -34,6 +36,7 @@ var indexSectionLabels =
   5: "Variablen",
   6: "Aufzählungen",
   7: "Aufzählungswerte",
-  8: "Makrodefinitionen"
+  8: "Makrodefinitionen",
+  9: "Seiten"
 };
 

@@ -1,13 +1,5 @@
 /*
- * Parameter.cpp
- *
- *  Created on: 10.10.2016
- *      Author: marvin
-
-
-#include <ConfigManagement/Parameter.h>
-#include <string>
-#include <Logger/Logger.h>
+#include "ConfigManagement/Parameter.h"
 
 template<class T>
 Parameter<T>::Parameter(T v, std::string name) :
@@ -17,10 +9,7 @@ Parameter<T>::Parameter(T v, std::string name) :
 }
 
 template<class T>
-Parameter<T>::~Parameter()
-{
-    // TODO Auto-generated destructor stub
-}
+Parameter<T>::~Parameter(){}
 
 template<class T>
 void Parameter<T>::showValue()

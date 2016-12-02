@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['baseadress_5fa',['BASEADRESS_A',['../_hal_builder_8h.html#ad736ed16a7169899ab9d6025889d5058',1,'HalBuilder.h']]],
-  ['baseadress_5fb',['BASEADRESS_B',['../_hal_builder_8h.html#acc5f003906c7554a5b88497f199cb389',1,'HalBuilder.h']]],
-  ['baseadress_5fc',['BASEADRESS_C',['../_hal_builder_8h.html#acc425eae8132245edae734f9d29bef3c',1,'HalBuilder.h']]]
+  ['activate_5fadc_5fin',['ACTIVATE_ADC_IN',['../_altimetry_8h.html#af5f248978814b43f265459187d85217f',1,'Altimetry.h']]],
+  ['adc_5fin_5foffset',['ADC_IN_OFFSET',['../_altimetry_8h.html#a66517a19dec0aa83aeda71c205a4dd2c',1,'Altimetry.h']]],
+  ['altimetry_5fcompleted',['ALTIMETRY_COMPLETED',['../_interrupt_handler_8h.html#ad9d94366567c4133fe6f387674374952',1,'InterruptHandler.h']]]
 ];

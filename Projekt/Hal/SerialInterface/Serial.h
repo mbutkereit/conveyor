@@ -7,7 +7,7 @@
 #include <termios.h>
 #include <stdlib.h>
 #include <string.h>
-#include <Logger/Logger.h>
+#include "Logger/Logger.h"
 
 using namespace std;
 
@@ -15,7 +15,14 @@ typedef struct {
     uint8_t data;
 }Packet;
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class Serial{
+
 private:
     const char* dev_;
     int fdesc_;
@@ -23,12 +30,17 @@ private:
 public:
     Serial(string deviceName);
     ~Serial();
+
     void config(void);
+
     int sendPacket(Packet* p);
+
     int recvPacket(Packet* p);
 
 private:
+
     Serial(const Serial& other);
+
     Serial& operator=(const Serial& other);
 };
 

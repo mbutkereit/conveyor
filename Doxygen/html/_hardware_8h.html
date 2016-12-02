@@ -73,18 +73,20 @@ $(function() {
 <code>#include &quot;<a class="el" href="_human_machine_interface_8h_source.html">Hal/HumanMachineInterface.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_measuring_tool_8h_source.html">Hal/MeasuringTool.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_traffic_light_8h_source.html">Hal/TrafficLight.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_altimetry_8h_source.html">Hal/Altimetry.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include-Abhängigkeitsdiagramm für Hardware.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_hardware_8h__incl.png" border="0" usemap="#_hal_2_hardware_8h" alt=""/></div>
 <map name="_hal_2_hardware_8h" id="_hal_2_hardware_8h">
-<area shape="rect" id="node2" href="_motor_8h.html" title="Hal/Motor.h" alt="" coords="151,79,240,104"/>
-<area shape="rect" id="node11" href="_human_machine_interface_8h.html" title="Hal/HumanMachineInterface.h" alt="" coords="264,79,466,104"/>
-<area shape="rect" id="node12" href="_measuring_tool_8h.html" title="Hal/MeasuringTool.h" alt="" coords="489,79,632,104"/>
-<area shape="rect" id="node13" href="_traffic_light_8h.html" title="Hal/TrafficLight.h" alt="" coords="5,79,127,104"/>
-<area shape="rect" id="node5" href="_logger_8h.html" title="Logger/Logger.h" alt="" coords="75,152,193,177"/>
-<area shape="rect" id="node8" href="_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="318,152,420,177"/>
-<area shape="rect" id="node9" href="_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="319,225,419,251"/>
+<area shape="rect" id="node2" href="_motor_8h.html" title="Hal/Motor.h" alt="" coords="137,79,226,104"/>
+<area shape="rect" id="node12" href="_human_machine_interface_8h.html" title="Hal/HumanMachineInterface.h" alt="" coords="395,79,597,104"/>
+<area shape="rect" id="node13" href="_measuring_tool_8h.html" title="Hal/MeasuringTool.h" alt="" coords="621,79,764,104"/>
+<area shape="rect" id="node14" href="_traffic_light_8h.html" title="Hal/TrafficLight.h" alt="" coords="250,79,372,104"/>
+<area shape="rect" id="node15" href="_altimetry_8h.html" title="Hal/Altimetry.h" alt="" coords="5,79,112,104"/>
+<area shape="rect" id="node5" href="_logger_8h.html" title="Logger/Logger.h" alt="" coords="510,152,629,177"/>
+<area shape="rect" id="node9" href="_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="182,152,285,177"/>
+<area shape="rect" id="node10" href="_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="184,225,283,251"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -92,11 +94,23 @@ Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält:</div
 <div class="dyncontent">
 <div class="center"><img src="_hardware_8h__dep__incl.png" border="0" usemap="#_hal_2_hardware_8hdep" alt=""/></div>
 <map name="_hal_2_hardware_8hdep" id="_hal_2_hardware_8hdep">
-<area shape="rect" id="node2" href="_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="129,79,246,104"/>
-<area shape="rect" id="node6" href="_hardware_8cpp.html" title="Hal/Hardware.cpp" alt="" coords="270,79,398,104"/>
-<area shape="rect" id="node3" href="conveyor_8cc.html" title="conveyor.cc" alt="" coords="5,152,97,177"/>
-<area shape="rect" id="node4" href="_hal_builder_8cpp.html" title="Hal/HalBuilder.cpp" alt="" coords="122,152,253,177"/>
-<area shape="rect" id="node5" href="_conveyor_thread_8cpp.html" title="Thread/ConveyorThread.cpp" alt="" coords="277,152,468,177"/>
+<area shape="rect" id="node2" href="_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="728,79,844,104"/>
+<area shape="rect" id="node18" href="_hardware_8cpp.html" title="Hal/Hardware.cpp" alt="" coords="869,79,997,104"/>
+<area shape="rect" id="node3" href="_thread_2_conveyor_thread_8h.html" title="Thread/ConveyorThread.h" alt="" coords="32,159,209,184"/>
+<area shape="rect" id="node6" href="_interrupt_handler_8h.html" title="Hal/ISR/InterruptHandler.h" alt="" coords="457,159,635,184"/>
+<area shape="rect" id="node12" href="_f_s_m_2_context_8h.html" title="FSM/Context.h" alt="" coords="659,159,769,184"/>
+<area shape="rect" id="node14" href="_hal_builder_8cpp.html" title="Hal/HalBuilder.cpp" alt="" coords="792,159,923,184"/>
+<area shape="rect" id="node15" href="test_2_h_a_l_2_aktorik_2_conveyor_thread_8cpp.html" title="test/HAL/Aktorik/Conveyor\lThread.cpp" alt="" coords="948,152,1125,191"/>
+<area shape="rect" id="node16" href="test_2_h_a_l_2_sensorik_2_context_8h.html" title="test/HAL/Sensorik/Context.h" alt="" coords="1149,159,1338,184"/>
+<area shape="rect" id="node4" href="conveyor_8cc.html" title="conveyor.cc" alt="" coords="208,332,300,357"/>
+<area shape="rect" id="node5" href="_thread_2_conveyor_thread_8cpp.html" title="Thread/ConveyorThread.cpp" alt="" coords="25,245,217,271"/>
+<area shape="rect" id="node7" href="_thread_2_signal_handler_thread_8h.html" title="Thread/SignalHandlerThread.h" alt="" coords="508,245,712,271"/>
+<area shape="rect" id="node9" href="_interrupt_handler_8cpp.html" title="Hal/ISR/InterruptHandler.cpp" alt="" coords="291,245,483,271"/>
+<area shape="rect" id="node10" href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8h.html" title="test/HAL/Sensorik/Signal\lHandlerThread.h" alt="" coords="736,239,905,277"/>
+<area shape="rect" id="node8" href="_thread_2_signal_handler_thread_8cpp.html" title="Thread/SignalHandlerThread.cpp" alt="" coords="497,332,715,357"/>
+<area shape="rect" id="node11" href="test_2_h_a_l_2_sensorik_2_signal_handler_thread_8cpp.html" title="test/HAL/Sensorik/Signal\lHandlerThread.cpp" alt="" coords="739,325,908,364"/>
+<area shape="rect" id="node13" href="_f_s_m_2_context_8cpp.html" title="FSM/Context.cpp" alt="" coords="929,245,1053,271"/>
+<area shape="rect" id="node17" href="test_2_h_a_l_2_sensorik_2_context_8cpp.html" title="test/HAL/Sensorik/Context.cpp" alt="" coords="1142,245,1345,271"/>
 </map>
 </div>
 </div>
@@ -107,7 +121,11 @@ Klassen</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hardware.html">Hardware</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Ausführliche Beschreibung</h2>
+<div class="textblock"><h1><a class="anchor" id="DESCRIPTION"></a>
+DESCRIPTION</h1>
+<p>Eine Klasse um den <a class="el" href="class_motor.html">Motor</a> des Foerderbandes an zu sprechen. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">

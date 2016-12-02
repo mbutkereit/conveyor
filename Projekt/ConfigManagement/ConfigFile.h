@@ -1,16 +1,23 @@
-/*
- * ConfigFile.h
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
 #ifndef CONFIGFILE_H_
 #define CONFIGFILE_H_
 
 #include <string>
 #include <map>
+#include <fstream>
+#include <iostream>
+#include <stdlib.h>
 
+#include "Logger/Logger.h"
+#include "ConfigManagement/ParameterBase.h"
+#include "ConfigManagement/Parameter.h"
+#include "ConfigManagement/ParameterList.h"
+
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um ein Config file zu verwalten.
+ */
 class ConfigFile {
 
 public:

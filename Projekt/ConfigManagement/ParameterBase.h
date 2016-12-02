@@ -1,10 +1,3 @@
-/*
- * ParameterBase.h
- *
- *  Created on: 10.10.2016
- *      Author: marvin
- */
-
 #ifndef PARAMETERBASE_H_
 #define PARAMETERBASE_H_
 
@@ -13,7 +6,12 @@
 //todo find a better solution
 class ParameterList;
 
-
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class ParameterBase
 {
 public:

@@ -1,7 +1,7 @@
 #include "MeasuringTool.h"
-#include <iostream>
+
 MeasuringTool::MeasuringTool(Adapter* adapt):adapter(adapt) {
-	itemRunningBitmask__ = 0x01;
+	itemRunningBitmask_ = 0x01;
 	itemAltimetryBitmask_ = 0x02;
 	itemInAltimetryToleranceRangeBitmask_ = 0x04;
 	itemSwitchBitmask_ = 0x08;
@@ -15,7 +15,7 @@ MeasuringTool::~MeasuringTool() {
 }
 
 uint8_t MeasuringTool::isItemRunningIn() {
-	return adapter->checkBitMask(itemRunningBitmask__);
+	return adapter->checkBitMask(itemRunningBitmask_);
 }
 ;
 uint8_t MeasuringTool::isItemAltimetry() {

@@ -1,24 +1,16 @@
-/*
- * Serial.cpp
- */
-
-#include <SerialInterface/Serial.h>
+#include "Hal/SerialInterface/Serial.h"
 
 Serial::Serial(string deviceName){
-    // Open File descriptor
     this->dev_ = deviceName.c_str();
     this->fdesc_ = open(this->dev_, O_RDWR);
     if(this->fdesc_ == -1){
         LOG_ERROR << "Seriale Interface kann nicht geoeffnet werden. \n";
         exit(-1);
     }
-
-    // Configure Serial Interface
     this->config();
 }
 
 Serial::~Serial(){
-    // Close File descriptor
     if( close(this->fdesc_) < 0 ){
         LOG_ERROR << "Seriale Interface kann nicht geschlossen werden. \n";
         exit(-1);

@@ -1,13 +1,12 @@
-/*
- * ConveyorOneController.h
- *
- *  Created on: 05.10.2016
- *      Author: marvin
- */
-
 #ifndef CONVEYORONECONTROLLER_H_
 #define CONVEYORONECONTROLLER_H_
 
+/**
+ * @file
+ * @section DESCRIPTION
+ *
+ * Eine Klasse um den Motor des Foerderbandes an zu sprechen.
+ */
 class ConveyorOneController
 {
 public:
