@@ -11,14 +11,21 @@
 #include <iostream>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
+#include "ContextMotor.h"
+#include "Puck.h"
+#include "vector"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data {
-	Data(int d) :
-			data1(d) {
+	Data(int puckID, std::vector<Puck>* puckVector) :
+			puckID(puckID), hb(), cm(ContextMotor::getInstance()), puck(), puckVector(puckVector) {
 	}
-	int data1;
+	int puckID;
+	HalBuilder hb;
+	ContextMotor* cm;
+	Puck puck;
+	std::vector<Puck>* puckVector;
 };
 
 /**
@@ -67,56 +74,28 @@ private:
 	Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct StateA: public PuckOnConveyor1 {
-		void signalLBBeginInterrupted() {
-		}
-
+	struct TransportToEntry: public PuckOnConveyor1 {
+		//ENTRY
 		void signalLBBeginNotInterrupted() {
+			data->hb.getHardware()->getTL()->turnGreenOn();
 		}
 
-		void signalLBEndInterrupted() {
-		}
-
-		void signalLBEndNotInterrupted() {
-		}
-
-		void signalLBAltimetryInterrupted() {
-		}
-
-		void signalLBAltimetryNotInterrupted() {
-		}
-
-		void signalLBSwitchInterrupted() {
-		}
-
-		void signalLBSwitchNotInterrupted() {
-		}
-
-		void signalEStop() {
-		}
-
-		void signalStart() {
-		}
-
-		void signalStop() {
-		}
-
-		void signalReset() {
-		}
-
-		void signalLBSkidInterrupted() {
-		}
-
-		void signalLBSkidNotInterrupted() {
-		}
-
-		void signalAltimetryCompleted() {
+		//TRANSACTION
+		void signalLBBeginInterrupted() {
+					new (this) MotorOn;
 		}
 	};
 
+	struct MotorOn: public PuckOnConveyor1{
+		//ENTRY
+		void signalLBBeginInterrupted() {
+		    data->cm->setSpeed(MOTOR_FAST);
+		    data->cm->transact();
+		    data->puck.setId(data->puckID);
+		}
+	};
 
-
-	StateA stateMember;   //The memory for the state is part of context object
+	TransportToEntry stateMember;   //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
 
 public:
@@ -124,7 +103,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextConveyor1();
+	ContextConveyor1(int, std::vector*);
 
 	/**
 	 *  Destructor des Contexts.
