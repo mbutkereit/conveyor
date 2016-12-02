@@ -50,6 +50,7 @@ void SignalHandlerThread::execute(void*) {
 
 			if (code & LIGHT_BARRIER_BEGIN_INTERRUPTED) {
 				Context* context = new Context();
+				context->isContextimEnzustand();
 				//TODO extract Method
 				disp->addListener(context, LBBEGININTERRUPTED);
 				disp->addListener(context, LBBEGINNOTINTERRUPTED);

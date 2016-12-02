@@ -1,5 +1,12 @@
-#ifndef CONTEXT_H_
-#define CONTEXT_H_
+/*
+ * ContextConveyor2.h
+ *
+ *  Created on: 02.12.2016
+ *      Author: abx827
+ */
+
+#ifndef CONTEXTCONVEYOR2_H_
+#define CONTEXTCONVEYOR2_H_
 
 #include <iostream>
 #include "Logger/Logger.h"
@@ -23,7 +30,7 @@ struct Data {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class Context {
+class ContextConveyor2 {
 private:
 	struct State { //top-level state
 		State() :
@@ -135,18 +142,18 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	Context();
+	ContextConveyor2();
 
 	/**
 	 *  Destructor des Contexts.
 	 */
-	virtual ~Context();
-	
+	virtual ~ContextConveyor2();
+
 	/**
 	*
 	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	*/
-	bool isContextimEnzustand(){return false;}
+	bool isContextimEnzustand();
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
@@ -226,4 +233,4 @@ public:
 	void signalAltimetryCompleted();
 };
 
-#endif /* CONTEXT_H_ */
+#endif /* CONTEXTCONVEYOR2_H_ */

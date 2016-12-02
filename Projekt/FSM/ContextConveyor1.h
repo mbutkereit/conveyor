@@ -1,5 +1,12 @@
-#ifndef CONTEXT_H_
-#define CONTEXT_H_
+/*
+ * ContextConveyor1.h
+ *
+ *  Created on: 02.12.2016
+ *      Author: abx827
+ */
+
+#ifndef CONTEXTCONVEYOR1_H_
+#define CONTEXTCONVEYOR1_H_
 
 #include <iostream>
 #include "Logger/Logger.h"
@@ -23,12 +30,9 @@ struct Data {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class Context {
+class ContextConveyor1 {
 private:
-	struct State { //top-level state
-		State() :
-				data(NULL) {
-		}
+	struct PuckOnConveyor1 { //top-level state
 		virtual void signalLBBeginInterrupted() {
 		}
 		virtual void signalLBEndInterrupted() {
@@ -60,72 +64,57 @@ private:
 		virtual void signalAltimetryCompleted() {
 		}
 
-		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
+	Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct StateA: public State {
+	struct StateA: public PuckOnConveyor1 {
 		void signalLBBeginInterrupted() {
-			LOG_DEBUG << "Signal Anfang!!" << std::endl;
 		}
 
 		void signalLBBeginNotInterrupted() {
-			LOG_DEBUG << "Signal Anfang nicht mehr unterbrochen!!" << std::endl;
 		}
 
 		void signalLBEndInterrupted() {
-			LOG_DEBUG << "Signal Hinten!!" << std::endl;
 		}
+
 		void signalLBEndNotInterrupted() {
-			LOG_DEBUG << "Signal Hinten nicht mehr unterbrochen!!" << std::endl;
 		}
 
 		void signalLBAltimetryInterrupted() {
-			hb.getHardware()->getAltimetry()->startAltimetry();
-			LOG_DEBUG << "Signal Hoehenmessung!!" << std::endl;
 		}
+
 		void signalLBAltimetryNotInterrupted() {
-			LOG_DEBUG << "Signal Hoehenmessung nicht mehr unterbrochen!!"
-					<< std::endl;
 		}
 
 		void signalLBSwitchInterrupted() {
-			LOG_DEBUG << "Ist Metal ? "
-					<< (int) hb.getHardware()->getMT()->isItemMetal()
-					<< std::endl;
-			LOG_DEBUG << "Signal Weiche!!" << std::endl;
 		}
+
 		void signalLBSwitchNotInterrupted() {
-			LOG_DEBUG << "Signal Weiche nicht mehr unterbrochen!!" << std::endl;
 		}
 
 		void signalEStop() {
-			LOG_DEBUG << "Signal Estop!!" << std::endl;
 		}
+
 		void signalStart() {
-			LOG_DEBUG << "Signal Start!!" << std::endl;
 		}
+
 		void signalStop() {
-			LOG_DEBUG << "Signal Stop!!" << std::endl;
 		}
+
 		void signalReset() {
-			LOG_DEBUG << "Signal Reset!!" << std::endl;
 		}
 
 		void signalLBSkidInterrupted() {
-			LOG_DEBUG << "Signal Rutsche!!" << std::endl;
 		}
+
 		void signalLBSkidNotInterrupted() {
-			LOG_DEBUG << "Signal Rutsche nicht mehr unterbrochen!!"
-					<< std::endl;
 		}
 
 		void signalAltimetryCompleted() {
-			LOG_DEBUG << "Hoehenmessung: "
-					<< hb.getHardware()->getAltimetry()->getHeight() << "\n"
-					<< std::endl;
-			LOG_DEBUG << "Signal Hoehenmessung ist fertig.!!" << std::endl;
 		}
 	};
+
+
 
 	StateA stateMember;   //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
@@ -135,18 +124,18 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	Context();
+	ContextConveyor1();
 
 	/**
 	 *  Destructor des Contexts.
 	 */
-	virtual ~Context();
-	
+	virtual ~ContextConveyor1();
+
 	/**
 	*
 	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	*/
-	bool isContextimEnzustand(){return false;}
+	bool isContextimEnzustand();
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
@@ -226,4 +215,4 @@ public:
 	void signalAltimetryCompleted();
 };
 
-#endif /* CONTEXT_H_ */
+#endif /* CONTEXTCONVEYOR1_H_ */

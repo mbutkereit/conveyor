@@ -467,9 +467,6 @@ private:
 
 	struct PuckLost: public State {
 
-
-
-
 	};
 
 	struct EndOfTheEnd: public State {
@@ -477,18 +474,11 @@ private:
 	};
 	struct Estop: public State {
 
-
 	};
 
 	struct QuitEstop: public State {
 
-
-		};
-
-
-
-
-
+	};
 
 	ReceivingPucks stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
