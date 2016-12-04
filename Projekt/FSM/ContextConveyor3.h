@@ -462,21 +462,123 @@ private:
 	};
 
 	struct PuckAdded: public State {
-
+		virtual void SignalReset() {
+			hb.getHardware()->getTL()->turnRedOff();
+			new (this) EndOfTheEnd;
+		}
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			new (this) Estop;
+		}
 	};
 
 	struct PuckLost: public State {
+		virtual void SignalReset() {
+			// Band muss geräumt  werden, da wir am Ende 3er Pärchen brauchen, da darf keins fehlen
+			//data->cm->resetSpeed(MOTOR_STOP); Nach State Pattern so leider NICHT MÖGLICH!!!!
+			hb.getHardware()->getTL()->turnYellowOff();
+			hb.getHardware()->getTL()->turnGreenOn();
 
+			new (this) EndOfTheEnd;
+		}
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			new (this) Estop;
+		}
 	};
 
 	struct EndOfTheEnd: public State {
-
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			new (this) Estop;
+		}
 	};
 	struct Estop: public State {
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+
+		}
 
 	};
 
 	struct QuitEstop: public State {
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+
+		}
+		virtual void signalReset() {
+			//alle Förderbänder quitiert   22
+			switch (data->currState) {
+			case 1:
+								new (this) ReceivingPucks;
+								break;
+
+			case 2:
+								new (this) Puck1Recognized;
+								break;
+			case 3:
+								new(this) Puck2Ready;
+								break;
+			case 4:
+								new(this) Puck2Recognized;
+								break;
+			case 5:
+								new(this) Puck3Ready;
+								break;
+			case 6:
+								new(this) Puck3Recognized;
+								break;
+			case 7:
+								new(this) EndReceiving;
+								break;
+			case 8:
+								new(this) HeightfailBegin;
+								break;
+			case 9:
+								new(this) HeightPuck1Recognized;
+								break;
+			case 10:
+								new(this) HeightPuck2Ready;
+								break;
+			case 11:
+								new(this) HeightPuck2Recognized;
+								break;
+			case 12:
+								new(this) HeightPuck3Ready;
+								break;
+			case 13:
+								new(this) HeightPuck3Recognized;
+								break;
+			case 14:
+								new(this) HeightEnd;
+								break;
+			case 15:
+								new(this) TransportToSwitch;
+								break;
+			case 16:
+								new(this) EndFailBegin;
+								break;
+			case 17:
+								new(this) EndPuck1Recognized;
+								break;
+			case 18:
+								new(this) EndPuck2Ready;
+								break;
+			case 19:
+								new(this) EndPuck2Recognized;
+								break;
+			case 20:
+								new(this) EndPuck3Ready;
+								break;
+			case 21:
+								new(this) EndPuck3Recognized;
+								break;
+			case 22:
+								new(this) PucksToConsole;
+								break;
+
+			}
+		}
 
 	};
 
