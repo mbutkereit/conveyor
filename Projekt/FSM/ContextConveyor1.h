@@ -9,7 +9,6 @@
 #define CONTEXTCONVEYOR1_H_
 
 #include <iostream>
-#include <ctime>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 #include "ContextMotor.h"
@@ -63,6 +62,9 @@ private:
 		virtual void signalLBSwitchNotInterrupted() {
 		}
 		virtual void signalEStop() {
+		    data->cm->setSpeed(MOTOR_STOP);
+		    data->cm->transact();
+		    new (this) E_Stopp;
 		}
 		virtual void signalStart() {
 		}
@@ -86,6 +88,8 @@ private:
         }
         virtual void signalLBBeginOfConveyor2Interrupted(){
         }
+        virtual void signalTimeout(){
+        }
 
         //TODO DELETE IF ALL UNKNOWN ARE ELIMINATED IN STATES
         virtual void Unknown(){
@@ -95,13 +99,9 @@ private:
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct TransportToEntry: public PuckOnConveyor1 {
-		//ENTRY
-		void signalLBBeginNotInterrupted() {
-			data->hb.getHardware()->getTL()->turnGreenOn();
-		}
-
 		//TRANSACTION/LEAVE
 		void signalLBBeginInterrupted() {
+		    data->hb.getHardware()->getTL()->turnGreenOn();
             data->cm->setSpeed(MOTOR_FAST);
             data->cm->transact();
             new (this) MotorOn;
@@ -111,7 +111,7 @@ private:
 	struct MotorOn: public PuckOnConveyor1{
 		//LEAVE
 		void signalLBBeginNotInterrupted() {
-		    //TODO GIVE TIME MISSING!
+		    //TODO t0 = GIVE TIME, START TIMER(t0)!
 		    data->puckVector->push_back(data->puck);
 		    new (this) TransportToHeightMeasurement;
 		}
@@ -144,7 +144,7 @@ private:
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor1{
         virtual void signalLBAltimetryNotInterrupted() {
-            data->cm->setSpeed(MOTOR_FAST);
+            data->cm->resetSpeed(MOTOR_SLOW);
             data->cm->transact();
             new (this) TransportToSwitch;
         }
@@ -161,7 +161,7 @@ private:
 	            data->puck.setPuckmaterial(PLASTIC);
 	        }
 	        //TODO SENSORMEASUREMENT COMPLETE?
-            if (1){//TODO DELTA tH and tW OK
+            if (1){//TODO DELTA tH and tW OK AND BOTHSKIDS NOT FULL
                 new (this) Sorting;
             } else if (0){//TODO DELTA tH AND tW TOO LOW
                 data->hb.getHardware()->getTL()->turnGreenOff();
@@ -276,6 +276,13 @@ private:
 	        //TODO new (this) history
 	    }
 	};
+
+    struct E_Stopp: public PuckOnConveyor1{
+        void signalReset(){
+            //TODO UNLOCK CHECK FOR OTHER CONVEYOR
+            //TODO new(this) HISTORY
+        }
+    };
 
 	TransportToEntry stateMember;   //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
