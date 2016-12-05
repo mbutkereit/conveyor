@@ -9,21 +9,27 @@
 #define CONTEXTCONVEYOR1_H_
 
 #include <iostream>
+#include <ctime>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 #include "ContextMotor.h"
 #include "Puck.h"
 #include "vector"
+#include "ContextSorting.h"
+#include "ContextSwitch.h"
+
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data {
 	Data(int puckID, std::vector<Puck>* puckVector) :
-			puckID(puckID), hb(), cm(ContextMotor::getInstance()), puck(), puckVector(puckVector) {
+			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector) {
 	}
 	int puckID;
 	HalBuilder hb;
 	ContextMotor* cm;
+	ContextSorting* cs;
+	ContextSwitch* cswitch;
 	Puck puck;
 	std::vector<Puck>* puckVector;
 };
@@ -71,6 +77,20 @@ private:
 		virtual void signalAltimetryCompleted() {
 		}
 
+		//TODO SIGNALS THAT ARE MISSING
+        virtual void signalSequenceOK(){
+        }
+        virtual void signalSequenceNotOK(){
+        }
+        virtual void signalConveyor2isFree(){
+        }
+        virtual void signalLBBeginOfConveyor2Interrupted(){
+        }
+
+        //TODO DELETE IF ALL UNKNOWN ARE ELIMINATED IN STATES
+        virtual void Unknown(){
+        }
+
 	Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
@@ -80,19 +100,181 @@ private:
 			data->hb.getHardware()->getTL()->turnGreenOn();
 		}
 
-		//TRANSACTION
+		//TRANSACTION/LEAVE
 		void signalLBBeginInterrupted() {
-					new (this) MotorOn;
+            data->cm->setSpeed(MOTOR_FAST);
+            data->cm->transact();
+            new (this) MotorOn;
 		}
 	};
 
 	struct MotorOn: public PuckOnConveyor1{
-		//ENTRY
-		void signalLBBeginInterrupted() {
-		    data->cm->setSpeed(MOTOR_FAST);
-		    data->cm->transact();
-		    data->puck.setId(data->puckID);
+		//LEAVE
+		void signalLBBeginNotInterrupted() {
+		    //TODO GIVE TIME MISSING!
+		    data->puckVector->push_back(data->puck);
+		    new (this) TransportToHeightMeasurement;
 		}
+	};
+
+	struct TransportToHeightMeasurement: public PuckOnConveyor1{
+	    virtual void signalLBAltimetryInterrupted() {
+	        data->cm->setSpeed(MOTOR_SLOW);
+	        data->cm->transact();
+	        if(1){//TODO DELTA t0 and tH OK
+	            data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
+	            new (this) PuckInHeightMeasurement;
+	        }
+	        else if(0){//TODO DELTA t0 AND tH TOO LOW
+	            data->hb.getHardware()->getTL()->turnGreenOff();
+	            data->hb.getHardware()->getTL()->turnRedOn();//TODO ACTUALLY SHOULD BLINK!
+	            data->cm->setSpeed(MOTOR_STOP);
+	            data->cm->transact();
+	            new (this) PuckAdded;
+	        }
+	        else if(0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
+	            data->hb.getHardware()->getTL()->turnGreenOff();
+	            data->hb.getHardware()->getTL()->turnRedOn();
+	            data->cm->setSpeed(MOTOR_STOP);
+	            data->cm->transact();
+	            new (this) BothSkidsFull;
+	        }
+	    }
+	};
+
+	struct PuckInHeightMeasurement: public PuckOnConveyor1{
+        virtual void signalLBAltimetryNotInterrupted() {
+            data->cm->setSpeed(MOTOR_FAST);
+            data->cm->transact();
+            new (this) TransportToSwitch;
+        }
+	};
+
+	struct TransportToSwitch: public PuckOnConveyor1{
+	    virtual void signalLBSwitchInterrupted() {
+	        //TODO STOP TIMER tH, GIVE TIME tW, DELTA th AND tW CALCULATION
+	        if(data->hb.getHardware()->getMT()->isItemMetal()){
+	            data->puck.setPuckmaterial(METAL);
+	        }
+	        else
+	        {
+	            data->puck.setPuckmaterial(PLASTIC);
+	        }
+	        //TODO SENSORMEASUREMENT COMPLETE?
+            if (1){//TODO DELTA tH and tW OK
+                new (this) Sorting;
+            } else if (0){//TODO DELTA tH AND tW TOO LOW
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) PuckAdded;
+            } else if (0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->hb.getHardware()->getTL()->turnRedOn();
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) BothSkidsFull;
+            }
+	    }
+	};
+
+	struct Sorting: public PuckOnConveyor1{
+        virtual void sequenceOk(){//TODO NEED TO BE MODIFIED TO FIT IN CURRENT DESIGN WITH DISPATCHER
+            data->cs->setCurrentPh(data->puck.getPuckdrillhole());
+            data->cs->setCurrentPm(data->puck.getPuckmaterial());
+            data->cs->transact();
+            if (data->cs->getSequenceOk()){
+                data->cswitch->setSwitchOpen();
+                data->cswitch->transact();
+                new (this) TransportToDelivery;
+            } else{
+                if (data->hb.getHardware()->getMT()->isSkidFull()){
+                    new (this) SortOutThroughSkid;
+                } else{
+                    data->hb.getHardware()->getTL()->turnYellowOn();
+                    data->cswitch->setSwitchOpen();
+                    data->cswitch->transact();
+                    new (this) TransportToDelivery;
+                }
+            }
+        }
+	};
+
+	struct TransportToDelivery: public PuckOnConveyor1{
+	    virtual void signalLBEndInterrupted() {
+	        //TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
+	        data->cswitch->resetSwitchOpen();
+	        data->cswitch->transact();
+            if (1){//TODO DELTA tW and tE OK
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) DeliverToConveyor2;
+            } else if (0){//TODO DELTA tW AND tE TOO LOW
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) PuckAdded;
+            }
+	    }
+	};
+
+    struct DeliverToConveyor2: public PuckOnConveyor1{
+            virtual void signalConveyor2isFree(){
+                data->cm->resetSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) TransportToConveyor2;
+            }
+    };
+
+    struct TransportToConveyor2: public PuckOnConveyor1{
+        virtual void signalLBBeginOfConveyor2Interrupted(){
+            //TODO SEND PUCKINFORMATION
+            if (data->puckVector->size() > 0){
+                // TODO NULL
+            } else{
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) Conveyor1Empty;
+            }
+        }
+    };
+
+	struct SortOutThroughSkid: public PuckOnConveyor1{
+	        virtual void signalLBSkidInterrupted(){
+	            if(data->puckVector->size()>0){
+	                // TODO NULL
+	            }
+	            else{
+	                data->cm->setSpeed(MOTOR_STOP);
+	                data->cm->transact();
+	                new (this) Conveyor1Empty;
+	            }
+	        }
+	};
+
+	struct Conveyor1Empty: public PuckOnConveyor1{
+	    virtual void Unknown(){
+	        data->cm->resetSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        //TODO NULL
+	    }
+	};
+
+	struct PuckAdded: public PuckOnConveyor1{
+	    virtual void signalReset(){
+	        data->hb.getHardware()->getTL()->turnRedOff();
+	        //TODO NULL
+	    }
+	};
+
+	struct BothSkidsFull: public PuckOnConveyor1{
+	    void signalReset(){
+	        data->hb.getHardware()->getTL()->turnRedOff();
+	        data->hb.getHardware()->getTL()->turnGreenOn();
+	        //TODO new (this) history
+	    }
 	};
 
 	TransportToEntry stateMember;   //The memory for the state is part of context object
