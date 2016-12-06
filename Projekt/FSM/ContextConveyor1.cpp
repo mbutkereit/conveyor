@@ -7,7 +7,7 @@
 
 #include "ContextConveyor1.h"
 
-ContextConveyor1::ContextConveyor1(int puckID, std::vector<Puck>* puckVector): statePtr(&stateMember), contextdata(puckID, puckVector)   {
+ContextConveyor1::ContextConveyor1(int puckID, std::vector<Puck>* puckVector): statePtr(&stateMember), contextdata(puckID, puckVector){
 	statePtr->data = &contextdata;
 }
 
@@ -34,7 +34,6 @@ void ContextConveyor1::signalLBAltimetryInterrupted(){
 void ContextConveyor1::signalLBAltimetryNotInterrupted(){
 	statePtr->signalLBAltimetryNotInterrupted();
 }
-
 
 void ContextConveyor1::signalLBSwitchInterrupted(){
 	statePtr->signalLBSwitchInterrupted();

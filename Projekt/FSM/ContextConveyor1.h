@@ -22,7 +22,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
 	Data(int puckID, std::vector<Puck>* puckVector) :
-			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector) {
+			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -31,7 +31,7 @@ struct Data {
 	ContextSwitch* cswitch;
 	Puck puck;
 	std::vector<Puck>* puckVector;
-
+	bool finished;
 };
 
 /**
@@ -259,14 +259,14 @@ private:
 	    virtual void Unknown(){
 	        data->cm->resetSpeed(MOTOR_STOP);
 	        data->cm->transact();
-	        //TODO NULL
+	        data->finished = true;
 	    }
 	};
 
 	struct PuckAdded: public PuckOnConveyor1{
 	    virtual void signalReset(){
 	        data->hb.getHardware()->getTL()->turnRedOff();
-	        //TODO NULL
+	        data->finished = true;
 	    }
 	};
 
@@ -304,7 +304,9 @@ public:
 	*
 	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	*/
-	bool isContextimEnzustand();
+	bool isContextimEnzustand(){
+		return contextdata.finished;
+	}
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
