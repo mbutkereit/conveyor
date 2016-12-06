@@ -12,7 +12,8 @@ Hardware* HalBuilder::buildHardware(){
 	        buildMotor(),
 	        buildTrafficLights(),
 	        buildMeasuringTool(),
-	        buildAltimetry()
+	        buildAltimetry(),
+	        buildSerial()
 	      );
 }
 
@@ -47,4 +48,8 @@ MeasuringTool* HalBuilder::buildMeasuringTool(){
 
 Altimetry* HalBuilder::buildAltimetry(){
 	return new Altimetry(adapterD);
+}
+
+Serial* HalBuilder::buildSerial(){
+	return new Serial(SERIAL_INTERFACE_WRITE,SERIAL_INTERFACE_READ);
 }

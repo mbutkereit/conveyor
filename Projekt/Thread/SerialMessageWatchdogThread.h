@@ -1,8 +1,9 @@
-#ifndef SIGNALHANDLERTHREAD_H_
-#define SIGNALHANDLERTHREAD_H_
+#ifndef SERIALMESSAGEWATCHDOGTHREAD_H_
+#define SERIALMESSAGEWATCHDOGTHREAD_H_
 
 #include <cstdlib>
 #include <hw/inout.h>
+#include <sys/neutrino.h>
 
 #include "Logger/Logger.h"
 #include "src/lib/HWaccess.h"
@@ -12,27 +13,30 @@
 #include "FSM/ContextMotor.h"
 #include "Hal/ISR/InterruptHandler.h"
 #include "Dispatcher.h"
-#include "Thread/SerialMessageWatchdogThread.h"
+#include "Serializer/Serializer.h"
 
 using namespace thread;
 
-extern int coid; ///<
-extern struct sigevent isrtEvent_; ///<
-extern int isrtConnection_; ///<
+#define WATCHDOG_SLEEP 1
+#define WATCHDOG_PULSE_CODE 0x0F
 
+//@todo Keine Globalisierung, in Europa.
+static uint8_t isALive = 1;
 /**
  * @file
  * @section DESCRIPTION
  *
  * Eine Klasse um die Signale zu verarbeiten.
  */
-class SignalHandlerThread : public HAWThread {
-
+class SerialMessageWatchdogThread : public HAWThread {
 public:
-	SignalHandlerThread();
-	virtual ~SignalHandlerThread();
+	SerialMessageWatchdogThread();
+	virtual ~SerialMessageWatchdogThread();
+	static void notify(){
+		isALive = 1;
+	}
 private:
-	SignalHandlerThread(const SignalHandlerThread& b);
+	SerialMessageWatchdogThread(const SerialMessageWatchdogThread& b);
 	virtual void execute(void*);
 	virtual void shutdown();
 };

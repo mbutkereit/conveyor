@@ -60,6 +60,9 @@ private:
 		virtual void signalAltimetryCompleted() {
 		}
 
+		virtual void signalLBNextConveyor() {
+		}
+
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
@@ -124,6 +127,10 @@ private:
 					<< hb.getHardware()->getAltimetry()->getHeight() << "\n"
 					<< std::endl;
 			LOG_DEBUG << "Signal Hoehenmessung ist fertig.!!" << std::endl;
+		}
+		void signalLBNextConveyor() {
+			LOG_DEBUG << "Nachricht von der anderen Anlage!!"
+					<< std::endl;
 		}
 	};
 
@@ -224,6 +231,12 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	void signalAltimetryCompleted();
+
+	/**
+	 * @todo Ausstehende implementierung Dokumentieren.
+	 */
+	void signalLBNextConveyor();
+
 };
 
 #endif /* CONTEXT_H_ */

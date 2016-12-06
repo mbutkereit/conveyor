@@ -1,4 +1,4 @@
-#include "SignalHandlerThread.h"
+#include "Thread/SignalHandlerThread.h"
 //#include "Dispatcher.h"
 
 int coid = 0;
@@ -22,8 +22,6 @@ void SignalHandlerThread::execute(void*) {
 	//TODO delete von Dispatcher fehlt noch
 	Dispatcher* disp = new Dispatcher();
 	std::vector<Context* >contextContainer;
-
-
 
 
 	if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1) {
@@ -67,6 +65,7 @@ void SignalHandlerThread::execute(void*) {
 				disp->addListener(context, ESTOPSIGNAL);
 				disp->addListener(context, STOPSIGNAL);
 				disp->addListener(context, ALTEMETRYCOMPLETE);
+				disp->addListener(context, LBNEXTCONVEYOR);
 				contextContainer.push_back(context);
 				disp->callListeners(LBBEGININTERRUPTED);
 			}
@@ -116,6 +115,9 @@ void SignalHandlerThread::execute(void*) {
 			if (code & STOP) {
 				disp->callListeners(STOPSIGNAL);
 			}
+			if (code & LIGHT_BARRIER_NEXT_CONVEYOR ) {
+				disp->callListeners(LBNEXTCONVEYOR);
+			}
 			
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gelöscht.
 			for(uint8_t i=0;i < contextContainer.size();i++ ){
@@ -142,8 +144,11 @@ void SignalHandlerThread::execute(void*) {
 			}
 			
 		}else{
+			if (pulsecode == WATCHDOG_PULSE_CODE){
+						SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
+					}else{
 			LOG_WARNING << "Einen nicht bekannten Code erhalten." << pulsecode << "\n" ;
-		}
+		}}
 
 	} while (1);
 

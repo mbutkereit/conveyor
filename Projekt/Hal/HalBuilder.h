@@ -8,7 +8,11 @@
 #include "Hal/MeasuringTool.h"
 #include "Hal/TrafficLight.h"
 #include "Hal/Mutexo.h"
+#include "Hal/SerialInterface/Serial.h"
 
+//Notify: Wichtig sonst senden wir falsch.
+#define SERIAL_INTERFACE_READ "/dev/ser1"
+#define SERIAL_INTERFACE_WRITE "/dev/ser2"
 
 #define BASEADRESS_A 0x300 ///< Die Basisaddresse um auf den Port A zu zugreifen.
 #define BASEADRESS_B 0x301 ///< Die Basisaddresse um auf den Port B zu zugreifen.
@@ -93,6 +97,13 @@ private:
          * @return Gibt das gebaute Altimetry zurueck.
          */
     Altimetry* buildAltimetry();
+
+    /**
+         * Baut die serielle Schnittstelle.
+         *
+         * @return Gibt die serielle Schnittstelle zurueck.
+         */
+    Serial* buildSerial();
 };
 
 #endif /* HALBUILDER_H_ */
