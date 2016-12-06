@@ -7,7 +7,7 @@
 
 #include "ContextConveyor2.h"
 
-ContextConveyor2::ContextConveyor2(int puckID, std::vector* puckVector): statePtr(&stateMember), contextdata(puckID, puckVector)   {
+ContextConveyor2::ContextConveyor2(int puckID, std::vector<Puck>* puckVector): statePtr(&stateMember), contextdata(puckID, puckVector)   {
     statePtr->data = &contextdata;
 }
 

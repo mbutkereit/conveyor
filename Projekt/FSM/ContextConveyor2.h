@@ -13,7 +13,7 @@
 #include "Hal/HalBuilder.h"
 #include "ContextMotor.h"
 #include "Puck.h"
-#include "vector"
+#include <vector>
 #include "ContextSorting.h"
 #include "ContextSwitch.h"
 
@@ -101,7 +101,7 @@ private:
 
     struct TransportToEntry: public PuckOnConveyor2 {
         //TRANSACTION/LEAVE
-        virtual void signalLBEndOfConveyor1NotInterrupted() {
+        virtual void signalLBBeginInterrupted() {
             data->hb.getHardware()->getTL()->turnGreenOn();
             data->cm->setSpeed(MOTOR_FAST);
             data->cm->transact();
@@ -111,14 +111,8 @@ private:
 
     struct MotorOn: public PuckOnConveyor2{
         //LEAVE
-        virtual void signalLBBeginInterrupted() {
-            data->puckVector->push_back(data->puck);
-            new (this) PuckRegistration;
-        }
-    };
-
-    struct PuckRegistration: public PuckOnConveyor2{
         virtual void signalLBBeginNotInterrupted() {
+            data->puckVector->push_back(data->puck);
             //TODO t0 = GIVE TIME, START TIMER(t0)!
             new (this) TransportToHeightMeasurement;
         }
@@ -308,7 +302,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextConveyor2();
+	ContextConveyor2(int,std::vector<Puck>*);
 
 	/**
 	 *  Destructor des Contexts.

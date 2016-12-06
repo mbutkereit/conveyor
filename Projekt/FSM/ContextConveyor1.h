@@ -13,7 +13,7 @@
 #include "Hal/HalBuilder.h"
 #include "ContextMotor.h"
 #include "Puck.h"
-#include "vector"
+#include <vector>
 #include "ContextSorting.h"
 #include "ContextSwitch.h"
 
@@ -31,6 +31,7 @@ struct Data {
 	ContextSwitch* cswitch;
 	Puck puck;
 	std::vector<Puck>* puckVector;
+
 };
 
 /**
@@ -292,7 +293,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextConveyor1(int, std::vector*);
+	ContextConveyor1(int,std::vector<Puck>*);
 
 	/**
 	 *  Destructor des Contexts.

@@ -4,7 +4,7 @@
  *  Created on: 08.11.2016
  *      Author: abx827
  */
-
+/*
 //#ifndef CONTEXT_H_
 //#define CONTEXT_H_
 //
@@ -308,7 +308,7 @@
 //public:
 //	Datac cdata;
 //	TransportToEntry stateMember; //The memory for the state is part of context object
-//
+
 //	Context(ContextSorting* csorting, ContextMotor* cmotor) :
 //			statePtr(&stateMember), cdata(csorting, cmotor) // assigning start state
 //	{
@@ -343,3 +343,4 @@
 //};
 //
 //#endif /* CONTEXT_H_ */
+*/
