@@ -64,7 +64,6 @@ struct Data {
 	int counterEndFail;
 	bool finished;
 	std::vector<Puck>* puckVector;
-
 };
 
 class ContextConveyor3 {
@@ -503,7 +502,6 @@ private:
 			data->currState++;
 			//werkstückdaten in der Konsole ausgeben
 			data->finished = true;
-
 		}
 
 	};
@@ -529,6 +527,13 @@ private:
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			new (this) Estop;
+		}
+	};
+
+	struct EndOfTheEnd: public State {
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
 			new (this) Estop;

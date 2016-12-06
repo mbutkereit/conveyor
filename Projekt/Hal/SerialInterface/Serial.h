@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Logger/Logger.h"
+#include "Hal/Mutexo.h"
 
 using namespace std;
 
@@ -24,23 +25,25 @@ typedef struct {
 class Serial{
 
 private:
-    const char* dev_;
-    int fdesc_;
+    const char* dev_write_;
+    const char* dev_read_;
+    int fdesc_read_;
+    int fdesc_write_;
 
 public:
-    Serial(string deviceName);
+    Serial(string deviceNameWrite,string deviceNameRead);
     ~Serial();
 
     void config(void);
 
-    int sendPacket(Packet* p);
+    int sendPacket(void* p, int size);
 
-    int recvPacket(Packet* p);
+    int recvPacket(void* p, int size);
 
 private:
 
     Serial(const Serial& other);
-
+    Mutexo mutex;
     Serial& operator=(const Serial& other);
 };
 

@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <Hal/Mutexo.h>
 #include <hw/inout.h>
-#include <stdint.h>
 
 /**
  * @file
