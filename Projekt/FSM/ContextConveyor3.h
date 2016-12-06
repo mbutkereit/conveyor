@@ -33,7 +33,7 @@ struct Data {
 					ContextTimer::getInstance()), cte3(
 					ContextTimer::getInstance()), hb(), cm(cmotor), puck(-1), puckmap(), es(), id(
 					0), height(-1), t1(0), t2(0), delta1(0), delta2(0), delta3(
-					0), counterHeightFail(0), counterEndFail(0), currState(0), finished(false) {
+					0), counterHeightFail(0), counterEndFail(0), currState(0) {
 	}
 
 	ContextSwitch* cswitch;
@@ -59,7 +59,6 @@ struct Data {
 	int delta3;
 	int counterHeightFail;
 	int counterEndFail;
-	bool finished;
 };
 
 class ContextConveyor3 {
@@ -70,11 +69,6 @@ public:
 	{
 		statePtr->data = &contextdata; // connecting state->data with the context data
 	}
-
-	bool isContextimEnzustand(){
-		return contextdata.finished;
-	}
-
 private:
 	struct State { //top-level state
 		virtual void signalLBBeginInterrupted() {
@@ -462,8 +456,7 @@ private:
 		virtual void signalLBEndNotInterrupted() {
 			data->currState++;
 			//werkstückdaten in der Konsole ausgeben
-			data->finished=true;
-
+			new (this) EndOfTheEnd;
 		}
 
 	};
@@ -485,7 +478,7 @@ private:
 			//data->cm->resetSpeed(MOTOR_STOP); Nach State Pattern so leider NICHT MÖGLICH!!!!
 			hb.getHardware()->getTL()->turnYellowOff();
 			hb.getHardware()->getTL()->turnGreenOn();
-			data->finished=true;
+
 			new (this) EndOfTheEnd;
 		}
 		virtual void signalEStop() {
@@ -494,7 +487,12 @@ private:
 		}
 	};
 
-
+	struct EndOfTheEnd: public State {
+		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			new (this) Estop;
+		}
+	};
 	struct Estop: public State {
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);

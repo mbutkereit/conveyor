@@ -6,6 +6,7 @@
 #include "Hal/MeasuringTool.h"
 #include "Hal/TrafficLight.h"
 #include "Hal/Altimetry.h"
+#include "Hal/SerialInterface/Serial.h"
 
 /**
  * @file
@@ -26,7 +27,7 @@ class Hardware
      *  @param mt MeasuringTool um zentral drauf zugreifen zu koennen.
      *  @param am Altimetry um zentral drauf zugreifen zu koennen.
      */
-		Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am);
+		Hardware(HumanMachineInterface* hmi, Motor* motor,TrafficLight* tl, MeasuringTool* mt, Altimetry* am, Serial* serial);
 
 		/**
          *  Destructor der Hardware.
@@ -69,12 +70,20 @@ class Hardware
 	     */
 		MeasuringTool* getMT();
 
+	    /**
+	     * Getter fuer Serial Interface
+	     *
+         * @return Gibt eine Addresse zu einem SerialInterface Objekt zurueck.
+	     */
+		Serial* getSerial();
+
 	private:
 		HumanMachineInterface* hmi; ///< Das HumanMachineInterface fuer die Hardware.
 		Motor* motor; ///< Das Motor fuer die Hardware.
 		TrafficLight* tl; ///<  Das HumanMachineInterface fuer die Hardware.
 		MeasuringTool* mt; ///< Das MeasuringTool fuer die Hardware.
 		Altimetry* am; ///< Das Altimetry fuer die Hardware.
+		Serial* serial; ///< Das Serial Interface fuer die Hardware.
 };
 
 #endif /* HARDWARE_H_ */

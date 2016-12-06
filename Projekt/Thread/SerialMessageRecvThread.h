@@ -1,5 +1,5 @@
-#ifndef SIGNALHANDLERTHREAD_H_
-#define SIGNALHANDLERTHREAD_H_
+#ifndef SERIALMESSAGERECVTHREAD_H_
+#define SERIALMESSAGERECVTHREAD_H_
 
 #include <cstdlib>
 #include <hw/inout.h>
@@ -12,13 +12,10 @@
 #include "FSM/ContextMotor.h"
 #include "Hal/ISR/InterruptHandler.h"
 #include "Dispatcher.h"
-#include "Thread/SerialMessageWatchdogThread.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
 
 using namespace thread;
-
-extern int coid; ///<
-extern struct sigevent isrtEvent_; ///<
-extern int isrtConnection_; ///<
 
 /**
  * @file
@@ -26,13 +23,13 @@ extern int isrtConnection_; ///<
  *
  * Eine Klasse um die Signale zu verarbeiten.
  */
-class SignalHandlerThread : public HAWThread {
+class SerialMessageRecvThread : public HAWThread {
 
 public:
-	SignalHandlerThread();
-	virtual ~SignalHandlerThread();
+	SerialMessageRecvThread();
+	virtual ~SerialMessageRecvThread();
 private:
-	SignalHandlerThread(const SignalHandlerThread& b);
+	SerialMessageRecvThread(const SerialMessageRecvThread& b);
 	virtual void execute(void*);
 	virtual void shutdown();
 };

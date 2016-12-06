@@ -65,3 +65,7 @@ void Context::signalLBSkidNotInterrupted(){
 void Context::signalAltimetryCompleted(){
 	statePtr->signalAltimetryCompleted();
 }
+
+void Context::signalLBNextConveyor(){
+	statePtr->signalLBNextConveyor();
+}
