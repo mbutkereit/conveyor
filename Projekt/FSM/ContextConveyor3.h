@@ -19,6 +19,8 @@
 #include "ContextSwitch.h"
 #include "ContextTimer.h"
 #include "Hal/HalBuilder.h"
+#include "Puck.h"
+#include <vector>
 
 struct Data {
 	Data(ContextMotor* cmotor) :
@@ -33,7 +35,8 @@ struct Data {
 					ContextTimer::getInstance()), cte3(
 					ContextTimer::getInstance()), hb(), cm(cmotor), puck(-1), puckmap(), es(), id(
 					0), height(-1), t1(0), t2(0), delta1(0), delta2(0), delta3(
-					0), counterHeightFail(0), counterEndFail(0), currState(0), finished(false) {
+					0), counterHeightFail(0), counterEndFail(0), currState(0), finished(
+					false), puckVector(puckVector) {
 	}
 
 	ContextSwitch* cswitch;
@@ -60,6 +63,8 @@ struct Data {
 	int counterHeightFail;
 	int counterEndFail;
 	bool finished;
+	std::vector<Puck>* puckVector;
+
 };
 
 class ContextConveyor3 {
@@ -71,7 +76,7 @@ public:
 		statePtr->data = &contextdata; // connecting state->data with the context data
 	}
 
-	bool isContextimEnzustand(){
+	bool isContextimEnzustand() {
 		return contextdata.finished;
 	}
 
@@ -115,12 +120,14 @@ private:
 			data->currState++;
 			hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->transact();
 			data->ct1->giveTime();
 			new (this) Puck1Reconized;
 
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -128,13 +135,16 @@ private:
 	struct Puck1Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
 			data->currState++;
+			data->puckVector->push_back(data->puck);
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Puck2Ready;
 		}
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
-
+			data->cm->transact();
+			new (this) Estop;
 		}
 	};
 
@@ -143,12 +153,14 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			data->currState++;
 			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->transact();
 			data->ct2->giveTime();
 			new (this) Puck2Reconized;
 		}
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -156,12 +168,16 @@ private:
 	struct Puck2Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
 			data->currState++;
+			data->puckVector->push_back(data->puck);
+
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Puck3Ready;
 		}
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -171,18 +187,21 @@ private:
 			data->currState++;
 			data->currState = 4;
 			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->transact();
 			data->ct3->giveTime();
 			new (this) Puck3Reconized;
 		}
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
 
 	struct Puck3Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
+			data->puckVector->push_back(data->puck);
 			data->currState++;
 			new (this) EndReceiving;
 		}
@@ -196,6 +215,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 
@@ -222,6 +242,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -235,6 +256,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck2Ready;
@@ -244,6 +266,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -257,6 +280,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -270,6 +294,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck3Ready;
@@ -279,6 +304,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -293,6 +319,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -306,6 +333,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightEnd;
@@ -315,6 +343,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -328,6 +357,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -341,6 +371,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -365,6 +396,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -378,6 +410,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck2Ready;
@@ -387,6 +420,7 @@ private:
 
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -399,6 +433,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -412,6 +447,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck3Ready;
@@ -420,6 +456,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -432,6 +469,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -445,6 +483,7 @@ private:
 				hb.getHardware()->getTL()->turnGreenOff();
 				hb.getHardware()->getTL()->turnRedOn();
 				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 				new (this) PuckAdded;
 			} else {
 				new (this) PucksToConsole;
@@ -453,6 +492,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -462,7 +502,7 @@ private:
 		virtual void signalLBEndNotInterrupted() {
 			data->currState++;
 			//werkstückdaten in der Konsole ausgeben
-			data->finished=true;
+			data->finished = true;
 
 		}
 
@@ -475,6 +515,7 @@ private:
 		}
 		virtual void signalEStop() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			new (this) Estop;
 		}
 	};
@@ -485,7 +526,7 @@ private:
 			//data->cm->resetSpeed(MOTOR_STOP); Nach State Pattern so leider NICHT MÖGLICH!!!!
 			hb.getHardware()->getTL()->turnYellowOff();
 			hb.getHardware()->getTL()->turnGreenOn();
-			data->finished=true;
+			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
 		virtual void signalEStop() {
@@ -493,7 +534,6 @@ private:
 			new (this) Estop;
 		}
 	};
-
 
 	struct Estop: public State {
 		virtual void signalEStop() {
@@ -512,72 +552,72 @@ private:
 			//alle Förderbänder quitiert   22
 			switch (data->currState) {
 			case 1:
-								new (this) ReceivingPucks;
-								break;
+				new (this) ReceivingPucks;
+				break;
 
 			case 2:
-								new (this) Puck1Recognized;
-								break;
+				new (this) Puck1Recognized;
+				break;
 			case 3:
-								new(this) Puck2Ready;
-								break;
+				new (this) Puck2Ready;
+				break;
 			case 4:
-								new(this) Puck2Recognized;
-								break;
+				new (this) Puck2Recognized;
+				break;
 			case 5:
-								new(this) Puck3Ready;
-								break;
+				new (this) Puck3Ready;
+				break;
 			case 6:
-								new(this) Puck3Recognized;
-								break;
+				new (this) Puck3Recognized;
+				break;
 			case 7:
-								new(this) EndReceiving;
-								break;
+				new (this) EndReceiving;
+				break;
 			case 8:
-								new(this) HeightfailBegin;
-								break;
+				new (this) HeightfailBegin;
+				break;
 			case 9:
-								new(this) HeightPuck1Recognized;
-								break;
+				new (this) HeightPuck1Recognized;
+				break;
 			case 10:
-								new(this) HeightPuck2Ready;
-								break;
+				new (this) HeightPuck2Ready;
+				break;
 			case 11:
-								new(this) HeightPuck2Recognized;
-								break;
+				new (this) HeightPuck2Recognized;
+				break;
 			case 12:
-								new(this) HeightPuck3Ready;
-								break;
+				new (this) HeightPuck3Ready;
+				break;
 			case 13:
-								new(this) HeightPuck3Recognized;
-								break;
+				new (this) HeightPuck3Recognized;
+				break;
 			case 14:
-								new(this) HeightEnd;
-								break;
+				new (this) HeightEnd;
+				break;
 			case 15:
-								new(this) TransportToSwitch;
-								break;
+				new (this) TransportToSwitch;
+				break;
 			case 16:
-								new(this) EndFailBegin;
-								break;
+				new (this) EndFailBegin;
+				break;
 			case 17:
-								new(this) EndPuck1Recognized;
-								break;
+				new (this) EndPuck1Recognized;
+				break;
 			case 18:
-								new(this) EndPuck2Ready;
-								break;
+				new (this) EndPuck2Ready;
+				break;
 			case 19:
-								new(this) EndPuck2Recognized;
-								break;
+				new (this) EndPuck2Recognized;
+				break;
 			case 20:
-								new(this) EndPuck3Ready;
-								break;
+				new (this) EndPuck3Ready;
+				break;
 			case 21:
-								new(this) EndPuck3Recognized;
-								break;
+				new (this) EndPuck3Recognized;
+				break;
 			case 22:
-								new(this) PucksToConsole;
-								break;
+				new (this) PucksToConsole;
+				break;
 
 			}
 		}
