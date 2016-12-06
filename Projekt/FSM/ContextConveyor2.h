@@ -21,7 +21,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
     Data(int puckID, std::vector<Puck>* puckVector) :
-            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false) {
+            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0) {
     }
     int puckID;
     HalBuilder hb;
@@ -31,6 +31,7 @@ struct Data {
     Puck puck;
     std::vector<Puck>* puckVector;
     bool finished;
+    int posInVector;
 };
 
 /**
@@ -114,6 +115,7 @@ private:
         //LEAVE
         virtual void signalLBBeginNotInterrupted() {
             data->puckVector->push_back(data->puck);
+            data->posInVector = data->puckVector->size()-1;
             //TODO t0 = GIVE TIME, START TIMER(t0)!
             new (this) TransportToHeightMeasurement;
         }
@@ -263,6 +265,8 @@ private:
 
     struct TransportToConveyor3: public PuckOnConveyor2{
         virtual void signalLBBeginOfConveyor3Interrupted(){
+        	//TODO SEND PUCKINFORMATION
+        	data->puckVector->erase(data->puckVector->begin()+data->posInVector);
             if (data->puckVector->size() > 0){
             	data->finished = true;
             } else{

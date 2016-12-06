@@ -22,7 +22,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
 	Data(int puckID, std::vector<Puck>* puckVector) :
-			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false) {
+			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -32,6 +32,7 @@ struct Data {
 	Puck puck;
 	std::vector<Puck>* puckVector;
 	bool finished;
+	int posInVector;
 };
 
 /**
@@ -114,6 +115,7 @@ private:
 		void signalLBBeginNotInterrupted() {
 		    //TODO t0 = GIVE TIME, START TIMER(t0)!
 		    data->puckVector->push_back(data->puck);
+		    data->posInVector = data->puckVector->size()-1;
 		    new (this) TransportToHeightMeasurement;
 		}
 	};
@@ -232,8 +234,9 @@ private:
     struct TransportToConveyor2: public PuckOnConveyor1{
         virtual void signalLBBeginOfConveyor2Interrupted(){
             //TODO SEND PUCKINFORMATION
+        	data->puckVector->erase(data->puckVector->begin()+data->posInVector);
             if (data->puckVector->size() > 0){
-                // TODO NULL
+                data->finished = true;
             } else{
                 data->cm->setSpeed(MOTOR_STOP);
                 data->cm->transact();
@@ -245,7 +248,7 @@ private:
 	struct SortOutThroughSkid: public PuckOnConveyor1{
 	        virtual void signalLBSkidInterrupted(){
 	            if(data->puckVector->size()>0){
-	                // TODO NULL
+	            	data->finished = true;
 	            }
 	            else{
 	                data->cm->setSpeed(MOTOR_STOP);
