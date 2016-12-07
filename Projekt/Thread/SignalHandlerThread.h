@@ -13,6 +13,7 @@
 #include "Hal/ISR/InterruptHandler.h"
 #include "Dispatcher.h"
 #include "Thread/SerialMessageWatchdogThread.h"
+#include "Serializer/InfoMessage.h"
 
 using namespace thread;
 

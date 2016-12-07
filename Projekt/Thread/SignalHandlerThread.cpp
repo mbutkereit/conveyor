@@ -22,6 +22,7 @@ void SignalHandlerThread::execute(void*) {
 	//TODO delete von Dispatcher fehlt noch
 	Dispatcher* disp = new Dispatcher();
 	std::vector<Context* >contextContainer;
+	InfoMessage* message = InfoMessage::getInfoMessage();
 
 
 	if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1) {
@@ -68,6 +69,8 @@ void SignalHandlerThread::execute(void*) {
 				disp->addListener(context, LBNEXTCONVEYOR);
 				contextContainer.push_back(context);
 				disp->callListeners(LBBEGININTERRUPTED);
+				//@TODO
+				message->setLBinterruptedBit();
 			}
 			if (code & LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED) {
 				disp->callListeners(LBBEGINNOTINTERRUPTED);
@@ -110,6 +113,7 @@ void SignalHandlerThread::execute(void*) {
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
+				message->setQuittierung();
 				disp->callListeners(RESETSIGNAL);
 			}
 			if (code & STOP) {
@@ -138,7 +142,7 @@ void SignalHandlerThread::execute(void*) {
 					disp->remListeners(contextContainer[i], ESTOPSIGNAL);
 					disp->remListeners(contextContainer[i], STOPSIGNAL);
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
-					//delete (context*)contextContainer[i];
+					//@TODO delete (context*)contextContainer[i];
 					contextContainer.erase(contextContainer.begin()+i);
 				}
 			}
