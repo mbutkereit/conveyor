@@ -80,6 +80,8 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
+		virtual void signalLBNextConveyor() {
+		}
 
 		//TODO SIGNALS THAT ARE MISSING
         virtual void signalSequenceOK(){
@@ -87,8 +89,6 @@ private:
         virtual void signalSequenceNotOK(){
         }
         virtual void signalConveyor2isFree(){
-        }
-        virtual void signalLBBeginOfConveyor2Interrupted(){
         }
         virtual void signalTimeout(){
         }
@@ -232,7 +232,7 @@ private:
     };
 
     struct TransportToConveyor2: public PuckOnConveyor1{
-        virtual void signalLBBeginOfConveyor2Interrupted(){
+        virtual void signalLBNextConveyor(){
             //TODO SEND PUCKINFORMATION
         	data->puckVector->erase(data->puckVector->begin()+data->posInVector);
             if (data->puckVector->size() > 0){
@@ -282,7 +282,10 @@ private:
 	};
 
     struct E_Stopp: public PuckOnConveyor1{
-        void signalReset(){
+        void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
+        	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
+        	data->cm->resetSpeed(MOTOR_STOP);
+        	data->cm->transact();
             //TODO UNLOCK CHECK FOR OTHER CONVEYOR
             //TODO new(this) HISTORY
         }
@@ -387,6 +390,11 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	void signalAltimetryCompleted();
+
+	/**
+	 * @todo Ausstehende implementierung Dokumentieren.
+	 */
+	void signalLBNextConveyor();
 };
 
 #endif /* CONTEXTCONVEYOR1_H_ */
