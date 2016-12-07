@@ -10,7 +10,7 @@
 
 
 #include <iostream>
-#include <ContextConveyor1.h>
+#include <ContextConveyor2.h>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 #include <vector>
@@ -20,9 +20,9 @@
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) : cc1(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
+	TOPData(int puckID, std::vector<Puck>* puckVector) : cc2(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
 	}
-	ContextConveyor1 cc1;
+	ContextConveyor2 cc2;
 	ContextMotor *cm;
 	HalBuilder hb;
 };
@@ -36,7 +36,7 @@ struct TOPData {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class ContextTopFSM1 {
+class ContextTopFSM2 {
 private:
 	struct TOPFSM { //top-level state
 		virtual void signalLBBeginInterrupted() {
@@ -78,29 +78,29 @@ private:
 
 	struct MainState: public TOPFSM {
 		void signalLBBeginInterrupted() {
-			data->cc1.signalLBBeginInterrupted();
+			data->cc2.signalLBBeginInterrupted();
 		}
 		void signalLBBeginNotInterrupted() {
-			data->cc1.signalLBBeginNotInterrupted();
+			data->cc2.signalLBBeginNotInterrupted();
 		}
 		void signalLBEndInterrupted() {
-			data->cc1.signalLBEndInterrupted();
+			data->cc2.signalLBEndInterrupted();
 		}
 		void signalLBEndNotInterrupted() {
-			data->cc1.signalLBEndNotInterrupted();
+			data->cc2.signalLBEndNotInterrupted();
 		}
 		void signalLBAltimetryInterrupted() {
-			data->cc1.signalLBAltimetryInterrupted();
+			data->cc2.signalLBAltimetryInterrupted();
 		}
 		void signalLBAltimetryNotInterrupted() {
-			data->cc1.signalLBAltimetryNotInterrupted();
+			data->cc2.signalLBAltimetryNotInterrupted();
 		}
 
 		void signalLBSwitchInterrupted() {
-			data->cc1.signalLBSwitchInterrupted();
+			data->cc2.signalLBSwitchInterrupted();
 		}
 		void signalLBSwitchNotInterrupted() {
-			data->cc1.signalLBSwitchNotInterrupted();
+			data->cc2.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
 		    data->cm->setSpeed(MOTOR_STOP);
@@ -112,23 +112,23 @@ private:
 		}
 
 		void signalStop() {
-			data->cc1.signalStop();
+			data->cc2.signalStop();
 		}
 
 		void signalReset() {
-			data->cc1.signalReset();
+			data->cc2.signalReset();
 		}
 
 		void signalLBSkidInterrupted() {
-			data->cc1.signalLBSkidInterrupted();
+			data->cc2.signalLBSkidInterrupted();
 		}
 		void signalLBSkidNotInterrupted() {
-			data->cc1.signalLBSkidNotInterrupted();
+			data->cc2.signalLBSkidNotInterrupted();
 		}
 		void signalAltimetryCompleted() {
 		}
 		void signalLBNextConveyor() {
-			data->cc1.signalLBNextConveyor();
+			data->cc2.signalLBNextConveyor();
 		}
 	};
 
@@ -150,18 +150,18 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextTopFSM1(int, std::vector<Puck>*);
+	ContextTopFSM2(int, std::vector<Puck>*);
 
 	/**
 	 *  Destructor des Contexts.
 	 */
-	virtual ~ContextTopFSM1();
+	virtual ~ContextTopFSM2();
 
 	/**
 	*
 	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	*/
-	bool isContextimEnzustand(){return contextdata.cc1.isContextimEnzustand();}
+	bool isContextimEnzustand(){return contextdata.cc2.isContextimEnzustand();}
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
