@@ -17,11 +17,9 @@
 
 using namespace thread;
 
-#define WATCHDOG_SLEEP 1
+#define WATCHDOG_SLEEP 100
 #define WATCHDOG_PULSE_CODE 0x0F
-
 //@todo Keine Globalisierung, in Europa.
-static uint8_t isALive = 1;
 /**
  * @file
  * @section DESCRIPTION
@@ -32,9 +30,7 @@ class SerialMessageWatchdogThread : public HAWThread {
 public:
 	SerialMessageWatchdogThread();
 	virtual ~SerialMessageWatchdogThread();
-	static void notify(){
-		isALive = 1;
-	}
+	static void notify();
 private:
 	SerialMessageWatchdogThread(const SerialMessageWatchdogThread& b);
 	virtual void execute(void*);

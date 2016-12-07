@@ -29,7 +29,7 @@ void SignalHandlerThread::execute(void*) {
 		LOG_DEBUG << "SignalHandlerThread kann keine rechte bekommen.";
 		exit (EXIT_FAILURE);
 	}
-
+  // LOG_DEBUG << "Starte den Automaten Handler mit Channel Nummer: "<< isrtChannel_ <<"\n";
 	do {
 
 		if (MsgReceivePulse(isrtChannel_, &pulse, sizeof(pulse), NULL) == -1) {
@@ -38,6 +38,7 @@ void SignalHandlerThread::execute(void*) {
 		}
 
 		short pulsecode = pulse.code;
+	//	LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 
 		if (pulsecode == 0xE) {
 

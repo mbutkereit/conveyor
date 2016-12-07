@@ -1,6 +1,5 @@
 #include "SerialMessageRecvThread.h"
 
-extern int isrtChannel_;
 extern HalBuilder hb;
 
 SerialMessageRecvThread::SerialMessageRecvThread() {
@@ -9,7 +8,7 @@ SerialMessageRecvThread::SerialMessageRecvThread() {
 SerialMessageRecvThread::~SerialMessageRecvThread() {
 }
 
-extern int isrtChannel_;
+extern int isrtConnection_;
 extern HalBuilder hb;
 
 void SerialMessageRecvThread::execute(void*) {
@@ -29,7 +28,7 @@ void SerialMessageRecvThread::execute(void*) {
 				message->update(&messageInfo);
 
 				if (message->isESTOPGedrueckt()) {
-					int error = MsgSendPulse(isrtChannel_,
+					int error = MsgSendPulse(isrtConnection_,
 							sched_get_priority_max(0), 0xE, ESTOP);
 					if (error < 0) {
 						LOG_ERROR
@@ -37,7 +36,7 @@ void SerialMessageRecvThread::execute(void*) {
 					}
 				}
 				if (message->isLbNextConveyorInterrupted()) {
-					int error = MsgSendPulse(isrtChannel_,
+					int error = MsgSendPulse(isrtConnection_,
 							sched_get_priority_max(0), 0xE,
 							LIGHT_BARRIER_NEXT_CONVEYOR);
 					if (error < 0) {
