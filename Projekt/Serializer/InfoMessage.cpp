@@ -100,6 +100,18 @@ void InfoMessage::setBand2NichtFrei(){
 	this->info.info_b = this->info.info_b | BAND_FREI;
 }
 
+void InfoMessage::resetisinterruptedBit(){
+#if defined BAND && BAND == 1
+	this->info.info_a = this->info.info_a &~ LB_INTERRUPTED ;
+#endif
+#if defined BAND && BAND == 2
+	this->info.info_b = this->info.info_b &~ LB_INTERRUPTED ;
+#endif
+#if defined BAND && BAND == 3
+	this->info.info_c = this->info.info_c &~ LB_INTERRUPTED ;
+#endif
+}
+
 
 void InfoMessage::setESTOP(){
 #if defined BAND && BAND == 1
@@ -110,6 +122,18 @@ void InfoMessage::setESTOP(){
 #endif
 #if defined BAND && BAND == 3
 	this->info.info_c = this->info.info_c |ESTOP_BIT ;
+#endif
+}
+
+void InfoMessage::setQuittierung(){
+#if defined BAND && BAND == 1
+	this->info.info_a = this->info.info_a &~ QUITIERUNGS_BIT ;
+#endif
+#if defined BAND && BAND == 2
+	this->info.info_b = this->info.info_b &~ QUITIERUNGS_BIT ;
+#endif
+#if defined BAND && BAND == 3
+	this->info.info_c = this->info.info_c &~ QUITIERUNGS_BIT ;
 #endif
 }
 

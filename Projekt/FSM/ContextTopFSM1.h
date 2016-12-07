@@ -20,10 +20,11 @@
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) : cc1(puckID, puckVector), cm(ContextMotor::getInstance()) {
+	TOPData(int puckID, std::vector<Puck>* puckVector) : cc1(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
 	}
 	ContextConveyor1 cc1;
-	ContextMotor cm;
+	ContextMotor *cm;
+	HalBuilder hb;
 };
 
 /**

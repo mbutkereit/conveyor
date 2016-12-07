@@ -14,6 +14,7 @@
 #include "Dispatcher.h"
 #include "Serializer/Serializer.h"
 #include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
 
 using namespace thread;
 

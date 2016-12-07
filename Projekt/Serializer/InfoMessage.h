@@ -11,6 +11,7 @@
 #define ESTOP_BIT 0x02
 #define LB_INTERRUPTED 0x10
 
+
 class InfoMessage
 {
 public:
@@ -31,6 +32,8 @@ public:
     void setBand2Frei();
     void setBand2NichtFrei();
     void setLBinterruptedBit();
+    void resetisinterruptedBit();
+    void setQuittierung();
 
     void setESTOP();
     bool isESTOPGedrueckt();
