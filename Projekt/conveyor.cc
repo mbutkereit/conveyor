@@ -6,6 +6,7 @@
 #include "Hal/SerialInterface/Serial.h"
 #include "Hal/ISR/InterruptHandler.h"
 #include "FSM/ContextTimeMeasurement.h"
+#include "Thread/SerialMessageRecvThread.h"
 
 HalBuilder hb;
 
@@ -15,7 +16,21 @@ int main(int argc, char *argv[]) {
 	c1.start(NULL);
     c1.join();
     registerISR();
-    cerr << "Lets go !\n";
+   LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+   SerialMessageWatchdogThread::notify();
+
+    SignalHandlerThread thread_automat;
+    SerialMessageRecvThread threadRecv;
+    SerialMessageWatchdogThread threadWatchdog;
+
+    thread_automat.start(NULL);
+	threadWatchdog.start(NULL);
+	threadRecv.start(NULL);
+
+	threadWatchdog.join();
+	threadRecv.join();
+	thread_automat.join();
+
 
     /*
 =======
@@ -29,14 +44,4 @@ int main(int argc, char *argv[]) {
 <<<<<<< HEAD
     */
     return 0;
-
-	/*Packet p;
-	p.data=0x08;
-	LOG_DEBUG << "Recieve \n";
-	Serial* serial_input = new Serial("/dev/ser1");
-	serial_input->sendPacket(&p);
-*/
-	//Serial* serial_output = new Serial("/dev/ser2");
-	//serial_output->recvPacket(&p);
-
 }
