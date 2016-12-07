@@ -98,6 +98,9 @@ private:
 		virtual void signalLBSwitchNotInterrupted() {
 		}
 		virtual void signalEStop() {
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+			new (this) Estop;
 		}
 		virtual void signalStart() {
 		}
@@ -124,11 +127,7 @@ private:
 			new (this) Puck1Reconized;
 
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct Puck1Recognized: public State {
@@ -140,11 +139,6 @@ private:
 			new (this) Puck2Ready;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct Puck2Ready: public State {
@@ -157,11 +151,6 @@ private:
 			new (this) Puck2Reconized;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct Puck2Recognized: public State {
@@ -174,11 +163,6 @@ private:
 			new (this) Puck3Ready;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct Puck3Ready: public State {
@@ -191,11 +175,6 @@ private:
 			new (this) Puck3Reconized;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct Puck3Recognized: public State {
@@ -211,11 +190,6 @@ private:
 		virtual void ssignalLBAltimetryInterrupted() {
 			data->currState++;
 			new (this) HeightFailBegin;
-		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
 		}
 
 	};
@@ -239,11 +213,6 @@ private:
 			new (this) HeightPuck1Ready;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightPuck1Recognized: public State {
@@ -263,11 +232,6 @@ private:
 
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightPuck2Ready: public State {
@@ -277,11 +241,6 @@ private:
 			new (this) HeightPuck2Recognized;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightPuck2Recognized: public State {
@@ -301,11 +260,6 @@ private:
 
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightPuck3Ready: public State {
@@ -316,11 +270,6 @@ private:
 			new (this) HeightPuck3Recognized;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightPuck3Recognized: public State {
@@ -340,11 +289,6 @@ private:
 
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct HeightEnd: public State {
@@ -354,11 +298,6 @@ private:
 			new (this) TransportToSwitch;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct TransportToSwitch: public State {
@@ -368,11 +307,6 @@ private:
 
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct EndFailBegin: public State {
@@ -393,11 +327,6 @@ private:
 			new (this) HeightPuck1Ready;
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct EndPuck1Recognized: public State {
@@ -417,11 +346,6 @@ private:
 
 		}
 
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
 	};
 
 	struct EndPuck2Ready: public State {
@@ -430,11 +354,7 @@ private:
 			data->cte2->giveTime();
 			new (this) EndtPuck2Recognized;
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct EndPuck2Recognized: public State {
@@ -453,11 +373,7 @@ private:
 			}
 
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct EndPuck3Ready: public State {
@@ -466,11 +382,7 @@ private:
 			data->cte3->giveTime();
 			new (this) HeightPuck3Recognized;
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct EndPuck3Recognized: public State {
@@ -489,11 +401,7 @@ private:
 			}
 
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct PucksToConsole: public State {
@@ -511,11 +419,7 @@ private:
 			hb.getHardware()->getTL()->turnRedOff();
 			new (this) EndOfTheEnd;
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;
-		}
+
 	};
 
 	struct PuckLost: public State {
@@ -527,33 +431,23 @@ private:
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			new (this) Estop;
-		}
+
 	};
 
 	struct EndOfTheEnd: public State {
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			new (this) Estop;
-		}
+
 	};
+
+
 
 	struct Estop: public State {
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-
-		}
-
-	};
-
-	struct QuitEstop: public State {
-		virtual void signalEStop() {
-			data->cm->resetSpeed(MOTOR_STOP);
-
-		}
 		virtual void signalReset() {
+
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+					}
+					data->cm->resetSpeed(MOTOR_STOP);
+					data->cm->transact();
+					//TODO UNLOCK CHECK FOR OTHER CONVEYOR
 			//alle Förderbänder quitiert   22
 			switch (data->currState) {
 			case 1:

@@ -22,7 +22,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
 	Data(int puckID, std::vector<Puck>* puckVector) :
-			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0) {
+			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0){
 	}
 	int puckID;
 	HalBuilder hb;
@@ -64,9 +64,6 @@ private:
 		virtual void signalLBSwitchNotInterrupted() {
 		}
 		virtual void signalEStop() {
-		    data->cm->setSpeed(MOTOR_STOP);
-		    data->cm->transact();
-		    new (this) E_Stopp;
 		}
 		virtual void signalStart() {
 		}
@@ -280,16 +277,6 @@ private:
 	        //TODO new (this) history
 	    }
 	};
-
-    struct E_Stopp: public PuckOnConveyor1{
-        void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
-        	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
-        	data->cm->resetSpeed(MOTOR_STOP);
-        	data->cm->transact();
-            //TODO UNLOCK CHECK FOR OTHER CONVEYOR
-            //TODO new(this) HISTORY
-        }
-    };
 
 	TransportToEntry stateMember;   //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
