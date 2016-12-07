@@ -21,7 +21,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
     Data(int puckID, std::vector<Puck>* puckVector) :
-            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0) {
+            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0){
     }
     int puckID;
     HalBuilder hb;
