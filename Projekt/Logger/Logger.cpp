@@ -19,7 +19,7 @@ Logger::~Logger()
 std::ofstream& Logger::log()
 {
     this->mutex.lock();
-    logfile << currentDateTime() << ' ';
+    logfile << this->currentDateTime() << ' ';
     this->mutex.unlock();
     return logfile;
 }
@@ -29,7 +29,7 @@ void Logger::setLoggingLevel(LOG_LEVEL level)
     this->logginglevel_ = level;
 }
 
-std::string currentDateTime() {
+std::string Logger::currentDateTime() {
     time_t     now = time(0);
     struct tm  tstruct;
     char       buf[80];
