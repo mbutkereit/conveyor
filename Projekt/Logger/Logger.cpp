@@ -18,11 +18,25 @@ Logger::~Logger()
 
 std::ofstream& Logger::log()
 {
-    logfile << __TIME__ << ' ';
+    this->mutex.lock();
+    logfile << currentDateTime() << ' ';
+    this->mutex.unlock();
     return logfile;
 }
 
 void Logger::setLoggingLevel(LOG_LEVEL level)
 {
     this->logginglevel_ = level;
+}
+
+std::string currentDateTime() {
+    time_t     now = time(0);
+    struct tm  tstruct;
+    char       buf[80];
+    tstruct = *localtime(&now);
+    // Visit http://en.cppreference.com/w/cpp/chrono/c/strftime
+    // for more information about date/time format
+    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
+
+    return buf;
 }

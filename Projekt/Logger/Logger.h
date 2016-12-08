@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <time.h>
+#include "Hal/Mutexo.h"
 
 /// This is an enum class
 #define LOG_DEBUG  \
@@ -45,7 +47,9 @@ public:
     std::ofstream& log();
     void setLoggingLevel(LOG_LEVEL level);
     LOG_LEVEL getLoggingLevel();
+    std::string currentDateTime();
 private:
+    Mutexo mutex;
     std::ofstream logfile; ///<
     LOG_LEVEL logginglevel_; ///<
 
