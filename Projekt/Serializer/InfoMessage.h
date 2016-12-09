@@ -2,8 +2,9 @@
 #define INFO_MESSAGE_H_
 
 #include "Serializer/Serializer.h"
+#include "Logger.h"
 
-#define BAND 1
+#define BAND 2
 
 #define RUTSCHE_VOLL 0x01
 #define QUITIERUNGS_BIT 0x04
@@ -34,6 +35,7 @@ public:
     void setLBinterruptedBit();
     void resetisinterruptedBit();
     void setQuittierung();
+    void InhaltdesPaketesausgeben();
 
     void setESTOP();
     bool isESTOPGedrueckt();

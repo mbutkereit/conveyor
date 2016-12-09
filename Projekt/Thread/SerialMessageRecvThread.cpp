@@ -25,27 +25,34 @@ void SerialMessageRecvThread::execute(void*) {
 				sizeof(struct info_package));
 #endif
 
+		 LOG_DEBUG <<"Nachricht erhalten\n";
 
 		if (header.version == MESSAGE_VERSION) {
 			switch ((int) header.typ) {
 			case MESSAGE_TYPE_INFO: {
+
+				 LOG_DEBUG <<"Nachricht erhalten\n";
+
 				struct info_package_without_ch messageInfo;
 				memset(&messageInfo, 0, sizeof(struct info_package_without_ch));
 				hb.getHardware()->getSerial()->recvPacket((void*) &messageInfo,
 						sizeof(struct info_package_without_ch));
 				message->update(&messageInfo);
-
+				message->InhaltdesPaketesausgeben();
 				if (message->isESTOPGedrueckt()) {
 					int error = MsgSendPulse(isrtConnection_,
-							sched_get_priority_max(0), 0xE, ESTOP);
+							10, 0xE, ESTOP);
+					LOG_DEBUG <<"Estop steht im Paket.\n";
 					if (error < 0) {
 						LOG_ERROR
 								<< "CRITICAL: Message ESTOP kann nicht gesendet werden .";
 					}
 				}
 				if (message->isLbNextConveyorInterrupted()) {
+					LOG_DEBUG <<"LbNextConveyorInterrupted-Bit ist gesetzt!!\n";
 					int error = MsgSendPulse(isrtConnection_,
-							sched_get_priority_max(0), 0xE,
+							10
+							, 0xE,
 							LIGHT_BARRIER_NEXT_CONVEYOR);
 					if (error < 0) {
 						LOG_ERROR
@@ -54,6 +61,8 @@ void SerialMessageRecvThread::execute(void*) {
 				}
 
 				usleep(20000);
+				//@Todo slepp rausschmeißen
+				sleep(5);
 				hb.getHardware()->getSerial()->sendPacket(
 						(void *) message->getMessage(),
 						sizeof(struct info_package));

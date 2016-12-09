@@ -42,6 +42,8 @@ void SignalHandlerThread::execute(void*) {
 
 		if (pulsecode == 0xE) {
 
+			LOG_DEBUG <<"Signalhandler hat einen Puls erhalten mit Code E:"<< pulse.value.sival_int<<"\n";
+
 			int code = pulse.value.sival_int;
 
 			if (code & ESTOP) {

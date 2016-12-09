@@ -23,7 +23,7 @@ bool InfoMessage::istBand2Frei(){
 
 void InfoMessage::update(struct info_package_without_ch* infoUpdate){
 #if defined BAND && BAND != 1
-	this.info.info_a = infoUpdate->info_a;
+	this->info.info_a = infoUpdate->info_a;
 #endif
 #if defined BAND && BAND != 2
 	this->info.info_b = infoUpdate->info_b;
@@ -55,7 +55,7 @@ bool InfoMessage::isLbNextConveyorInterrupted(){
 	}
 #endif
 #if defined BAND && BAND == 2
-	if(this->info.info_c & LB_INTERRUPTED == 0 ){
+	if((this->info.info_c & LB_INTERRUPTED) == 0 ){
 		return false;
 	}else{
 		this->info.info_c = this->info.info_c & ~LB_INTERRUPTED ;
@@ -63,7 +63,7 @@ bool InfoMessage::isLbNextConveyorInterrupted(){
 	}
 #endif
 #if defined BAND && BAND == 3
-	if(this->info.info_a & LB_INTERRUPTED == 0 ){
+	if((this->info.info_a & LB_INTERRUPTED) == 0 ){
 		return false;
 	}else{
 		this->info.info_a = this->info.info_a & ~LB_INTERRUPTED ;
@@ -170,4 +170,13 @@ bool InfoMessage::wurdeUeberallQuitiert(){
 		return false;
 	}
 	return true;
+}
+
+void InfoMessage::InhaltdesPaketesausgeben(){
+	LOG_DEBUG <<"Info Bereich A: \n";
+	LOG_DEBUG <<"Bits:"<<(int) this->info.info_a<<" \n";
+	LOG_DEBUG <<"Info Bereich B: \n";
+	LOG_DEBUG <<"Bits:"<<(int) this->info.info_b<<" \n";
+	LOG_DEBUG <<"Info Bereich C: \n";
+	LOG_DEBUG <<"Bits:"<<(int) this->info.info_c<<" \n";
 }

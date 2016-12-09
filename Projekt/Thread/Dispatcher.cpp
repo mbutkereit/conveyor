@@ -24,7 +24,7 @@
 		methods[ESTOPSIGNAL] = &Context::signalEStop;
 		methods[STARTSIGNAL] = &Context::signalStart;
 		methods[ALTEMETRYCOMPLETE] = &Context::signalAltimetryCompleted;
-		methods[ALTEMETRYCOMPLETE] = &Context::signalLBNextConveyor;
+		methods[LBNEXTCONVEYOR] = &Context::signalLBNextConveyor;
 	}
 
 Dispatcher::~Dispatcher() {

@@ -18,7 +18,7 @@ void ConveyorThread::execute(void*) {
 	Hardware* hw = hb.getHardware();
 
 
-   hw->getMotor()->right();
+   hw->getMotor()->stop();
    hw->getTL()->turnGreenOn();
 
 }
