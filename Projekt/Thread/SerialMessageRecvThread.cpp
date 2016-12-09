@@ -12,11 +12,20 @@ extern int isrtConnection_;
 extern HalBuilder hb;
 
 void SerialMessageRecvThread::execute(void*) {
+	InfoMessage* message = InfoMessage::getInfoMessage();
 	for (;;) {
 		struct common_header header;
 		memset(&header, 0, sizeof(struct common_header));
 		hb.getHardware()->getSerial()->recvPacket((void*) &header,
 				sizeof(struct common_header));
+
+#if defined BAND && BAND == 1
+		hb.getHardware()->getSerial()->sendPacket(
+				(void *) message->getMessage(),
+				sizeof(struct info_package));
+#endif
+
+
 		if (header.version == MESSAGE_VERSION) {
 			switch ((int) header.typ) {
 			case MESSAGE_TYPE_INFO: {
@@ -24,7 +33,6 @@ void SerialMessageRecvThread::execute(void*) {
 				memset(&messageInfo, 0, sizeof(struct info_package_without_ch));
 				hb.getHardware()->getSerial()->recvPacket((void*) &messageInfo,
 						sizeof(struct info_package_without_ch));
-				InfoMessage* message = InfoMessage::getInfoMessage();
 				message->update(&messageInfo);
 
 				if (message->isESTOPGedrueckt()) {

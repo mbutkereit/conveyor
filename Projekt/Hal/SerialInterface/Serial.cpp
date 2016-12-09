@@ -2,7 +2,7 @@
 
 Serial::Serial(string deviceNameWrite,string deviceNameRead){
     this->dev_write_ = deviceNameWrite.c_str();
-    this->fdesc_write_ = open(this->dev_write_, O_RDWR);
+    this->fdesc_write_ = open(this->dev_write_, O_WRONLY);
 
     if(this->fdesc_write_ == -1){
         LOG_ERROR << "Seriale Interface kann nicht geoeffnet werden:" <<deviceNameWrite <<"\n";
@@ -10,7 +10,7 @@ Serial::Serial(string deviceNameWrite,string deviceNameRead){
     }
 
     this->dev_read_ = deviceNameRead.c_str();
-    this->fdesc_read_ = open(this->dev_read_, O_RDWR);
+    this->fdesc_read_ = open(this->dev_read_, O_RDONLY);
     if(this->fdesc_read_ == -1){
         LOG_ERROR << "Seriale Interface kann nicht geoeffnet werden:" << deviceNameRead<<"\n";
         exit(-1);
