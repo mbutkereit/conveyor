@@ -26,13 +26,37 @@ typedef void (Context::*method_t)(void);
 
 class Dispatcher {
 public:
+
+	/**
+	 * Konstruktor
+	 */
 	Dispatcher();
+
+	/**
+	 * Destruktor
+	 */
 	virtual ~Dispatcher();
 
-
+	/**
+	 * Call for every registered Listener
+	 * @param event das Event
+	 */
 	virtual void callListeners(EVENTS event);
+
+	/**
+	 *  Remove Listener from a specific Event
+	 * @param listener die State Maschine
+	 * @param event das Event
+	 */
 	virtual void remListeners(Context *listener, EVENTS event);
+
+	/**
+	 * Add Listener to be called on a specific Event
+	 *  @param listener die State Maschine
+	 * @param event das Event
+	 */
 	virtual void addListener(Context *listener, EVENTS event);
+
 private:
 	method_t methods[NEVENTS];
 	std::vector<Context *> listeners_[NEVENTS];

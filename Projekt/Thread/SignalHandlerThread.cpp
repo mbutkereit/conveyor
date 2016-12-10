@@ -17,6 +17,12 @@ SignalHandlerThread::SignalHandlerThread() {
 SignalHandlerThread::~SignalHandlerThread() {
 }
 
+/**
+ * Die Klasse empfängt alle eingehenden Pulse von der ISR(Kernel) und dem Thread von der serielle Schnittstelle.
+ * Anschließend wird überprüft, ob ein Ereignis vorliegt und wenn ja wird es bei allen Listenern ausgeführt
+ * Listener werden hinzugefügt, wenn die vordere Lichtschranke durchbrochen wird und Listener werden entfernt wenn die
+ * Automaten den Emzustand erreicht haben.
+ */
 void SignalHandlerThread::execute(void*) {
 	struct _pulse pulse;
 	//TODO delete von Dispatcher fehlt noch

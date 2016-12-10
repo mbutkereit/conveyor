@@ -11,6 +11,12 @@ SerialMessageRecvThread::~SerialMessageRecvThread() {
 extern int isrtConnection_;
 extern HalBuilder hb;
 
+/**
+ * Empfängt alle Nchrichten die an der seriellen Schnittstelle ankommen.
+ * 1.Infos werden weiterschickt nach einem gewissen Delay.Vorher werden noch die Informationen ausgewertet.
+ * 2.Werkstückinformationen Schreibt die empfangenen Infos auf die Queue
+ * 3.Watchdogpakete ...
+ */
 void SerialMessageRecvThread::execute(void*) {
 	InfoMessage* message = InfoMessage::getInfoMessage();
 	for (;;) {
@@ -19,6 +25,7 @@ void SerialMessageRecvThread::execute(void*) {
 		hb.getHardware()->getSerial()->recvPacket((void*) &header,
 				sizeof(struct common_header));
 
+		//Ein Band muss starten
 #if defined BAND && BAND == 1
 		hb.getHardware()->getSerial()->sendPacket(
 				(void *) message->getMessage(),
