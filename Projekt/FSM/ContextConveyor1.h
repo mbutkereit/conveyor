@@ -77,6 +77,8 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
+		virtual void sensorMeasurementCompleted(){
+		}
 		virtual void signalLBNextConveyor() {
 		}
 
@@ -88,10 +90,6 @@ private:
         virtual void signalConveyor2isFree(){
         }
         virtual void signalTimeout(){
-        }
-
-        //TODO DELETE IF ALL UNKNOWN ARE ELIMINATED IN STATES
-        virtual void Unknown(){
         }
 
 	Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -132,13 +130,6 @@ private:
 	            data->cm->transact();
 	            new (this) PuckAdded;
 	        }
-	        else if(0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
-	            data->hb.getHardware()->getTL()->turnGreenOff();
-	            data->hb.getHardware()->getTL()->turnRedOn();
-	            data->cm->setSpeed(MOTOR_STOP);
-	            data->cm->transact();
-	            new (this) BothSkidsFull;
-	        }
 	    }
 	};
 
@@ -146,13 +137,13 @@ private:
         virtual void signalLBAltimetryNotInterrupted() {
             data->cm->resetSpeed(MOTOR_SLOW);
             data->cm->transact();
-            new (this) TransportToSwitch;
+            new (this) TransportToSwitch; //TODO SHOULD RENAMED
         }
 	};
 
-	struct TransportToSwitch: public PuckOnConveyor1{
+	struct TransportToSwitch: public PuckOnConveyor1{ //TODO SHOULD RENAMED AND DOCUMENTED
 	    virtual void signalLBSwitchInterrupted() {
-	        //TODO STOP TIMER tH, GIVE TIME tW, DELTA th AND tW CALCULATION
+	        //TODO STOP TIMER tH, GIVE TIME tW, START TIMER tW, DELTA th AND tW CALCULATION
 	        if(data->hb.getHardware()->getMT()->isItemMetal()){
 	            data->puck.setPuckmaterial(METAL);
 	        }
@@ -160,46 +151,61 @@ private:
 	        {
 	            data->puck.setPuckmaterial(PLASTIC);
 	        }
-	        //TODO SENSORMEASUREMENT COMPLETE?
-            if (1){//TODO DELTA tH and tW OK AND BOTHSKIDS NOT FULL
-                new (this) Sorting;
+	        new (this) Sorting;
+	    }
+	};
+
+	struct Sorting: public PuckOnConveyor1{
+	    virtual void sensorMeasurementCompleted(){
+            if (1){//TODO DELTA tH and tW OK
+                data->cs->setCurrentPh(data->puck.getPuckdrillhole());
+                data->cs->setCurrentPm(data->puck.getPuckmaterial());
+                data->cs->transact();
+                if (data->cs->getSequenceOk()){
+                    data->cswitch->setSwitchOpen();
+                    data->cswitch->transact();
+                    new (this) TransportToDelivery;
+                } else{
+                    if (data->hb.getHardware()->getMT()->isSkidFull()){
+                        new (this) SortOutThroughSkid;
+                    } else{
+                        data->hb.getHardware()->getTL()->turnYellowOn();
+                        data->cswitch->setSwitchOpen();
+                        data->cswitch->transact();
+                        new (this) TransportToDelivery;
+                    }
+                }
             } else if (0){//TODO DELTA tH AND tW TOO LOW
                 data->hb.getHardware()->getTL()->turnGreenOff();
                 data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
                 data->cm->setSpeed(MOTOR_STOP);
                 data->cm->transact();
                 new (this) PuckAdded;
-            } else if (0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->hb.getHardware()->getTL()->turnRedOn();
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                new (this) BothSkidsFull;
             }
 	    }
 	};
 
-	struct Sorting: public PuckOnConveyor1{
-        virtual void sequenceOk(){//TODO NEED TO BE MODIFIED TO FIT IN CURRENT DESIGN WITH DISPATCHER
-            data->cs->setCurrentPh(data->puck.getPuckdrillhole());
-            data->cs->setCurrentPm(data->puck.getPuckmaterial());
-            data->cs->transact();
-            if (data->cs->getSequenceOk()){
-                data->cswitch->setSwitchOpen();
-                data->cswitch->transact();
-                new (this) TransportToDelivery;
-            } else{
-                if (data->hb.getHardware()->getMT()->isSkidFull()){
-                    new (this) SortOutThroughSkid;
-                } else{
-                    data->hb.getHardware()->getTL()->turnYellowOn();
-                    data->cswitch->setSwitchOpen();
-                    data->cswitch->transact();
-                    new (this) TransportToDelivery;
+    struct SortOutThroughSkid: public PuckOnConveyor1{
+            virtual void signalLBSkidInterrupted(){
+                if(data->puckVector->size()>0){
+                    data->finished = true;
+                }
+                else{
+                    data->cm->setSpeed(MOTOR_STOP);
+                    data->cm->transact();
+                    new (this) Conveyor1Empty;
                 }
             }
+    };
+
+    struct Conveyor1Empty: public PuckOnConveyor1{
+        virtual void signalLBBeginInterrupted(){
+            data->cm->resetSpeed(MOTOR_STOP);
+            data->cm->transact();
+            data->finished = true;
         }
-	};
+    };
+
 
 	struct TransportToDelivery: public PuckOnConveyor1{
 	    virtual void signalLBEndInterrupted() {
@@ -242,39 +248,10 @@ private:
         }
     };
 
-	struct SortOutThroughSkid: public PuckOnConveyor1{
-	        virtual void signalLBSkidInterrupted(){
-	            if(data->puckVector->size()>0){
-	            	data->finished = true;
-	            }
-	            else{
-	                data->cm->setSpeed(MOTOR_STOP);
-	                data->cm->transact();
-	                new (this) Conveyor1Empty;
-	            }
-	        }
-	};
-
-	struct Conveyor1Empty: public PuckOnConveyor1{
-	    virtual void Unknown(){
-	        data->cm->resetSpeed(MOTOR_STOP);
-	        data->cm->transact();
-	        data->finished = true;
-	    }
-	};
-
 	struct PuckAdded: public PuckOnConveyor1{
 	    virtual void signalReset(){
 	        data->hb.getHardware()->getTL()->turnRedOff();
 	        data->finished = true;
-	    }
-	};
-
-	struct BothSkidsFull: public PuckOnConveyor1{
-	    void signalReset(){
-	        data->hb.getHardware()->getTL()->turnRedOff();
-	        data->hb.getHardware()->getTL()->turnGreenOn();
-	        //TODO new (this) history
 	    }
 	};
 
@@ -377,6 +354,11 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	void signalAltimetryCompleted();
+
+    /**
+     * @todo Ausstehende implementierung Dokumentieren.
+     */
+    void sensorMeasurementCompleted();
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.

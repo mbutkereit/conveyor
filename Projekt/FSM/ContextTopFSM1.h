@@ -77,68 +77,89 @@ private:
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct MainState: public TOPFSM {
-		void signalLBBeginInterrupted() {
+	    virtual void signalLBBeginInterrupted() {
 			data->cc1.signalLBBeginInterrupted();
 		}
-		void signalLBBeginNotInterrupted() {
+	    virtual void signalLBBeginNotInterrupted() {
 			data->cc1.signalLBBeginNotInterrupted();
 		}
-		void signalLBEndInterrupted() {
+	    virtual void signalLBEndInterrupted() {
 			data->cc1.signalLBEndInterrupted();
 		}
-		void signalLBEndNotInterrupted() {
+	    virtual void signalLBEndNotInterrupted() {
 			data->cc1.signalLBEndNotInterrupted();
 		}
-		void signalLBAltimetryInterrupted() {
+	    virtual void signalLBAltimetryInterrupted() {
 			data->cc1.signalLBAltimetryInterrupted();
 		}
-		void signalLBAltimetryNotInterrupted() {
+	    virtual void signalLBAltimetryNotInterrupted() {
 			data->cc1.signalLBAltimetryNotInterrupted();
 		}
 
-		void signalLBSwitchInterrupted() {
-			data->cc1.signalLBSwitchInterrupted();
+	    virtual void signalLBSwitchInterrupted() {
+	        data->cc1.signalLBSwitchInterrupted();
+            if (0){   //TODO BOTH SKIDS FULL AND ERRORMESSAGE
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->hb.getHardware()->getTL()->turnRedOn();
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                new (this) BothSkidsFull;
+            }
+            else{
+                data->cc1.sensorMeasurementCompleted();
+            }
 		}
-		void signalLBSwitchNotInterrupted() {
+	    virtual void signalLBSwitchNotInterrupted() {//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
 			data->cc1.signalLBSwitchNotInterrupted();
 		}
-		void signalEStop() {
+	    virtual void signalEStop() {
 		    data->cm->setSpeed(MOTOR_STOP);
 		    data->cm->transact();
 		    new (this) E_Stopp;
 		}
 
-		void signalStart() {
+	    virtual void signalStart() {
 		}
 
-		void signalStop() {
+	    virtual void signalStop() {
 			data->cc1.signalStop();
 		}
 
-		void signalReset() {
+	    virtual void signalReset() {
 			data->cc1.signalReset();
 		}
 
-		void signalLBSkidInterrupted() {
+	    virtual void signalLBSkidInterrupted() {
 			data->cc1.signalLBSkidInterrupted();
 		}
-		void signalLBSkidNotInterrupted() {
+	    virtual void signalLBSkidNotInterrupted() {
 			data->cc1.signalLBSkidNotInterrupted();
 		}
-		void signalAltimetryCompleted() {
+	    virtual void signalAltimetryCompleted() {
 		}
-		void signalLBNextConveyor() {
+	    virtual void signalLBNextConveyor() {
 			data->cc1.signalLBNextConveyor();
 		}
 	};
 
     struct E_Stopp: public TOPFSM{
-        void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
+	    virtual void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
         	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
+        	//TODO UNLOCK CHECK FOR OTHER CONVEYOR
         	data->cm->resetSpeed(MOTOR_STOP);
         	data->cm->transact();
-            //TODO UNLOCK CHECK FOR OTHER CONVEYOR
         	new (this) MainState;
+        }
+    };
+
+    struct BothSkidsFull: public TOPFSM{
+        void signalReset(){
+            data->hb.getHardware()->getTL()->turnRedOff();
+            data->hb.getHardware()->getTL()->turnGreenOn();
+            data->cm->resetSpeed(MOTOR_STOP);
+            data->cm->transact();
+            data->cc1.sensorMeasurementCompleted();
+            new (this) MainState;
         }
     };
 

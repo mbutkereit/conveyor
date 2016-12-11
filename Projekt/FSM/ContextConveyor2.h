@@ -21,7 +21,7 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct Data {
     Data(int puckID, std::vector<Puck>* puckVector) :
-            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0){
+            puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(ContextSorting::getInstance()), cswitch(ContextSwitch::getInstance()), puck(puckID), puckVector(puckVector), finished(false), posInVector(0), skidOfConveyor2Full(false){
     }
     int puckID;
     HalBuilder hb;
@@ -32,6 +32,7 @@ struct Data {
     std::vector<Puck>* puckVector;
     bool finished;
     int posInVector;
+    bool skidOfConveyor2Full;
 };
 
 /**
@@ -76,6 +77,10 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
+		virtual void sensorMeasurementCompleted(){
+		}
+        virtual void skidOfConveyor2Cleared(){
+        }
 		virtual void signalLBNextConveyor() {
 		}
 
@@ -89,10 +94,6 @@ private:
         virtual void signalTimeout(){
         }
         virtual void signalLBEndOfConveyor1NotInterrupted(){
-        }
-
-        //TODO DELETE IF ALL UNKNOWN ARE ELIMINATED IN STATES
-        virtual void Unknown(){
         }
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -133,13 +134,6 @@ private:
                 data->cm->transact();
                 new (this) PuckAdded;
             }
-            else if(0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->hb.getHardware()->getTL()->turnRedOn();
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                new (this) BothSkidsFull;
-            }
         }
     };
 
@@ -161,44 +155,42 @@ private:
             {
                 data->puck.setPuckmaterial(PLASTIC);
             }
-            //TODO SENSORMEASUREMENT COMPLETE?
-            if (1){//TODO DELTA tH and tW OK AND BOTHSKIDS NOT FULL
-                new (this) Sorting;
+            new (this) Sorting;
+        }
+    };
+
+    struct Sorting: public PuckOnConveyor2{
+        virtual void sensorMeasurementCompleted(){
+            if (1){//TODO DELTA tH and tW OK
+                data->cs->setCurrentPh(data->puck.getPuckdrillhole());
+                data->cs->setCurrentPm(data->puck.getPuckmaterial());
+                data->cs->transact();
+                if (data->cs->getSequenceOk()){
+                    data->cswitch->setSwitchOpen();
+                    data->cswitch->transact();
+                    new (this) TransportToDelivery;
+                } else{
+                    if (data->hb.getHardware()->getMT()->isSkidFull()){
+                        new (this) SortOutThroughSkid;
+                    } else{
+                        data->hb.getHardware()->getTL()->turnYellowOn();
+                        data->cm->setSpeed(MOTOR_STOP);
+                        data->cm->transact();
+                        data->skidOfConveyor2Full = true;
+                    }
+                }
             } else if (0){//TODO DELTA tH AND tW TOO LOW
                 data->hb.getHardware()->getTL()->turnGreenOff();
                 data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
                 data->cm->setSpeed(MOTOR_STOP);
                 data->cm->transact();
                 new (this) PuckAdded;
-            } else if (0){//TODO BOTH SKIDS FULL AND ERRORMESSAGE
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->hb.getHardware()->getTL()->turnRedOn();
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                new (this) BothSkidsFull;
             }
         }
-    };
 
-    struct Sorting: public PuckOnConveyor2{
-        virtual void sequenceOk(){//TODO NEED TO BE MODIFIED TO FIT IN CURRENT DESIGN WITH DISPATCHER
-            data->cs->setCurrentPh(data->puck.getPuckdrillhole());
-            data->cs->setCurrentPm(data->puck.getPuckmaterial());
-            data->cs->transact();
-            if (data->cs->getSequenceOk()){
-                data->cswitch->setSwitchOpen();
-                data->cswitch->transact();
-                new (this) TransportToDelivery;
-            } else{
-                if (data->hb.getHardware()->getMT()->isSkidFull()){
-                    new (this) SortOutThroughSkid;
-                } else{
-                    data->hb.getHardware()->getTL()->turnYellowOn();
-                    data->cm->setSpeed(MOTOR_STOP);
-                    data->cm->transact();
-                    new (this) SkidOfConveyor2Full;
-                }
-            }
+        virtual void skidOfConveyor2Cleared(){
+            data->skidOfConveyor2Full = false;
+            new (this) SortOutThroughSkid;
         }
     };
 
@@ -216,22 +208,12 @@ private:
     };
 
     struct Conveyor2Empty: public PuckOnConveyor2{
-        virtual void Unknown(){
+        virtual void signalLBBeginInterrupted(){
             data->cm->resetSpeed(MOTOR_STOP);
             data->cm->transact();
             data->finished = true;
         }
     };
-
-    struct SkidOfConveyor2Full: public PuckOnConveyor2{
-        virtual void signalReset(){
-            data->hb.getHardware()->getTL()->turnYellowOff();
-            data->hb.getHardware()->getTL()->turnGreenOn();
-            //TODO new (this) HISTORY
-        }
-    };
-
-
 
     struct TransportToDelivery: public PuckOnConveyor2{
         virtual void signalLBEndInterrupted() {
@@ -277,14 +259,7 @@ private:
     struct PuckAdded: public PuckOnConveyor2{
         virtual void signalReset(){
             data->hb.getHardware()->getTL()->turnRedOff();
-        }
-    };
-
-    struct BothSkidsFull: public PuckOnConveyor2{
-        void signalReset(){
-            data->hb.getHardware()->getTL()->turnRedOff();
-            data->hb.getHardware()->getTL()->turnGreenOn();
-            //TODO new (this) history
+            data->finished = true;
         }
     };
 
@@ -309,6 +284,10 @@ public:
 	*/
 	bool isContextimEnzustand(){
 		return contextdata.finished;
+	}
+
+	bool skidOfConveyor2Full(){
+	    return contextdata.skidOfConveyor2Full;
 	}
 
 	/**
@@ -387,6 +366,16 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	void signalAltimetryCompleted();
+
+	/**
+	 * @todo Ausstehende Implementierung Dokumentieren.
+	 */
+	void sensorMeasurementCompleted();
+
+	/**
+	 * @todo Ausstehende Implementierung Dokumentieren.
+	 */
+	virtual void skidOfConveyor2Cleared();
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.

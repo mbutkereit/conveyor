@@ -35,7 +35,6 @@ void ContextConveyor2::signalLBAltimetryNotInterrupted(){
 	statePtr->signalLBAltimetryNotInterrupted();
 }
 
-
 void ContextConveyor2::signalLBSwitchInterrupted(){
 	statePtr->signalLBSwitchInterrupted();
 }
@@ -65,6 +64,14 @@ void ContextConveyor2::signalLBSkidNotInterrupted(){
 
 void ContextConveyor2::signalAltimetryCompleted(){
 	statePtr->signalAltimetryCompleted();
+}
+
+void ContextConveyor2::sensorMeasurementCompleted(){
+    statePtr->sensorMeasurementCompleted();
+}
+
+void ContextConveyor2::skidOfConveyor2Cleared(){
+    statePtr->skidOfConveyor2Cleared();
 }
 
 void ContextConveyor2::signalLBNextConveyor(){

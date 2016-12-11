@@ -66,6 +66,10 @@ void ContextConveyor1::signalAltimetryCompleted(){
 	statePtr->signalAltimetryCompleted();
 }
 
+void ContextConveyor1::sensorMeasurementCompleted(){
+    statePtr->sensorMeasurementCompleted();
+}
+
 void ContextConveyor1::signalLBNextConveyor(){
 	statePtr->signalLBNextConveyor();
 }
