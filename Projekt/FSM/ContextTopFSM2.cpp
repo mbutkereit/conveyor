@@ -7,7 +7,7 @@
 
 #include "ContextTopFSM2.h"
 
-ContextTopFSM2::ContextTopFSM2(int puckID, std::vector<Puck>* puckVector): statePtr(&stateMember), contextdata(puckID, puckVector)   {
+ContextTopFSM2::ContextTopFSM2(int puckID, std::vector<Puck>* puckVector, int *skidcounter2): statePtr(&stateMember), contextdata(puckID, puckVector, skidcounter2)   {
 	statePtr->data = &contextdata;
 }
 

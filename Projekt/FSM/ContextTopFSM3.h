@@ -8,7 +8,6 @@
 #ifndef CONTEXTTOPFSM1_H_
 #define CONTEXTTOPFSM1_H_
 
-
 #include <iostream>
 #include <ContextConveyor3.h>
 #include "Logger/Logger.h"
@@ -16,15 +15,20 @@
 #include <vector>
 #include <Puck.h>
 #include "ContextMotor.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) : cc3(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
+	TOPData(int puckID, std::vector<Puck>* puckVector) :
+			cc3(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor3 cc3;
 	ContextMotor *cm;
 	HalBuilder hb;
+	InfoMessage im;
 };
 
 /**
@@ -103,9 +107,10 @@ private:
 			data->cc3.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
-		    data->cm->setSpeed(MOTOR_STOP);
-		    data->cm->transact();
-		    new (this) E_Stopp;
+			data->cm->setSpeed(MOTOR_STOP);
+			data->cm->transact();
+			data->im.setESTOP();
+			new (this) E_Stopp;
 		}
 
 		void signalStart() {
@@ -132,17 +137,23 @@ private:
 		}
 	};
 
-    struct E_Stopp: public TOPFSM{
-        void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
-        	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
-        	data->cm->resetSpeed(MOTOR_STOP);
-        	data->cm->transact();
-            //TODO UNLOCK CHECK FOR OTHER CONVEYOR
-        	new (this) MainState;
-        }
-    };
+	struct E_Stopp: public TOPFSM {
+		void signalReset() {
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+			}
+			data->im.removeESTOP();
+			if (data->im.wurdeUeberallQuitiert()) {
+				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
 
-	MainState stateMember;   //The memory for the state is part of context object
+				new (this) MainState;
+			} else {
+				new (this) E_Stopp;
+			}
+		}
+	};
+
+	MainState stateMember;  //The memory for the state is part of context object
 	TOPData contextdata;  //Data is also kept inside the context object
 
 public:
@@ -158,10 +169,12 @@ public:
 	virtual ~ContextTopFSM3();
 
 	/**
-	*
-	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
-	*/
-	bool isContextimEnzustand(){return contextdata.cc3.isContextimEnzustand();}
+	 *
+	 *return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
+	 */
+	bool isContextimEnzustand() {
+		return contextdata.cc3.isContextimEnzustand();
+	}
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.

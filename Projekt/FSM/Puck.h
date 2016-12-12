@@ -8,14 +8,6 @@
 #ifndef PUCK_H_
 #define PUCK_H_
 #define NOT_DEFINED -1
-/*
- enum Puckmaterial {
- METAL, PLASTIC, TYPE404PM
- };
-
- enum Puckdrillhole {
- DRILL_HOLE_UPSIDE, NO_DRILL_HOLE, TYPE404PH
- };*/
 
 enum PuckType {
 	DRILL_HOLE_UPSIDE,
@@ -58,22 +50,6 @@ public:
 		ID = id;
 	}
 
-/*	Puckdrillhole getPuckdrillhole() const {
-		return puckdrillhole;
-	}
-
-	void setPuckdrillhole(Puckdrillhole puckdrillhole) {
-		this->puckdrillhole = puckdrillhole;
-	}
-
-	Puckmaterial getPuckmaterial() const {
-		return puckmaterial;
-	}
-
-	void setPuckmaterial(Puckmaterial puckmaterial) {
-		this->puckmaterial = puckmaterial;
-	}*/
-
 	PuckType getPuckType() const {
 		return pucktype;
 	}
@@ -84,8 +60,6 @@ public:
 
 private:
 	int ID;
-	//Puckmaterial puckmaterial;
-	//Puckdrillhole puckdrillhole;
 	int heightReading_1;
 	int heightReading_2;
 	PuckType pucktype;

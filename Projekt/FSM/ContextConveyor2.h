@@ -16,16 +16,19 @@
 #include <vector>
 #include "ContextSorting.h"
 #include "ContextSwitch.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data {
-	Data(int puckID, std::vector<Puck>* puckVector) :
+	Data(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), skidOfConveyor2Full(
-					false) {
+					false), im(), sc2(skidcounter2) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -37,6 +40,8 @@ struct Data {
 	bool finished;
 	int posInVector;
 	bool skidOfConveyor2Full;
+	InfoMessage im;
+	int *sc2;
 };
 
 /**
@@ -89,15 +94,7 @@ private:
 		}
 
 		//TODO SIGNALS THAT ARE MISSING
-		virtual void signalSequenceOK() {
-		}
-		virtual void signalSequenceNotOK() {
-		}
-		virtual void signalConveyor3isFree() {
-		}
 		virtual void signalTimeout() {
-		}
-		virtual void signalLBEndOfConveyor1NotInterrupted() {
 		}
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -106,6 +103,7 @@ private:
 	struct TransportToEntry: public PuckOnConveyor2 {
 		//TRANSACTION/LEAVE
 		virtual void signalLBBeginInterrupted() {
+			data->im.setBand2NichtFrei();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
@@ -187,7 +185,7 @@ private:
 						data->hb.getHardware()->getTL()->turnYellowOn();
 						data->cm->setSpeed(MOTOR_STOP);
 						data->cm->transact();
-						data->skidOfConveyor2Full = true;
+						data->im.setBand2RutscheVoll();
 					}
 				}
 			} else if (0) {   //TODO DELTA tH AND tW TOO LOW
@@ -200,13 +198,19 @@ private:
 		}
 
 		virtual void skidOfConveyor2Cleared() {
-			data->skidOfConveyor2Full = false;
 			new (this) SortOutThroughSkid;
 		}
 	};
 
 	struct SortOutThroughSkid: public PuckOnConveyor2 {
 		virtual void signalLBSkidInterrupted() {
+			int temp = *data->sc2;
+			temp++;
+			*data->sc2 = temp;
+			if (*data->sc2 > 3) {
+				data->im.setBand2RutscheVoll();
+
+			}
 			if (data->puckVector->size() > 0) {
 				data->finished = true;
 			} else {
@@ -221,6 +225,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
+			data->im.setBand2Frei();
 			data->finished = true;
 		}
 	};
@@ -257,19 +262,17 @@ private:
 			//TODO SEND PUCKINFORMATION
 			data->puckVector->erase(
 					data->puckVector->begin() + data->posInVector);
-			if (data->puckVector->size() > 0) {
-				data->finished = true;
-			} else {
-				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
-				new (this) Conveyor2Empty;
-			}
+			data->cm->setSpeed(MOTOR_STOP);
+			data->cm->transact();
+			new (this) Conveyor2Empty;
+
 		}
 	};
 
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void signalReset() {
 			data->hb.getHardware()->getTL()->turnRedOff();
+			data->im.setBand2Frei();
 			data->finished = true;
 		}
 	};
@@ -282,7 +285,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextConveyor2(int, std::vector<Puck>*);
+	ContextConveyor2(int, std::vector<Puck>*, int*);
 
 	/**
 	 *  Destructor des Contexts.
@@ -297,100 +300,40 @@ public:
 		return contextdata.finished;
 	}
 
-	bool skidOfConveyor2Full() {
-		return contextdata.skidOfConveyor2Full;
-	}
-
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBAltimetryInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndNotInterrupted();
 
-	/**
-	 *  Constructor des Adapters.
-	 *
-	 *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	 */
 	void signalLBAltimetryNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalEStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStart();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalReset();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalAltimetryCompleted();
 
-	/**
-	 * @todo Ausstehende Implementierung Dokumentieren.
-	 */
 	void sensorMeasurementCompleted();
 
-	/**
-	 * @todo Ausstehende Implementierung Dokumentieren.
-	 */
 	virtual void skidOfConveyor2Cleared();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBNextConveyor();
 };
 

@@ -18,6 +18,17 @@
  */
 class InfoMessage {
 public:
+
+	/**
+	 * Konstruktor
+	 */
+	InfoMessage();
+
+	/*
+	 * Destruktor
+	 */
+	~InfoMessage();
+
 	/*
 	 *Gibt die einzige existierende Instanz zurück.
 	 *@return die Instanz
@@ -140,15 +151,7 @@ public:
 	struct info_package* getMessage();
 
 private:
-	/**
-	 * Konstruktor
-	 */
-	InfoMessage();
 
-	/*
-	 * Destruktor
-	 */
-	~InfoMessage();
 
 	/**
 	 * Die Struktur enthält das Paket mit den Informationen.

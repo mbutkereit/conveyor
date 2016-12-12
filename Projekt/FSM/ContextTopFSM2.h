@@ -22,8 +22,8 @@
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) :
-			cc2(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
+	TOPData(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
+			cc2(puckID, puckVector, skidcounter2), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor2 cc2;
 	ContextMotor *cm;
@@ -111,7 +111,7 @@ private:
 				new (this) BothSkidsFull;
 			} else {
 				data->cc2.sensorMeasurementCompleted();
-				if (data->cc2.skidOfConveyor2Full()) {
+				if (data->im.istBand2RutscheVoll()) {
 					new (this) SkidOfConveyor2Full;
 				}
 			}
@@ -122,6 +122,7 @@ private:
 		void signalEStop() {
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
+			data->im.setESTOP();
 			new (this) E_Stopp;
 		}
 
@@ -150,16 +151,16 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
-		void signalReset() {   //TODO ALL CONVEYOR UNLOCK MISSING
+		void signalReset() {
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			//TODO UNLOCK CHECK FOR OTHER CONVEYOR
-			data->cm->resetSpeed(MOTOR_STOP);
+			data->im.removeESTOP();
+
 			if (data->im.wurdeUeberallQuitiert()) {
+				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) MainState;
-			}
-			else{
+			} else {
 				new (this) E_Stopp;
 			}
 		}
@@ -172,11 +173,10 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->cc2.sensorMeasurementCompleted();
-			if (data->cc2.skidOfConveyor2Full()) {
-				new (this) SkidOfConveyor2Full;
-			} else {
-				new (this) MainState;
-			}
+			data->im.setBand1RutscheLeer();
+			data->im.setBand2RutscheLeer();
+			new (this) MainState;
+
 		}
 	};
 
@@ -185,6 +185,7 @@ private:
 			data->hb.getHardware()->getTL()->turnYellowOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cc2.skidOfConveyor2Cleared();
+			data->im.setBand2RutscheLeer();
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 		}
@@ -198,7 +199,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextTopFSM2(int, std::vector<Puck>*);
+	ContextTopFSM2(int, std::vector<Puck>*, int*);
 
 	/**
 	 *  Destructor des Contexts.
@@ -213,86 +214,36 @@ public:
 		return contextdata.cc2.isContextimEnzustand();
 	}
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBAltimetryInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndNotInterrupted();
 
-	/**
-	 *  Constructor des Adapters.
-	 *
-	 *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	 */
 	void signalLBAltimetryNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalEStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStart();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalReset();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalAltimetryCompleted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBNextConveyor();
 
 };

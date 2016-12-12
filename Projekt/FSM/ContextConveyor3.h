@@ -23,9 +23,9 @@
 #include <vector>
 
 struct Data {
-	Data(int puckID, std::vector<Puck>* puckVector):
+	Data(int puckID, std::vector<Puck>* puckVector) :
 
-		cswitch(ContextSwitch::getInstance()), ct1(
+			cswitch(ContextSwitch::getInstance()), ct1(
 					ContextTimer::getInstance()), ct2(
 					ContextTimer::getInstance()), ct3(
 					ContextTimer::getInstance()), cth1(
@@ -34,10 +34,10 @@ struct Data {
 					ContextTimer::getInstance()), cte1(
 					ContextTimer::getInstance()), cte2(
 					ContextTimer::getInstance()), cte3(
-					ContextTimer::getInstance()), hb(), cm(ContextMotor::getInstance()), puck(-1), currState(0), id(
-					0), height(-1), delta1(0), delta2(0), delta3(
-					0), counterHeightFail(0), counterEndFail(0), finished(
-					false), puckVector(puckVector) {
+					ContextTimer::getInstance()), hb(), cm(
+					ContextMotor::getInstance()), puck(-1), currState(0), id(0), height(
+					-1), delta1(0), delta2(0), delta3(0), counterHeightFail(0), counterEndFail(
+					0), finished(false), puckVector(puckVector) {
 	}
 
 	ContextSwitch* cswitch;
@@ -69,7 +69,7 @@ class ContextConveyor3 {
 public:
 	ContextConveyor3(int puckID, std::vector<Puck>* puckVector) :
 			statePtr(&stateMember), // assigning start state
-			contextdata( puckID,puckVector) // initializing data
+			contextdata(puckID, puckVector) // initializing data
 	{
 		statePtr->data = &contextdata; // connecting state->data with the context data
 	}
@@ -98,8 +98,8 @@ private:
 		}
 		virtual void signalEStop() {
 			/*data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) Estop;*/
+			 data->cm->transact();
+			 new (this) Estop;*/
 		}
 		virtual void signalStart() {
 		}
@@ -437,90 +437,88 @@ private:
 
 	};
 
-
-
 	/*struct Estop: public State {
-		virtual void signalReset() {
+	 virtual void signalReset() {
 
-			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-					}
-					data->cm->resetSpeed(MOTOR_STOP);
-					data->cm->transact();
-					//TODO UNLOCK CHECK FOR OTHER CONVEYOR
-			//alle Förderbänder quitiert   22
-			switch (data->currState) {
-			case 1:
-				new (this) ReceivingPucks;
-				break;
+	 while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+	 }
+	 data->cm->resetSpeed(MOTOR_STOP);
+	 data->cm->transact();
+	 //TODO UNLOCK CHECK FOR OTHER CONVEYOR
+	 //alle Förderbänder quitiert   22
+	 switch (data->currState) {
+	 case 1:
+	 new (this) ReceivingPucks;
+	 break;
 
-			case 2:
-				new (this) Puck1Recognized;
-				break;
-			case 3:
-				new (this) Puck2Ready;
-				break;
-			case 4:
-				new (this) Puck2Recognized;
-				break;
-			case 5:
-				new (this) Puck3Ready;
-				break;
-			case 6:
-				new (this) Puck3Recognized;
-				break;
-			case 7:
-				new (this) EndReceiving;
-				break;
-			case 8:
-				new (this) HeightfailBegin;
-				break;
-			case 9:
-				new (this) HeightPuck1Recognized;
-				break;
-			case 10:
-				new (this) HeightPuck2Ready;
-				break;
-			case 11:
-				new (this) HeightPuck2Recognized;
-				break;
-			case 12:
-				new (this) HeightPuck3Ready;
-				break;
-			case 13:
-				new (this) HeightPuck3Recognized;
-				break;
-			case 14:
-				new (this) HeightEnd;
-				break;
-			case 15:
-				new (this) TransportToSwitch;
-				break;
-			case 16:
-				new (this) EndFailBegin;
-				break;
-			case 17:
-				new (this) EndPuck1Recognized;
-				break;
-			case 18:
-				new (this) EndPuck2Ready;
-				break;
-			case 19:
-				new (this) EndPuck2Recognized;
-				break;
-			case 20:
-				new (this) EndPuck3Ready;
-				break;
-			case 21:
-				new (this) EndPuck3Recognized;
-				break;
-			case 22:
-				new (this) PucksToConsole;
-				break;
+	 case 2:
+	 new (this) Puck1Recognized;
+	 break;
+	 case 3:
+	 new (this) Puck2Ready;
+	 break;
+	 case 4:
+	 new (this) Puck2Recognized;
+	 break;
+	 case 5:
+	 new (this) Puck3Ready;
+	 break;
+	 case 6:
+	 new (this) Puck3Recognized;
+	 break;
+	 case 7:
+	 new (this) EndReceiving;
+	 break;
+	 case 8:
+	 new (this) HeightfailBegin;
+	 break;
+	 case 9:
+	 new (this) HeightPuck1Recognized;
+	 break;
+	 case 10:
+	 new (this) HeightPuck2Ready;
+	 break;
+	 case 11:
+	 new (this) HeightPuck2Recognized;
+	 break;
+	 case 12:
+	 new (this) HeightPuck3Ready;
+	 break;
+	 case 13:
+	 new (this) HeightPuck3Recognized;
+	 break;
+	 case 14:
+	 new (this) HeightEnd;
+	 break;
+	 case 15:
+	 new (this) TransportToSwitch;
+	 break;
+	 case 16:
+	 new (this) EndFailBegin;
+	 break;
+	 case 17:
+	 new (this) EndPuck1Recognized;
+	 break;
+	 case 18:
+	 new (this) EndPuck2Ready;
+	 break;
+	 case 19:
+	 new (this) EndPuck2Recognized;
+	 break;
+	 case 20:
+	 new (this) EndPuck3Ready;
+	 break;
+	 case 21:
+	 new (this) EndPuck3Recognized;
+	 break;
+	 case 22:
+	 new (this) PucksToConsole;
+	 break;
 
-			}
-		}
+	 }
+	 }
 
-	};*/
+	 };*/
 
 	ReceivingPucks stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object

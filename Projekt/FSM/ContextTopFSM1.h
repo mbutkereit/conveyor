@@ -22,8 +22,8 @@
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) :
-			cc1(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
+	TOPData(int puckID, std::vector<Puck>* puckVector, int *skidcounter) :
+			cc1(puckID, puckVector, skidcounter), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor1 cc1;
 	ContextMotor *cm;
@@ -102,7 +102,8 @@ private:
 
 		virtual void signalLBSwitchInterrupted() {
 			data->cc1.signalLBSwitchInterrupted();
-			if (data->im.istBand1RutscheVoll() && data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
+			if (data->im.istBand1RutscheVoll()
+					&& data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
 
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnRedOn();
@@ -119,6 +120,7 @@ private:
 		virtual void signalEStop() {
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
+			data->im.setESTOP();
 			new (this) E_Stopp;
 		}
 
@@ -147,10 +149,12 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
-		virtual void signalReset() {   //TODO ALL CONVEYOR UNLOCK MISSING
+		virtual void signalReset() {
+
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			//TODO UNLOCK CHECK FOR OTHER CONVEYOR
+			data->im.removeESTOP();
+
 			if (data->im.wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -171,6 +175,8 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->cc1.sensorMeasurementCompleted();
+			data->im.setBand1RutscheLeer();
+			data->im.setBand2RutscheLeer();
 			new (this) MainState;
 		}
 	};
@@ -183,7 +189,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextTopFSM1(int, std::vector<Puck>*);
+	ContextTopFSM1(int, std::vector<Puck>*, int*);
 
 	/**
 	 *  Destructor des Contexts.
@@ -198,86 +204,36 @@ public:
 		return contextdata.cc1.isContextimEnzustand();
 	}
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBAltimetryInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndNotInterrupted();
 
-	/**
-	 *  Constructor des Adapters.
-	 *
-	 *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	 */
 	void signalLBAltimetryNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalEStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStart();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalReset();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalAltimetryCompleted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBNextConveyor();
 
 };

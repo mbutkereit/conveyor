@@ -21,15 +21,21 @@
 #include <vector>
 #include "ContextSorting.h"
 #include "ContextSwitch.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
+#include "Thread/BlinkRedThread.h"
+#include "Thread/BlinkYellowThread.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data {
-	Data(int puckID, std::vector<Puck>* puckVector) :
+	Data(int puckID, std::vector<Puck>* puckVector, int *skidcounter) :
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
-					puckVector), finished(false), posInVector(0)  {
+					puckVector), finished(false), posInVector(0), im(), sc(
+					skidcounter), blinkRed(), blinkYellow() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -40,7 +46,11 @@ struct Data {
 	std::vector<Puck>* puckVector;
 	bool finished;
 	int posInVector;
-	};
+	InfoMessage im;
+	int *sc;
+	BlinkRedThread blinkRed;
+	BlinkYellowThread blinkYellow;
+};
 
 /**
  * @file
@@ -90,12 +100,6 @@ private:
 		}
 
 		//TODO SIGNALS THAT ARE MISSING
-		virtual void signalSequenceOK() {
-		}
-		virtual void signalSequenceNotOK() {
-		}
-		virtual void signalConveyor2isFree() {
-		}
 		virtual void signalTimeout() {
 		}
 
@@ -139,7 +143,10 @@ private:
 				new (this) PuckInHeightMeasurement;
 			} else if (0) { //TODO DELTA t0 AND tH TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkRed.start(NULL);
+				// TODO Thread stoppen
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -151,11 +158,11 @@ private:
 		virtual void signalLBAltimetryNotInterrupted() {
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->transact();
-			new (this) TransportToSwitch; //TODO SHOULD RENAMED
+			new (this) TransportToSwitch;
 		}
 	};
 
-	struct TransportToSwitch: public PuckOnConveyor1 { //TODO SHOULD RENAMED AND DOCUMENTED
+	struct TransportToSwitch: public PuckOnConveyor1 {
 		virtual void signalLBSwitchInterrupted() {
 			//TODO STOP TIMER tH, GIVE TIME tW, START TIMER tW, DELTA th AND tW CALCULATION
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
@@ -164,7 +171,6 @@ private:
 
 				} else {
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
-					//hb.getHardware()->getMT()->isItemInAltimetryToleranceRange();   WHY!!!! What are we doing here, racing or Ping Pong
 				}
 			}
 
@@ -174,6 +180,7 @@ private:
 
 	struct Sorting: public PuckOnConveyor1 {
 		virtual void sensorMeasurementCompleted() {
+
 			if (1) { //TODO DELTA tH and tW OK
 
 				data->cs->setCurrentPt(data->puck.getPuckType());
@@ -185,6 +192,7 @@ private:
 					new (this) TransportToDelivery;
 				} else {
 					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+
 						new (this) SortOutThroughSkid;
 					} else {
 						data->hb.getHardware()->getTL()->turnYellowOn();
@@ -195,7 +203,10 @@ private:
 				}
 			} else if (0) { //TODO DELTA tH AND tW TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkYellow.start(NULL);
+				// TODO Thread stoppen
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -205,6 +216,14 @@ private:
 
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
 		virtual void signalLBSkidInterrupted() {
+			int temp = *data->sc;
+			temp++;
+			*data->sc = temp;
+			if (*data->sc > 3) {
+				data->im.setBand1RutscheVoll();
+
+			}
+
 			if (data->puckVector->size() > 0) {
 				data->finished = true;
 			} else {
@@ -231,22 +250,21 @@ private:
 			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				new (this) DeliverToConveyor2;
+				while (data->im.istBand2Frei()) {
+				}
+				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
+				new (this) TransportToConveyor2;
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkRed.start(NULL);
+				// TODO Thread stoppen
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
 			}
-		}
-	};
-
-	struct DeliverToConveyor2: public PuckOnConveyor1 {
-		virtual void signalConveyor2isFree() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) TransportToConveyor2;
 		}
 	};
 
@@ -280,7 +298,7 @@ public:
 	/**
 	 *  Constructor des Contexts.
 	 */
-	ContextConveyor1(int, std::vector<Puck>*);
+	ContextConveyor1(int, std::vector<Puck>*, int*);
 
 	/**
 	 *  Destructor des Contexts.
@@ -295,91 +313,38 @@ public:
 		return contextdata.finished;
 	}
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBAltimetryInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBBeginNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBEndNotInterrupted();
 
-	/**
-	 *  Constructor des Adapters.
-	 *
-	 *  @param baseaddress Die Baseaddress die verwenden werden soll.
-	 */
 	void signalLBAltimetryNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSwitchNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalEStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStart();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalStop();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalReset();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBSkidNotInterrupted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalAltimetryCompleted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void sensorMeasurementCompleted();
 
-	/**
-	 * @todo Ausstehende implementierung Dokumentieren.
-	 */
 	void signalLBNextConveyor();
 };
 

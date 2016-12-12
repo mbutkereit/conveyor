@@ -10,7 +10,6 @@
 
 HalBuilder hb;
 
-
 int main(int argc, char *argv[]) {
 	Logger::getLogger().setLoggingLevel(DEBUG);
 	ConveyorThread c1;
