@@ -68,14 +68,14 @@ public:
      *
      * @return Gibt Konstant 0 zurueck.
      */
-    uint8_t switchOpen();
+    uint8_t openSwitch();
 
     /**
      * Schliesst die Weiche.
      *
      * @return Gibt Konstant 0 zurueck.
      */
-    uint8_t switchClosed();
+    uint8_t closedSwitch();
 
 private:
     uint8_t motorrightBitmask__;  ///< Bitmask um den Motor nach Rechtsfahren zu lassen.

@@ -51,13 +51,13 @@ uint8_t Motor::stop(){
 
     return 0;
 }
-uint8_t Motor::switchOpen(){
+uint8_t Motor::openSwitch(){
 	adapter->setBitMask(weicheaufBitmask_);
     LOG_DEBUG << "Die Weiche ist jetzt offen. \n";
 
     return 0;
 }
-uint8_t Motor::switchClosed(){
+uint8_t Motor::closedSwitch(){
 	adapter->removeBitMask(weicheaufBitmask_);
     LOG_DEBUG << "Die Weiche ist jetzt geschlossen. \n";
 
