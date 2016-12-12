@@ -116,7 +116,7 @@ private:
 	struct PuckInSkid: public Timereading {
 		virtual void transact() {
 			printf("PuckInSkid\n");
-			data->hb.getHardware()->getMotor()->switchOpen();
+			data->hb.getHardware()->getMotor()->openSwitch();
 			while(data->hb.getHardware()->getMT()->isItemRunningOut()){}
 			data->t1 = data->t2;
 			data->t2 = clock();
@@ -126,7 +126,7 @@ private:
 	};
 	struct PuckRunningOut: public Timereading {
 		virtual void transact() {
-			data->hb.getHardware()->getMotor()->switchClosed();
+			data->hb.getHardware()->getMotor()->closedSwitch();
 			data->hb.getHardware()->getMotor()->stop();
 			printf("Delta t_0 und t_H: Ticks: %d, Seconds: %d\n", data->deltaT0TH, data->deltaT0TH/CLOCK_REALTIME);
 			printf("Delta t_H und t_W: Ticks: %d, Seconds: %d\n", data->deltaTHTW, data->deltaTHTW/CLOCK_REALTIME);

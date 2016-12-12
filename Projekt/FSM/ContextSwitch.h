@@ -46,15 +46,15 @@ private:
 
     struct StateStart: public SwitchOfConveyor {
         virtual void transact() {
-            data->hb.getHardware()->getMotor()->switchClosed();
+            data->hb.getHardware()->getMotor()->closedSwitch();
             if (data->openCounter > 0)
             {
-                data->hb.getHardware()->getMotor()->switchOpen();
+                data->hb.getHardware()->getMotor()->openSwitch();
                 new (this) Open;
             }
             else
             {
-                data->hb.getHardware()->getMotor()->switchClosed();
+                data->hb.getHardware()->getMotor()->closedSwitch();
                 new (this) Close;
             }
         }
@@ -64,7 +64,7 @@ private:
 		virtual void transact() {
 		    if(data->openCounter > 0)
 		    {
-		        data->hb.getHardware()->getMotor()->switchOpen();
+		        data->hb.getHardware()->getMotor()->openSwitch();
 		        data->hb.getHardware()->getMT()->isSwitchOpen();
 		        new (this) Open;
 		    }
@@ -75,7 +75,7 @@ private:
 		virtual void transact() {
 		    if(data->openCounter == 0)
 		    {
-		        data->hb.getHardware()->getMotor()->switchClosed();
+		        data->hb.getHardware()->getMotor()->closedSwitch();
 		        new (this) Close;
 		    }
 		}

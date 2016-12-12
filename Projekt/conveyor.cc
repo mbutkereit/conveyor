@@ -10,7 +10,6 @@
 
 HalBuilder hb;
 
-#define BAND 1
 
 int main(int argc, char *argv[]) {
 	Logger::getLogger().setLoggingLevel(DEBUG);
