@@ -8,21 +8,31 @@
 #ifndef PUCK_H_
 #define PUCK_H_
 #define NOT_DEFINED -1
+/*
+ enum Puckmaterial {
+ METAL, PLASTIC, TYPE404PM
+ };
 
-	enum Puckmaterial
-	{
-		METAL, PLASTIC, TYPE404PM
-	};
+ enum Puckdrillhole {
+ DRILL_HOLE_UPSIDE, NO_DRILL_HOLE, TYPE404PH
+ };*/
 
-	enum Puckdrillhole
-	{
-		DRILL_HOLE_UPSIDE, NO_DRILL_HOLE, TYPE404PH
-	};
+enum PuckType {
+	DRILL_HOLE_UPSIDE,
+	DRILL_HOLE_UPSIDE_METAL,
+	DRILL_HOLE_UPSIDE_PLASTIC,
+	NO_DRILL_HOLE,
+	TYPE404PT,
+};
 
 class Puck {
 public:
-	Puck(int id): ID(id), puckmaterial(TYPE404PM), puckdrillhole(TYPE404PH), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED){}
-	virtual ~Puck(){}
+	Puck(int id) :
+			ID(id), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED), pucktype(
+					TYPE404PT) {
+	}
+	virtual ~Puck() {
+	}
 
 	int getHeightReading1() const {
 		return heightReading_1;
@@ -45,10 +55,10 @@ public:
 	}
 
 	void setId(int id) {
-			ID = id;
+		ID = id;
 	}
 
-	Puckdrillhole getPuckdrillhole() const {
+/*	Puckdrillhole getPuckdrillhole() const {
 		return puckdrillhole;
 	}
 
@@ -62,14 +72,23 @@ public:
 
 	void setPuckmaterial(Puckmaterial puckmaterial) {
 		this->puckmaterial = puckmaterial;
+	}*/
+
+	PuckType getPuckType() const {
+		return pucktype;
+	}
+
+	void setPuckType(PuckType pucktype) {
+		this->pucktype = pucktype;
 	}
 
 private:
 	int ID;
-	Puckmaterial puckmaterial;
-	Puckdrillhole puckdrillhole;
+	//Puckmaterial puckmaterial;
+	//Puckdrillhole puckdrillhole;
 	int heightReading_1;
 	int heightReading_2;
+	PuckType pucktype;
 };
 
 #endif /* PUCK_H_ */
