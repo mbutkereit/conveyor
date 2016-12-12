@@ -4,7 +4,7 @@
 #include "Serializer/Serializer.h"
 #include "Logger.h"
 
-#define BAND 2
+
 
 #define RUTSCHE_VOLL 0x01
 #define QUITIERUNGS_BIT 0x04

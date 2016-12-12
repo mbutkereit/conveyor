@@ -27,28 +27,28 @@ void SignalHandlerThread::execute(void*) {
 	struct _pulse pulse;
 	//TODO delete von Dispatcher fehlt noch
 	Dispatcher* disp = new Dispatcher();
-	std::vector<Context* >contextContainer;
+	std::vector<Context*> contextContainer;
 	InfoMessage* message = InfoMessage::getInfoMessage();
-
 
 	if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1) {
 		LOG_DEBUG << "SignalHandlerThread kann keine rechte bekommen.";
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
-  // LOG_DEBUG << "Starte den Automaten Handler mit Channel Nummer: "<< isrtChannel_ <<"\n";
+	// LOG_DEBUG << "Starte den Automaten Handler mit Channel Nummer: "<< isrtChannel_ <<"\n";
 	do {
 
 		if (MsgReceivePulse(isrtChannel_, &pulse, sizeof(pulse), NULL) == -1) {
 			LOG_DEBUG << "Fehler beim Signal Handler Message Recieve.";
-			exit (EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		}
 
 		short pulsecode = pulse.code;
-	//	LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
+		//	LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 
 		if (pulsecode == 0xE) {
 
-			LOG_DEBUG <<"Signalhandler hat einen Puls erhalten mit Code E:"<< pulse.value.sival_int<<"\n";
+			LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
+					<< pulse.value.sival_int << "\n";
 
 			int code = pulse.value.sival_int;
 
@@ -57,7 +57,17 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & LIGHT_BARRIER_BEGIN_INTERRUPTED) {
+				//Hier die Namen f¸r die Fsm einf¸gen
+#if defined BAND && BAND == 1
 				Context* context = new Context();
+#endif
+#if defined BAND && BAND == 2
+				Context* context = new Context();
+#endif
+#if defined BAND && BAND == 3
+				Context* context = new Context();
+#endif
+
 				context->isContextimEnzustand();
 				//TODO extract Method
 				disp->addListener(context, LBBEGININTERRUPTED);
@@ -128,40 +138,63 @@ void SignalHandlerThread::execute(void*) {
 			if (code & STOP) {
 				disp->callListeners(STOPSIGNAL);
 			}
-			if (code & LIGHT_BARRIER_NEXT_CONVEYOR ) {
+			if (code & LIGHT_BARRIER_NEXT_CONVEYOR) {
 				disp->callListeners(LBNEXTCONVEYOR);
 			}
-			
+
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gel√∂scht.
-			for(uint8_t i=0;i < contextContainer.size();i++ ){
-				if(contextContainer[i]->isContextimEnzustand()){
+			for (uint8_t i = 0; i < contextContainer.size(); i++) {
+				if (contextContainer[i]->isContextimEnzustand()) {
 					//TODO extract Method
-					disp->remListeners(contextContainer[i],LBBEGININTERRUPTED);
-					disp->remListeners(contextContainer[i], LBBEGINNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBBEGINNOTINTERRUPTED);
 					disp->remListeners(contextContainer[i], LBENDINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBENDNOTINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBALTIMETRYINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBALTIMETRYNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBENDNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBALTIMETRYINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBALTIMETRYNOTINTERRUPTED);
 					disp->remListeners(contextContainer[i], LBSKIDINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBSKIDNOTINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBSWITCHINTERRUPTED);
-					disp->remListeners(contextContainer[i], LBSWITCHNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBSKIDNOTINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBSWITCHINTERRUPTED);
+					disp->remListeners(contextContainer[i],
+							LBSWITCHNOTINTERRUPTED);
 					disp->remListeners(contextContainer[i], RESETSIGNAL);
 					disp->remListeners(contextContainer[i], STARTSIGNAL);
 					disp->remListeners(contextContainer[i], ESTOPSIGNAL);
 					disp->remListeners(contextContainer[i], STOPSIGNAL);
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
-					//@TODO delete (context*)contextContainer[i];
-					contextContainer.erase(contextContainer.begin()+i);
+#if defined BAND && BAND == 1
+					Context *contextpointer = (Context*) contextContainer[i];
+					contextContainer.erase(contextContainer.begin() + i);
+					delete contextpointer;
+#endif
+#if defined BAND && BAND == 2
+					Context *contextpointer = (Context*) contextContainer[i];
+					contextContainer.erase(contextContainer.begin() + i);
+					delete contextpointer;
+#endif
+#if defined BAND && BAND == 3
+					Context *contextpointer = (Context*) contextContainer[i];
+					contextContainer.erase(contextContainer.begin() + i);
+					delete contextpointer;
+#endif
+
 				}
 			}
-			
-		}else{
-			if (pulsecode == WATCHDOG_PULSE_CODE){
-						SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
-					}else{
-			LOG_WARNING << "Einen nicht bekannten Code erhalten." << pulsecode << "\n" ;
-		}}
+
+		} else {
+			if (pulsecode == WATCHDOG_PULSE_CODE) {
+				SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
+			} else {
+				LOG_WARNING << "Einen nicht bekannten Code erhalten."
+						<< pulsecode << "\n";
+			}
+		}
 
 	} while (1);
 
@@ -169,10 +202,10 @@ void SignalHandlerThread::execute(void*) {
 
 void SignalHandlerThread::shutdown() {
 	if (ConnectDetach(isrtConnection_) == -1) {
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 
 	if (ChannelDestroy(isrtChannel_) == -1) {
-		exit (EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 }

@@ -54,9 +54,6 @@ private:
      */
     WorkpieceMessage();
 
-
-   struct info_package info;
-
    /*
     * Enthält die empfangenen Informationen, bis sie benötigt werden.
     */
