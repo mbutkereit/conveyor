@@ -12,10 +12,10 @@
 #include "Puck.h"
 
 struct Datacs{
-	Datacs(): currentPm(TYPE404PM), currentPh(TYPE404PH), sequenceOK(0){}
-	Puckmaterial currentPm;
-	Puckdrillhole currentPh;
+	Datacs(): sequenceOK(0),currentPt(TYPE404PT){}
+
 	int sequenceOK;
+	PuckType currentPt;
 };
 
 class ContextSorting {
@@ -26,17 +26,16 @@ public:
 		statePtr->transact();
 	} // context delegates signals to state
 
-	void setCurrentPh(Puckdrillhole currentPh) {
-		csdata.currentPh = currentPh;
-	}
 
-	void setCurrentPm(Puckmaterial currentPm) {
-		csdata.currentPm = currentPm;
-	}
 
 	int getSequenceOk() const {
 		return csdata.sequenceOK;
 	}
+
+	void setCurrentPt(PuckType currentPt) {
+			csdata.currentPt = currentPt;
+		}
+
 
 	virtual ~ContextSorting(){};
 
@@ -49,7 +48,7 @@ private:
 
 	struct StateStart: public Sorting {
 		virtual void transact() {
-			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal1;
 			} else {
@@ -60,7 +59,7 @@ private:
 
 	struct DrillHoleUpSideWoMetal1: public Sorting {
 		virtual void transact() {
-			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal2;
 			} else {
@@ -71,7 +70,7 @@ private:
 
 	struct DrillHoleUpSideWoMetal2: public Sorting {
 		virtual void transact() {
-			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == METAL) {
+			if (data->currentPt == DRILL_HOLE_UPSIDE_METAL) {
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideMetal;
 			} else {
@@ -82,7 +81,7 @@ private:
 
 	struct DrillHoleUpSideMetal: public Sorting {
 		virtual void transact() {
-			if (data->currentPh == DRILL_HOLE_UPSIDE && data->currentPm == PLASTIC) {
+			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal1;
 			} else {
