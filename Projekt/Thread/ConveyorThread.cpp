@@ -19,7 +19,7 @@ void ConveyorThread::execute(void*) {
 
 
    hw->getMotor()->stop();
-   hw->getTL()->turnGreenOn();
+   hw->getTL()->turnRedOn();
 
 }
 

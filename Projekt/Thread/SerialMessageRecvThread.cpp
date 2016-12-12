@@ -66,8 +66,6 @@ void SerialMessageRecvThread::execute(void*) {
 				}
 
 				usleep(20000);
-				//@Todo slepp rausschmeißen
-				sleep(5);
 				hb.getHardware()->getSerial()->sendPacket(
 						(void *) message->getMessage(),
 						sizeof(struct info_package));
