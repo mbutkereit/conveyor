@@ -159,7 +159,7 @@ public:
 
 	/**
 	*
-	*return: gibt true zurÃ¼ck wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
+	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	*/
 	bool isContextimEnzustand(){return contextdata.cc3.isContextimEnzustand();}
 

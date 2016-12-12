@@ -8,7 +8,6 @@
 #ifndef CONTEXTTOPFSM1_H_
 #define CONTEXTTOPFSM1_H_
 
-
 #include <iostream>
 #include <ContextConveyor2.h>
 #include "Logger/Logger.h"
@@ -16,15 +15,20 @@
 #include <vector>
 #include <Puck.h>
 #include "ContextMotor.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) : cc2(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
+	TOPData(int puckID, std::vector<Puck>* puckVector) :
+			cc2(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor2 cc2;
 	ContextMotor *cm;
 	HalBuilder hb;
+	InfoMessage im;
 };
 
 /**
@@ -97,28 +101,28 @@ private:
 		}
 
 		void signalLBSwitchInterrupted() {
-            data->cc2.signalLBSwitchInterrupted();
-            if (0){   //TODO BOTH SKIDS FULL AND ERRORMESSAGE
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->hb.getHardware()->getTL()->turnRedOn();
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                new (this) BothSkidsFull;
-            }
-            else{
-                data->cc2.sensorMeasurementCompleted();
-                if(data->cc2.skidOfConveyor2Full()){
-                    new (this) SkidOfConveyor2Full;
-                }
-            }
+			data->cc2.signalLBSwitchInterrupted();
+			if (data->im.istBand1RutscheVoll()
+					&& data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
+				data->hb.getHardware()->getTL()->turnGreenOff();
+				data->hb.getHardware()->getTL()->turnRedOn();
+				data->cm->setSpeed(MOTOR_STOP);
+				data->cm->transact();
+				new (this) BothSkidsFull;
+			} else {
+				data->cc2.sensorMeasurementCompleted();
+				if (data->cc2.skidOfConveyor2Full()) {
+					new (this) SkidOfConveyor2Full;
+				}
+			}
 		}
-		void signalLBSwitchNotInterrupted() {//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
+		void signalLBSwitchNotInterrupted() { //ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
 			data->cc2.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
-		    data->cm->setSpeed(MOTOR_STOP);
-		    data->cm->transact();
-		    new (this) E_Stopp;
+			data->cm->setSpeed(MOTOR_STOP);
+			data->cm->transact();
+			new (this) E_Stopp;
 		}
 
 		void signalStart() {
@@ -145,43 +149,48 @@ private:
 		}
 	};
 
-    struct E_Stopp: public TOPFSM{
-        void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
-        	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
-            //TODO UNLOCK CHECK FOR OTHER CONVEYOR
-        	data->cm->resetSpeed(MOTOR_STOP);
-        	data->cm->transact();
-        	new (this) MainState;
-        }
-    };
+	struct E_Stopp: public TOPFSM {
+		void signalReset() {   //TODO ALL CONVEYOR UNLOCK MISSING
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+			}
+			//TODO UNLOCK CHECK FOR OTHER CONVEYOR
+			data->cm->resetSpeed(MOTOR_STOP);
+			if (data->im.wurdeUeberallQuitiert()) {
+				data->cm->transact();
+				new (this) MainState;
+			}
+			else{
+				new (this) E_Stopp;
+			}
+		}
+	};
 
-    struct BothSkidsFull: public TOPFSM{
-        void signalReset(){
-            data->hb.getHardware()->getTL()->turnRedOff();
-            data->hb.getHardware()->getTL()->turnGreenOn();
-            data->cm->resetSpeed(MOTOR_STOP);
-            data->cm->transact();
-            data->cc2.sensorMeasurementCompleted();
-            if(data->cc2.skidOfConveyor2Full()){
-                new (this) SkidOfConveyor2Full;
-            }else{
-                new (this) MainState;
-            }
-        }
-    };
+	struct BothSkidsFull: public TOPFSM {
+		void signalReset() {
+			data->hb.getHardware()->getTL()->turnRedOff();
+			data->hb.getHardware()->getTL()->turnGreenOn();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+			data->cc2.sensorMeasurementCompleted();
+			if (data->cc2.skidOfConveyor2Full()) {
+				new (this) SkidOfConveyor2Full;
+			} else {
+				new (this) MainState;
+			}
+		}
+	};
 
+	struct SkidOfConveyor2Full: public TOPFSM {
+		virtual void signalReset() {
+			data->hb.getHardware()->getTL()->turnYellowOff();
+			data->hb.getHardware()->getTL()->turnGreenOn();
+			data->cc2.skidOfConveyor2Cleared();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+		}
+	};
 
-    struct SkidOfConveyor2Full: public TOPFSM{
-        virtual void signalReset(){
-            data->hb.getHardware()->getTL()->turnYellowOff();
-            data->hb.getHardware()->getTL()->turnGreenOn();
-            data->cc2.skidOfConveyor2Cleared();
-            data->cm->resetSpeed(MOTOR_STOP);
-            data->cm->transact();
-        }
-    };
-
-	MainState stateMember;   //The memory for the state is part of context object
+	MainState stateMember;  //The memory for the state is part of context object
 	TOPData contextdata;  //Data is also kept inside the context object
 
 public:
@@ -197,10 +206,12 @@ public:
 	virtual ~ContextTopFSM2();
 
 	/**
-	*
-	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
-	*/
-	bool isContextimEnzustand(){return contextdata.cc2.isContextimEnzustand();}
+	 *
+	 *return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
+	 */
+	bool isContextimEnzustand() {
+		return contextdata.cc2.isContextimEnzustand();
+	}
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.

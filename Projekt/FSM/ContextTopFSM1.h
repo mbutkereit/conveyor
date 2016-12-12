@@ -8,7 +8,6 @@
 #ifndef CONTEXTTOPFSM1_H_
 #define CONTEXTTOPFSM1_H_
 
-
 #include <iostream>
 #include <ContextConveyor1.h>
 #include "Logger/Logger.h"
@@ -16,15 +15,20 @@
 #include <vector>
 #include <Puck.h>
 #include "ContextMotor.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/InfoMessage.h"
+#include "Serializer/WorkpieceMessage.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) : cc1(puckID, puckVector), cm(ContextMotor::getInstance()), hb() {
+	TOPData(int puckID, std::vector<Puck>* puckVector) :
+			cc1(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor1 cc1;
 	ContextMotor *cm;
 	HalBuilder hb;
+	InfoMessage im;
 };
 
 /**
@@ -77,93 +81,101 @@ private:
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct MainState: public TOPFSM {
-	    virtual void signalLBBeginInterrupted() {
+		virtual void signalLBBeginInterrupted() {
 			data->cc1.signalLBBeginInterrupted();
 		}
-	    virtual void signalLBBeginNotInterrupted() {
+		virtual void signalLBBeginNotInterrupted() {
 			data->cc1.signalLBBeginNotInterrupted();
 		}
-	    virtual void signalLBEndInterrupted() {
+		virtual void signalLBEndInterrupted() {
 			data->cc1.signalLBEndInterrupted();
 		}
-	    virtual void signalLBEndNotInterrupted() {
+		virtual void signalLBEndNotInterrupted() {
 			data->cc1.signalLBEndNotInterrupted();
 		}
-	    virtual void signalLBAltimetryInterrupted() {
+		virtual void signalLBAltimetryInterrupted() {
 			data->cc1.signalLBAltimetryInterrupted();
 		}
-	    virtual void signalLBAltimetryNotInterrupted() {
+		virtual void signalLBAltimetryNotInterrupted() {
 			data->cc1.signalLBAltimetryNotInterrupted();
 		}
 
-	    virtual void signalLBSwitchInterrupted() {
-	        data->cc1.signalLBSwitchInterrupted();
-            if (0){   //TODO BOTH SKIDS FULL AND ERRORMESSAGE
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->hb.getHardware()->getTL()->turnRedOn();
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                new (this) BothSkidsFull;
-            }
-            else{
-                data->cc1.sensorMeasurementCompleted();
-            }
+		virtual void signalLBSwitchInterrupted() {
+			data->cc1.signalLBSwitchInterrupted();
+			if (data->im.istBand1RutscheVoll() && data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
+
+				data->hb.getHardware()->getTL()->turnGreenOff();
+				data->hb.getHardware()->getTL()->turnRedOn();
+				data->cm->setSpeed(MOTOR_STOP);
+				data->cm->transact();
+				new (this) BothSkidsFull;
+			} else {
+				data->cc1.sensorMeasurementCompleted();
+			}
 		}
-	    virtual void signalLBSwitchNotInterrupted() {//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
+		virtual void signalLBSwitchNotInterrupted() { //ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
 			data->cc1.signalLBSwitchNotInterrupted();
 		}
-	    virtual void signalEStop() {
-		    data->cm->setSpeed(MOTOR_STOP);
-		    data->cm->transact();
-		    new (this) E_Stopp;
+		virtual void signalEStop() {
+			data->cm->setSpeed(MOTOR_STOP);
+			data->cm->transact();
+			new (this) E_Stopp;
 		}
 
-	    virtual void signalStart() {
+		virtual void signalStart() {
 		}
 
-	    virtual void signalStop() {
+		virtual void signalStop() {
 			data->cc1.signalStop();
 		}
 
-	    virtual void signalReset() {
+		virtual void signalReset() {
 			data->cc1.signalReset();
 		}
 
-	    virtual void signalLBSkidInterrupted() {
+		virtual void signalLBSkidInterrupted() {
 			data->cc1.signalLBSkidInterrupted();
 		}
-	    virtual void signalLBSkidNotInterrupted() {
+		virtual void signalLBSkidNotInterrupted() {
 			data->cc1.signalLBSkidNotInterrupted();
 		}
-	    virtual void signalAltimetryCompleted() {
+		virtual void signalAltimetryCompleted() {
 		}
-	    virtual void signalLBNextConveyor() {
+		virtual void signalLBNextConveyor() {
 			data->cc1.signalLBNextConveyor();
 		}
 	};
 
-    struct E_Stopp: public TOPFSM{
-	    virtual void signalReset(){//TODO ALL CONVEYOR UNLOCK MISSING
-        	while(data->hb.getHardware()->getHMI()->isButtonEStopPressed()){}
-        	//TODO UNLOCK CHECK FOR OTHER CONVEYOR
-        	data->cm->resetSpeed(MOTOR_STOP);
-        	data->cm->transact();
-        	new (this) MainState;
-        }
-    };
+	struct E_Stopp: public TOPFSM {
+		virtual void signalReset() {   //TODO ALL CONVEYOR UNLOCK MISSING
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+			}
+			//TODO UNLOCK CHECK FOR OTHER CONVEYOR
+			if (data->im.wurdeUeberallQuitiert()) {
+				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->transact();
+				new (this) MainState;
+			}
 
-    struct BothSkidsFull: public TOPFSM{
-        void signalReset(){
-            data->hb.getHardware()->getTL()->turnRedOff();
-            data->hb.getHardware()->getTL()->turnGreenOn();
-            data->cm->resetSpeed(MOTOR_STOP);
-            data->cm->transact();
-            data->cc1.sensorMeasurementCompleted();
-            new (this) MainState;
-        }
-    };
+			else {
+				new (this) E_Stopp;
+			}
 
-	MainState stateMember;   //The memory for the state is part of context object
+		}
+	};
+
+	struct BothSkidsFull: public TOPFSM {
+		void signalReset() {
+			data->hb.getHardware()->getTL()->turnRedOff();
+			data->hb.getHardware()->getTL()->turnGreenOn();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+			data->cc1.sensorMeasurementCompleted();
+			new (this) MainState;
+		}
+	};
+
+	MainState stateMember;  //The memory for the state is part of context object
 	TOPData contextdata;  //Data is also kept inside the context object
 
 public:
@@ -179,10 +191,12 @@ public:
 	virtual ~ContextTopFSM1();
 
 	/**
-	*
-	*return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
-	*/
-	bool isContextimEnzustand(){return contextdata.cc1.isContextimEnzustand();}
+	 *
+	 *return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
+	 */
+	bool isContextimEnzustand() {
+		return contextdata.cc1.isContextimEnzustand();
+	}
 
 	/**
 	 * @todo Ausstehende implementierung Dokumentieren.
