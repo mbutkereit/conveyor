@@ -19,11 +19,12 @@
 #include "Serializer/Serializer.h"
 #include "Serializer/InfoMessage.h"
 #include "Serializer/WorkpieceMessage.h"
+#include "ContextI.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
-struct Data {
-	Data(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
+struct Data2 {
+	Data2(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
@@ -97,7 +98,7 @@ private:
 		virtual void signalTimeout() {
 		}
 
-		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
+		Data2* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct TransportToEntry: public PuckOnConveyor2 {
@@ -278,7 +279,7 @@ private:
 	};
 
 	TransportToEntry stateMember; //The memory for the state is part of context object
-	Data contextdata;  //Data is also kept inside the context object
+	Data2 contextdata;  //Data is also kept inside the context object
 
 public:
 

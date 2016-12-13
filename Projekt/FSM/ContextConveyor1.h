@@ -26,6 +26,7 @@
 #include "Serializer/WorkpieceMessage.h"
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
+#include "ContextI.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 

@@ -5,8 +5,8 @@
  *      Author: abs949
  */
 
-#ifndef CONTEXTTOPFSM1_H_
-#define CONTEXTTOPFSM1_H_
+#ifndef CONTEXTTOPFSM3_H_
+#define CONTEXTTOPFSM3_H_
 
 #include <iostream>
 #include <ContextConveyor3.h>
@@ -21,8 +21,8 @@
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
-struct TOPData {
-	TOPData(int puckID, std::vector<Puck>* puckVector) :
+struct TOPData3 {
+	TOPData3(int puckID, std::vector<Puck>* puckVector) :
 			cc3(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
 	}
 	ContextConveyor3 cc3;
@@ -40,7 +40,7 @@ struct TOPData {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class ContextTopFSM3 {
+class ContextTopFSM3: public  ContextI  {
 private:
 	struct TOPFSM { //top-level state
 		virtual void signalLBBeginInterrupted() {
@@ -77,7 +77,7 @@ private:
 		virtual void signalLBNextConveyor() {
 		}
 
-		TOPData* data; // pointer to data, which physically resides inside the context class (contextdata)
+		TOPData3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct MainState: public TOPFSM {
@@ -154,7 +154,7 @@ private:
 	};
 
 	MainState stateMember;  //The memory for the state is part of context object
-	TOPData contextdata;  //Data is also kept inside the context object
+	TOPData3 contextdata;  //Data is also kept inside the context object
 
 public:
 

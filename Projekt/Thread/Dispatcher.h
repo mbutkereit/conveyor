@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "SignalHandlerThread.h"
-//#include "FSM/Context.h"
+#include "ContextI.h"
 
 // Events in the System. Each EVENT needs a corresponding Method in class Context
 enum EVENTS { LBBEGININTERRUPTED, LBBEGINNOTINTERRUPTED, LBENDINTERRUPTED,LBENDNOTINTERRUPTED,
@@ -22,7 +22,7 @@ enum EVENTS { LBBEGININTERRUPTED, LBBEGINNOTINTERRUPTED, LBENDINTERRUPTED,LBENDN
 
 
 // typedef: Method from Class "Transitions"
-typedef void (Context::*method_t)(void);
+typedef void (ContextI::*method_t)(void);
 
 class Dispatcher {
 public:
@@ -48,18 +48,18 @@ public:
 	 * @param listener die State Maschine
 	 * @param event das Event
 	 */
-	virtual void remListeners(Context *listener, EVENTS event);
+	virtual void remListeners(ContextI *listener, EVENTS event);
 
 	/**
 	 * Add Listener to be called on a specific Event
 	 *  @param listener die State Maschine
 	 * @param event das Event
 	 */
-	virtual void addListener(Context *listener, EVENTS event);
+	virtual void addListener(ContextI *listener, EVENTS event);
 
 private:
 	method_t methods[NEVENTS];
-	std::vector<Context *> listeners_[NEVENTS];
+	std::vector<ContextI *> listeners_[NEVENTS];
 
 	Dispatcher(const Dispatcher &other);
 	Dispatcher &operator=(const Dispatcher &other);

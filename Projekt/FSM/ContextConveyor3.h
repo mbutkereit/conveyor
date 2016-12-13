@@ -21,9 +21,10 @@
 #include "Hal/HalBuilder.h"
 #include "Puck.h"
 #include <vector>
+#include "ContextI.h"
 
-struct Data {
-	Data(int puckID, std::vector<Puck>* puckVector) :
+struct Data3 {
+	Data3(int puckID, std::vector<Puck>* puckVector) :
 
 			cswitch(ContextSwitch::getInstance()), ct1(
 					ContextTimer::getInstance()), ct2(
@@ -65,7 +66,7 @@ struct Data {
 	std::vector<Puck>* puckVector;
 };
 
-class ContextConveyor3 {
+class ContextConveyor3   {
 public:
 	ContextConveyor3(int puckID, std::vector<Puck>* puckVector) :
 			statePtr(&stateMember), // assigning start state
@@ -113,7 +114,7 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
-		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
+		Data3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct ReceivingPucks: public State {
@@ -521,7 +522,7 @@ private:
 	 };*/
 
 	ReceivingPucks stateMember; //The memory for the state is part of context object
-	Data contextdata;  //Data is also kept inside the context object
+	Data3 contextdata;  //Data is also kept inside the context object
 
 public:
 	//ContextConveyor3() ;

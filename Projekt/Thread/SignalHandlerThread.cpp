@@ -1,5 +1,5 @@
 #include "Thread/SignalHandlerThread.h"
-//#include "Dispatcher.h"
+
 
 int coid = 0;
 int coid2 = 0;
@@ -25,9 +25,12 @@ SignalHandlerThread::~SignalHandlerThread() {
  */
 void SignalHandlerThread::execute(void*) {
 	struct _pulse pulse;
+	int globalerID_Zaehler=0;
+	std::vector<Puck> puckvector;
+	int skidcounter =0;
 	//TODO delete von Dispatcher fehlt noch
 	Dispatcher* disp = new Dispatcher();
-	std::vector<Context*> contextContainer;
+	std::vector<ContextI*> contextContainer;
 	InfoMessage* message = InfoMessage::getInfoMessage();
 
 	if (ThreadCtl(_NTO_TCTL_IO_PRIV, 0) == -1) {
@@ -59,16 +62,19 @@ void SignalHandlerThread::execute(void*) {
 			if (code & LIGHT_BARRIER_BEGIN_INTERRUPTED) {
 				//Hier die Namen für die Fsm einfügen
 #if defined BAND && BAND == 1
-				Context* context = new Context();
+				ContextI* context= new ContextTopFSM1(globalerID_Zaehler++, &puckvector, &skidcounter);
 #endif
 #if defined BAND && BAND == 2
-				Context* context = new Context();
+				ContextI* context = new ContextTopFSM2(globalerID_Zaehler++,&puckvector,&skidcounter);
 #endif
 #if defined BAND && BAND == 3
-				Context* context = new Context();
+
+				ContextI* context =  new ContextTopFSM3(globalerID_Zaehler++,&puckvector,&skidcounter);
 #endif
 
-				context->isContextimEnzustand();
+
+
+
 				//TODO extract Method
 				disp->addListener(context, LBBEGININTERRUPTED);
 				disp->addListener(context, LBBEGINNOTINTERRUPTED);
@@ -174,7 +180,7 @@ void SignalHandlerThread::execute(void*) {
 					delete contextpointer;
 #endif
 #if defined BAND && BAND == 2
-					Context *contextpointer = (Context*) contextContainer[i];
+					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
 					delete contextpointer;
 #endif

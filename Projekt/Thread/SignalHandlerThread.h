@@ -7,13 +7,20 @@
 #include "Logger/Logger.h"
 #include "src/lib/HWaccess.h"
 #include "src/lib/HAWThread.h"
-#include "FSM/Context.h"
+#include "FSM/ContextI.h"
 #include "FSM/ContextSorting.h"
 #include "FSM/ContextMotor.h"
 #include "Hal/ISR/InterruptHandler.h"
 #include "Dispatcher.h"
 #include "Thread/SerialMessageWatchdogThread.h"
 #include "Serializer/InfoMessage.h"
+
+
+#include "FSM/ContextTopFSM1.h"
+#include "FSM/ContextTopFSM2.h"
+#include "FSM/ContextTopFSM3.h"
+
+
 
 using namespace thread;
 

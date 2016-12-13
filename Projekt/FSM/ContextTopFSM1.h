@@ -40,7 +40,7 @@ struct TOPData {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class ContextTopFSM1 {
+class ContextTopFSM1 :public ContextI {
 private:
 	struct TOPFSM { //top-level state
 		virtual void signalLBBeginInterrupted() {
