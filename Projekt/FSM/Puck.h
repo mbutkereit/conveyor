@@ -58,6 +58,13 @@ public:
 		this->pucktype = pucktype;
 	}
 
+	void operator=(Puck puck){
+		this->ID =puck.ID;
+		this->heightReading_1 =puck.heightReading_1;
+		this->heightReading_2 = puck.heightReading_2;
+		this->pucktype =puck.pucktype;
+	}
+
 private:
 	int ID;
 	int heightReading_1;

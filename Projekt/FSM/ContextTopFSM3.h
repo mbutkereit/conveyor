@@ -109,7 +109,9 @@ private:
 		void signalEStop() {
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
-			data->im.setESTOP();
+			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+				data->im.setESTOP();
+			}
 			new (this) E_Stopp;
 		}
 

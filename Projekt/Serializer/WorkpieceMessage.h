@@ -12,6 +12,11 @@
 class WorkpieceMessage
 {
 public:
+
+    /**
+     * Konstruktor
+     */
+    WorkpieceMessage();
 	/**
 	 * Singleton
 	 *@return gibt die einzige Instanz, dieser Klasse zurück.
@@ -49,10 +54,6 @@ public:
     ~WorkpieceMessage();
 private:
 
-    /**
-     * Konstruktor
-     */
-    WorkpieceMessage();
 
    /*
     * Enthält die empfangenen Informationen, bis sie benötigt werden.
