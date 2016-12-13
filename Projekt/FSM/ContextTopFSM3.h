@@ -112,6 +112,8 @@ private:
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im.setESTOP();
 			}
+			cout<<"!!!!!!!!!!! E-STOPP WURDE GEDRÜCKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
 			new (this) E_Stopp;
 		}
 

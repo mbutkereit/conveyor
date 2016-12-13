@@ -184,6 +184,7 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -227,6 +228,7 @@ private:
 					if (data->hb.getHardware()->getMT()->isSkidFull()) {
 						new (this) SortOutThroughSkid;
 					} else {
+						data->hb.getHardware()->getTL()->turnGreenOff();
 						data->hb.getHardware()->getTL()->turnYellowOn();
 						data->cm->setSpeed(MOTOR_STOP);
 						data->cm->transact();
@@ -240,6 +242,7 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -293,12 +296,13 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
 	};
 
-	struct DeliverToConveyor3: public PuckOnConveyor2 {
+	struct DeliverToConveyor3: public PuckOnConveyor2 { //TODO: signalLBNextConveyorNotInterrupted
 		virtual void signalConveyor3isFree() {
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
@@ -417,6 +421,7 @@ public:
 	virtual void skidOfConveyor2Cleared();
 
 	void signalLBNextConveyor();
+
 };
 
 #endif /* CONTEXTCONVEYOR2_H_ */

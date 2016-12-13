@@ -156,6 +156,7 @@ public:
 		case MOTOR_SLOW:
 			cmdata.slowCounter++;
 			break;
+		case MOTOR_STOP:
 		default:
 			cmdata.stopCounter++;
 			break;
@@ -168,6 +169,7 @@ public:
 		case MOTOR_SLOW:
 			cmdata.slowCounter--;
 			break;
+		case MOTOR_STOP:
 		default:
 			cmdata.stopCounter--;
 			break;

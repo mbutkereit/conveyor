@@ -110,6 +110,7 @@ private:
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) BothSkidsFull;
 			} else {
 				data->cc1.sensorMeasurementCompleted();
@@ -124,6 +125,8 @@ private:
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im.setESTOP();
 			}
+			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRÜCKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
 			new (this) E_Stopp;
 		}
 

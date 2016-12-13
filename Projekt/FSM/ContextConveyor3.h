@@ -21,6 +21,7 @@
 #include "Hal/HalBuilder.h"
 #include "Puck.h"
 #include <vector>
+#include <iostream>
 #include "ContextI.h"
 #include "Serializer/InfoMessage.h"
 #include "Serializer/Serializer.h"
@@ -75,7 +76,7 @@ struct Data3 {
 	BlinkYellowThread blinkYellow;
 };
 
-class ContextConveyor3   {
+class ContextConveyor3 {
 public:
 	ContextConveyor3(int puckID, std::vector<Puck>* puckVector) :
 			statePtr(&stateMember), // assigning start state
@@ -170,9 +171,9 @@ private:
 			data->puck.setId(recieve.id);
 			data->puck.setHeightReading1(recieve.alimetry_value_one);
 			data->puck.setHeightReading2(recieve.alimetry_value_two);
-
+			//TODO: Timer Stopp
 			data->puckVector->push_back(data->puck);
-			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			new (this) Puck2Ready;
 		}
@@ -182,6 +183,7 @@ private:
 	struct Puck2Ready: public State {
 
 		virtual void signalLBBeginInterrupted() {
+			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			data->ct2->giveTime();
@@ -224,7 +226,7 @@ private:
 
 			data->puckVector->push_back(data->puck);
 
-			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			new (this) Puck3Ready;
 		}
@@ -233,6 +235,7 @@ private:
 
 	struct Puck3Ready: public State {
 		virtual void signalLBBeginInterrupted() {
+			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			data->ct3->giveTime();
@@ -275,6 +278,8 @@ private:
 			data->puck.setHeightReading2(recieve.alimetry_value_two);
 
 			data->puckVector->push_back(data->puck);
+			data->cm->resetSpeed(MOTOR_SLOW);
+			data->cm->setSpeed(MOTOR_FAST);
 
 			new (this) EndReceiving;
 		}
@@ -317,6 +322,7 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck2Ready;
@@ -341,8 +347,9 @@ private:
 			if (data->delta2 != DELTA_CT2_CTH2) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
-				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck3Ready;
@@ -368,8 +375,9 @@ private:
 			if (data->delta3 != DELTA_CT3_CTH3) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
-				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightEnd;
@@ -382,6 +390,7 @@ private:
 	struct HeightEnd: public State {
 		virtual void signalLBSwitchInterrupted() {
 			data->cswitch->setSwitchOpen();
+			//TODO: Timeout Weiche
 			new (this) TransportToSwitch;
 		}
 
@@ -421,8 +430,9 @@ private:
 			if (data->delta1 != DELTA_CTH1_CTE1) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
-				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck2Ready;
@@ -447,8 +457,9 @@ private:
 			if (data->delta2 != DELTA_CTH2_CTE2) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
-				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck3Ready;
@@ -473,8 +484,9 @@ private:
 			if (data->delta3 != DELTA_CTH3_CTE3) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
-				data->cm->resetSpeed(MOTOR_STOP);
+				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) PucksToConsole;
@@ -487,7 +499,7 @@ private:
 	struct PucksToConsole: public State {
 
 		virtual void signalLBEndNotInterrupted() {
-			//werkstückdaten in der Konsole ausgeben
+			//TODO:werkstückdaten in der Konsole ausgeben
 			data->finished = true;
 		}
 
@@ -495,20 +507,18 @@ private:
 
 	struct PuckAdded: public State {
 		virtual void SignalReset() {
+			data->cm->resetSpeed(MOTOR_STOP);
 			data->blinkRed.stop();
+			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
 
 	};
 
-	struct PuckLost: public State {
+	struct PuckLost: public State { //TODO: ErrorMessage ausgben!!!!!!!!!!!!!
 		virtual void SignalReset() {
-			// Band muss geräumt  werden, da wir am Ende 3er Pärchen brauchen, da darf keins fehlen
-			//data->cm->resetSpeed(MOTOR_STOP); Nach State Pattern so leider NICHT MÖGLICH!!!!
-
-			//data->hb.getHardware()->getTL()->turnYellowOff();
+			data->cm->resetSpeed(MOTOR_STOP);
 			//TODO Yellow blink ausschalten, wenn überall gesetzt wurde --> Fehlerzustand fehlt noch
-			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}

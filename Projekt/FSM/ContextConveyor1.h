@@ -151,6 +151,7 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -210,6 +211,7 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -263,6 +265,7 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 				new (this) PuckAdded;
 			}
 		}
