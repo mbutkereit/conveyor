@@ -23,7 +23,8 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct TOPData {
 	TOPData(int puckID, std::vector<Puck>* puckVector, int *skidcounter) :
-			cc1(puckID, puckVector, skidcounter), cm(ContextMotor::getInstance()), hb(), im() {
+			cc1(puckID, puckVector, skidcounter), cm(
+					ContextMotor::getInstance()), hb(), im(){
 	}
 	ContextConveyor1 cc1;
 	ContextMotor *cm;
@@ -120,7 +121,9 @@ private:
 		virtual void signalEStop() {
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
-			data->im.setESTOP();
+			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+				data->im.setESTOP();
+			}
 			new (this) E_Stopp;
 		}
 

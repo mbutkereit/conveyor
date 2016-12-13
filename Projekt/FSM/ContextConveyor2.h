@@ -19,6 +19,10 @@
 #include "Serializer/Serializer.h"
 #include "Serializer/InfoMessage.h"
 #include "Serializer/WorkpieceMessage.h"
+#include "Thread/BlinkRedThread.h"
+#include "Thread/BlinkYellowThread.h"
+
+
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
@@ -28,7 +32,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), skidOfConveyor2Full(
-					false), im(), sc2(skidcounter2) {
+					false), im(), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -42,6 +46,10 @@ struct Data {
 	bool skidOfConveyor2Full;
 	InfoMessage im;
 	int *sc2;
+	BlinkRedThread blinkRed;
+	BlinkYellowThread blinkYellow;
+	WorkpieceMessage wpm;
+
 };
 
 /**
@@ -107,6 +115,7 @@ private:
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
+
 			new (this) MotorOn;
 		}
 	};
@@ -114,8 +123,41 @@ private:
 	struct MotorOn: public PuckOnConveyor2 {
 		//LEAVE
 		virtual void signalLBBeginNotInterrupted() {
+
+			struct workpiece_package_without_ch recieve =
+					data->wpm.getWorkpieceInfo();
+
+			switch (recieve.workpiece_type) {
+			case 0:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				break;
+
+			case 1:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				break;
+
+			case 2:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				break;
+
+			case 3:
+				data->puck.setPuckType(NO_DRILL_HOLE);
+				break;
+
+			case 4:
+			default:
+				data->puck.setPuckType(TYPE404PT);
+				break;
+
+			}
+			data->puck.setId(recieve.id);
+			data->puck.setHeightReading1(recieve.alimetry_value_one);
+			data->puck.setHeightReading2(recieve.alimetry_value_two);
+
 			data->puckVector->push_back(data->puck);
+
 			data->posInVector = data->puckVector->size() - 1;
+
 			//TODO t0 = GIVE TIME, START TIMER(t0)!
 			new (this) TransportToHeightMeasurement;
 		}
@@ -136,7 +178,9 @@ private:
 				new (this) PuckInHeightMeasurement;
 			} else if (0) {   //TODO DELTA t0 AND tH TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkRed.start(NULL);
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -190,7 +234,9 @@ private:
 				}
 			} else if (0) {   //TODO DELTA tH AND tW TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkRed.start(NULL);
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -241,7 +287,9 @@ private:
 				new (this) DeliverToConveyor3;
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn(); //TODO ACTUALLY SHOULD BLINK!
+
+				data->blinkRed.start(NULL);
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -259,7 +307,40 @@ private:
 
 	struct TransportToConveyor3: public PuckOnConveyor2 {
 		virtual void signalLBNextConveyor() {
-			//TODO SEND PUCKINFORMATION
+			int drillHoleUpside = 0;
+			int drillHoleUpsideMetal = 1;
+			int drillHoleUpsidePlastic = 2;
+			int noDrillHole = 3;
+			int type404Pt = 4;
+			int sendPuckType;
+
+			switch (data->puck.getPuckType()) {
+			case DRILL_HOLE_UPSIDE:
+				sendPuckType = drillHoleUpside;
+				break;
+
+			case DRILL_HOLE_UPSIDE_METAL:
+				sendPuckType = drillHoleUpsideMetal;
+				break;
+
+			case DRILL_HOLE_UPSIDE_PLASTIC:
+				sendPuckType = drillHoleUpsidePlastic;
+				break;
+
+			case NO_DRILL_HOLE:
+				sendPuckType = noDrillHole;
+				break;
+
+			case TYPE404PT:
+			default:
+				sendPuckType = type404Pt;
+				break;
+
+			}
+			data->wpm.send(data->puck.getHeightReading1(),
+					data->puck.getHeightReading2(), sendPuckType,
+					data->puck.getId());
+
 			data->puckVector->erase(
 					data->puckVector->begin() + data->posInVector);
 			data->cm->setSpeed(MOTOR_STOP);
@@ -271,7 +352,7 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void signalReset() {
-			data->hb.getHardware()->getTL()->turnRedOff();
+			data->blinkRed.stop();
 			data->im.setBand2Frei();
 			data->finished = true;
 		}

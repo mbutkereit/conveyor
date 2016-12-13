@@ -35,7 +35,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), im(), sc(
-					skidcounter), blinkRed(), blinkYellow() {
+					skidcounter), blinkRed(), blinkYellow(), wpm() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -50,6 +50,8 @@ struct Data {
 	int *sc;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
+	WorkpieceMessage wpm;
+
 };
 
 /**
@@ -145,7 +147,6 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 
 				data->blinkRed.start(NULL);
-				// TODO Thread stoppen
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -204,8 +205,7 @@ private:
 			} else if (0) { //TODO DELTA tH AND tW TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
 
-				data->blinkYellow.start(NULL);
-				// TODO Thread stoppen
+				data->blinkRed.start(NULL);
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -259,7 +259,6 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 
 				data->blinkRed.start(NULL);
-				// TODO Thread stoppen
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -270,7 +269,43 @@ private:
 
 	struct TransportToConveyor2: public PuckOnConveyor1 {
 		virtual void signalLBNextConveyor() {
-			//TODO SEND PUCKINFORMATION
+			int drillHoleUpside = 0;
+			int drillHoleUpsideMetal = 1;
+			int drillHoleUpsidePlastic = 2;
+			int noDrillHole = 3;
+			int type404Pt = 4;
+			int sendPuckType;
+
+			switch (data->puck.getPuckType()) {
+			case DRILL_HOLE_UPSIDE:
+				sendPuckType = drillHoleUpside;
+				break;
+
+			case DRILL_HOLE_UPSIDE_METAL:
+
+				sendPuckType = drillHoleUpsideMetal;
+				break;
+
+			case DRILL_HOLE_UPSIDE_PLASTIC:
+
+				sendPuckType = drillHoleUpsidePlastic;
+				break;
+
+			case NO_DRILL_HOLE:
+
+				sendPuckType = noDrillHole;
+				break;
+
+			case TYPE404PT:
+			default:
+				sendPuckType = type404Pt;
+				break;
+
+			}
+			data->wpm.send(data->puck.getHeightReading1(),
+					data->puck.getHeightReading2(), sendPuckType,
+					data->puck.getId());
+
 			data->puckVector->erase(
 					data->puckVector->begin() + data->posInVector);
 			if (data->puckVector->size() > 0) {
@@ -285,7 +320,7 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor1 {
 		virtual void signalReset() {
-			data->hb.getHardware()->getTL()->turnRedOff();
+			data->blinkRed.stop();
 			data->finished = true;
 		}
 	};

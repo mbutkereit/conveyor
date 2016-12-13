@@ -21,6 +21,12 @@
 #include "Hal/HalBuilder.h"
 #include "Puck.h"
 #include <vector>
+#include "Serializer/InfoMessage.h"
+#include "Serializer/Serializer.h"
+#include "Serializer/WorkpieceMessage.h"
+#include "Thread/BlinkRedThread.h"
+#include "Thread/BlinkYellowThread.h"
+
 
 struct Data {
 	Data(int puckID, std::vector<Puck>* puckVector) :
@@ -37,7 +43,7 @@ struct Data {
 					ContextTimer::getInstance()), hb(), cm(
 					ContextMotor::getInstance()), puck(-1), currState(0), id(0), height(
 					-1), delta1(0), delta2(0), delta3(0), counterHeightFail(0), counterEndFail(
-					0), finished(false), puckVector(puckVector) {
+					0), finished(false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow() {
 	}
 
 	ContextSwitch* cswitch;
@@ -63,6 +69,10 @@ struct Data {
 	int counterEndFail;
 	bool finished;
 	std::vector<Puck>* puckVector;
+	WorkpieceMessage wpm;
+	InfoMessage im;
+	BlinkRedThread blinkRed;
+	BlinkYellowThread blinkYellow;
 };
 
 class ContextConveyor3 {
@@ -118,7 +128,6 @@ private:
 
 	struct ReceivingPucks: public State {
 		virtual void signalLBBeginInterrupted() {
-			data->currState++;
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
@@ -131,7 +140,37 @@ private:
 
 	struct Puck1Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
-			data->currState++;
+
+			struct workpiece_package_without_ch recieve =
+					data->wpm.getWorkpieceInfo();
+
+			switch (recieve.workpiece_type) {
+			case 0:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				break;
+
+			case 1:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				break;
+
+			case 2:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				break;
+
+			case 3:
+				data->puck.setPuckType(NO_DRILL_HOLE);
+				break;
+
+			case 4:
+			default:
+				data->puck.setPuckType(TYPE404PT);
+				break;
+
+			}
+			data->puck.setId(recieve.id);
+			data->puck.setHeightReading1(recieve.alimetry_value_one);
+			data->puck.setHeightReading2(recieve.alimetry_value_two);
+
 			data->puckVector->push_back(data->puck);
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
@@ -143,7 +182,6 @@ private:
 	struct Puck2Ready: public State {
 
 		virtual void signalLBBeginInterrupted() {
-			data->currState++;
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			data->ct2->giveTime();
@@ -154,7 +192,36 @@ private:
 
 	struct Puck2Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
-			data->currState++;
+			struct workpiece_package_without_ch recieve =
+					data->wpm.getWorkpieceInfo();
+
+			switch (recieve.workpiece_type) {
+			case 0:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				break;
+
+			case 1:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				break;
+
+			case 2:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				break;
+
+			case 3:
+				data->puck.setPuckType(NO_DRILL_HOLE);
+				break;
+
+			case 4:
+			default:
+				data->puck.setPuckType(TYPE404PT);
+				break;
+
+			}
+			data->puck.setId(recieve.id);
+			data->puck.setHeightReading1(recieve.alimetry_value_one);
+			data->puck.setHeightReading2(recieve.alimetry_value_two);
+
 			data->puckVector->push_back(data->puck);
 
 			data->cm->resetSpeed(MOTOR_STOP);
@@ -166,8 +233,6 @@ private:
 
 	struct Puck3Ready: public State {
 		virtual void signalLBBeginInterrupted() {
-			data->currState++;
-			data->currState = 4;
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			data->ct3->giveTime();
@@ -178,8 +243,39 @@ private:
 
 	struct Puck3Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
+
+			struct workpiece_package_without_ch recieve =
+					data->wpm.getWorkpieceInfo();
+
+			switch (recieve.workpiece_type) {
+			case 0:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				break;
+
+			case 1:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				break;
+
+			case 2:
+				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				break;
+
+			case 3:
+				data->puck.setPuckType(NO_DRILL_HOLE);
+				break;
+
+			case 4:
+			default:
+				data->puck.setPuckType(TYPE404PT);
+				break;
+
+			}
+			data->puck.setId(recieve.id);
+			data->puck.setHeightReading1(recieve.alimetry_value_one);
+			data->puck.setHeightReading2(recieve.alimetry_value_two);
+
 			data->puckVector->push_back(data->puck);
-			data->currState++;
+
 			new (this) EndReceiving;
 		}
 
@@ -187,7 +283,6 @@ private:
 
 	struct EndReceiving: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
-			data->currState++;
 			new (this) HeightFailBegin;
 		}
 
@@ -195,7 +290,6 @@ private:
 
 	struct HeightFailBegin: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
-			data->currState++;
 			switch (data->counterHeightFail) {
 			case 0:
 				data->cth1->giveTime();
@@ -216,12 +310,11 @@ private:
 
 	struct HeightPuck1Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
-			data->currState++;
 			data->counterHeightFail = 1;
 			data->delta1 = data->cth1 - data->ct1;
 			if (data->delta1 != DELTA_CT1_CTH1) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -235,7 +328,6 @@ private:
 
 	struct HeightPuck2Ready: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
-			data->currState++;
 			data->cth2->giveTime();
 			new (this) HeightPuck2Recognized;
 		}
@@ -244,12 +336,11 @@ private:
 
 	struct HeightPuck2Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
-			data->currState++;
 			data->counterHeightFail = 2;
 			data->delta2 = data->cth2 - data->ct2;
 			if (data->delta2 != DELTA_CT2_CTH2) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -264,7 +355,6 @@ private:
 	struct HeightPuck3Ready: public State {
 
 		virtual void ssignalLBAltimetryInterrupted() {
-			data->currState++;
 			data->cth3->giveTime();
 			new (this) HeightPuck3Recognized;
 		}
@@ -273,12 +363,11 @@ private:
 
 	struct HeightPuck3Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
-			data->currState++;
 			data->counterHeightFail = 0;
 			data->delta3 = data->cth3 - data->ct3;
 			if (data->delta3 != DELTA_CT3_CTH3) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -292,7 +381,6 @@ private:
 
 	struct HeightEnd: public State {
 		virtual void signalLBSwitchInterrupted() {
-			data->currState++;
 			data->cswitch->setSwitchOpen();
 			new (this) TransportToSwitch;
 		}
@@ -301,7 +389,6 @@ private:
 
 	struct TransportToSwitch: public State {
 		virtual void signalLBEndInterrupted() {
-			data->currState++;
 			new (this) EndFailBegin;
 
 		}
@@ -310,7 +397,6 @@ private:
 
 	struct EndFailBegin: public State {
 		virtual void signalLBEndInterrupted() {
-			data->currState++;
 			switch (data->counterEndFail) {
 			case 0:
 				data->cte1->giveTime();
@@ -330,12 +416,11 @@ private:
 
 	struct EndPuck1Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
-			data->currState++;
 			data->counterEndFail = 1;
 			data->delta1 = data->cte1 - data->cth1;
 			if (data->delta1 != DELTA_CTH1_CTE1) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -349,7 +434,6 @@ private:
 
 	struct EndPuck2Ready: public State {
 		virtual void signalLBEndInterrupted() {
-			data->currState++;
 			data->cte2->giveTime();
 			new (this) EndPuck2Recognized;
 		}
@@ -358,12 +442,11 @@ private:
 
 	struct EndPuck2Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
-			data->currState++;
 			data->counterEndFail = 2;
 			data->delta2 = data->cte2 - data->cth2;
 			if (data->delta2 != DELTA_CTH2_CTE2) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -377,7 +460,6 @@ private:
 
 	struct EndPuck3Ready: public State {
 		virtual void signalLBEndInterrupted() {
-			data->currState++;
 			data->cte3->giveTime();
 			new (this) HeightPuck3Recognized;
 		}
@@ -386,12 +468,11 @@ private:
 
 	struct EndPuck3Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
-			data->currState++;
 			data->counterEndFail = 0;
 			data->delta3 = data->cte3 - data->cth3;
 			if (data->delta3 != DELTA_CTH3_CTE3) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
-				data->hb.getHardware()->getTL()->turnRedOn();
+				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) PuckAdded;
@@ -406,7 +487,6 @@ private:
 	struct PucksToConsole: public State {
 
 		virtual void signalLBEndNotInterrupted() {
-			data->currState++;
 			//werkstückdaten in der Konsole ausgeben
 			data->finished = true;
 		}
@@ -415,7 +495,7 @@ private:
 
 	struct PuckAdded: public State {
 		virtual void SignalReset() {
-			data->hb.getHardware()->getTL()->turnRedOff();
+			data->blinkRed.stop();
 			new (this) EndOfTheEnd;
 		}
 
@@ -425,7 +505,9 @@ private:
 		virtual void SignalReset() {
 			// Band muss geräumt  werden, da wir am Ende 3er Pärchen brauchen, da darf keins fehlen
 			//data->cm->resetSpeed(MOTOR_STOP); Nach State Pattern so leider NICHT MÖGLICH!!!!
-			data->hb.getHardware()->getTL()->turnYellowOff();
+
+			//data->hb.getHardware()->getTL()->turnYellowOff();
+			//TODO Yellow blink ausschalten, wenn überall gesetzt wurde --> Fehlerzustand fehlt noch
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->finished = true;
 			new (this) EndOfTheEnd;
@@ -437,94 +519,10 @@ private:
 
 	};
 
-	/*struct Estop: public State {
-	 virtual void signalReset() {
-
-	 while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-	 }
-	 data->cm->resetSpeed(MOTOR_STOP);
-	 data->cm->transact();
-	 //TODO UNLOCK CHECK FOR OTHER CONVEYOR
-	 //alle Förderbänder quitiert   22
-	 switch (data->currState) {
-	 case 1:
-	 new (this) ReceivingPucks;
-	 break;
-
-	 case 2:
-	 new (this) Puck1Recognized;
-	 break;
-	 case 3:
-	 new (this) Puck2Ready;
-	 break;
-	 case 4:
-	 new (this) Puck2Recognized;
-	 break;
-	 case 5:
-	 new (this) Puck3Ready;
-	 break;
-	 case 6:
-	 new (this) Puck3Recognized;
-	 break;
-	 case 7:
-	 new (this) EndReceiving;
-	 break;
-	 case 8:
-	 new (this) HeightfailBegin;
-	 break;
-	 case 9:
-	 new (this) HeightPuck1Recognized;
-	 break;
-	 case 10:
-	 new (this) HeightPuck2Ready;
-	 break;
-	 case 11:
-	 new (this) HeightPuck2Recognized;
-	 break;
-	 case 12:
-	 new (this) HeightPuck3Ready;
-	 break;
-	 case 13:
-	 new (this) HeightPuck3Recognized;
-	 break;
-	 case 14:
-	 new (this) HeightEnd;
-	 break;
-	 case 15:
-	 new (this) TransportToSwitch;
-	 break;
-	 case 16:
-	 new (this) EndFailBegin;
-	 break;
-	 case 17:
-	 new (this) EndPuck1Recognized;
-	 break;
-	 case 18:
-	 new (this) EndPuck2Ready;
-	 break;
-	 case 19:
-	 new (this) EndPuck2Recognized;
-	 break;
-	 case 20:
-	 new (this) EndPuck3Ready;
-	 break;
-	 case 21:
-	 new (this) EndPuck3Recognized;
-	 break;
-	 case 22:
-	 new (this) PucksToConsole;
-	 break;
-
-	 }
-	 }
-
-	 };*/
-
 	ReceivingPucks stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
 
 public:
-	//ContextConveyor3() ;
 
 	void deltaToLow() {
 
