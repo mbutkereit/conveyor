@@ -28,6 +28,7 @@
 #include "Thread/BlinkYellowThread.h"
 #include "ContextI.h"
 
+
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data {
@@ -112,6 +113,8 @@ private:
 	struct TransportToEntry: public PuckOnConveyor1 {
 		//TRANSACTION/LEAVE
 		void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: TransportToEntry \n";
+
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
@@ -122,6 +125,7 @@ private:
 	struct MotorOn: public PuckOnConveyor1 {
 		//LEAVE
 		void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: MotorOn\n";
 			//TODO t0 = GIVE TIME, START TIMER(t0)!
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
@@ -131,6 +135,7 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
 		virtual void signalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			if (1) {   //TODO DELTA t0 and tH OK
@@ -151,7 +156,8 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -159,6 +165,7 @@ private:
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor1 {
 		virtual void signalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: PuckInHeightMeasurement \n";
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			new (this) TransportToSwitch;
@@ -167,6 +174,7 @@ private:
 
 	struct TransportToSwitch: public PuckOnConveyor1 {
 		virtual void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: TransportToSwitch \n";
 			//TODO STOP TIMER tH, GIVE TIME tW, START TIMER tW, DELTA th AND tW CALCULATION
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
@@ -183,7 +191,7 @@ private:
 
 	struct Sorting: public PuckOnConveyor1 {
 		virtual void sensorMeasurementCompleted() {
-
+			LOG_DEBUG <<"State: Sorting \n";
 			if (1) { //TODO DELTA tH and tW OK
 
 				data->cs->setCurrentPt(data->puck.getPuckType());
@@ -211,7 +219,8 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -219,6 +228,7 @@ private:
 
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
 		virtual void signalLBSkidInterrupted() {
+			LOG_DEBUG <<"State: SortOutThroughSkid \n";
 			int temp = *data->sc;
 			temp++;
 			*data->sc = temp;
@@ -239,6 +249,7 @@ private:
 
 	struct Conveyor1Empty: public PuckOnConveyor1 {
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: Conveyor1Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->finished = true;
@@ -247,6 +258,7 @@ private:
 
 	struct TransportToDelivery: public PuckOnConveyor1 {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: TransportToDelivery \n";
 			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
@@ -265,7 +277,8 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -273,6 +286,7 @@ private:
 
 	struct TransportToConveyor2: public PuckOnConveyor1 {
 		virtual void signalLBNextConveyor() {
+			LOG_DEBUG <<"State: TransportToConveyor2 \n";
 			int drillHoleUpside = 0;
 			int drillHoleUpsideMetal = 1;
 			int drillHoleUpsidePlastic = 2;
@@ -324,6 +338,7 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor1 {
 		virtual void signalReset() {
+			LOG_DEBUG <<"State: PuckAdded \n";
 			data->blinkRed.stop();
 			data->finished = true;
 		}

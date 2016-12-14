@@ -82,67 +82,85 @@ private:
 
 	struct MainState: public TOPFSM {
 		void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBBeginInterrupted();
 		}
 		void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBBeginNotInterrupted();
 		}
 		void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBEndInterrupted();
 		}
 		void signalLBEndNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBEndNotInterrupted();
 		}
 		void signalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBAltimetryInterrupted();
 		}
 		void signalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBAltimetryNotInterrupted();
 		}
 
 		void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSwitchInterrupted();
 		}
 		void signalLBSwitchNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im.setESTOP();
 			}
+			LOG_DEBUG <<"E-STOPP WURDE GEDRÜCKT \n";
 			cout<<"!!!!!!!!!!! E-STOPP WURDE GEDRÜCKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
 			new (this) E_Stopp;
 		}
 
 		void signalStart() {
+			LOG_DEBUG <<"State: MainState \n";
 		}
 
 		void signalStop() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalStop();
 		}
 
 		void signalReset() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalReset();
 		}
 
 		void signalLBSkidInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSkidInterrupted();
 		}
 		void signalLBSkidNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSkidNotInterrupted();
 		}
 		void signalAltimetryCompleted() {
+			LOG_DEBUG <<"State: MainState \n";
 		}
 		void signalLBNextConveyor() {
+			LOG_DEBUG <<"State: MainState \n";
 
 		}
 	};
 
 	struct E_Stopp: public TOPFSM {
 		void signalReset() {
+			LOG_DEBUG <<"State: E-Stopp \n";
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
 			data->im.removeESTOP();

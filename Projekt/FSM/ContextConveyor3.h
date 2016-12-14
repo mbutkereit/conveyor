@@ -28,6 +28,8 @@
 #include "Serializer/WorkpieceMessage.h"
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
+#include "Logger/Logger.h"
+
 
 struct Data3 {
 	Data3(int puckID, std::vector<Puck>* puckVector) :
@@ -132,6 +134,7 @@ private:
 
 	struct ReceivingPucks: public State {
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State:Recieving Pucks\n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
@@ -144,6 +147,7 @@ private:
 
 	struct Puck1Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: Puck 1 Recognized\n";
 
 			struct workpiece_package_without_ch recieve =
 					data->wpm.getWorkpieceInfo();
@@ -186,6 +190,7 @@ private:
 	struct Puck2Ready: public State {
 
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: Puck 2 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
@@ -197,6 +202,7 @@ private:
 
 	struct Puck2Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: Puck 2 Recognized\n";
 			struct workpiece_package_without_ch recieve =
 					data->wpm.getWorkpieceInfo();
 
@@ -238,6 +244,7 @@ private:
 
 	struct Puck3Ready: public State {
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: Puck 3 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
@@ -249,7 +256,7 @@ private:
 
 	struct Puck3Recognized: public State {
 		virtual void signalLBBeginNotInterrupted() {
-
+			LOG_DEBUG <<"State: Puck 3 Recognized\n";
 			struct workpiece_package_without_ch recieve =
 					data->wpm.getWorkpieceInfo();
 
@@ -291,6 +298,7 @@ private:
 
 	struct EndReceiving: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: EndRecieving\n";
 			new (this) HeightFailBegin;
 		}
 
@@ -298,6 +306,7 @@ private:
 
 	struct HeightFailBegin: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: HeigntFailBegin\n";
 			switch (data->counterHeightFail) {
 			case 0:
 				data->cth1->giveTime();
@@ -318,6 +327,7 @@ private:
 
 	struct HeightPuck1Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: HeightPuck1Recognized\n";
 			data->counterHeightFail = 1;
 			data->delta1 = data->cth1 - data->ct1;
 			if (data->delta1 != DELTA_CT1_CTH1) {
@@ -328,6 +338,8 @@ private:
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck2Ready;
@@ -339,6 +351,7 @@ private:
 
 	struct HeightPuck2Ready: public State {
 		virtual void ssignalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: HeightPuck2Ready\n";
 			data->cth2->giveTime();
 			new (this) HeightPuck2Recognized;
 		}
@@ -347,6 +360,7 @@ private:
 
 	struct HeightPuck2Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: HeightPuck2Recognized\n";
 			data->counterHeightFail = 2;
 			data->delta2 = data->cth2 - data->ct2;
 			if (data->delta2 != DELTA_CT2_CTH2) {
@@ -357,6 +371,8 @@ private:
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck3Ready;
@@ -369,6 +385,7 @@ private:
 	struct HeightPuck3Ready: public State {
 
 		virtual void ssignalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: HeightPuck3Ready\n";
 			data->cth3->giveTime();
 			new (this) HeightPuck3Recognized;
 		}
@@ -377,6 +394,7 @@ private:
 
 	struct HeightPuck3Recognized: public State {
 		virtual void ssignalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: HeightPuck3Recognized\n";
 			data->counterHeightFail = 0;
 			data->delta3 = data->cth3 - data->ct3;
 			if (data->delta3 != DELTA_CT3_CTH3) {
@@ -387,6 +405,8 @@ private:
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightEnd;
@@ -398,6 +418,7 @@ private:
 
 	struct HeightEnd: public State {
 		virtual void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: HeightEnd\n";
 			data->cswitch->setSwitchOpen();
 			//TODO: Timeout Weiche
 			new (this) TransportToSwitch;
@@ -407,6 +428,7 @@ private:
 
 	struct TransportToSwitch: public State {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: TransportToSwitch\n";
 			new (this) EndFailBegin;
 
 		}
@@ -415,6 +437,8 @@ private:
 
 	struct EndFailBegin: public State {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: EndFailBegin\n";
+
 			switch (data->counterEndFail) {
 			case 0:
 				data->cte1->giveTime();
@@ -434,6 +458,7 @@ private:
 
 	struct EndPuck1Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
+			LOG_DEBUG <<"State: EndPuck1Recognized\n";
 			data->counterEndFail = 1;
 			data->delta1 = data->cte1 - data->cth1;
 			if (data->delta1 != DELTA_CTH1_CTE1) {
@@ -444,6 +469,8 @@ private:
 				cout
 						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck2Ready;
@@ -455,6 +482,7 @@ private:
 
 	struct EndPuck2Ready: public State {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: EndPuck2Ready\n";
 			data->cte2->giveTime();
 			new (this) EndPuck2Recognized;
 		}
@@ -463,6 +491,7 @@ private:
 
 	struct EndPuck2Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
+			LOG_DEBUG <<"State: EndPuck2Recognized\n";
 			data->counterEndFail = 2;
 			data->delta2 = data->cte2 - data->cth2;
 			if (data->delta2 != DELTA_CTH2_CTE2) {
@@ -473,6 +502,9 @@ private:
 				cout
 						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck3Ready;
@@ -484,6 +516,7 @@ private:
 
 	struct EndPuck3Ready: public State {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: EndPuck3Ready\n";
 			data->cte3->giveTime();
 			new (this) HeightPuck3Recognized;
 		}
@@ -492,6 +525,7 @@ private:
 
 	struct EndPuck3Recognized: public State {
 		virtual void signalLBEndNotInterrupted() {
+			LOG_DEBUG <<"State: EndPuck3Recognized\n";
 			data->counterEndFail = 0;
 			data->delta3 = data->cte3 - data->cth3;
 			if (data->delta3 != DELTA_CTH3_CTE3) {
@@ -502,6 +536,8 @@ private:
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
+
 				new (this) PuckAdded;
 			} else {
 				new (this) PucksToConsole;

@@ -81,26 +81,41 @@ private:
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct MainState: public TOPFSM {
+
 		void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBBeginInterrupted();
 		}
 		void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBBeginNotInterrupted();
 		}
 		void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBEndInterrupted();
 		}
 		void signalLBEndNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBEndNotInterrupted();
 		}
 		void signalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBAltimetryInterrupted();
 		}
 		void signalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBAltimetryNotInterrupted();
 		}
 
 		void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBSwitchInterrupted();
 			if (data->im.istBand1RutscheVoll()
 					&& data->im.istBand2RutscheVoll()) {
@@ -108,57 +123,80 @@ private:
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
 				cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
 				new (this) BothSkidsFull;
 			} else {
 				data->cc2.sensorMeasurementCompleted();
 				if (data->im.istBand2RutscheVoll()) {
+					LOG_DEBUG <<"Fehler:RUTSCHE 2 IST VOLL \n";
 					cout<<"FEHLER!!!!!!!!!!! RUTSCHE 2 IST VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 					new (this) SkidOfConveyor2Full;
 				}
 			}
 		}
-		void signalLBSwitchNotInterrupted() { //ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
+		void signalLBSwitchNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+														//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
 			data->cc2.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im.setESTOP();
 			}
+			LOG_DEBUG <<"E-STOP WURDE GEDRÜCKT \n";
 			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRÜCKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
 			new (this) E_Stopp;
 		}
 
 		void signalStart() {
+			LOG_DEBUG <<"State: MainState \n";
+
 		}
 
 		void signalStop() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalStop();
 		}
 
 		void signalReset() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalReset();
 		}
 
 		void signalLBSkidInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBSkidInterrupted();
 		}
 		void signalLBSkidNotInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBSkidNotInterrupted();
 		}
 		void signalAltimetryCompleted() {
+			LOG_DEBUG <<"State: MainState \n";
+
 		}
 		void signalLBNextConveyor() {
+			LOG_DEBUG <<"State: MainState \n";
+
 			data->cc2.signalLBNextConveyor();
 		}
 	};
 
 	struct E_Stopp: public TOPFSM {
 		void signalReset() {
+			LOG_DEBUG <<"State: E_Stopp \n";
+
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
 			data->im.removeESTOP();
@@ -175,6 +213,7 @@ private:
 
 	struct BothSkidsFull: public TOPFSM {
 		void signalReset() {
+			LOG_DEBUG <<"State: BothSkidsFull \n";
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->resetSpeed(MOTOR_STOP);
@@ -189,6 +228,7 @@ private:
 
 	struct SkidOfConveyor2Full: public TOPFSM {
 		virtual void signalReset() {
+			LOG_DEBUG <<"State: SkidOfConveyor2Full \n";
 			data->hb.getHardware()->getTL()->turnYellowOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cc2.skidOfConveyor2Cleared();
