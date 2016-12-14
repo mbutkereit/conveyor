@@ -103,7 +103,7 @@ private:
 		void signalLBSwitchInterrupted() {
 			data->cc2.signalLBSwitchInterrupted();
 			if (data->im.istBand1RutscheVoll()
-					&& data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
+					&& data->im.istBand2RutscheVoll()) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);

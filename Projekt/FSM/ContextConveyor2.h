@@ -24,7 +24,6 @@
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
 
-
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
 struct Data2 {
@@ -184,7 +183,9 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -242,7 +243,9 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			}
 		}
@@ -285,10 +288,22 @@ private:
 			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
-			if (1) { //TODO DELTA tW and tE OK
-				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+			if (1) {   //TODO DELTA tW and tE OK
+				cout << "ID: " <<
+
+				cout << data->puck.getId() << endl;
+				cout << "Height on Conveyor1: " <<
+
+				cout << data->puck.getHeightReading1() << endl;
+				cout << "Height on Conveyor2: " <<
+
+				cout << data->puck.getHeightReading2() << endl;
+				cout << "Puck Type: " <<
+
+				cout << data->puck.getPuckType() << endl;
+
 				new (this) DeliverToConveyor3;
+
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
 
@@ -296,22 +311,17 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			}
 		}
 	};
 
 	struct DeliverToConveyor3: public PuckOnConveyor2 { //TODO: signalLBNextConveyorNotInterrupted
-		virtual void signalConveyor3isFree() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
-			new (this) TransportToConveyor3;
-		}
-	};
-
-	struct TransportToConveyor3: public PuckOnConveyor2 {
 		virtual void signalLBNextConveyor() {
+
 			int drillHoleUpside = 0;
 			int drillHoleUpsideMetal = 1;
 			int drillHoleUpsidePlastic = 2;

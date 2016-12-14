@@ -42,9 +42,10 @@ struct Data3 {
 					ContextTimer::getInstance()), cte2(
 					ContextTimer::getInstance()), cte3(
 					ContextTimer::getInstance()), hb(), cm(
-					ContextMotor::getInstance()), puck(-1), currState(0), id(0), height(
-					-1), delta1(0), delta2(0), delta3(0), counterHeightFail(0), counterEndFail(
-					0), finished(false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow() {
+					ContextMotor::getInstance()), puck(-1), puck2(-1), puck3(
+					-1), currState(0), id(0), height(-1), delta1(0), delta2(0), delta3(
+					0), counterHeightFail(0), counterEndFail(0), finished(
+					false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow() {
 	}
 
 	ContextSwitch* cswitch;
@@ -60,6 +61,8 @@ struct Data3 {
 	HalBuilder hb;
 	ContextMotor* cm;
 	Puck puck;
+	Puck puck2;
+	Puck puck3;
 	int currState;
 	int id;
 	int height;
@@ -199,32 +202,32 @@ private:
 
 			switch (recieve.workpiece_type) {
 			case 0:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				data->puck2.setPuckType(DRILL_HOLE_UPSIDE);
 				break;
 
 			case 1:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				data->puck2.setPuckType(DRILL_HOLE_UPSIDE_METAL);
 				break;
 
 			case 2:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				data->puck2.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				break;
 
 			case 3:
-				data->puck.setPuckType(NO_DRILL_HOLE);
+				data->puck2.setPuckType(NO_DRILL_HOLE);
 				break;
 
 			case 4:
 			default:
-				data->puck.setPuckType(TYPE404PT);
+				data->puck2.setPuckType(TYPE404PT);
 				break;
 
 			}
-			data->puck.setId(recieve.id);
-			data->puck.setHeightReading1(recieve.alimetry_value_one);
-			data->puck.setHeightReading2(recieve.alimetry_value_two);
+			data->puck2.setId(recieve.id);
+			data->puck2.setHeightReading1(recieve.alimetry_value_one);
+			data->puck2.setHeightReading2(recieve.alimetry_value_two);
 
-			data->puckVector->push_back(data->puck);
+			data->puckVector->push_back(data->puck2);
 
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
@@ -252,32 +255,32 @@ private:
 
 			switch (recieve.workpiece_type) {
 			case 0:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE);
+				data->puck3.setPuckType(DRILL_HOLE_UPSIDE);
 				break;
 
 			case 1:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
+				data->puck3.setPuckType(DRILL_HOLE_UPSIDE_METAL);
 				break;
 
 			case 2:
-				data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
+				data->puck3.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				break;
 
 			case 3:
-				data->puck.setPuckType(NO_DRILL_HOLE);
+				data->puck3.setPuckType(NO_DRILL_HOLE);
 				break;
 
 			case 4:
 			default:
-				data->puck.setPuckType(TYPE404PT);
+				data->puck3.setPuckType(TYPE404PT);
 				break;
 
 			}
-			data->puck.setId(recieve.id);
-			data->puck.setHeightReading1(recieve.alimetry_value_one);
-			data->puck.setHeightReading2(recieve.alimetry_value_two);
+			data->puck3.setId(recieve.id);
+			data->puck3.setHeightReading1(recieve.alimetry_value_one);
+			data->puck3.setHeightReading2(recieve.alimetry_value_two);
 
-			data->puckVector->push_back(data->puck);
+			data->puckVector->push_back(data->puck3);
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->setSpeed(MOTOR_FAST);
 
@@ -322,7 +325,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck2Ready;
@@ -349,7 +354,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightPuck3Ready;
@@ -377,7 +384,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) HeightEnd;
@@ -432,7 +441,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck2Ready;
@@ -459,7 +470,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) EndPuck3Ready;
@@ -486,7 +499,9 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 				new (this) PuckAdded;
 			} else {
 				new (this) PucksToConsole;
@@ -499,7 +514,48 @@ private:
 	struct PucksToConsole: public State {
 
 		virtual void signalLBEndNotInterrupted() {
-			//TODO:werkstückdaten in der Konsole ausgeben
+			//Puck 1
+			cout << "ID Puck 1: " <<
+
+			cout << data->puck.getId() << endl;
+			cout << "Height on Conveyor1 Puck 1: " <<
+
+			cout << data->puck.getHeightReading1() << endl;
+			cout << "Height on Conveyor2 Puck 1: " <<
+
+			cout << data->puck.getHeightReading2() << endl;
+			cout << "Puck Type Puck 1: " <<
+
+			cout << data->puck.getPuckType() << endl;
+
+			//Puck 2
+			cout << "ID Puck 2: " <<
+
+			cout << data->puck2.getId() << endl;
+			cout << "Height on Conveyor1 Puck 2: " <<
+
+			cout << data->puck2.getHeightReading1() << endl;
+			cout << "Height on Conveyor2 Puck 2: " <<
+
+			cout << data->puck2.getHeightReading2() << endl;
+			cout << "Puck Type Puck 2: " <<
+
+			cout << data->puck2.getPuckType() << endl;
+
+			//Puck 3
+			cout << "ID Puck 3: " <<
+
+			cout << data->puck3.getId() << endl;
+			cout << "Height on Conveyor1 Puck 3: " <<
+
+			cout << data->puck3.getHeightReading1() << endl;
+			cout << "Height on Conveyor2 Puck 3: " <<
+
+			cout << data->puck3.getHeightReading2() << endl;
+			cout << "Puck Type Puck 3: " <<
+
+			cout << data->puck3.getPuckType() << endl;
+
 			data->finished = true;
 		}
 

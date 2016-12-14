@@ -104,7 +104,7 @@ private:
 		virtual void signalLBSwitchInterrupted() {
 			data->cc1.signalLBSwitchInterrupted();
 			if (data->im.istBand1RutscheVoll()
-					&& data->im.istBand2RutscheVoll()) {   //TODO ERRORMESSAGE
+					&& data->im.istBand2RutscheVoll()) {
 
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnRedOn();
