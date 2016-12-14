@@ -77,3 +77,7 @@ void ContextConveyor2::skidOfConveyor2Cleared(){
 void ContextConveyor2::signalLBNextConveyor(){
 	statePtr->signalLBNextConveyor();
 }
+
+void ContextConveyor2::signalTimerTick(){
+    statePtr->signalTimerTick();
+}

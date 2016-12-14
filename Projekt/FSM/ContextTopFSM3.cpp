@@ -75,3 +75,7 @@ void ContextTopFSM3::signalLBNextConveyor(){
 	statePtr->signalLBNextConveyor();
 }
 
+void ContextTopFSM3::signalTimerTick(){
+    statePtr->signalTimerTick();
+}
+

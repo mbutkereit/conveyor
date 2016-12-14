@@ -10,12 +10,15 @@
 
 #include <iostream>
 #include "Hal/HalBuilder.h"
+#include "Switchtimer_Thread.h"
 
 struct Datacsw{
-	Datacsw(): hb(), openCounter(0), closeCounter(0){}
-	HalBuilder hb;
-	int openCounter;
-	int closeCounter;
+    HalBuilder hb;
+    int openCounter;
+    Switchtimer_Thread swt;
+
+	Datacsw(): hb(), openCounter(0), swt(60){
+	}
 };
 
 class ContextSwitch {
@@ -46,10 +49,12 @@ private:
 
     struct StateStart: public SwitchOfConveyor {
         virtual void transact() {
+            LOG_DEBUG << "Statestart reached." << endl;
             data->hb.getHardware()->getMotor()->closedSwitch();
             if (data->openCounter > 0)
             {
                 data->hb.getHardware()->getMotor()->openSwitch();
+                data->swt.continueTimer();
                 new (this) Open;
             }
             else
@@ -65,7 +70,7 @@ private:
 		    if(data->openCounter > 0)
 		    {
 		        data->hb.getHardware()->getMotor()->openSwitch();
-		        data->hb.getHardware()->getMT()->isSwitchOpen();
+		        data->swt.continueTimer();
 		        new (this) Open;
 		    }
 		}
@@ -76,6 +81,7 @@ private:
 		    if(data->openCounter == 0)
 		    {
 		        data->hb.getHardware()->getMotor()->closedSwitch();
+		        data->swt.stopTimer();
 		        new (this) Close;
 		    }
 		}
@@ -89,6 +95,7 @@ private:
 			statePtr(&stateMember), cswdata() // assigning start state
 	{
 		statePtr->data = &cswdata;
+		cswdata.swt.start(NULL);
 	}
 	ContextSwitch(const ContextSwitch& other);
 	ContextSwitch& operator=(const ContextSwitch& other);

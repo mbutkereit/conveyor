@@ -13,11 +13,12 @@
 #include "MotorOptions.h"
 #include "TimerOptions.h"
 #include "ContextTimer.h"
+#include "Timer.h"
 
 struct Datacm{
-	Datacm(ContextTimer* ctimer): hb(), ct(ctimer), fastFlag(0), slowCounter(0), stopCounter(0){}
+	Datacm(): hb(), timer(Timer::getInstance()), fastFlag(0), slowCounter(0), stopCounter(0){}
 	    HalBuilder hb;
-	    ContextTimer* ct;
+	    Timer* timer;
 		int fastFlag;
 		int slowCounter;
 		int stopCounter;
@@ -39,26 +40,26 @@ private:
             data->hb.getHardware()->getMotor()->stop();
             if (data->stopCounter > 0)
             {
-                data->ct->setTimerSpeed(TIMER_STOP);
-                data->ct->transact();
+                data->timer->setMode(TIMER_STOP);
                 data->hb.getHardware()->getMotor()->stop();
+                data->timer->startTimer();
                 new (this) Stop;
             }
             else if (data->slowCounter > 0)
             {
-                data->ct->setTimerSpeed(TIMER_SLOW);
-                data->ct->transact();
+                data->timer->setMode(TIMER_SLOW);
                 data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->slow();
+                data->timer->startTimer();
                 new (this) Slow;
             }
             else if (data->fastFlag)
             {
-                data->ct->setTimerSpeed(TIMER_FAST);
-                data->ct->transact();
+                data->timer->setMode(TIMER_FAST);
                 data->fastFlag = 0;
                 data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->fast();
+                data->timer->startTimer();
                 new (this) Fast;
             }
         }
@@ -68,15 +69,15 @@ private:
         virtual void transact() {
             if (data->stopCounter > 0)
             {
-                data->ct->setTimerSpeed(TIMER_STOP);
-                data->ct->transact();
+                data->timer->setMode(TIMER_FAST);
+                data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->stop();
                 new (this) Stop;
             }
             else if (data->slowCounter > 0)
             {
-                data->ct->setTimerSpeed(TIMER_SLOW);
-                data->ct->transact();
+                data->timer->setMode(TIMER_SLOW);
+                data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->slow();
                 new (this) Slow;
@@ -88,15 +89,15 @@ private:
         virtual void transact() {
             if (data->stopCounter > 0)
             {
-                data->ct->setTimerSpeed(TIMER_STOP);
-                data->ct->transact();
+                data->timer->setMode(TIMER_STOP);
+                data->timer->stopTimer();
                 data->hb.getHardware()->getMotor()->stop();
                 new (this) Stop;
             }
             else if (data->slowCounter == 0)
             {
-                data->ct->setTimerSpeed(TIMER_FAST);
-                data->ct->transact();
+                data->timer->setMode(TIMER_FAST);
+                data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->fast();
                 new (this) Fast;
@@ -110,16 +111,17 @@ private:
             {
                 if (data->slowCounter > 0)
                 {
-                    data->ct->setTimerSpeed(TIMER_SLOW);
-                    data->ct->transact();
+                    data->timer->setMode(TIMER_SLOW);
+                    data->timer->continueTimer();
                     data->hb.getHardware()->getMotor()->right();
                     data->hb.getHardware()->getMotor()->slow();
                     new (this) Slow;
                 }
                 else if (data->slowCounter == 0)
                 {
-                    data->ct->setTimerSpeed(TIMER_FAST);
-                    data->ct->transact();
+
+                    data->timer->setMode(TIMER_FAST);
+                    data->timer->continueTimer();
                     data->hb.getHardware()->getMotor()->right();
                     data->hb.getHardware()->getMotor()->fast();
                     new (this) Fast;
@@ -131,10 +133,9 @@ private:
     static ContextMotor* instance_;
     StateStart stateMember; //The memory for the state is part of context object
     Datacm cmdata;
-    ContextTimer* ct; //<=== kann vermutlich weg
 
-    ContextMotor(ContextTimer* ctimer) :
-            statePtr(&stateMember), cmdata(ctimer), ct(ctimer) // assigning start state
+    ContextMotor() :
+            statePtr(&stateMember), cmdata()// assigning start state
     {
         statePtr->data = &cmdata;
     }

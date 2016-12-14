@@ -50,6 +50,7 @@ void ContextConveyor1::signalEStop(){
 void ContextConveyor1::signalStart(){
 	statePtr->signalStart();
 }
+
 void ContextConveyor1::signalStop(){
 	statePtr->signalStop();
 }
@@ -74,5 +75,9 @@ void ContextConveyor1::sensorMeasurementCompleted(){
 
 void ContextConveyor1::signalLBNextConveyor(){
 	statePtr->signalLBNextConveyor();
+}
+
+void ContextConveyor1::signalTimerTick(){
+    statePtr->signalTimerTick();
 }
 

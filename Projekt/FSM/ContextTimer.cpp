@@ -15,4 +15,3 @@ ContextTimer* ContextTimer::getInstance() {
 	}
 	return instance_;
 }
-

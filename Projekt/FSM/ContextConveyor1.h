@@ -36,7 +36,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), im(), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm() {
+					skidcounter), blinkRed(), blinkYellow(), wpm(), tickX(10) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -52,6 +52,7 @@ struct Data {
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
 	WorkpieceMessage wpm;
+	int tickX;
 
 };
 
@@ -101,9 +102,18 @@ private:
 		}
 		virtual void signalLBNextConveyor() {
 		}
-
-		//TODO SIGNALS THAT ARE MISSING
-		virtual void signalTimeout() {
+		virtual void signalTimerTick(){
+            data->tickX--;
+            cout << data->tickX << endl;
+            if(data->tickX == 0){
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->blinkYellow.start(NULL);
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                cout << "TIMEOUT" << endl;
+                data->puckVector->erase(data->puckVector->begin() + data->posInVector);
+                new (this) PuckLost;
+            }
 		}
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -134,6 +144,8 @@ private:
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			if (1) {   //TODO DELTA t0 and tH OK
+			    data->hb.getHardware()->getAltimetry()->startAltimetry();
+			    usleep(20);
 				data->puck.setHeightReading1(
 						data->hb.getHardware()->getAltimetry()->getHeight());
 				if (hb.getHardware()->getMT()->isItemInAltimetryToleranceRange()) {
@@ -329,6 +341,17 @@ private:
 		}
 	};
 
+	struct PuckLost: public PuckOnConveyor1 {
+	    virtual void signalReset(){
+	        data->blinkYellow.stop();
+	        data->hb.getHardware()->getTL()->turnYellowOff();
+	        data->hb.getHardware()->getTL()->turnGreenOn();
+	        data->cm->resetSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        data->finished = true;
+	    }
+	};
+
 	TransportToEntry stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
 
@@ -385,6 +408,8 @@ public:
 	void sensorMeasurementCompleted();
 
 	void signalLBNextConveyor();
+
+	void signalTimerTick();
 };
 
 #endif /* CONTEXTCONVEYOR1_H_ */

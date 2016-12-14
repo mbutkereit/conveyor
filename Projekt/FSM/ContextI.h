@@ -105,6 +105,11 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	virtual void signalLBNextConveyor(void)=0;
+
+    /**
+     * @todo Ausstehende implementierung Dokumentieren.
+     */
+    virtual void signalTimerTick(void)=0;
 };
 
 #endif /* CONTEXTI_H_ */

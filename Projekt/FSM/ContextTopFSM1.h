@@ -74,8 +74,10 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
-
 		virtual void signalLBNextConveyor() {
+		}
+		virtual void signalTimerTick(){
+
 		}
 
 		TOPData* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -151,6 +153,9 @@ private:
 		}
 		virtual void signalLBNextConveyor() {
 			data->cc1.signalLBNextConveyor();
+		}
+		virtual void signalTimerTick(){
+		    data->cc1.signalTimerTick();
 		}
 	};
 
@@ -241,6 +246,8 @@ public:
 	void signalAltimetryCompleted();
 
 	void signalLBNextConveyor();
+
+	void signalTimerTick();
 
 };
 

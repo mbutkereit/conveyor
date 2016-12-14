@@ -100,6 +100,8 @@ private:
 		}
 		virtual void signalLBNextConveyor() {
 		}
+		virtual void signalTimerTick(){
+		}
 
 		//TODO SIGNALS THAT ARE MISSING
 		virtual void signalTimeout() {
@@ -432,6 +434,7 @@ public:
 
 	void signalLBNextConveyor();
 
+	void signalTimerTick();
 };
 
 #endif /* CONTEXTCONVEYOR2_H_ */

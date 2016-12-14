@@ -25,6 +25,7 @@
 		methods[STARTSIGNAL] = &ContextI::signalStart;
 		methods[ALTEMETRYCOMPLETE] = &ContextI::signalAltimetryCompleted;
 		methods[LBNEXTCONVEYOR] = &ContextI::signalLBNextConveyor;
+        methods[TIMINTR] = &ContextI::signalTimerTick;
 	}
 
 Dispatcher::~Dispatcher() {

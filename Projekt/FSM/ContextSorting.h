@@ -33,8 +33,8 @@ public:
 	}
 
 	void setCurrentPt(PuckType currentPt) {
-			csdata.currentPt = currentPt;
-		}
+        csdata.currentPt = currentPt;
+	}
 
 
 	virtual ~ContextSorting(){};

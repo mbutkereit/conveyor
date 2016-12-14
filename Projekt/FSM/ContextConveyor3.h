@@ -127,6 +127,8 @@ private:
 		}
 		virtual void signalAltimetryCompleted() {
 		}
+		virtual void signalTimerTick(){
+		}
 		Data3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
@@ -638,6 +640,9 @@ public:
 	}
 	void signalAltimetryCompleted() {
 		statePtr->signalAltimetryCompleted();
+	}
+	void signalTimerTick(){
+	    statePtr->signalTimerTick();
 	}
 };
 

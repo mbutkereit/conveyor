@@ -35,7 +35,6 @@ void ContextTopFSM1::signalLBAltimetryNotInterrupted(){
 	statePtr->signalLBAltimetryNotInterrupted();
 }
 
-
 void ContextTopFSM1::signalLBSwitchInterrupted(){
 	statePtr->signalLBSwitchInterrupted();
 }
@@ -69,5 +68,9 @@ void ContextTopFSM1::signalAltimetryCompleted(){
 
 void ContextTopFSM1::signalLBNextConveyor(){
 	statePtr->signalLBNextConveyor();
+}
+
+void ContextTopFSM1::signalTimerTick(){
+    statePtr->signalTimerTick();
 }
 

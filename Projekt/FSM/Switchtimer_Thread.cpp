@@ -13,19 +13,22 @@
  */
 
 #include <unistd.h>
-#include "Timer_Thread.h"
-#include "src/lib/Lock.h"
-#include "src/lib/HWaccess.h"
+#include "Switchtimer_Thread.h"
+#include "lib/Lock.h"
+#include "lib/HWaccess.h"
+#include "Hal/Halbuilder.h"
+
+extern HalBuilder hb;
 
 /* Zuweisung der Klassenvariablen */
-pthread_mutex_t Timer_Thread::mtx_ = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t Switchtimer_Thread::mtx_ = PTHREAD_MUTEX_INITIALIZER;
 
 /**
  *  Standard Konstruktor.
  *  Genauer beschreibender Text für Doxygen...
  *  @param seconds bestimmt Sekunden.
  */
-Timer_Thread::Timer_Thread(uint32_t seconds, uint32_t nseconds, uint32_t intervalSeconds, uint32_t intervalNseconds, uint32_t* tickCount): seconds_(seconds), nseconds_(nseconds), intervalSeconds_(intervalSeconds), intervalNseconds_(intervalNseconds), tickCount_(tickCount), timerPaused_(false) {
+Switchtimer_Thread::Switchtimer_Thread(uint32_t seconds): seconds_(seconds) {
     /* Einfacher Konstruktor, setzt die Werte der Instanzvariablen.
      * Methode bei Times ist vorzuziehen. Direktes kopieren bei
      * Objekterzeugung, gilt nicht als Zuweisung und verstösst
@@ -47,12 +50,12 @@ Timer_Thread::Timer_Thread(uint32_t seconds, uint32_t nseconds, uint32_t interva
 		exit (EXIT_FAILURE);
 	}
 
-	// Configure Timer to send every two seconds.
-	timerSpec_.it_value.tv_sec = seconds_;
-	timerSpec_.it_value.tv_nsec = nseconds_;
-	timerSpec_.it_interval.tv_sec = intervalSeconds_;
-	timerSpec_.it_interval.tv_nsec = intervalNseconds_;
-    cout << "ctor: Timer_Thread" << endl;
+	// Configure Timer to send every given seconds.
+	timerSpec_.it_value.tv_sec = 0;
+	timerSpec_.it_value.tv_nsec = 0;
+	timerSpec_.it_interval.tv_sec = 0;
+	timerSpec_.it_interval.tv_nsec = 0;
+    cout << "ctor: Switchtimer_Thread" << endl;
 }
 
 
@@ -63,8 +66,8 @@ Timer_Thread::Timer_Thread(uint32_t seconds, uint32_t nseconds, uint32_t interva
  * beim Bereinigen des Stacks, bei Methodenende automatisch deallokiert.
  * --> Automatischer Dekonstruktoraufruf.
  */
-Timer_Thread::~Timer_Thread() {
-    cout << "dtor: Timer_Thread" << endl;
+Switchtimer_Thread::~Switchtimer_Thread() {
+    cout << "dtor: Switchtimer_Thread" << endl;
 }
 
 
@@ -73,15 +76,11 @@ Timer_Thread::~Timer_Thread() {
  * Die oberklasse HAW-Thread erzwingt die Implementierung der execute Methode.
  * Der Thread endet nach Ende dieser Methode.
  */
-void Timer_Thread::execute(void*){
+void Switchtimer_Thread::execute(void*){
 	// Loop started by timer.
-	int temp = 0;
 	while(!(this->isStopped())){
-		    MsgReceivePulse(channel_, &pulse_, sizeof (pulse_), NULL);
-		    temp = *tickCount_;
-		    temp+=1;
-		    *tickCount_ = temp;
-		    cout << *tickCount_ << endl;
+		MsgReceivePulse(channel_, &pulse_, sizeof (pulse_), NULL);
+		hb.getHardware()->getMotor()->closedSwitch();
 	}
 }
 
@@ -91,7 +90,7 @@ void Timer_Thread::execute(void*){
  * Sie wird nach Ende der execute-Methode aufgerufen und dient dem
  * evtl. aufraumen das Threadablauf.
  */
-void Timer_Thread::shutdown(){
+void Switchtimer_Thread::shutdown(){
 	// Cleanup
 	if( ConnectDetach(connection_) == -1){
 		exit(EXIT_FAILURE);
@@ -100,22 +99,24 @@ void Timer_Thread::shutdown(){
 	if( ChannelDestroy(channel_) == -1 ){
 		exit(EXIT_FAILURE);
 	}
-    cout << "Timer_Thread shutdown" << endl;
+    cout << "Switchtimer_Thread shutdown" << endl;
 }
 
-void Timer_Thread::startTimer(){
-	timer_settime(timerId_, 0, &timerSpec_, NULL);
-	this->start(NULL);
+void Switchtimer_Thread::startTimer(){
+    this->cont();
+    timerSpec_.it_value.tv_sec = seconds_;
+    timer_settime(timerId_, 0, &timerSpec_, NULL);
 }
 
-void Timer_Thread::stopTimer(){
+void Switchtimer_Thread::stopTimer(){
 	this->hold();
     timerSpec_.it_value.tv_sec = 0;
     timerSpec_.it_value.tv_nsec = 0;
-	timer_settime(timerId_, 0, &timerSpec_, &backup_);
+	timer_settime(timerId_, 0, &timerSpec_, NULL);
 }
 
-void Timer_Thread::continueTimer(){
+void Switchtimer_Thread::continueTimer(){
 	this->cont();
-	timer_settime(timerId_, 0, &backup_, NULL);
+	timerSpec_.it_value.tv_sec = seconds_;
+	timer_settime(timerId_, 0, &timerSpec_, NULL);
 }

@@ -77,6 +77,9 @@ private:
 		virtual void signalLBNextConveyor() {
 		}
 
+		virtual void signalTimerTick(){
+		}
+
 		TOPData3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
@@ -137,7 +140,8 @@ private:
 		void signalAltimetryCompleted() {
 		}
 		void signalLBNextConveyor() {
-
+		}
+		void signalTimerTick(){
 		}
 	};
 
@@ -261,6 +265,8 @@ public:
 	 * @todo Ausstehende implementierung Dokumentieren.
 	 */
 	void signalLBNextConveyor();
+
+	void signalTimerTick();
 
 };
 

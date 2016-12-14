@@ -22,15 +22,16 @@ int main(int argc, char *argv[]) {
 
   // message->setBand2NichtFrei();
     SignalHandlerThread thread_automat;
-    SerialMessageRecvThread threadRecv;
-//   SerialMessageWatchdogThread threadWatchdog;
+//    SerialMessageRecvThread threadRecv;
+   SerialMessageWatchdogThread threadWatchdog;
 
 
     thread_automat.start(NULL);
-//	threadWatchdog.start(NULL);
-	threadRecv.start(NULL);
+	threadWatchdog.start(NULL);
+//	threadRecv.start(NULL);
 //	message->setBand2RutscheVoll();
 
+    LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
 
 
@@ -52,8 +53,8 @@ int main(int argc, char *argv[]) {
 
 
 
-//	threadWatchdog.join();
-	threadRecv.join();
+	threadWatchdog.join();
+	//threadRecv.join();
 	thread_automat.join();
 
 
