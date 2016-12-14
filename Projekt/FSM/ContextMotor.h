@@ -36,6 +36,7 @@ private:
 
     struct StateStart: public MotorOfConveyor {
         virtual void transact() {
+			LOG_DEBUG << "Transact \n";
             data->hb.getHardware()->getMotor()->stop();
             if (data->stopCounter > 0)
             {

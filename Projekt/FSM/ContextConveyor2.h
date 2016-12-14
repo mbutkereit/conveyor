@@ -174,7 +174,7 @@ private:
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->puck.setHeightReading1(
 						data->hb.getHardware()->getAltimetry()->getHeight());
-				if (data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange()) {
+				if (!(data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
 					data->puck.setPuckType(NO_DRILL_HOLE);

@@ -9,6 +9,7 @@
 #define CONTEXTSORTING_H_
 
 #include <iostream>
+#include "Logger/Logger.h"
 #include "Puck.h"
 
 struct Datacs{
@@ -48,10 +49,14 @@ private:
 
 	struct StateStart: public Sorting {
 		virtual void transact() {
+			LOG_DEBUG <<"State: Sorting: StateStart: \n";
+
 			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
+
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal1;
 			} else {
+
 				data->sequenceOK = 0;
 			}
 		}
@@ -59,10 +64,13 @@ private:
 
 	struct DrillHoleUpSideWoMetal1: public Sorting {
 		virtual void transact() {
+			LOG_DEBUG <<"State: Sorting: DrillHoleUpSideWoMetal1 \n";
 			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
+
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal2;
 			} else {
+
 				data->sequenceOK = 0;
 			}
 		}
@@ -70,10 +78,13 @@ private:
 
 	struct DrillHoleUpSideWoMetal2: public Sorting {
 		virtual void transact() {
+			LOG_DEBUG <<"State: Sorting: DrillHoleUpSideWoMetal2 \n";
 			if (data->currentPt == DRILL_HOLE_UPSIDE_METAL) {
+
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideMetal;
 			} else {
+
 				data->sequenceOK = 0;
 			}
 		}
@@ -81,10 +92,13 @@ private:
 
 	struct DrillHoleUpSideMetal: public Sorting {
 		virtual void transact() {
+			LOG_DEBUG <<"State: Sorting: DrillHoleUpSideMetal \n";
 			if (data->currentPt == DRILL_HOLE_UPSIDE_PLASTIC) {
+
 				data->sequenceOK = 1;
 				new (this) DrillHoleUpSideWoMetal1;
 			} else {
+
 				data->sequenceOK = 0;
 			}
 		}

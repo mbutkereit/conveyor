@@ -32,20 +32,20 @@ void SerialMessageRecvThread::execute(void*) {
 		hb.getHardware()->getSerial()->recvPacket((void*) &header,
 				sizeof(struct common_header));
 
-		LOG_DEBUG << "Nachricht erhalten\n";
+	//	LOG_DEBUG << "Nachricht erhalten\n";
 
 		if (header.version == MESSAGE_VERSION) {
 			switch ((int) header.typ) {
 			case MESSAGE_TYPE_INFO: {
 
-				LOG_DEBUG << "Nachricht erhalten\n";
+			//	LOG_DEBUG << "Nachricht erhalten\n";
 
 				struct info_package_without_ch messageInfo;
 				memset(&messageInfo, 0, sizeof(struct info_package_without_ch));
 				hb.getHardware()->getSerial()->recvPacket((void*) &messageInfo,
 						sizeof(struct info_package_without_ch));
 				message->update(&messageInfo);
-				message->InhaltdesPaketesausgeben();
+		//		message->InhaltdesPaketesausgeben();
 				if (message->isESTOPGedrueckt()) {
 					int error = MsgSendPulse(isrtConnection_, 10, 0xE, ESTOP);
 					LOG_DEBUG << "Estop steht im Paket.\n";
