@@ -64,14 +64,14 @@ void Serial::config(void){
 int Serial::sendPacket(void* p,int size){
 	this->mutex.lock();
     write(this->fdesc_write_, p, size);
-    LOG_DEBUG<< "Serial::recvPacket() Send Packet : " << "\n" ;
+ //   LOG_DEBUG<< "Serial::recvPacket() Send Packet : " << "\n" ;
 	this->mutex.unlock();
     return 0;
 }
 
 int Serial::recvPacket(void* p,int size){
     read(this->fdesc_read_,p, size);
-    LOG_DEBUG<< "Serial::recvPacket() Inhalt der nachricht : " << "\n" ;
+ //   LOG_DEBUG<< "Serial::recvPacket() Inhalt der nachricht : " << "\n" ;
     return 0;
 }
 

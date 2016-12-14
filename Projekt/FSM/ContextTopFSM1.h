@@ -85,25 +85,32 @@ private:
 
 	struct MainState: public TOPFSM {
 		virtual void signalLBBeginInterrupted() {
+
 			data->cc1.signalLBBeginInterrupted();
 		}
 		virtual void signalLBBeginNotInterrupted() {
+
 			data->cc1.signalLBBeginNotInterrupted();
 		}
 		virtual void signalLBEndInterrupted() {
+
 			data->cc1.signalLBEndInterrupted();
 		}
 		virtual void signalLBEndNotInterrupted() {
+
 			data->cc1.signalLBEndNotInterrupted();
 		}
 		virtual void signalLBAltimetryInterrupted() {
+
 			data->cc1.signalLBAltimetryInterrupted();
 		}
 		virtual void signalLBAltimetryNotInterrupted() {
+
 			data->cc1.signalLBAltimetryNotInterrupted();
 		}
 
 		virtual void signalLBSwitchInterrupted() {
+
 			data->cc1.signalLBSwitchInterrupted();
 			if (data->im.istBand1RutscheVoll()
 					&& data->im.istBand2RutscheVoll()) {
@@ -112,46 +119,59 @@ private:
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
 				cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
 				new (this) BothSkidsFull;
 			} else {
 				data->cc1.sensorMeasurementCompleted();
 			}
 		}
 		virtual void signalLBSwitchNotInterrupted() { //ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
+
 			data->cc1.signalLBSwitchNotInterrupted();
 		}
 		virtual void signalEStop() {
+
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im.setESTOP();
 			}
-			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRÜCKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
+			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
 
 			new (this) E_Stopp;
 		}
 
 		virtual void signalStart() {
+
 		}
 
 		virtual void signalStop() {
+
 			data->cc1.signalStop();
 		}
 
 		virtual void signalReset() {
+
 			data->cc1.signalReset();
 		}
 
 		virtual void signalLBSkidInterrupted() {
+
 			data->cc1.signalLBSkidInterrupted();
 		}
 		virtual void signalLBSkidNotInterrupted() {
+
 			data->cc1.signalLBSkidNotInterrupted();
 		}
 		virtual void signalAltimetryCompleted() {
+
 		}
 		virtual void signalLBNextConveyor() {
+
 			data->cc1.signalLBNextConveyor();
 		}
 		virtual void signalTimerTick(){
@@ -161,6 +181,8 @@ private:
 
 	struct E_Stopp: public TOPFSM {
 		virtual void signalReset() {
+			LOG_DEBUG <<"State: E-Stopp \n";
+
 
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
@@ -181,6 +203,8 @@ private:
 
 	struct BothSkidsFull: public TOPFSM {
 		void signalReset() {
+			LOG_DEBUG <<"State: BothSkidsFull \n";
+
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->resetSpeed(MOTOR_STOP);

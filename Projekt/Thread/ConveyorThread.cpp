@@ -19,8 +19,6 @@ void ConveyorThread::execute(void*) {
 
 
    hw->getMotor()->stop();
-   //hw->getTL()->turnRedOn();
-
 }
 
 void ConveyorThread::shutdown() {

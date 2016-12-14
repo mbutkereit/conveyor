@@ -19,7 +19,6 @@
 #include "Serializer/Serializer.h"
 #include "Serializer/InfoMessage.h"
 #include "Serializer/WorkpieceMessage.h"
-
 #include "ContextI.h"
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
@@ -113,6 +112,7 @@ private:
 	struct TransportToEntry: public PuckOnConveyor2 {
 		//TRANSACTION/LEAVE
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: TransportToEntry \n";
 			data->im.setBand2NichtFrei();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
@@ -125,6 +125,8 @@ private:
 	struct MotorOn: public PuckOnConveyor2 {
 		//LEAVE
 		virtual void signalLBBeginNotInterrupted() {
+			LOG_DEBUG <<"State: MotorOn \n";
+
 
 			struct workpiece_package_without_ch recieve =
 					data->wpm.getWorkpieceInfo();
@@ -167,12 +169,14 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryInterrupted() {
+			LOG_DEBUG <<"State: TransportToHeightMeasurement \n";
+
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->puck.setHeightReading1(
 						data->hb.getHardware()->getAltimetry()->getHeight());
-				if (data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange()) {
+				if (!(data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
 					data->puck.setPuckType(NO_DRILL_HOLE);
@@ -195,6 +199,7 @@ private:
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryNotInterrupted() {
+			LOG_DEBUG <<"State: PuckInHeightMeasurenment \n";
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			new (this) TransportToSwitch;
@@ -203,6 +208,7 @@ private:
 
 	struct TransportToSwitch: public PuckOnConveyor2 {
 		virtual void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: TransoprtToSwitch \n";
 			//TODO STOP TIMER tH, GIVE TIME tW, DELTA th AND tW CALCULATION
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
@@ -219,6 +225,7 @@ private:
 
 	struct Sorting: public PuckOnConveyor2 {
 		virtual void sensorMeasurementCompleted() {
+			LOG_DEBUG <<"State: Sorting\n";
 			if (1) {   //TODO DELTA tH and tW OK
 				data->cs->setCurrentPt(data->puck.getPuckType());
 
@@ -253,12 +260,14 @@ private:
 		}
 
 		virtual void skidOfConveyor2Cleared() {
+			LOG_DEBUG <<"State: Sorting \n";
 			new (this) SortOutThroughSkid;
 		}
 	};
 
 	struct SortOutThroughSkid: public PuckOnConveyor2 {
 		virtual void signalLBSkidInterrupted() {
+			LOG_DEBUG <<"State: SortOutThroughSkid \n";
 			int temp = *data->sc2;
 			temp++;
 			*data->sc2 = temp;
@@ -278,6 +287,7 @@ private:
 
 	struct Conveyor2Empty: public PuckOnConveyor2 {
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG <<"State: Conveyor2Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->im.setBand2Frei();
@@ -287,6 +297,7 @@ private:
 
 	struct TransportToDelivery: public PuckOnConveyor2 {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG <<"State: TransoprtToDelivery \n";
 			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
@@ -323,7 +334,7 @@ private:
 
 	struct DeliverToConveyor3: public PuckOnConveyor2 { //TODO: signalLBNextConveyorNotInterrupted
 		virtual void signalLBNextConveyor() {
-
+			LOG_DEBUG <<"State: DeliverToConveyor \n";
 			int drillHoleUpside = 0;
 			int drillHoleUpsideMetal = 1;
 			int drillHoleUpsidePlastic = 2;
@@ -369,6 +380,7 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void signalReset() {
+			LOG_DEBUG <<"State: PuckAdded \n";
 			data->blinkRed.stop();
 			data->im.setBand2Frei();
 			data->finished = true;

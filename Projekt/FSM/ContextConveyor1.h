@@ -122,8 +122,12 @@ private:
 	struct TransportToEntry: public PuckOnConveyor1 {
 		//TRANSACTION/LEAVE
 		void signalLBBeginInterrupted() {
+			LOG_DEBUG << "State: TransportToEntry \n";
+
 			data->hb.getHardware()->getTL()->turnGreenOn();
+
 			data->cm->setSpeed(MOTOR_FAST);
+
 			data->cm->transact();
 			new (this) MotorOn;
 		}
@@ -132,6 +136,7 @@ private:
 	struct MotorOn: public PuckOnConveyor1 {
 		//LEAVE
 		void signalLBBeginNotInterrupted() {
+			LOG_DEBUG << "State: MotorOn\n";
 			//TODO t0 = GIVE TIME, START TIMER(t0)!
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
@@ -141,17 +146,23 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
 		virtual void signalLBAltimetryInterrupted() {
+			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			if (1) {   //TODO DELTA t0 and tH OK
-			    data->hb.getHardware()->getAltimetry()->startAltimetry();
-			    usleep(20);
-				data->puck.setHeightReading1(
-						data->hb.getHardware()->getAltimetry()->getHeight());
-				if (hb.getHardware()->getMT()->isItemInAltimetryToleranceRange()) {
+				data->hb.getHardware()->getAltimetry()->startAltimetry();
+				usleep(20);
+				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
+				LOG_DEBUG
+						<< "Heohenwert1: "
+						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
+						<< "\n";
+				if (!(hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
+					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 
 				} else {
+					LOG_DEBUG << "NO_DRILL_HOLE\n";
 					data->puck.setPuckType(NO_DRILL_HOLE);
 				}
 
@@ -163,7 +174,10 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -171,6 +185,7 @@ private:
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor1 {
 		virtual void signalLBAltimetryNotInterrupted() {
+			LOG_DEBUG << "State: PuckInHeightMeasurement \n";
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			new (this) TransportToSwitch;
@@ -179,6 +194,7 @@ private:
 
 	struct TransportToSwitch: public PuckOnConveyor1 {
 		virtual void signalLBSwitchInterrupted() {
+			LOG_DEBUG << "State: TransportToSwitch \n";
 			//TODO STOP TIMER tH, GIVE TIME tW, START TIMER tW, DELTA th AND tW CALCULATION
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
@@ -195,21 +211,26 @@ private:
 
 	struct Sorting: public PuckOnConveyor1 {
 		virtual void sensorMeasurementCompleted() {
-
+			LOG_DEBUG << "State: Sorting \n";
 			if (1) { //TODO DELTA tH and tW OK
 
 				data->cs->setCurrentPt(data->puck.getPuckType());
 
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
+					LOG_DEBUG << "Sequence OK \n";
+
 					data->cswitch->setSwitchOpen();
 					data->cswitch->transact();
 					new (this) TransportToDelivery;
 				} else {
-					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+					LOG_DEBUG << "Sequence not OK \n";
 
+					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
+						LOG_DEBUG << "Skid Full\n";
 						data->hb.getHardware()->getTL()->turnYellowOn();
 						data->cswitch->setSwitchOpen();
 						data->cswitch->transact();
@@ -223,7 +244,10 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -231,11 +255,14 @@ private:
 
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
 		virtual void signalLBSkidInterrupted() {
+			LOG_DEBUG << "State: SortOutThroughSkid \n";
 			int temp = *data->sc;
 			temp++;
 			*data->sc = temp;
+			LOG_DEBUG << "Skidcounter: "<< *data->sc<< "\n";
 			if (*data->sc > 3) {
 				data->im.setBand1RutscheVoll();
+				LOG_DEBUG << "Rutsche 1 voll\n";
 
 			}
 
@@ -251,21 +278,24 @@ private:
 
 	struct Conveyor1Empty: public PuckOnConveyor1 {
 		virtual void signalLBBeginInterrupted() {
+			LOG_DEBUG << "State: Conveyor1Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->finished = true;
+
 		}
 	};
 
 	struct TransportToDelivery: public PuckOnConveyor1 {
 		virtual void signalLBEndInterrupted() {
+			LOG_DEBUG << "State: TransportToDelivery \n";
 			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
 			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				while (data->im.istBand2Frei()) {
+				while (!(data->im.istBand2Frei())) {
 				}
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -277,7 +307,10 @@ private:
 
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
-				cout<<"HLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				cout
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -285,6 +318,7 @@ private:
 
 	struct TransportToConveyor2: public PuckOnConveyor1 {
 		virtual void signalLBNextConveyor() {
+			LOG_DEBUG << "State: TransportToConveyor2 \n";
 			int drillHoleUpside = 0;
 			int drillHoleUpsideMetal = 1;
 			int drillHoleUpsidePlastic = 2;
@@ -321,21 +355,27 @@ private:
 			data->wpm.send(data->puck.getHeightReading1(),
 					data->puck.getHeightReading2(), sendPuckType,
 					data->puck.getId());
+			LOG_DEBUG << "Daten gesendet \n";
 
 			data->puckVector->erase(
 					data->puckVector->begin() + data->posInVector);
+
 			if (data->puckVector->size() > 0) {
+
 				data->finished = true;
 			} else {
+
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) Conveyor1Empty;
 			}
+
 		}
 	};
 
 	struct PuckAdded: public PuckOnConveyor1 {
 		virtual void signalReset() {
+			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
 			data->finished = true;
 		}
@@ -372,6 +412,9 @@ public:
 	 *return: gibt true zur√ºck wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	 */
 	bool isContextimEnzustand() {
+		if (contextdata.finished){
+			LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
+		}
 		return contextdata.finished;
 	}
 

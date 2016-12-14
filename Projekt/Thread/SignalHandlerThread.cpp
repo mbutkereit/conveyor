@@ -65,7 +65,7 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 3
 
-				ContextI* context =  new ContextTopFSM3(globalerID_Zaehler++,&puckvector,&skidcounter);
+				ContextI* context =  new ContextTopFSM3(globalerID_Zaehler++,&puckvector);
 #endif
 
 
@@ -151,6 +151,7 @@ void SignalHandlerThread::execute(void*) {
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gel√∂scht.
 			for (uint8_t i = 0; i < contextContainer.size(); i++) {
 				if (contextContainer[i]->isContextimEnzustand()) {
+
 					//TODO extract Method
 					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
 					disp->remListeners(contextContainer[i],
@@ -175,10 +176,12 @@ void SignalHandlerThread::execute(void*) {
 					disp->remListeners(contextContainer[i], STOPSIGNAL);
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
 					disp->remListeners(contextContainer[i], TIMINTR);
+
 #if defined BAND && BAND == 1
+
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
-					delete contextpointer;
+			//		delete contextpointer;
 #endif
 #if defined BAND && BAND == 2
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
@@ -191,6 +194,7 @@ void SignalHandlerThread::execute(void*) {
 					delete contextpointer;
 #endif
 
+					LOG_DEBUG << "Ich tˆte jetzt einen Automaten. \n";
 				}
 			}
 
