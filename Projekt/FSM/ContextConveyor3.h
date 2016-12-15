@@ -13,7 +13,7 @@
 #define DELTA_CTH1_CTE1 0
 #define DELTA_CTH2_CTE2 0
 #define DELTA_CTH3_CTE3 0
-#define DELTA_TW_TE 0
+//#define DELTA_TW_TE 0
 #include "MotorOptions.h"
 #include "ContextMotor.h"
 #include "ContextSwitch.h"
@@ -29,6 +29,7 @@
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
 #include "Logger/Logger.h"
+#include "ContextTimeout.h"
 
 
 struct Data3 {
@@ -51,6 +52,9 @@ struct Data3 {
 	}
 
 	ContextSwitch* cswitch;
+	ContextTimeout cto1;
+	ContextTimeout cto2;
+	ContextTimeout cto3;
 	ContextTimer* ct1;
 	ContextTimer*ct2;
 	ContextTimer* ct3;
@@ -130,6 +134,18 @@ private:
 		virtual void signalAltimetryCompleted() {
 		}
 		virtual void signalTimerTick(){
+            data->cto1.signalTimerTick();
+            data->cto2.signalTimerTick();
+            data->cto3.signalTimerTick();
+            if(data->cto1.timeoutOccured() || data->cto2.timeoutOccured() || data->cto3.timeoutOccured() ){
+            	data->hb.getHardware()->getTL()->turnGreenOff();
+				data->blinkYellow.start(NULL);
+				data->cm->setSpeed(MOTOR_STOP);
+				data->cm->transact();
+				cout << "TIMEOUT" << endl;
+				data->puckVector->clear();
+                new (this) PuckLost;
+            }
 		}
 		Data3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
@@ -234,9 +250,7 @@ private:
 			data->puck2.setId(recieve.id);
 			data->puck2.setHeightReading1(recieve.alimetry_value_one);
 			data->puck2.setHeightReading2(recieve.alimetry_value_two);
-
 			data->puckVector->push_back(data->puck2);
-
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			new (this) Puck3Ready;
@@ -610,17 +624,19 @@ private:
 	};
 
 	struct PuckLost: public State { //TODO: ErrorMessage ausgben!!!!!!!!!!!!!
-		virtual void SignalReset() {
-			data->cm->resetSpeed(MOTOR_STOP);
-			//TODO Yellow blink ausschalten, wenn überall gesetzt wurde --> Fehlerzustand fehlt noch
-			data->finished = true;
-			new (this) EndOfTheEnd;
-		}
+	    virtual void signalReset(){
+	        data->blinkYellow.stop();
+	        data->hb.getHardware()->getTL()->turnYellowOff();
+	        data->hb.getHardware()->getTL()->turnGreenOn();
+	        data->cm->resetSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        data->finished = true;
+	        new (this) EndOfTheEnd;
+	    }
 
 	};
 
 	struct EndOfTheEnd: public State {
-
 	};
 
 	ReceivingPucks stateMember; //The memory for the state is part of context object

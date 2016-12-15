@@ -22,7 +22,7 @@
 #include "ContextI.h"
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
-#include "ContextTimeout.h";
+#include "ContextTimeout.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
@@ -233,7 +233,6 @@ private:
 			LOG_DEBUG <<"State: Sorting\n";
 			if (1) {   //TODO DELTA tH and tW OK
 				data->cs->setCurrentPt(data->puck.getPuckType());
-
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
 					data->cswitch->setSwitchOpen();
@@ -252,9 +251,7 @@ private:
 				}
 			} else if (0) {   //TODO DELTA tH AND tW TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout

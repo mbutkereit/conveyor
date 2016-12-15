@@ -27,7 +27,7 @@
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
 #include "ContextI.h"
-#include "ContextTimeout.h";
+#include "ContextTimeout.h"
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
@@ -211,19 +211,15 @@ private:
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting \n";
 			if (1) { //TODO DELTA tH and tW OK
-
 				data->cs->setCurrentPt(data->puck.getPuckType());
-
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
 					LOG_DEBUG << "Sequence OK \n";
-
 					data->cswitch->setSwitchOpen();
 					data->cswitch->transact();
 					new (this) TransportToDelivery;
 				} else {
 					LOG_DEBUG << "Sequence not OK \n";
-
 					if (data->hb.getHardware()->getMT()->isSkidFull()) {
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;

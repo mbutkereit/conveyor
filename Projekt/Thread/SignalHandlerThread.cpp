@@ -67,6 +67,10 @@ void SignalHandlerThread::execute(void*) {
 
 				ContextI* context =  new ContextTopFSM3(globalerID_Zaehler++,&puckvector);
 #endif
+#if defined BAND && BAND == 4
+
+				ContextI* context =  new ContextTimeMeasurement(globalerID_Zaehler++,&puckvector);
+#endif
 
 
 				//TODO extract Method

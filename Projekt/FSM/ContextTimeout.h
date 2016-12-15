@@ -8,13 +8,19 @@
 #ifndef CONTEXTTIMEOUT_H_
 #define CONTEXTTIMEOUT_H_
 
-#define DELTA_T0_TH 999
-#define DELTA_TH_TW 999
-#define DELTA_TW_TE 999
-
 #include <iostream>
 #include "TimeoutOptions.h"
 using namespace std;
+
+#ifdef DEFAULT
+    #define DELTA_T0_TH 999
+    #define DELTA_TH_TW 999
+    #define DELTA_TW_TE 999
+#else
+    #define DELTA_T0_TH 1000
+    #define DELTA_TH_TW 1000
+    #define DELTA_TW_TE 1000
+#endif
 
 struct Datacto{
 	Datacto():ticksPL(0), timeout(false){}
