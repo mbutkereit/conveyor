@@ -7,12 +7,41 @@
 
 #include "ContextTimeout.h"
 
-ContextTimeout* ContextTimeout::instance_ = NULL;
-
-ContextTimeout* ContextTimeout::getInstance() {
-	if (instance_ == NULL) {
-		instance_ = new ContextTimeout();
-	}
-	return instance_;
+ContextTimeout::ContextTimeout() : statePtr(&stateMember), ctodata() // assigning start state
+{
+	statePtr->data = &ctodata;
 }
 
+ContextTimeout::~ContextTimeout(){}
+
+void ContextTimeout::timeout(){
+	statePtr->timeout();
+}
+
+void ContextTimeout::startTimerT0(){
+	statePtr->startTimerT0();
+}
+
+void ContextTimeout::stopTimerT0(){
+	statePtr->stopTimerT0();
+}
+
+void ContextTimeout::startTimerTH(){
+	statePtr->startTimerTH();
+}
+
+void ContextTimeout::stopTimerTH(){
+	statePtr->stopTimerTH();
+}
+
+void ContextTimeout::startTimerTW(){
+	statePtr->startTimerTW();
+}
+
+void ContextTimeout::stopTimerTW(){
+	statePtr->stopTimerTW();
+}
+
+void ContextTimeout::signalTimerTick(){
+	statePtr->signalTimerTick();
+}

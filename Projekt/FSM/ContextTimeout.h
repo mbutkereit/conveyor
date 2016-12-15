@@ -8,9 +8,9 @@
 #ifndef CONTEXTTIMEOUT_H_
 #define CONTEXTTIMEOUT_H_
 
-#define DELTA_T0_TH 0
-#define DELTA_TH_TW 0
-#define DELTA_TW_TE 0
+#define DELTA_T0_TH 999
+#define DELTA_TH_TW 999
+#define DELTA_TW_TE 999
 
 #include <iostream>
 #include "TimeoutOptions.h"
@@ -19,81 +19,119 @@
 using namespace std;
 
 struct Datacto{
-	Datacto(): to(TIMEOUT_STOP), dt(T0_TH), ct(ContextTimer::getInstance()), startTime(0){}
-	TimeoutOptions to;
-	DeltaTimes dt;
-	ContextTimer* ct;
-	clock_t startTime;
+	Datacto():tickX(0){}
+	int tickX;
 };
 
 class ContextTimeout {
 public:
-	static ContextTimeout* getInstance();
-	virtual ~ContextTimeout(){};
-	void transact() {
-		statePtr->transact();
-	} // context delegates signals to state
+	ContextTimeout();
+	virtual ~ContextTimeout();
 
-	void setTimer(TimeoutOptions to, DeltaTimes dt)
-	{
-	    ctodata.to = to;
-	    ctodata.dt = dt;
-	}
+	void timeout();
+
+	void startTimerT0();
+
+	void stopTimerT0();
+
+	void startTimerTH();
+
+	void stopTimerTH();
+
+	void startTimerTW();
+
+	void stopTimerTW();
+
+	void signalTimerTick();
 
 private:
     struct TimeOut { //top-level state
         Datacto* data;
-        virtual void transact() {
-        }
+    	virtual void timeout(){
+    	}
+
+    	virtual void startTimerT0(){
+    	}
+
+    	virtual void stopTimerT0(){
+    	}
+
+    	virtual void startTimerTH(){
+    	}
+
+    	virtual void stopTimerTH(){
+    	}
+
+    	virtual void startTimerTW(){
+    	}
+
+    	virtual void stopTimerTW(){
+    	}
+
+    	virtual void signalTimerTick(){
+    	}
+
     }*statePtr;   // a pointer to current state. Used for polymorphism.
 
     struct StateStart: public TimeOut {
-        virtual void transact() {
-            if (data->to == TIMEOUT_START)
-            {
-                data->startTime = data->ct->giveTime();
-                switch (data->dt)
-                {
-                case T0_TH:
-                    new (this) StartT0_TH;
-                    break;
-                case TH_TW:
-                    new (this) StartTH_TW;
-                    break;
-                default:
-                    new (this) StartTW_TE;
-                    break;
-                }
-            }
-        }
+    	virtual void startTimerT0(){
+    		data->tickX = DELTA_T0_TH;
+    		new (this) StartT0_TH;
+    	}
+
+    	virtual void startTimerTH(){
+    		data->tickX = DELTA_TH_TW;
+    		new (this) StartTH_TW;
+    	}
+
+    	virtual void startTimerTW(){
+    		data->tickX = DELTA_TW_TE;
+    		new (this) StartTW_TE;
+    	}
+
     };
 
     struct StartT0_TH: public TimeOut {
-        virtual void transact(){
-        }
+    	virtual void signalTimerTick(){
+    		data->tickX--;
+    		if(data->tickX == 0){
+    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		}
+    	}
+
+    	virtual void stopTimerT0(){
+    		new (this) StateStart;
+    	}
     };
 
     struct StartTH_TW: public TimeOut {
-        virtual void transact(){
+    	virtual void signalTimerTick(){
+    		data->tickX--;
+    		if(data->tickX == 0){
+    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		}
+    	}
 
-        }
+    	virtual void stopTimerTH(){
+    		new (this) StateStart;
+    	}
     };
 
     struct StartTW_TE: public TimeOut {
-        virtual void transact(){
+    	virtual void signalTimerTick(){
+    		data->tickX--;
+    		if(data->tickX == 0){
+    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		}
+    	}
 
-        }
+    	virtual void stopTimerTW(){
+    		new (this) StateStart;
+    	}
     };
 
-	static ContextTimeout* instance_;
-	StateStart stateMember; //The memory for the state is part of context object
+	StateStart stateMember;
 	Datacto ctodata;
-
-	ContextTimeout() :
-			statePtr(&stateMember), ctodata()// assigning start state
-	{
-		statePtr->data = &ctodata;
-	}
 	ContextTimeout(const ContextTimeout& other);
 	ContextTimeout& operator=(const ContextTimeout& other);
 };

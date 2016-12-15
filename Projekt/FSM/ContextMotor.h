@@ -70,7 +70,7 @@ private:
         virtual void transact() {
             if (data->stopCounter > 0)
             {
-                data->timer->setMode(TIMER_FAST);
+                data->timer->setMode(TIMER_STOP);
                 data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->stop();
                 new (this) Stop;
