@@ -14,13 +14,12 @@
 
 #include <iostream>
 #include "TimeoutOptions.h"
-#include "DeltaTimes.h"
-#include "ContextTimer.h"
 using namespace std;
 
 struct Datacto{
-	Datacto():tickX(0){}
-	int tickX;
+	Datacto():ticksPL(0), timeout(false){}
+	int ticksPL;
+	bool timeout;
 };
 
 class ContextTimeout {
@@ -44,6 +43,7 @@ public:
 
 	void signalTimerTick();
 
+	bool timeoutOccured();
 private:
     struct TimeOut { //top-level state
         Datacto* data;
@@ -75,17 +75,17 @@ private:
 
     struct StateStart: public TimeOut {
     	virtual void startTimerT0(){
-    		data->tickX = DELTA_T0_TH;
+    		data->ticksPL = DELTA_T0_TH;
     		new (this) StartT0_TH;
     	}
 
     	virtual void startTimerTH(){
-    		data->tickX = DELTA_TH_TW;
+    		data->ticksPL = DELTA_TH_TW;
     		new (this) StartTH_TW;
     	}
 
     	virtual void startTimerTW(){
-    		data->tickX = DELTA_TW_TE;
+    		data->ticksPL = DELTA_TW_TE;
     		new (this) StartTW_TE;
     	}
 
@@ -93,9 +93,9 @@ private:
 
     struct StartT0_TH: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->tickX--;
-    		if(data->tickX == 0){
-    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		data->ticksPL--;
+    		if(data->ticksPL == 0){
+    			data->timeout = true;
     		}
     	}
 
@@ -106,9 +106,9 @@ private:
 
     struct StartTH_TW: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->tickX--;
-    		if(data->tickX == 0){
-    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		data->ticksPL--;
+    		if(data->ticksPL == 0){
+    			data->timeout = true;
     		}
     	}
 
@@ -119,9 +119,9 @@ private:
 
     struct StartTW_TE: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->tickX--;
-    		if(data->tickX == 0){
-    			new (this) TimeOut; //TODO Actually Timeout in ConveyorFSM
+    		data->ticksPL--;
+    		if(data->ticksPL == 0){
+    			data->timeout = true;
     		}
     	}
 

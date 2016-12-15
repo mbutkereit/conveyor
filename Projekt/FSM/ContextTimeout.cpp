@@ -45,3 +45,7 @@ void ContextTimeout::stopTimerTW(){
 void ContextTimeout::signalTimerTick(){
 	statePtr->signalTimerTick();
 }
+
+bool ContextTimeout::timeoutOccured(){
+	return ctodata.timeout;
+}

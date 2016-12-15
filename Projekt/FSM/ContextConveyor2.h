@@ -22,6 +22,7 @@
 #include "ContextI.h"
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
+#include "ContextTimeout.h";
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
@@ -31,7 +32,7 @@ struct Data2 {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), skidOfConveyor2Full(
-					false), im(), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm() {
+					false), im(), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -48,6 +49,7 @@ struct Data2 {
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
 	WorkpieceMessage wpm;
+	ContextTimeout cto;
 
 };
 
@@ -100,10 +102,16 @@ private:
 		virtual void signalLBNextConveyor() {
 		}
 		virtual void signalTimerTick(){
-		}
-
-		//TODO SIGNALS THAT ARE MISSING
-		virtual void signalTimeout() {
+            data->cto.signalTimerTick();
+            if(data->cto.timeoutOccured()){
+            	data->hb.getHardware()->getTL()->turnGreenOff();
+				data->blinkYellow.start(NULL);
+				data->cm->setSpeed(MOTOR_STOP);
+				data->cm->transact();
+				cout << "TIMEOUT" << endl;
+				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
+                new (this) PuckLost;
+            }
 		}
 
 		Data2* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -117,7 +125,6 @@ private:
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
-
 			new (this) MotorOn;
 		}
 	};
@@ -152,17 +159,14 @@ private:
 			default:
 				data->puck.setPuckType(TYPE404PT);
 				break;
-
 			}
 			data->puck.setId(recieve.id);
 			data->puck.setHeightReading1(recieve.alimetry_value_one);
 			data->puck.setHeightReading2(recieve.alimetry_value_two);
-
 			data->puckVector->push_back(data->puck);
-
 			data->posInVector = data->puckVector->size() - 1;
-
-			//TODO t0 = GIVE TIME, START TIMER(t0)!
+			//TODO t0 = GIVE TIME!
+			data->cto.startTimerT0();
 			new (this) TransportToHeightMeasurement;
 		}
 	};
@@ -170,9 +174,10 @@ private:
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG <<"State: TransportToHeightMeasurement \n";
-
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
+			data->cto.stopTimerT0();
+			data->cto.startTimerTH();
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->puck.setHeightReading1(
 						data->hb.getHardware()->getAltimetry()->getHeight());
@@ -184,9 +189,7 @@ private:
 				new (this) PuckInHeightMeasurement;
 			} else if (0) {   //TODO DELTA t0 AND tH TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
@@ -209,7 +212,9 @@ private:
 	struct TransportToSwitch: public PuckOnConveyor2 {
 		virtual void signalLBSwitchInterrupted() {
 			LOG_DEBUG <<"State: TransoprtToSwitch \n";
-			//TODO STOP TIMER tH, GIVE TIME tW, DELTA th AND tW CALCULATION
+			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
+			data->cto.stopTimerTH();
+			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
 
@@ -298,7 +303,8 @@ private:
 	struct TransportToDelivery: public PuckOnConveyor2 {
 		virtual void signalLBEndInterrupted() {
 			LOG_DEBUG <<"State: TransoprtToDelivery \n";
-			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
+			//TODO tE = GIVE TIME, CALCULATE tW AND tE
+			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
 			if (1) {   //TODO DELTA tW and tE OK
@@ -385,6 +391,17 @@ private:
 			data->im.setBand2Frei();
 			data->finished = true;
 		}
+	};
+
+	struct PuckLost: public PuckOnConveyor2 {
+	    virtual void signalReset(){
+	        data->blinkYellow.stop();
+	        data->hb.getHardware()->getTL()->turnYellowOff();
+	        data->hb.getHardware()->getTL()->turnGreenOn();
+	        data->cm->resetSpeed(MOTOR_STOP);
+	        data->cm->transact();
+	        data->finished = true;
+	    }
 	};
 
 	TransportToEntry stateMember; //The memory for the state is part of context object

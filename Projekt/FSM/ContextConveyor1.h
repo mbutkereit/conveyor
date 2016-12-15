@@ -27,6 +27,7 @@
 #include "Thread/BlinkRedThread.h"
 #include "Thread/BlinkYellowThread.h"
 #include "ContextI.h"
+#include "ContextTimeout.h";
 
 extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
 
@@ -36,7 +37,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), im(), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(), tickX(10) {
+					skidcounter), blinkRed(), blinkYellow(), wpm(), cto(){
 	}
 	int puckID;
 	HalBuilder hb;
@@ -52,8 +53,7 @@ struct Data {
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
 	WorkpieceMessage wpm;
-	int tickX;
-
+	ContextTimeout cto;
 };
 
 /**
@@ -103,15 +103,14 @@ private:
 		virtual void signalLBNextConveyor() {
 		}
 		virtual void signalTimerTick(){
-            data->tickX--;
-            cout << data->tickX << endl;
-            if(data->tickX == 0){
-                data->hb.getHardware()->getTL()->turnGreenOff();
-                data->blinkYellow.start(NULL);
-                data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
-                cout << "TIMEOUT" << endl;
-                data->puckVector->erase(data->puckVector->begin() + data->posInVector);
+            data->cto.signalTimerTick();
+            if(data->cto.timeoutOccured()){
+            	data->hb.getHardware()->getTL()->turnGreenOff();
+				data->blinkYellow.start(NULL);
+				data->cm->setSpeed(MOTOR_STOP);
+				data->cm->transact();
+				cout << "TIMEOUT" << endl;
+				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
                 new (this) PuckLost;
             }
 		}
@@ -138,6 +137,7 @@ private:
 		void signalLBBeginNotInterrupted() {
 			LOG_DEBUG << "State: MotorOn\n";
 			//TODO t0 = GIVE TIME, START TIMER(t0)!
+			data->cto.startTimerT0();
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
 			new (this) TransportToHeightMeasurement;
@@ -149,6 +149,8 @@ private:
 			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
+			data->cto.stopTimerT0();
+			data->cto.startTimerTH();
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
@@ -160,18 +162,14 @@ private:
 				if (!(hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
-
 				} else {
 					LOG_DEBUG << "NO_DRILL_HOLE\n";
 					data->puck.setPuckType(NO_DRILL_HOLE);
 				}
-
 				new (this) PuckInHeightMeasurement;
 			} else if (0) { //TODO DELTA t0 AND tH TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
@@ -195,16 +193,16 @@ private:
 	struct TransportToSwitch: public PuckOnConveyor1 {
 		virtual void signalLBSwitchInterrupted() {
 			LOG_DEBUG << "State: TransportToSwitch \n";
-			//TODO STOP TIMER tH, GIVE TIME tW, START TIMER tW, DELTA th AND tW CALCULATION
+			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
+			data->cto.stopTimerTH();
+			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
-
 				} else {
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				}
 			}
-
 			new (this) Sorting;
 		}
 	};
@@ -239,9 +237,7 @@ private:
 				}
 			} else if (0) { //TODO DELTA tH AND tW TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
@@ -263,9 +259,7 @@ private:
 			if (*data->sc > 3) {
 				data->im.setBand1RutscheVoll();
 				LOG_DEBUG << "Rutsche 1 voll\n";
-
 			}
-
 			if (data->puckVector->size() > 0) {
 				data->finished = true;
 			} else {
@@ -289,7 +283,8 @@ private:
 	struct TransportToDelivery: public PuckOnConveyor1 {
 		virtual void signalLBEndInterrupted() {
 			LOG_DEBUG << "State: TransportToDelivery \n";
-			//TODO STOP TIME(tW), tE = GIVE TIME, CALCULATE tW AND tE
+			//TODO tE = GIVE TIME, CALCULATE tW AND tE
+			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
 			data->cswitch->transact();
 			if (1) { //TODO DELTA tW and tE OK
@@ -302,9 +297,7 @@ private:
 				new (this) TransportToConveyor2;
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
@@ -369,7 +362,6 @@ private:
 				data->cm->transact();
 				new (this) Conveyor1Empty;
 			}
-
 		}
 	};
 
