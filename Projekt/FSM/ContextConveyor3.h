@@ -154,7 +154,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State:Recieving Pucks\n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
-			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
 			data->ct1->giveTime();
 			new (this) Puck1Recognized;
@@ -196,7 +196,6 @@ private:
 			data->puck.setId(recieve.id);
 			data->puck.setHeightReading1(recieve.alimetry_value_one);
 			data->puck.setHeightReading2(recieve.alimetry_value_two);
-			//TODO: Timer Stopp
 			data->puckVector->push_back(data->puck);
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
@@ -210,7 +209,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 2 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
 			data->ct2->giveTime();
 			new (this) Puck2Recognized;
@@ -262,7 +261,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 3 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->setSpeed(MOTOR_SLOW);
+			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
 			data->ct3->giveTime();
 			new (this) Puck3Recognized;
@@ -304,9 +303,8 @@ private:
 			data->puck3.setHeightReading2(recieve.alimetry_value_two);
 
 			data->puckVector->push_back(data->puck3);
-			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->setSpeed(MOTOR_FAST);
-
+			data->cm->transact();
 			new (this) EndReceiving;
 		}
 
