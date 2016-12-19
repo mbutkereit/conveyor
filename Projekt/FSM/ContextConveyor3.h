@@ -35,9 +35,8 @@
 
 struct Data3 {
 	Data3(int puckID, std::vector<Puck>* puckVector) :
-
-			cswitch(ContextSwitch::getInstance()), hb(), cm(ContextMotor::getInstance()), puck(-1), puck2(-1), puck3(-1), id(0),
-			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow() {
+			cswitch(ContextSwitch::getInstance()), cto1(), cto2(), cto3(), hb(), cm(ContextMotor::getInstance()), puck(-1), puck2(-1), puck3(-1), id(0),
+			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow(), cafm(&cto1, &cto2, &cto3), ccefm(&cto1, &cto2, &cto3) {
 	}
 
 	ContextSwitch* cswitch;
@@ -60,6 +59,8 @@ struct Data3 {
 	InfoMessage im;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
+	ContextAltimetryFailManagement cafm;
+	ContextConveyorEndFailManagement ccefm;
 };
 
 class ContextConveyor3 {
@@ -173,6 +174,8 @@ private:
 			data->puck.setHeightReading1(recieve.alimetry_value_one);
 			data->puck.setHeightReading2(recieve.alimetry_value_two);
 			data->puckVector->push_back(data->puck);
+			//TODO t_01
+			data->cto1.startTimerT0();
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			new (this) Puck2Ready;
@@ -225,6 +228,8 @@ private:
 			data->puck2.setHeightReading1(recieve.alimetry_value_one);
 			data->puck2.setHeightReading2(recieve.alimetry_value_two);
 			data->puckVector->push_back(data->puck2);
+			//TODO t_02
+			data->cto2.startTimerT0();
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			new (this) Puck3Ready;
@@ -275,9 +280,10 @@ private:
 			data->puck3.setId(recieve.id);
 			data->puck3.setHeightReading1(recieve.alimetry_value_one);
 			data->puck3.setHeightReading2(recieve.alimetry_value_two);
-
 			data->puckVector->push_back(data->puck3);
-			data->cm->setSpeed(MOTOR_FAST);
+			//TODO t_03
+			data->cto3.startTimerT0();
+			data->cm->setSpeed(MOTOR_FAST);//Wirklich nötig? Vorheriger Zustand setzt bereits Fast. Bitte auch ohne testen./MC
 			data->cm->transact();
 			new (this) EndReceiving;
 		}
@@ -290,12 +296,79 @@ private:
 			data->cto1.stopTimerT0();
 			//TODO t_H1
 			data->cto1.startTimerTH();
-			new (this) AltimetryFailManagement_TOP;
+			new (this) AltimetryAndConveyorEndFailManagement_TOP;
 		}
 
 	};
 
-	struct AltimetryFailManagement_TOP: public PucksOnConveyor3{
+	struct AltimetryAndConveyorEndFailManagement_TOP: public PucksOnConveyor3{
+	    virtual void signalLBAltimetryNotInterrupted(){
+	        data->ccefm.signalLBAltimetryNotInterrupted();
+	    }
+
+	    virtual void signalLBSwitchInterrupted(){
+	        data->cswitch->setSwitchOpen();
+	        data->cswitch->transact();
+	    }
+
+	    virtual void signalLBEndInterrupted(){
+	        data->cswitch->resetSwitchOpen();
+	        data->cswitch->transact();
+	        data->cto1.stopTimerTH();
+	        data->ccefm.signalLBEndInterrupted();
+	    }
+
+	    virtual void signalLBEndNotInterrupted(){
+	        data->ccefm.signalLBEndNotInterrupted();
+	        if(data->ccefm.puckAdded()){
+	            new (this) PuckAdded;
+	        }
+	        else if(data->ccefm.isContextimEnzustand()){
+                //Puck 1
+                cout << "ID Puck 1: " <<
+
+                cout << data->puck.getId() << endl;
+                cout << "Height on Conveyor1 Puck 1: " <<
+
+                cout << data->puck.getHeightReading1() << endl;
+                cout << "Height on Conveyor2 Puck 1: " <<
+
+                cout << data->puck.getHeightReading2() << endl;
+                cout << "Puck Type Puck 1: " <<
+
+                cout << data->puck.getPuckType() << endl;
+
+                //Puck 2
+                cout << "ID Puck 2: " <<
+
+                cout << data->puck2.getId() << endl;
+                cout << "Height on Conveyor1 Puck 2: " <<
+
+                cout << data->puck2.getHeightReading1() << endl;
+                cout << "Height on Conveyor2 Puck 2: " <<
+
+                cout << data->puck2.getHeightReading2() << endl;
+                cout << "Puck Type Puck 2: " <<
+
+                cout << data->puck2.getPuckType() << endl;
+
+                //Puck 3
+                cout << "ID Puck 3: " <<
+
+                cout << data->puck3.getId() << endl;
+                cout << "Height on Conveyor1 Puck 3: " <<
+
+                cout << data->puck3.getHeightReading1() << endl;
+                cout << "Height on Conveyor2 Puck 3: " <<
+
+                cout << data->puck3.getHeightReading2() << endl;
+                cout << "Puck Type Puck 3: " <<
+
+                cout << data->puck3.getPuckType() << endl;
+
+                data->finished = true;
+	        }
+	    }
 	};
 
 //	struct HeightFailBegin: public State {

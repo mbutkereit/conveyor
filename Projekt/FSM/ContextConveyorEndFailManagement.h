@@ -42,6 +42,10 @@ public:
 		return ccefm.finished;
 	}
 
+	bool puckAdded(){
+	    return ccefm.puckAdded;
+	}
+
 	void signalLBBeginInterrupted();
 
 	void signalLBEndInterrupted();
