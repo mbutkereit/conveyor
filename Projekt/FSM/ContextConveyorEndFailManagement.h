@@ -19,11 +19,12 @@
 
 struct Dataccefm {
 	Dataccefm(ContextTimeout* cto1, ContextTimeout* cto2, ContextTimeout* cto3) :
-			hb(), cswitch(ContextSwitch::getInstance()), finished(false), ccefmto1(cto1), ccefmto2(cto2), ccefmto3(cto3) {
+			hb(), cswitch(ContextSwitch::getInstance()), finished(false), puckAdded(false), ccefmto1(cto1), ccefmto2(cto2), ccefmto3(cto3) {
 	}
 	HalBuilder hb;
 	ContextSwitch* cswitch;
 	bool finished;
+	bool puckAdded;
 	ContextTimeout* ccefmto1;
 	ContextTimeout* ccefmto2;
 	ContextTimeout* ccefmto3;
@@ -121,31 +122,48 @@ private:
 
 	struct Puck1Recognized_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndNotInterrupted() {
-
+			if(0){//TODO Delta not ok
+				data->puckAdded = true;
+			}
+			else{
+				new (this) Puck2Ready_CEFM;
+			}
 		}
 	};
 
 	struct Puck2Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
-
+			data->ccefmto2->stopTimerTH();
+			//TODO t_E2, Delta of t_H2 and t_E2
+			new (this) Puck2Recognized_CEFM;
 		}
 	};
 
 	struct Puck2Recognized_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndNotInterrupted(){
-
+			if(0){//TODO Delta not ok
+				data->puckAdded = true;
+			}
+			else{
+				new (this) Puck3Ready_CEFM;
+			}
 		}
 	};
 
 	struct Puck3Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
-
+			data->ccefmto3->stopTimerTH();
+			//TODO t_E3, Delta of t_H3 and t_E3
+			new (this) Puck3Recognized_CEFM;
 		}
 	};
 
 	struct Puck3Recognized_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndNotInterrupted(){
-
+			if(0){//TODO Delta not ok
+				data->puckAdded = true;
+			}
+			data->finished = true;
 		}
 	};
 
