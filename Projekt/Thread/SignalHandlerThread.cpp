@@ -43,11 +43,11 @@ void SignalHandlerThread::execute(void*) {
 			exit(EXIT_FAILURE);
 		}
 		short pulsecode = pulse.code;
-			LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
+			//LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 		if (pulsecode == 0xE) {
 
-			LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
-					<< pulse.value.sival_int << "\n";
+			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
+					//<< pulse.value.sival_int << "\n";
 
 			int code = pulse.value.sival_int;
 
