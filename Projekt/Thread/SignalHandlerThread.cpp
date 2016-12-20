@@ -43,11 +43,11 @@ void SignalHandlerThread::execute(void*) {
 			exit(EXIT_FAILURE);
 		}
 		short pulsecode = pulse.code;
-			LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
+			//LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 		if (pulsecode == 0xE) {
 
-			LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
-					<< pulse.value.sival_int << "\n";
+			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
+				//	<< pulse.value.sival_int << "\n";
 
 			int code = pulse.value.sival_int;
 
@@ -62,6 +62,7 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 2
 				ContextI* context = new ContextTopFSM2(globalerID_Zaehler++,&puckvector,&skidcounter);
+				LOG_DEBUG <<"Neuer Automat erstellt. \n";
 #endif
 #if defined BAND && BAND == 3
 
@@ -158,6 +159,7 @@ void SignalHandlerThread::execute(void*) {
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gelÃ¶scht.
 			for (uint8_t i = 0; i < contextContainer.size(); i++) {
 				if (contextContainer[i]->isContextimEnzustand()) {
+					LOG_DEBUG << "Ich toete gleich einen Automaten1. \n";
 
 					//TODO extract Method
 					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
@@ -182,7 +184,9 @@ void SignalHandlerThread::execute(void*) {
 					disp->remListeners(contextContainer[i], ESTOPSIGNAL);
 					disp->remListeners(contextContainer[i], STOPSIGNAL);
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
+					LOG_DEBUG << "Ich toete gleich einen Automaten2. \n";
 					disp->remListeners(contextContainer[i], TIMINTR);
+					LOG_DEBUG << "Ich toete gleich einen Automaten3. \n";
 
 #if defined BAND && BAND == 1
 
@@ -192,8 +196,12 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 2
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
+					LOG_DEBUG << "Ich toete gleich einen Automaten4. \n";
 					contextContainer.erase(contextContainer.begin() + i);
-					delete contextpointer;
+					LOG_DEBUG << "Ich toete gleich einen Automaten5. \n";
+					//delete contextpointer;
+					LOG_DEBUG << "Ich toete gleich einen Automaten6. \n";
+
 #endif
 #if defined BAND && BAND == 3
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
@@ -210,7 +218,7 @@ void SignalHandlerThread::execute(void*) {
                     contextContainer.erase(contextContainer.begin() + i);
                     delete contextpointer;
 #endif
-					LOG_DEBUG << "Ich töte jetzt einen Automaten. \n";
+					LOG_DEBUG << "Ich toete jetzt einen Automaten. \n";
 				}
 			}
 
