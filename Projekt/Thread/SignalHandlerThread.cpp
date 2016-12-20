@@ -220,11 +220,7 @@ void SignalHandlerThread::execute(void*) {
 #if defined BAND && BAND == 3
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
-<<<<<<< HEAD
-
-=======
 					//delete contextpointer;
->>>>>>> 626ba37d616384e60090cb04a4762e1797db5287
 #endif
 #if defined BAND && BAND == 4
                     ContextI *contextpointer = (ContextI*) contextContainer[i];
