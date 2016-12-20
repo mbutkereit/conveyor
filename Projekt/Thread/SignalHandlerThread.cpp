@@ -69,9 +69,12 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 4
 
-				ContextI* context =  new ContextTimeMeasurement(globalerID_Zaehler++,&puckvector);
+				ContextI* context =  new ContextTimeMeasurementFast(globalerID_Zaehler++,&puckvector);
 #endif
+#if defined BAND && BAND == 5
 
+                ContextI* context =  new ContextTimeMeasurementSlow(globalerID_Zaehler++,&puckvector);
+#endif
 
 				//TODO extract Method
 				disp->addListener(context, LBBEGININTERRUPTED);
@@ -197,7 +200,16 @@ void SignalHandlerThread::execute(void*) {
 					contextContainer.erase(contextContainer.begin() + i);
 					delete contextpointer;
 #endif
-
+#if defined BAND && BAND == 4
+                    ContextI *contextpointer = (ContextI*) contextContainer[i];
+                    contextContainer.erase(contextContainer.begin() + i);
+                    delete contextpointer;
+#endif
+#if defined BAND && BAND == 5
+                    ContextI *contextpointer = (ContextI*) contextContainer[i];
+                    contextContainer.erase(contextContainer.begin() + i);
+                    delete contextpointer;
+#endif
 					LOG_DEBUG << "Ich töte jetzt einen Automaten. \n";
 				}
 			}
