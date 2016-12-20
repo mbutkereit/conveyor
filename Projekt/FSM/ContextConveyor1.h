@@ -258,6 +258,7 @@ private:
 			}
 			if (data->puckVector->size() > 0) {
 				data->finished = true;
+				new (this) EndOfTheEnd;
 			} else {
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
@@ -272,7 +273,7 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->finished = true;
-
+			new (this) EndOfTheEnd;
 		}
 	};
 
@@ -350,8 +351,8 @@ private:
 					data->puckVector->begin() + data->posInVector);
 
 			if (data->puckVector->size() > 0) {
-
 				data->finished = true;
+				new (this) EndOfTheEnd;
 			} else {
 
 				data->cm->setSpeed(MOTOR_STOP);
@@ -366,6 +367,7 @@ private:
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
 			data->finished = true;
+			new (this) EndOfTheEnd;
 		}
 	};
 
@@ -377,8 +379,44 @@ private:
 	        data->cm->resetSpeed(MOTOR_STOP);
 	        data->cm->transact();
 	        data->finished = true;
+	        new (this) EndOfTheEnd;
 	    }
 	};
+
+	struct EndOfTheEnd: public PuckOnConveyor1 {
+	        virtual void signalLBBeginInterrupted() {
+	        }
+	        virtual void signalLBEndInterrupted() {
+	        }
+	        virtual void signalLBAltimetryInterrupted() {
+	        }
+	        virtual void signalLBSwitchInterrupted() {
+	        }
+	        virtual void signalLBBeginNotInterrupted() {
+	        }
+	        virtual void signalLBEndInNotInterrupted() {
+	        }
+	        virtual void signalLBAltimetryNotInterrupted() {
+	        }
+	        virtual void signalLBSwitchNotInterrupted() {
+	        }
+	        virtual void signalEStop() {
+	        }
+	        virtual void signalStart() {
+	        }
+	        virtual void signalStop() {
+	        }
+	        virtual void signalReset() {
+	        }
+	        virtual void signalLBSkidInterrupted() {
+	        }
+	        virtual void signalLBSkidNotInterrupted() {
+	        }
+	        virtual void signalAltimetryCompleted() {
+	        }
+	        virtual void signalTimerTick(){
+	        }
+	    };
 
 	TransportToEntry stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object

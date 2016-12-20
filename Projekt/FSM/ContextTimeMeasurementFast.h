@@ -8,119 +8,166 @@
 #ifndef CONTEXTTIMEMEASUREMENTFAST_H_
 #define CONTEXTTIMEMEASUREMENTFAST_H_
 #include <iostream>
+#include <unistd.h>
+#include <iostream>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
 #include "ContextMotor.h"
-#include "Puck.h"
-#include <vector>
-#include "ContextSorting.h"
 #include "ContextSwitch.h"
-#include "Serializer/Serializer.h"
-#include "Serializer/InfoMessage.h"
-#include "Serializer/WorkpieceMessage.h"
-#include "Thread/BlinkRedThread.h"
-#include "Thread/BlinkYellowThread.h"
 #include "ContextI.h"
 
-extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware zuzugreifen.
-
-struct TimeFastData {
-	TimeFastData() :
-			cm(ContextMotor::getInstance()), cs(ContextSwitch::getInstance()), finished(
-					false) {
-	}
-
-	ContextMotor *cm;
-	ContextSwitch *cs;
-	bool finished;
+struct Datactmf {
+    Datactmf() :
+            hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), t0_th(0), th_tw(0), tw_te(0), tickX(NULL), finished(false) {
+    }
+    HalBuilder hb;
+    ContextMotor* cm;
+    ContextSwitch* cswitch;
+    int t0_th;
+    int th_tw;
+    int tw_te;
+    int *tickX;
+    bool finished;
 };
 
-class ContextTimeMeasurementFast {
+class ContextTimeMeasurementFast :public ContextI {
+public:
+    ContextTimeMeasurementFast();
+    virtual ~ContextTimeMeasurementFast();
+
+    bool isContextimEnzustand() {
+        if (ctmfdata.finished){
+            LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
+        }
+        return ctmfdata.finished;
+    }
+
+    void signalLBBeginInterrupted();
+
+    void signalLBEndInterrupted();
+
+    void signalLBAltimetryInterrupted();
+
+    void signalLBSwitchInterrupted();
+
+    void signalLBBeginNotInterrupted();
+
+    void signalLBEndNotInterrupted();
+
+    void signalLBAltimetryNotInterrupted();
+
+    void signalLBSwitchNotInterrupted();
+
+    void signalEStop();
+
+    void signalStart();
+
+    void signalStop();
+
+    void signalReset();
+
+    void signalLBSkidInterrupted();
+
+    void signalLBSkidNotInterrupted();
+
+    void signalAltimetryCompleted();
+
+    void sensorMeasurementCompleted();
+
+    void signalLBNextConveyor();
+
+    void signalTimerTick();
 
 private:
-	struct TimeMeasurementFast {
-		virtual void signalLBBeginInterrupted() {
-		}
-		virtual void signalLBEndInterrupted() {
-		}
-		virtual void signalLBAltimetryInterrupted() {
-		}
-		virtual void signalLBSwitchInterrupted() {
-		}
-		virtual void signalLBBeginNotInterrupted() {
-		}
+    struct TimereadingFast { //top-level state
+        virtual void signalLBBeginInterrupted() {
+        }
+        virtual void signalLBEndInterrupted() {
+        }
+        virtual void signalLBAltimetryInterrupted() {
+        }
+        virtual void signalLBSwitchInterrupted() {
+        }
+        virtual void signalLBBeginNotInterrupted() {
+        }
+        virtual void signalLBEndNotInterrupted() {
+        }
+        virtual void signalLBAltimetryNotInterrupted() {
+        }
+        virtual void signalLBSwitchNotInterrupted() {
+        }
+        virtual void signalEStop() {
+        }
+        virtual void signalStart() {
+        }
+        virtual void signalStop() {
+        }
+        virtual void signalReset() {
+        }
+        virtual void signalLBSkidInterrupted() {
+        }
+        virtual void signalLBSkidNotInterrupted() {
+        }
+        virtual void signalAltimetryCompleted() {
+        }
+        virtual void sensorMeasurementCompleted() {
+        }
+        virtual void signalLBNextConveyor() {
+        }
+        virtual void signalTimerTick(){
+            *data->tickX += 1;
+        }
 
-		TimeFastData* data; // pointer to data, which physically resides inside the context class (contextdata)
-	}*statePtr;   // a pointer to current state. Used for polymorphism.
+        Datactmf* data;
+    }*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	struct MotorOn: public TimeMeasurementFast {
-		void signalLBBeginInterrupted() {
-			data->cm->setSpeed(MOTOR_FAST);
+    struct TransportToEntry: public TimereadingFast {
+        virtual void signalLBBeginInterrupted() {
+            data->cm->setSpeed(MOTOR_FAST);
+            data->cm->transact();
+            new (this) MotorOn;
+        }
+    };
 
-			new (this) TransportToHeightMeasurement;
-		}
-	};
+    struct MotorOn: public TimereadingFast{
+        virtual void signalLBBeginNotInterrupted() {
+            data->tickX = &data->t0_th;
+            new (this) TransportToAltimetry;
+        }
+    };
 
-	struct TransportToHeightMeasurement: public TimeMeasurementFast {
-		void signalLBBeginNotInterrupted() {
-			// TODO: Gib Ticks für t0
-			//TODO: Zeiterfassung t0
+    struct TransportToAltimetry: public TimereadingFast{
+        virtual void signalLBAltimetryInterrupted() {
+            data->tickX = &data->th_tw;
+            new (this) TransportToSkid;
+        }
+    };
 
-			new (this) TransportToSwitch;
-		}
-	};
+    struct TransportToSkid: public TimereadingFast{
+        virtual void signalLBSwitchInterrupted() {
+            data->tickX = &data->tw_te;
+            data->cswitch->setSwitchOpen();
+            data->cswitch->transact();
+            new (this) TransportToDelivery;
+        }
+    };
 
-	struct TransportToSwitch: public TimeMeasurementFast {
-		void signalLBAlitmetryInterrupted() {
-			// TODO: Gib Ticks für th
-			//TODO: Delta t0 und tH
+    struct TransportToDelivery: public TimereadingFast {
+        virtual void signalLBEndInterrupted() {
+            data->tickX = NULL;
+            data->cswitch->resetSwitchOpen();
+            data->cswitch->transact();
+            data->cm->setSpeed(MOTOR_STOP);
+            data->cm->transact();
+            cout << "DELTA_T0_TH: " << data->t0_th << endl;
+            cout << "DELTA_TH_TW: " << data->th_tw << endl;
+            cout << "DELTA_TW_TE: " << data->tw_te << endl;
+            data->finished = true;
+        }
+    };
 
-			new (this) TransportToDelivery;
-		}
-	};
-
-	struct TransportToDelivery: public TimeMeasurementFast {
-		void signalLBSwitchInterrupted() {
-
-			// TODO: Gib Ticks für tW
-			//TODO: Delta tH und tW
-			data->cs->setSwitchOpen();
-
-			new (this) PuckInEnd;
-		}
-	};
-
-	struct PuckInEnd: public TimeMeasurementFast {
-		void signalLBSwitchInterrupted() {
-
-			// TODO: Gib Ticks für tE
-			//TODO:Zeiterfassung tE
-			//TODO: Delta tW und tE
-			//TODO: Delta von Zeiterfassung t0 und tE
-			data->cs->resetSwitchOpen();
-			data->cm->setSpeed(MOTOR_STOP);
-			data->finished = true;
-		}
-	};
-
-	MotorOn stateMember; //The memory for the state is part of context object
-	TimeFastData contextdata;  //Data is also kept inside the context object
-
-public:
-
-	ContextTimeMeasurementFast();
-	virtual ~ContextTimeMeasurementFast();
-
-	void signalLBBeginInterrupted();
-
-	void signalLBEndInterrupted();
-
-	void signalLBAltimetryInterrupted();
-
-	void signalLBSwitchInterrupted();
-
-	void signalLBBeginNotInterrupted();
-
+    TransportToEntry stateMember; //The memory for the state is part of context object
+    Datactmf ctmfdata;
 };
 
 #endif /* CONTEXTTIMEMEASUREMENTFAST_H_ */

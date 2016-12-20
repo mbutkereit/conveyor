@@ -8,33 +8,71 @@
 #include "ContextTimeMeasurementFast.h"
 
 ContextTimeMeasurementFast::ContextTimeMeasurementFast() :
-		statePtr(&stateMember), // assigning start state
-		contextdata()
-// initializing data
-{
-	statePtr->data = &contextdata; // connecting state->data with the context data
+            statePtr(&stateMember), ctmfdata() // assigning start state
+    {
+        statePtr->data = &ctmfdata;
+    }
+
+ContextTimeMeasurementFast::~ContextTimeMeasurementFast(){};
+
+void ContextTimeMeasurementFast::signalLBBeginInterrupted(){
+    statePtr->signalLBBeginInterrupted();
 }
 
-ContextTimeMeasurementFast::~ContextTimeMeasurementFast() {
+void ContextTimeMeasurementFast::signalLBBeginNotInterrupted(){
+    statePtr->signalLBBeginNotInterrupted();
 }
 
-void ContextTimeMeasurementFast::signalLBBeginInterrupted() {
-	statePtr->signalLBBeginInterrupted();
+void ContextTimeMeasurementFast::signalLBEndInterrupted()  {
+    statePtr->signalLBEndInterrupted();
+}
+void ContextTimeMeasurementFast::signalLBEndNotInterrupted()  {
+    statePtr->signalLBEndNotInterrupted();
 }
 
-void ContextTimeMeasurementFast::signalLBBeginNotInterrupted() {
-	statePtr->signalLBBeginNotInterrupted();
+void ContextTimeMeasurementFast::signalLBAltimetryInterrupted(){
+    statePtr->signalLBAltimetryInterrupted();
+}
+void ContextTimeMeasurementFast::signalLBAltimetryNotInterrupted(){
+    statePtr->signalLBAltimetryNotInterrupted();
 }
 
-void ContextTimeMeasurementFast::signalLBEndInterrupted() {
-	statePtr->signalLBEndInterrupted();
+void ContextTimeMeasurementFast::signalLBSwitchInterrupted(){
+    statePtr->signalLBSwitchInterrupted();
+}
+void ContextTimeMeasurementFast::signalLBSwitchNotInterrupted(){
+    statePtr->signalLBSwitchNotInterrupted();
 }
 
-void ContextTimeMeasurementFast::signalLBAltimetryInterrupted() {
-	statePtr->signalLBAltimetryInterrupted();
+void ContextTimeMeasurementFast::signalEStop(){
+    statePtr->signalEStop();
+}
+void ContextTimeMeasurementFast::signalStart(){
+    statePtr->signalStart();
 }
 
-void ContextTimeMeasurementFast::signalLBSwitchInterrupted() {
-	statePtr->signalLBSwitchInterrupted();
+void ContextTimeMeasurementFast::signalStop(){
+    statePtr->signalStop();
+}
+void ContextTimeMeasurementFast::signalReset(){
+    statePtr->signalReset();
 }
 
+void ContextTimeMeasurementFast::signalLBSkidInterrupted(){
+    statePtr->signalLBSkidInterrupted();
+}
+void ContextTimeMeasurementFast::signalLBSkidNotInterrupted(){
+    statePtr->signalLBSkidNotInterrupted();
+}
+
+void ContextTimeMeasurementFast::signalAltimetryCompleted(){
+    statePtr->signalAltimetryCompleted();
+}
+
+void ContextTimeMeasurementFast::signalLBNextConveyor(){
+    statePtr->signalLBNextConveyor();
+}
+
+void ContextTimeMeasurementFast::signalTimerTick(){
+    statePtr->signalTimerTick();
+}

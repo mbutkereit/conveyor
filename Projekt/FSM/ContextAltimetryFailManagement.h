@@ -39,6 +39,10 @@ public:
 		return cafm.finished;
 	}
 
+	bool puckAdded(){
+	    return cafm.puckAdded;
+	}
+
 	void signalLBBeginInterrupted();
 
 	void signalLBEndInterrupted();

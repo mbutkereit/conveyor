@@ -95,9 +95,6 @@ private:
 		virtual void signalLBSwitchNotInterrupted() {
 		}
 		virtual void signalEStop() {
-			/*data->cm->resetSpeed(MOTOR_STOP);
-			 data->cm->transact();
-			 new (this) Estop;*/
 		}
 		virtual void signalStart() {
 		}
@@ -304,6 +301,17 @@ private:
 	struct AltimetryAndConveyorEndFailManagement_TOP: public PucksOnConveyor3{
 	    virtual void signalLBAltimetryNotInterrupted(){
 	        data->ccefm.signalLBAltimetryNotInterrupted();
+	        if(data->cafm.puckAdded()){
+                data->cm->setSpeed(MOTOR_STOP);
+                data->cm->transact();
+                data->hb.getHardware()->getTL()->turnGreenOff();
+                data->blinkRed.start(NULL);
+                new (this) PuckAdded;
+	        }
+	    }
+
+	    virtual void signalLBAltimetryInterrupted(){
+	        data->ccefm.signalLBAltimetryInterrupted();
 	    }
 
 	    virtual void signalLBSwitchInterrupted(){
@@ -321,6 +329,10 @@ private:
 	    virtual void signalLBEndNotInterrupted(){
 	        data->ccefm.signalLBEndNotInterrupted();
 	        if(data->ccefm.puckAdded()){
+	            data->cm->setSpeed(MOTOR_STOP);
+	            data->cm->transact();
+	            data->hb.getHardware()->getTL()->turnGreenOff();
+	            data->blinkRed.start(NULL);
 	            new (this) PuckAdded;
 	        }
 	        else if(data->ccefm.isContextimEnzustand()){
@@ -371,300 +383,10 @@ private:
 	    }
 	};
 
-//	struct HeightFailBegin: public State {
-//		virtual void signalLBAltimetryInterrupted() {
-//			LOG_DEBUG <<"State: HeigntFailBegin\n";
-//			switch (data->counterHeightFail) {
-//			case 0:
-//				data->cth1->giveTime();
-//
-//				new (this) HeightPuck1Recognized;
-//				break;
-//			case 1:
-//				new (this) HeightPuck2Ready;
-//				break;
-//			case 2:
-//				new (this) HeightPuck3Ready;
-//				break;
-//			}
-//			new (this) HeightPuck1Recognized;
-//		}
-//
-//	};
-
-//	struct HeightPuck1Recognized: public State {
-//		virtual void signalLBAltimetryNotInterrupted() {
-//			LOG_DEBUG <<"State: HeightPuck1Recognized\n";
-//			data->counterHeightFail = 1;
-//			data->delta1 = data->cth1 - data->ct1;
-//			if (data->delta1 != DELTA_CT1_CTH1) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->resetSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) HeightPuck2Ready;
-//			}
-//
-//		}
-//
-//	};
-//
-//	struct HeightPuck2Ready: public State {
-//		virtual void signalLBAltimetryInterrupted() {
-//			LOG_DEBUG <<"State: HeightPuck2Ready\n";
-//			data->cth2->giveTime();
-//			new (this) HeightPuck2Recognized;
-//		}
-//
-//	};
-//
-//	struct HeightPuck2Recognized: public State {
-//		virtual void signalLBAltimetryNotInterrupted() {
-//			LOG_DEBUG <<"State: HeightPuck2Recognized\n";
-//			data->counterHeightFail = 2;
-//			data->delta2 = data->cth2 - data->ct2;
-//			if (data->delta2 != DELTA_CT2_CTH2) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->setSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) HeightPuck3Ready;
-//			}
-//		}
-//	};
-//
-//	struct HeightPuck3Ready: public State {
-//
-//		virtual void signalLBAltimetryInterrupted() {
-//			LOG_DEBUG <<"State: HeightPuck3Ready\n";
-//			data->cth3->giveTime();
-//			new (this) HeightPuck3Recognized;
-//		}
-//
-//	};
-//
-//	struct HeightPuck3Recognized: public State {
-//		virtual void signalLBAltimetryNotInterrupted() {
-//			LOG_DEBUG <<"State: HeightPuck3Recognized\n";
-//			data->counterHeightFail = 0;
-//			data->delta3 = data->cth3 - data->ct3;
-//			if (data->delta3 != DELTA_CT3_CTH3) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->setSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) HeightEnd;
-//			}
-//
-//		}
-//
-//	};
-//
-//	struct HeightEnd: public State {
-//		virtual void signalLBSwitchInterrupted() {
-//			LOG_DEBUG <<"State: HeightEnd\n";
-//			data->cswitch->setSwitchOpen();
-//			//TODO: Timeout Weiche
-//			new (this) TransportToSwitch;
-//		}
-//
-//	};
-//
-//	struct TransportToSwitch: public State {
-//		virtual void signalLBEndInterrupted() {
-//			LOG_DEBUG <<"State: TransportToSwitch\n";
-//			new (this) EndFailBegin;
-//
-//		}
-//
-//	};
-//
-//	struct EndFailBegin: public State {
-//		virtual void signalLBEndInterrupted() {
-//			LOG_DEBUG <<"State: EndFailBegin\n";
-//
-//			switch (data->counterEndFail) {
-//			case 0:
-//				data->cte1->giveTime();
-//				new (this) EndPuck1Recognized;
-//				break;
-//			case 1:
-//				new (this) EndPuck2Ready;
-//				break;
-//			case 2:
-//				new (this) EndPuck3Ready;
-//				break;
-//			}
-//			new (this) EndPuck1Recognized;
-//		}
-//
-//	};
-//
-//	struct EndPuck1Recognized: public State {
-//		virtual void signalLBEndNotInterrupted() {
-//			LOG_DEBUG <<"State: EndPuck1Recognized\n";
-//			data->counterEndFail = 1;
-//			data->delta1 = data->cte1 - data->cth1;
-//			if (data->delta1 != DELTA_CTH1_CTE1) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->setSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) EndPuck2Ready;
-//			}
-//
-//		}
-//
-//	};
-//
-//	struct EndPuck2Ready: public State {
-//		virtual void signalLBEndInterrupted() {
-//			LOG_DEBUG <<"State: EndPuck2Ready\n";
-//			data->cte2->giveTime();
-//			new (this) EndPuck2Recognized;
-//		}
-//
-//	};
-//
-//	struct EndPuck2Recognized: public State {
-//		virtual void signalLBEndNotInterrupted() {
-//			LOG_DEBUG <<"State: EndPuck2Recognized\n";
-//			data->counterEndFail = 2;
-//			data->delta2 = data->cte2 - data->cth2;
-//			if (data->delta2 != DELTA_CTH2_CTE2) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->setSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) EndPuck3Ready;
-//			}
-//
-//		}
-//
-//	};
-//
-//	struct EndPuck3Ready: public State {
-//		virtual void signalLBEndInterrupted() {
-//			LOG_DEBUG <<"State: EndPuck3Ready\n";
-//			data->cte3->giveTime();
-//			new (this) HeightPuck3Recognized;
-//		}
-//
-//	};
-//
-//	struct EndPuck3Recognized: public State {
-//		virtual void signalLBEndNotInterrupted() {
-//			LOG_DEBUG <<"State: EndPuck3Recognized\n";
-//			data->counterEndFail = 0;
-//			data->delta3 = data->cte3 - data->cth3;
-//			if (data->delta3 != DELTA_CTH3_CTE3) {
-//				data->hb.getHardware()->getTL()->turnGreenOff();
-//				data->blinkRed.start(NULL);
-//				data->cm->setSpeed(MOTOR_STOP);
-//				data->cm->transact();
-//				cout
-//						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
-//						<< endl;
-//				LOG_DEBUG <<"Fehler: PUCK WURDE HINZUGEFÜGT\n";
-//
-//				new (this) PuckAdded;
-//			} else {
-//				new (this) PucksToConsole;
-//			}
-//
-//		}
-//
-//	};
-
-	struct PucksToConsole: public PucksOnConveyor3 {
-
-		virtual void signalLBEndNotInterrupted() {
-			//Puck 1
-			cout << "ID Puck 1: " <<
-
-			cout << data->puck.getId() << endl;
-			cout << "Height on Conveyor1 Puck 1: " <<
-
-			cout << data->puck.getHeightReading1() << endl;
-			cout << "Height on Conveyor2 Puck 1: " <<
-
-			cout << data->puck.getHeightReading2() << endl;
-			cout << "Puck Type Puck 1: " <<
-
-			cout << data->puck.getPuckType() << endl;
-
-			//Puck 2
-			cout << "ID Puck 2: " <<
-
-			cout << data->puck2.getId() << endl;
-			cout << "Height on Conveyor1 Puck 2: " <<
-
-			cout << data->puck2.getHeightReading1() << endl;
-			cout << "Height on Conveyor2 Puck 2: " <<
-
-			cout << data->puck2.getHeightReading2() << endl;
-			cout << "Puck Type Puck 2: " <<
-
-			cout << data->puck2.getPuckType() << endl;
-
-			//Puck 3
-			cout << "ID Puck 3: " <<
-
-			cout << data->puck3.getId() << endl;
-			cout << "Height on Conveyor1 Puck 3: " <<
-
-			cout << data->puck3.getHeightReading1() << endl;
-			cout << "Height on Conveyor2 Puck 3: " <<
-
-			cout << data->puck3.getHeightReading2() << endl;
-			cout << "Puck Type Puck 3: " <<
-
-			cout << data->puck3.getPuckType() << endl;
-
-			data->finished = true;
-		}
-
-	};
-
 	struct PuckAdded: public PucksOnConveyor3 {
 		virtual void SignalReset() {
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			data->blinkRed.stop();
 			data->finished = true;
 			new (this) EndOfTheEnd;
@@ -686,6 +408,38 @@ private:
 	};
 
 	struct EndOfTheEnd: public PucksOnConveyor3 {
+	    virtual void signalLBBeginInterrupted() {
+        }
+        virtual void signalLBEndInterrupted() {
+        }
+        virtual void signalLBAltimetryInterrupted() {
+        }
+        virtual void signalLBSwitchInterrupted() {
+        }
+        virtual void signalLBBeginNotInterrupted() {
+        }
+        virtual void signalLBEndInNotInterrupted() {
+        }
+        virtual void signalLBAltimetryNotInterrupted() {
+        }
+        virtual void signalLBSwitchNotInterrupted() {
+        }
+        virtual void signalEStop() {
+        }
+        virtual void signalStart() {
+        }
+        virtual void signalStop() {
+        }
+        virtual void signalReset() {
+        }
+        virtual void signalLBSkidInterrupted() {
+        }
+        virtual void signalLBSkidNotInterrupted() {
+        }
+        virtual void signalAltimetryCompleted() {
+        }
+        virtual void signalTimerTick(){
+        }
 	};
 
 	ReceivingPucks stateMember; //The memory for the state is part of context object

@@ -5,13 +5,13 @@
  *      Author: abs949
  */
 
-#include "ContextTimer.h"
-
-ContextTimer* ContextTimer::instance_ = NULL;
-
-ContextTimer* ContextTimer::getInstance() {
-	if (instance_ == NULL) {
-		instance_ = new ContextTimer();
-	}
-	return instance_;
-}
+//#include "ContextTimer.h"
+//
+//ContextTimer* ContextTimer::instance_ = NULL;
+//
+//ContextTimer* ContextTimer::getInstance() {
+//	if (instance_ == NULL) {
+//		instance_ = new ContextTimer();
+//	}
+//	return instance_;
+//}
