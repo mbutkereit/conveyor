@@ -21,15 +21,14 @@ int main(int argc, char *argv[]) {
    SerialMessageWatchdogThread::notify();
 
   // message->setBand2NichtFrei();
-    SignalHandlerThread thread_automat;
-    SerialMessageRecvThread threadRecv;
-  // SerialMessageWatchdogThread threadWatchdog;
+   SignalHandlerThread thread_automat;
+   SerialMessageRecvThread threadRecv;
+   SerialMessageWatchdogThread threadWatchdog;
 
 
     thread_automat.start(NULL);
-	//threadWatchdog.start(NULL);
-    threadRecv.start(NULL);
-//	message->setBand2RutscheVoll();
+	threadWatchdog.start(NULL);
+	threadRecv.start(NULL);
 
     LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
@@ -53,13 +52,13 @@ int main(int argc, char *argv[]) {
 
 
 
-	//threadWatchdog.join();
+
+	threadWatchdog.join();
 	threadRecv.join();
 	thread_automat.join();
 
 
     /*
-=======
 
 
 >>>>>>> develop

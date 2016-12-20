@@ -47,7 +47,8 @@ void SignalHandlerThread::execute(void*) {
 		if (pulsecode == 0xE) {
 
 			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
-				//	<< pulse.value.sival_int << "\n";
+		    //	<< pulse.value.sival_int << "\n";
+
 
 			int code = pulse.value.sival_int;
 
@@ -206,17 +207,17 @@ void SignalHandlerThread::execute(void*) {
 #if defined BAND && BAND == 3
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
-					delete contextpointer;
+					//delete contextpointer;
 #endif
 #if defined BAND && BAND == 4
                     ContextI *contextpointer = (ContextI*) contextContainer[i];
                     contextContainer.erase(contextContainer.begin() + i);
-                    delete contextpointer;
+                    //delete contextpointer;
 #endif
 #if defined BAND && BAND == 5
                     ContextI *contextpointer = (ContextI*) contextContainer[i];
                     contextContainer.erase(contextContainer.begin() + i);
-                    delete contextpointer;
+                    //delete contextpointer;
 #endif
 					LOG_DEBUG << "Ich toete jetzt einen Automaten. \n";
 				}

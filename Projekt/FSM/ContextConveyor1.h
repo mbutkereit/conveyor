@@ -246,6 +246,10 @@ private:
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
 		virtual void signalLBSkidInterrupted() {
 			LOG_DEBUG << "State: SortOutThroughSkid \n";
+
+			data->puckVector->erase(
+					data->puckVector->begin() + data->posInVector);
+
 			int temp = *data->sc;
 			temp++;
 			*data->sc = temp;
@@ -255,10 +259,13 @@ private:
 				LOG_DEBUG << "Rutsche 1 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 nicht leer \n";
 				data->finished = true;
 				new (this) EndOfTheEnd;
 			} else {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer \n";
 				data->cm->setSpeed(MOTOR_STOP);
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer --> Motor gestoppt\n";
 				data->cm->transact();
 				new (this) Conveyor1Empty;
 			}
@@ -269,6 +276,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: Conveyor1Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
+			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
 			data->cm->transact();
 			data->finished = true;
 			new (this) EndOfTheEnd;
