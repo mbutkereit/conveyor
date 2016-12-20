@@ -110,6 +110,7 @@ private:
 		}
 
 		virtual void signalLBSwitchInterrupted() {
+			LOG_DEBUG <<"State: MainState \n";
 
 			data->cc1.signalLBSwitchInterrupted();
 			if (data->im.istBand1RutscheVoll()

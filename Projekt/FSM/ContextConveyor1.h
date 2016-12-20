@@ -37,7 +37,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), posInVector(0), im(), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(), cto(){
+					skidcounter), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -102,17 +102,18 @@ private:
 		}
 		virtual void signalLBNextConveyor() {
 		}
-		virtual void signalTimerTick(){
-            data->cto.signalTimerTick();
-            if(data->cto.timeoutOccured()){
-            	data->hb.getHardware()->getTL()->turnGreenOff();
+		virtual void signalTimerTick() {
+			data->cto.signalTimerTick();
+			if (data->cto.timeoutOccured()) {
+				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout << "TIMEOUT" << endl;
-				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
-                new (this) PuckLost;
-            }
+				data->puckVector->erase(
+						data->puckVector->begin() + data->posInVector);
+				new (this) PuckLost;
+			}
 		}
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -122,11 +123,8 @@ private:
 		//TRANSACTION/LEAVE
 		void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: TransportToEntry \n";
-
 			data->hb.getHardware()->getTL()->turnGreenOn();
-
 			data->cm->setSpeed(MOTOR_FAST);
-
 			data->cm->transact();
 			new (this) MotorOn;
 		}
@@ -154,9 +152,9 @@ private:
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
-				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
-				LOG_DEBUG
-						<< "Heohenwert1: "
+				data->puck.setHeightReading1(
+						data->hb.getHardware()->getAltimetry()->getHeight());
+				LOG_DEBUG << "Hoehenwert1: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
 				if (!(hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
@@ -248,19 +246,26 @@ private:
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
 		virtual void signalLBSkidInterrupted() {
 			LOG_DEBUG << "State: SortOutThroughSkid \n";
+
+			data->puckVector->erase(
+					data->puckVector->begin() + data->posInVector);
+
 			int temp = *data->sc;
 			temp++;
 			*data->sc = temp;
-			LOG_DEBUG << "Skidcounter: "<< *data->sc<< "\n";
+			LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
 			if (*data->sc > 3) {
 				data->im.setBand1RutscheVoll();
 				LOG_DEBUG << "Rutsche 1 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 nicht leer \n";
 				data->finished = true;
 				new (this) EndOfTheEnd;
 			} else {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer \n";
 				data->cm->setSpeed(MOTOR_STOP);
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer --> Motor gestoppt\n";
 				data->cm->transact();
 				new (this) Conveyor1Empty;
 			}
@@ -271,6 +276,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: Conveyor1Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
+			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
 			data->cm->transact();
 			data->finished = true;
 			new (this) EndOfTheEnd;
@@ -372,51 +378,51 @@ private:
 	};
 
 	struct PuckLost: public PuckOnConveyor1 {
-	    virtual void signalReset(){
-	        data->blinkYellow.stop();
-	        data->hb.getHardware()->getTL()->turnYellowOff();
-	        data->hb.getHardware()->getTL()->turnGreenOn();
-	        data->cm->resetSpeed(MOTOR_STOP);
-	        data->cm->transact();
-	        data->finished = true;
-	        new (this) EndOfTheEnd;
-	    }
+		virtual void signalReset() {
+			data->blinkYellow.stop();
+			data->hb.getHardware()->getTL()->turnYellowOff();
+			data->hb.getHardware()->getTL()->turnGreenOn();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+			data->finished = true;
+			new (this) EndOfTheEnd;
+		}
 	};
 
 	struct EndOfTheEnd: public PuckOnConveyor1 {
-	        virtual void signalLBBeginInterrupted() {
-	        }
-	        virtual void signalLBEndInterrupted() {
-	        }
-	        virtual void signalLBAltimetryInterrupted() {
-	        }
-	        virtual void signalLBSwitchInterrupted() {
-	        }
-	        virtual void signalLBBeginNotInterrupted() {
-	        }
-	        virtual void signalLBEndInNotInterrupted() {
-	        }
-	        virtual void signalLBAltimetryNotInterrupted() {
-	        }
-	        virtual void signalLBSwitchNotInterrupted() {
-	        }
-	        virtual void signalEStop() {
-	        }
-	        virtual void signalStart() {
-	        }
-	        virtual void signalStop() {
-	        }
-	        virtual void signalReset() {
-	        }
-	        virtual void signalLBSkidInterrupted() {
-	        }
-	        virtual void signalLBSkidNotInterrupted() {
-	        }
-	        virtual void signalAltimetryCompleted() {
-	        }
-	        virtual void signalTimerTick(){
-	        }
-	    };
+		virtual void signalLBBeginInterrupted() {
+		}
+		virtual void signalLBEndInterrupted() {
+		}
+		virtual void signalLBAltimetryInterrupted() {
+		}
+		virtual void signalLBSwitchInterrupted() {
+		}
+		virtual void signalLBBeginNotInterrupted() {
+		}
+		virtual void signalLBEndInNotInterrupted() {
+		}
+		virtual void signalLBAltimetryNotInterrupted() {
+		}
+		virtual void signalLBSwitchNotInterrupted() {
+		}
+		virtual void signalEStop() {
+		}
+		virtual void signalStart() {
+		}
+		virtual void signalStop() {
+		}
+		virtual void signalReset() {
+		}
+		virtual void signalLBSkidInterrupted() {
+		}
+		virtual void signalLBSkidNotInterrupted() {
+		}
+		virtual void signalAltimetryCompleted() {
+		}
+		virtual void signalTimerTick() {
+		}
+	};
 
 	TransportToEntry stateMember; //The memory for the state is part of context object
 	Data contextdata;  //Data is also kept inside the context object
@@ -438,7 +444,7 @@ public:
 	 *return: gibt true zurück wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	 */
 	bool isContextimEnzustand() {
-		if (contextdata.finished){
+		if (contextdata.finished) {
 			LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
 		}
 		return contextdata.finished;

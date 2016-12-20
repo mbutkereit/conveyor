@@ -101,17 +101,18 @@ private:
 		}
 		virtual void signalLBNextConveyor() {
 		}
-		virtual void signalTimerTick(){
-            data->cto.signalTimerTick();
-            if(data->cto.timeoutOccured()){
-            	data->hb.getHardware()->getTL()->turnGreenOff();
+		virtual void signalTimerTick() {
+			data->cto.signalTimerTick();
+			if (data->cto.timeoutOccured()) {
+				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout << "TIMEOUT" << endl;
-				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
-                new (this) PuckLost;
-            }
+				data->puckVector->erase(
+						data->puckVector->begin() + data->posInVector);
+				new (this) PuckLost;
+			}
 		}
 
 		Data2* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -120,7 +121,7 @@ private:
 	struct TransportToEntry: public PuckOnConveyor2 {
 		//TRANSACTION/LEAVE
 		virtual void signalLBBeginInterrupted() {
-			LOG_DEBUG <<"State: TransportToEntry \n";
+			LOG_DEBUG << "State: TransportToEntry \n";
 			data->im.setBand2NichtFrei();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
@@ -132,8 +133,7 @@ private:
 	struct MotorOn: public PuckOnConveyor2 {
 		//LEAVE
 		virtual void signalLBBeginNotInterrupted() {
-			LOG_DEBUG <<"State: MotorOn \n";
-
+			LOG_DEBUG << "State: MotorOn \n";
 
 			struct workpiece_package_without_ch recieve =
 					data->wpm.getWorkpieceInfo();
@@ -173,7 +173,7 @@ private:
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryInterrupted() {
-			LOG_DEBUG <<"State: TransportToHeightMeasurement \n";
+			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			data->cto.stopTimerT0();
@@ -181,9 +181,14 @@ private:
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->puck.setHeightReading1(
 						data->hb.getHardware()->getAltimetry()->getHeight());
+				LOG_DEBUG << "Hoehenwert2: "
+						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
+						<< "\n";
 				if (!(data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
+					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
+					LOG_DEBUG << "NO_DRILL_HOLE\n";
 					data->puck.setPuckType(NO_DRILL_HOLE);
 				}
 				new (this) PuckInHeightMeasurement;
@@ -193,8 +198,9 @@ private:
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
-						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -202,7 +208,7 @@ private:
 
 	struct PuckInHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryNotInterrupted() {
-			LOG_DEBUG <<"State: PuckInHeightMeasurenment \n";
+			LOG_DEBUG << "State: PuckInHeightMeasurenment \n";
 			data->cm->resetSpeed(MOTOR_SLOW);
 			data->cm->transact();
 			new (this) TransportToSwitch;
@@ -211,16 +217,14 @@ private:
 
 	struct TransportToSwitch: public PuckOnConveyor2 {
 		virtual void signalLBSwitchInterrupted() {
-			LOG_DEBUG <<"State: TransoprtToSwitch \n";
+			LOG_DEBUG << "State: TransoprtToSwitch \n";
 			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
 			data->cto.stopTimerTH();
 			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
-
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
 				} else {
-
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				}
 			}
@@ -230,18 +234,22 @@ private:
 
 	struct Sorting: public PuckOnConveyor2 {
 		virtual void sensorMeasurementCompleted() {
-			LOG_DEBUG <<"State: Sorting\n";
+			LOG_DEBUG << "State: Sorting\n";
 			if (1) {   //TODO DELTA tH and tW OK
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
+					LOG_DEBUG << "Sequence OK \n";
 					data->cswitch->setSwitchOpen();
 					data->cswitch->transact();
 					new (this) TransportToDelivery;
 				} else {
+					LOG_DEBUG << "Sequence not OK \n";
 					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
+						LOG_DEBUG << "Skid Full\n";
 						data->hb.getHardware()->getTL()->turnGreenOff();
 						data->hb.getHardware()->getTL()->turnYellowOn();
 						data->cm->setSpeed(MOTOR_STOP);
@@ -255,27 +263,29 @@ private:
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
-						<< "HLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
 
 		virtual void skidOfConveyor2Cleared() {
-			LOG_DEBUG <<"State: Sorting \n";
+			LOG_DEBUG << "State: skidOfConveyor2Cleared \n";
 			new (this) SortOutThroughSkid;
 		}
 	};
 
 	struct SortOutThroughSkid: public PuckOnConveyor2 {
 		virtual void signalLBSkidInterrupted() {
-			LOG_DEBUG <<"State: SortOutThroughSkid \n";
+			LOG_DEBUG << "State: SortOutThroughSkid \n";
 			int temp = *data->sc2;
 			temp++;
 			*data->sc2 = temp;
+			//LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
 			if (*data->sc2 > 3) {
 				data->im.setBand2RutscheVoll();
-
+				LOG_DEBUG << "Rutsche 2 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
 				data->finished = true;
@@ -290,7 +300,7 @@ private:
 
 	struct Conveyor2Empty: public PuckOnConveyor2 {
 		virtual void signalLBBeginInterrupted() {
-			LOG_DEBUG <<"State: Conveyor2Empty \n";
+			LOG_DEBUG << "State: Conveyor2Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->im.setBand2Frei();
@@ -301,7 +311,7 @@ private:
 
 	struct TransportToDelivery: public PuckOnConveyor2 {
 		virtual void signalLBEndInterrupted() {
-			LOG_DEBUG <<"State: TransoprtToDelivery \n";
+			LOG_DEBUG << "State: TransoprtToDelivery \n";
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
 			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
@@ -324,14 +334,13 @@ private:
 
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
-
 				data->blinkRed.start(NULL);
-
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEF‹GT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
+				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEF‹GT \n";
 				new (this) PuckAdded;
 			}
 		}
@@ -339,7 +348,7 @@ private:
 
 	struct DeliverToConveyor3: public PuckOnConveyor2 { //TODO: signalLBNextConveyorNotInterrupted
 		virtual void signalLBNextConveyor() {
-			LOG_DEBUG <<"State: DeliverToConveyor \n";
+			LOG_DEBUG << "State: DeliverToConveyor3 \n";
 			int drillHoleUpside = 0;
 			int drillHoleUpsideMetal = 1;
 			int drillHoleUpsidePlastic = 2;
@@ -385,7 +394,7 @@ private:
 
 	struct PuckAdded: public PuckOnConveyor2 {
 		virtual void signalReset() {
-			LOG_DEBUG <<"State: PuckAdded \n";
+			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
 			data->im.setBand2Frei();
 			data->finished = true;
@@ -394,52 +403,51 @@ private:
 	};
 
 	struct PuckLost: public PuckOnConveyor2 {
-	    virtual void signalReset(){
-	        data->blinkYellow.stop();
-	        data->hb.getHardware()->getTL()->turnYellowOff();
-	        data->hb.getHardware()->getTL()->turnGreenOn();
-	        data->cm->resetSpeed(MOTOR_STOP);
-	        data->cm->transact();
-	        data->finished = true;
-	        new (this) EndOfTheEnd;
-	    }
+		virtual void signalReset() {
+			data->blinkYellow.stop();
+			data->hb.getHardware()->getTL()->turnYellowOff();
+			data->hb.getHardware()->getTL()->turnGreenOn();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
+			data->finished = true;
+			new (this) EndOfTheEnd;
+		}
 	};
 
-
-    struct EndOfTheEnd: public PuckOnConveyor2 {
-        virtual void signalLBBeginInterrupted() {
-        }
-        virtual void signalLBEndInterrupted() {
-        }
-        virtual void signalLBAltimetryInterrupted() {
-        }
-        virtual void signalLBSwitchInterrupted() {
-        }
-        virtual void signalLBBeginNotInterrupted() {
-        }
-        virtual void signalLBEndInNotInterrupted() {
-        }
-        virtual void signalLBAltimetryNotInterrupted() {
-        }
-        virtual void signalLBSwitchNotInterrupted() {
-        }
-        virtual void signalEStop() {
-        }
-        virtual void signalStart() {
-        }
-        virtual void signalStop() {
-        }
-        virtual void signalReset() {
-        }
-        virtual void signalLBSkidInterrupted() {
-        }
-        virtual void signalLBSkidNotInterrupted() {
-        }
-        virtual void signalAltimetryCompleted() {
-        }
-        virtual void signalTimerTick(){
-        }
-    };
+	struct EndOfTheEnd: public PuckOnConveyor2 {
+		virtual void signalLBBeginInterrupted() {
+		}
+		virtual void signalLBEndInterrupted() {
+		}
+		virtual void signalLBAltimetryInterrupted() {
+		}
+		virtual void signalLBSwitchInterrupted() {
+		}
+		virtual void signalLBBeginNotInterrupted() {
+		}
+		virtual void signalLBEndInNotInterrupted() {
+		}
+		virtual void signalLBAltimetryNotInterrupted() {
+		}
+		virtual void signalLBSwitchNotInterrupted() {
+		}
+		virtual void signalEStop() {
+		}
+		virtual void signalStart() {
+		}
+		virtual void signalStop() {
+		}
+		virtual void signalReset() {
+		}
+		virtual void signalLBSkidInterrupted() {
+		}
+		virtual void signalLBSkidNotInterrupted() {
+		}
+		virtual void signalAltimetryCompleted() {
+		}
+		virtual void signalTimerTick() {
+		}
+	};
 
 	TransportToEntry stateMember; //The memory for the state is part of context object
 	Data2 contextdata;  //Data is also kept inside the context object
@@ -461,6 +469,9 @@ public:
 	 *return: gibt true zur√ºck wenn der Context den Enzustand erreicht hat und false wenn Context noch nicht in einem Enzustand ist.
 	 */
 	bool isContextimEnzustand() {
+		if (contextdata.finished) {
+			LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
+		}
 		return contextdata.finished;
 	}
 
