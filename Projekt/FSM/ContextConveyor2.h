@@ -279,19 +279,26 @@ private:
 	struct SortOutThroughSkid: public PuckOnConveyor2 {
 		virtual void signalLBSkidInterrupted() {
 			LOG_DEBUG << "State: SortOutThroughSkid \n";
+
+			data->puckVector->erase(
+					data->puckVector->begin() + data->posInVector);
+
 			int temp = *data->sc2;
 			temp++;
 			*data->sc2 = temp;
-			//LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
+			LOG_DEBUG << "Skidcounter: " << *data->sc2 << "\n";
 			if (*data->sc2 > 3) {
 				data->im.setBand2RutscheVoll();
 				LOG_DEBUG << "Rutsche 2 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 nicht leer \n";
 				data->finished = true;
 				new (this) EndOfTheEnd;
 			} else {
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 leer \n";
 				data->cm->setSpeed(MOTOR_STOP);
+				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 leer --> Motor gestoppt\n";
 				data->cm->transact();
 				new (this) Conveyor2Empty;
 			}
@@ -302,6 +309,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: Conveyor2Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
+			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
 			data->cm->transact();
 			data->im.setBand2Frei();
 			data->finished = true;
@@ -311,7 +319,7 @@ private:
 
 	struct TransportToDelivery: public PuckOnConveyor2 {
 		virtual void signalLBEndInterrupted() {
-			LOG_DEBUG << "State: TransoprtToDelivery \n";
+			LOG_DEBUG << "State: TransportToDelivery \n";
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
 			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
