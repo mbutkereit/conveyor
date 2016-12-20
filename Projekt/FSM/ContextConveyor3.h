@@ -238,6 +238,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 3 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
 			new (this) Puck3Recognized;
@@ -280,9 +281,12 @@ private:
 			data->puckVector->push_back(data->puck3);
 			//TODO t_03
 			data->cto3.startTimerT0();
+			data->cm->resetSpeed(MOTOR_STOP);
+			data->cm->transact();
 			data->cm->setSpeed(MOTOR_FAST);//Wirklich nötig? Vorheriger Zustand setzt bereits Fast. Bitte auch ohne testen./MC
 			data->cm->transact();
 			new (this) EndReceiving;
+
 		}
 
 	};

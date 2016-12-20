@@ -65,7 +65,20 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 3
 
-				ContextI* context =  new ContextTopFSM3(globalerID_Zaehler++,&puckvector);
+				ContextI* context;
+
+				if(skidcounter == 0){
+					context = new ContextTopFSM3(globalerID_Zaehler++,&puckvector);
+					skidcounter++;
+				}else{
+					if(skidcounter == 3){
+
+						skidcounter = 0;
+					}
+
+					skidcounter++;
+				}
+
 #endif
 #if defined BAND && BAND == 4
 
@@ -198,7 +211,7 @@ void SignalHandlerThread::execute(void*) {
 #if defined BAND && BAND == 3
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
-					delete contextpointer;
+
 #endif
 #if defined BAND && BAND == 4
                     ContextI *contextpointer = (ContextI*) contextContainer[i];
