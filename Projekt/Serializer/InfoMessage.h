@@ -13,7 +13,7 @@
 #define ESTOP_BIT 0x02
 #define LB_INTERRUPTED 0x10
 
-#define BAND 1
+#define BAND 2
 
 /**
  * Diese Klasse enthält ein Paket, das von jeder Anlage mit Informationen gefüllt werden kann.

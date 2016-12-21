@@ -153,8 +153,7 @@ private:
 			if (1) {   //TODO DELTA t0 and tH OK
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
-				data->puck.setHeightReading1(
-						data->hb.getHardware()->getAltimetry()->getHeight());
+				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert1: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";

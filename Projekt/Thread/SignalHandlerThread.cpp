@@ -112,7 +112,7 @@ void SignalHandlerThread::execute(void*) {
 				disp->addListener(context, TIMINTR);
 				contextContainer.push_back(context);
 				disp->callListeners(LBBEGININTERRUPTED);
-				//@TODO
+				LOG_DEBUG << "LBBeginInterrupted" << endl;
 				message->setLBinterruptedBit();
 			}
 			if (code & LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED) {

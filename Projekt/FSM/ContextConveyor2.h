@@ -122,7 +122,7 @@ private:
 	struct TransportToEntry: public PuckOnConveyor2 {
 		//TRANSACTION/LEAVE
 		virtual void signalLBBeginInterrupted() {
-			LOG_DEBUG << "State: TransportToEntry \n";
+			LOG_DEBUG << "State: TransportToEntry Conveyor2\n";
 			data->im.setBand2NichtFrei();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
@@ -180,13 +180,14 @@ private:
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
 			if (1) {   //TODO DELTA t0 and tH OK
-				data->puck.setHeightReading2(
-						data->hb.getHardware()->getAltimetry()->getHeight());
+				data->hb.getHardware()->getAltimetry()->startAltimetry();
+				usleep(20);
+				data->puck.setHeightReading2(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert2: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
-				cout << "Hoehenwert1: " << data->puck.getHeightReading2() << endl;
-				if (data->puck.getHeightReading2() > 7) {
+				cout << "Hoehenwert2: " << data->puck.getHeightReading2() << endl;
+				if (data->puck.getHeightReading2() > 3200) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
@@ -251,7 +252,9 @@ private:
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
+						LOG_DEBUG << "Rutsche voll: " << data->im.istBand1RutscheVoll() << "\n";
 						if(data->im.istBand1RutscheVoll()){
+							LOG_DEBUG << "Both Skids full\n";
 							data->bothSkidsfull = true;
 							new (this) EndOfTheEnd;
 						}
