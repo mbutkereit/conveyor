@@ -36,7 +36,7 @@ struct Data {
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
-					puckVector), finished(false), posInVector(0), im(), sc(
+					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(), sc(
 					skidcounter), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
@@ -47,6 +47,7 @@ struct Data {
 	Puck puck;
 	std::vector<Puck>* puckVector;
 	bool finished;
+	bool bothSkidsfull;
 	int posInVector;
 	InfoMessage im;
 	int *sc;
@@ -157,7 +158,8 @@ private:
 				LOG_DEBUG << "Hoehenwert1: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
-				if (!(hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
+				cout << "Hoehenwert1: " << data->puck.getHeightReading1() << endl;
+				if (data->puck.getHeightReading1() > 7) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
@@ -222,11 +224,17 @@ private:
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
-						LOG_DEBUG << "Skid Full\n";
-						data->hb.getHardware()->getTL()->turnYellowOn();
-						data->cswitch->setSwitchOpen();
-						data->cswitch->transact();
-						new (this) TransportToDelivery;
+						if(data->im.istBand2RutscheVoll()){
+							data->bothSkidsfull = true;
+							new (this) EndOfTheEnd;
+						}
+						else{
+							LOG_DEBUG << "Skid Full\n";
+							data->hb.getHardware()->getTL()->turnYellowOn();
+							data->cswitch->setSwitchOpen();
+							data->cswitch->transact();
+							new (this) TransportToDelivery;
+						}
 					}
 				}
 			} else if (0) { //TODO DELTA tH AND tW TOO LOW
@@ -448,6 +456,10 @@ public:
 			LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
 		}
 		return contextdata.finished;
+	}
+
+	bool bothSkidsFull(){
+		return contextdata.bothSkidsfull;
 	}
 
 	void signalLBBeginInterrupted();

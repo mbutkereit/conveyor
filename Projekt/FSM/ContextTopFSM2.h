@@ -131,7 +131,16 @@ private:
 				new (this) BothSkidsFull;
 			} else {
 				data->cc2.sensorMeasurementCompleted();
-				if (data->im.istBand2RutscheVoll()) {
+				if(data->cc2.bothSkidsFull()){
+					data->hb.getHardware()->getTL()->turnGreenOff();
+					data->hb.getHardware()->getTL()->turnRedOn();
+					data->cm->setSpeed(MOTOR_STOP);
+					data->cm->transact();
+					LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
+					cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+					new (this) BothSkidsFull;
+				}
+				else if (data->im.istBand2RutscheVoll()) {
 					LOG_DEBUG <<"Fehler:RUTSCHE 2 IST VOLL \n";
 					cout<<"FEHLER!!!!!!!!!!! RUTSCHE 2 IST VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 					new (this) SkidOfConveyor2Full;
@@ -240,6 +249,7 @@ private:
 			data->im.setBand2RutscheLeer();
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
+			new (this) MainState;
 		}
 	};
 

@@ -126,6 +126,16 @@ private:
 				new (this) BothSkidsFull;
 			} else {
 				data->cc1.sensorMeasurementCompleted();
+				if(data->cc1.bothSkidsFull()){
+					data->hb.getHardware()->getTL()->turnGreenOff();
+					data->hb.getHardware()->getTL()->turnRedOn();
+					data->cm->setSpeed(MOTOR_STOP);
+					data->cm->transact();
+					LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
+					cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+
+					new (this) BothSkidsFull;
+				}
 			}
 		}
 		virtual void signalLBSwitchNotInterrupted() { //ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()

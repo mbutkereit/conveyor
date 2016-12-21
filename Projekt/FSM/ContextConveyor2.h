@@ -31,7 +31,7 @@ struct Data2 {
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
-					puckVector), finished(false), posInVector(0), skidOfConveyor2Full(
+					puckVector), finished(false), bothSkidsfull(false), posInVector(0), skidOfConveyor2Full(
 					false), im(), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
@@ -42,6 +42,7 @@ struct Data2 {
 	Puck puck;
 	std::vector<Puck>* puckVector;
 	bool finished;
+	bool bothSkidsfull;
 	int posInVector;
 	bool skidOfConveyor2Full;
 	InfoMessage im;
@@ -179,12 +180,13 @@ private:
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
 			if (1) {   //TODO DELTA t0 and tH OK
-				data->puck.setHeightReading1(
+				data->puck.setHeightReading2(
 						data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert2: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
-				if (!(data->hb.getHardware()->getMT()->isItemInAltimetryToleranceRange())) {
+				cout << "Hoehenwert1: " << data->puck.getHeightReading2() << endl;
+				if (data->puck.getHeightReading2() > 7) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
@@ -249,12 +251,18 @@ private:
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
+						if(data->im.istBand1RutscheVoll()){
+							data->bothSkidsfull = true;
+							new (this) EndOfTheEnd;
+						}
+						else{
 						LOG_DEBUG << "Skid Full\n";
-						data->hb.getHardware()->getTL()->turnGreenOff();
-						data->hb.getHardware()->getTL()->turnYellowOn();
-						data->cm->setSpeed(MOTOR_STOP);
-						data->cm->transact();
-						data->im.setBand2RutscheVoll();
+							data->hb.getHardware()->getTL()->turnGreenOff();
+							data->hb.getHardware()->getTL()->turnYellowOn();
+							data->cm->setSpeed(MOTOR_STOP);
+							data->cm->transact();
+							data->im.setBand2RutscheVoll();
+						}
 					}
 				}
 			} else if (0) {   //TODO DELTA tH AND tW TOO LOW
@@ -481,6 +489,10 @@ public:
 			LOG_DEBUG << "Ich bin jetzt im Endzustand \n";
 		}
 		return contextdata.finished;
+	}
+
+	bool bothSkidsFull(){
+		return contextdata.bothSkidsfull;
 	}
 
 	void signalLBBeginInterrupted();
