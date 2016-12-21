@@ -163,6 +163,7 @@ void SignalHandlerThread::execute(void*) {
 				disp->callListeners(STOPSIGNAL);
 			}
 			if (code & LIGHT_BARRIER_NEXT_CONVEYOR) {
+				 LOG_DEBUG <<"##########Der Signal Handler hat das Ereignis erhalten,\n";
 				disp->callListeners(LBNEXTCONVEYOR);
 			}
 

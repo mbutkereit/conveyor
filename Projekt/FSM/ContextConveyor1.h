@@ -159,7 +159,7 @@ private:
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
 				cout << "Hoehenwert1: " << data->puck.getHeightReading1() << endl;
-				if (data->puck.getHeightReading1() > 7) {
+				if (data->puck.getHeightReading1() > 3200) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
 				} else {
@@ -263,7 +263,9 @@ private:
 			*data->sc = temp;
 			LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
 			if (*data->sc > 3) {
+				LOG_DEBUG << "Rutsche 1 voll (noch nicht gesetzt): " << data->im.istBand1RutscheVoll() << "\n";
 				data->im.setBand1RutscheVoll();
+				LOG_DEBUG << "Rutsche 1 voll: " << data->im.istBand1RutscheVoll() << "\n";
 				LOG_DEBUG << "Rutsche 1 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
@@ -295,16 +297,22 @@ private:
 		virtual void signalLBEndInterrupted() {
 			LOG_DEBUG << "State: TransportToDelivery \n";
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
+			LOG_DEBUG << "State: TransportToDelivery --> Timer1 \n";
 			data->cto.stopTimerTW();
+			LOG_DEBUG << "State: TransportToDelivery --> Timer2 \n";
 			data->cswitch->resetSwitchOpen();
+			LOG_DEBUG << "State: TransportToDelivery --> Timer3 \n";
 			data->cswitch->transact();
+			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
 			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
+				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";
 				while (!(data->im.istBand2Frei())) {
 				}
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
+				LOG_DEBUG << "State: TransportToDelivery --> Before next State\n";
 				new (this) TransportToConveyor2;
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
