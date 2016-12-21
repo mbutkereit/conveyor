@@ -20,7 +20,6 @@ int main(int argc, char *argv[]) {
    LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
    SerialMessageWatchdogThread::notify();
 
-  // message->setBand2NichtFrei();
     SignalHandlerThread thread_automat;
    SerialMessageRecvThread threadRecv;
    SerialMessageWatchdogThread threadWatchdog;
@@ -32,17 +31,19 @@ int main(int argc, char *argv[]) {
 
     LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
+    sleep(5);
 
 
 
-//	while(1){
-//		if(message->istBand1RutscheVoll()){
-//			LOG_DEBUG <<"Die Rutsche Voll.\n";
-//		}
-//
-//
-//		sleep(5);
-//	}
+
+
+	while(1){
+		message->InhaltdesPaketesausgeben();
+
+		if(message->istBand1RutscheVoll()){
+			LOG_DEBUG <<"####################Die Rutsche 1 ist Voll.\n";
+		}
+	}
 
 
 //    while(1){
