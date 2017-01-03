@@ -116,7 +116,7 @@ private:
             	data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				cout << "TIMEOUT" << endl;
 				data->puckVector->clear();
                 new (this) PuckLost;
@@ -130,7 +130,7 @@ private:
 			LOG_DEBUG <<"State:Recieving Pucks\n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
-			data->cm->transact();
+
 			new (this) Puck1Recognized;
 
 		}
@@ -174,7 +174,7 @@ private:
 			//TODO t_01
 			data->cto1.startTimerT0();
 			data->cm->setSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			new (this) Puck2Ready;
 		}
 
@@ -186,7 +186,7 @@ private:
 			LOG_DEBUG <<"State: Puck 2 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->setSpeed(MOTOR_FAST);
-			data->cm->transact();
+
 			new (this) Puck2Recognized;
 		}
 
@@ -228,7 +228,7 @@ private:
 			//TODO t_02
 			data->cto2.startTimerT0();
 			data->cm->setSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			new (this) Puck3Ready;
 		}
 
@@ -238,9 +238,9 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 3 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			data->cm->setSpeed(MOTOR_FAST);
-			data->cm->transact();
+
 			new (this) Puck3Recognized;
 		}
 
@@ -282,9 +282,9 @@ private:
 			//TODO t_03
 			data->cto3.startTimerT0();
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			data->cm->setSpeed(MOTOR_FAST);//Wirklich nötig? Vorheriger Zustand setzt bereits Fast. Bitte auch ohne testen./MC
-			data->cm->transact();
+
 			new (this) EndReceiving;
 
 		}
@@ -309,7 +309,7 @@ private:
 	        data->cafm.signalLBAltimetryNotInterrupted();
 	        if(data->cafm.puckAdded()){
                 data->cm->setSpeed(MOTOR_STOP);
-                data->cm->transact();
+
                 data->hb.getHardware()->getTL()->turnGreenOff();
                 data->blinkRed.start(NULL);
                 new (this) PuckAdded;
@@ -339,7 +339,7 @@ private:
 	        data->ccefm.signalLBEndNotInterrupted();
 	        if(data->ccefm.puckAdded()){
 	            data->cm->setSpeed(MOTOR_STOP);
-	            data->cm->transact();
+
 	            data->hb.getHardware()->getTL()->turnGreenOff();
 	            data->blinkRed.start(NULL);
 	            new (this) PuckAdded;
@@ -395,7 +395,7 @@ private:
 	struct PuckAdded: public PucksOnConveyor3 {
 		virtual void SignalReset() {
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			data->blinkRed.stop();
 			data->finished = true;
 			new (this) EndOfTheEnd;
@@ -409,7 +409,7 @@ private:
 	        data->hb.getHardware()->getTL()->turnYellowOff();
 	        data->hb.getHardware()->getTL()->turnGreenOn();
 	        data->cm->resetSpeed(MOTOR_STOP);
-	        data->cm->transact();
+
 	        data->finished = true;
 	        new (this) EndOfTheEnd;
 	    }
@@ -419,7 +419,7 @@ private:
 	struct EndOfTheEnd: public PucksOnConveyor3 {
 	    virtual void signalLBBeginInterrupted() {
             data->cm->resetSpeed(MOTOR_STOP);
-            data->cm->transact();
+
             data->finished = true;
         }
         virtual void signalLBEndInterrupted() {

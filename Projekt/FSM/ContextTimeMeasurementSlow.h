@@ -125,7 +125,7 @@ private:
     struct TransportToEntry: public TimereadingFast {
         virtual void signalLBBeginInterrupted() {
             data->cm->setSpeed(MOTOR_SLOW);
-            data->cm->transact();
+
             new (this) MotorOn;
         }
     };
@@ -159,7 +159,7 @@ private:
             data->cswitch->resetSwitchOpen();
             data->cswitch->transact();
             data->cm->setSpeed(MOTOR_STOP);
-            data->cm->transact();
+
             cout << "DELTA_T0_TH: " << data->t0_th << endl;
             cout << "DELTA_TH_TW: " << data->th_tw << endl;
             cout << "DELTA_TW_TE: " << data->tw_te << endl;

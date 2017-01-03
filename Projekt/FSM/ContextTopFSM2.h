@@ -124,7 +124,7 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
 				cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
@@ -135,7 +135,7 @@ private:
 					data->hb.getHardware()->getTL()->turnGreenOff();
 					data->hb.getHardware()->getTL()->turnRedOn();
 					data->cm->setSpeed(MOTOR_STOP);
-					data->cm->transact();
+
 					LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
 					cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 					new (this) BothSkidsFull;
@@ -156,7 +156,7 @@ private:
 			LOG_DEBUG <<"State: MainState \n";
 
 			data->cm->setSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im->setESTOP();
 			}
@@ -217,7 +217,7 @@ private:
 
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				new (this) MainState;
 			} else {
 				new (this) E_Stopp;
@@ -231,7 +231,7 @@ private:
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			data->cc2.sensorMeasurementCompleted();
 			data->im->setBand1RutscheLeer();
 			data->im->setBand2RutscheLeer();
@@ -248,7 +248,7 @@ private:
 			data->cc2.skidOfConveyor2Cleared();
 			data->im->setBand2RutscheLeer();
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			new (this) MainState;
 		}
 	};

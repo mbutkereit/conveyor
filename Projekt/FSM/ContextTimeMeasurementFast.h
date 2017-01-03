@@ -124,7 +124,7 @@ private:
     struct TransportToEntry: public TimereadingFast {
         virtual void signalLBBeginInterrupted() {
             data->cm->setSpeed(MOTOR_FAST);
-            data->cm->transact();
+
             new (this) MotorOn;
         }
     };
@@ -139,8 +139,17 @@ private:
     struct TransportToAltimetry: public TimereadingFast{
         virtual void signalLBAltimetryInterrupted() {
             data->tickX = &data->th_tw;
+            data->cm->setSpeed(MOTOR_SLOW);
+
             new (this) TransportToSkid;
         }
+    };
+
+    struct LeaveAltimetry: public TimereadingFast{
+    	virtual void signalLBAltimetryNotInterrupted() {
+    		data->cm->resetSpeed(MOTOR_SLOW);
+
+    	}
     };
 
     struct TransportToSkid: public TimereadingFast{
@@ -158,7 +167,7 @@ private:
             data->cswitch->resetSwitchOpen();
             data->cswitch->transact();
             data->cm->setSpeed(MOTOR_STOP);
-            data->cm->transact();
+
             cout << "DELTA_T0_TH: " << data->t0_th << endl;
             cout << "DELTA_TH_TW: " << data->th_tw << endl;
             cout << "DELTA_TW_TE: " << data->tw_te << endl;

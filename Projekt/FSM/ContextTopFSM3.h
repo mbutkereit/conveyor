@@ -120,7 +120,7 @@ private:
 		void signalEStop() {
 			LOG_DEBUG <<"State: MainState \n";
 			data->cm->setSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 				data->im->setESTOP();
 			}
@@ -170,7 +170,7 @@ private:
 			data->im->removeESTOP();
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 
 				new (this) MainState;
 			} else {

@@ -109,7 +109,7 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				cout << "TIMEOUT" << endl;
 				data->puckVector->erase(
 						data->puckVector->begin() + data->posInVector);
@@ -126,7 +126,7 @@ private:
 			LOG_DEBUG << "State: TransportToEntry \n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
-			data->cm->transact();
+
 			new (this) MotorOn;
 		}
 	};
@@ -147,7 +147,7 @@ private:
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
-			data->cm->transact();
+
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
 			if (1) {   //TODO DELTA t0 and tH OK
@@ -170,7 +170,7 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
@@ -184,7 +184,7 @@ private:
 		virtual void signalLBAltimetryNotInterrupted() {
 			LOG_DEBUG << "State: PuckInHeightMeasurement \n";
 			data->cm->resetSpeed(MOTOR_SLOW);
-			data->cm->transact();
+
 			new (this) TransportToSwitch;
 		}
 	};
@@ -240,7 +240,7 @@ private:
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
@@ -275,7 +275,7 @@ private:
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer \n";
 				data->cm->setSpeed(MOTOR_STOP);
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 leer --> Motor gestoppt\n";
-				data->cm->transact();
+
 				new (this) Conveyor1Empty;
 			}
 		}
@@ -286,7 +286,7 @@ private:
 			LOG_DEBUG << "State: Conveyor1Empty \n";
 			data->cm->resetSpeed(MOTOR_STOP);
 			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
-			data->cm->transact();
+
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
@@ -305,19 +305,19 @@ private:
 			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
 			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";
 				while (!(data->im->istBand2Frei())) {
 				}
 				data->cm->resetSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				LOG_DEBUG << "State: TransportToDelivery --> Before next State\n";
 				new (this) TransportToConveyor2;
 			} else if (0) { //TODO DELTA tW AND tE TOO LOW
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				cout
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
@@ -377,7 +377,7 @@ private:
 			} else {
 
 				data->cm->setSpeed(MOTOR_STOP);
-				data->cm->transact();
+
 				new (this) Conveyor1Empty;
 			}
 		}
@@ -398,7 +398,7 @@ private:
 			data->hb.getHardware()->getTL()->turnYellowOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->transact();
+
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}

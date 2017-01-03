@@ -29,6 +29,10 @@ class ContextMotor {
 
 
 private:
+	void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
+
     struct MotorOfConveyor { //top-level state
         Datacm* data;
         virtual void transact() {
@@ -146,10 +150,6 @@ private:
 public:
 	static ContextMotor* getInstance();
 
-	void transact() {
-		statePtr->transact();
-	} // context delegates signals to state
-
 	void setSpeed(MotorOptions mo) {
 		switch (mo) {
 		case MOTOR_FAST:
@@ -163,6 +163,7 @@ public:
 			cmdata.stopCounter++;
 			break;
 		}
+		transact();
 	}
 
 	void resetSpeed(MotorOptions mo)
@@ -176,6 +177,7 @@ public:
 			cmdata.stopCounter--;
 			break;
 		}
+		transact();
 	}
 
 	virtual ~ContextMotor(){};
