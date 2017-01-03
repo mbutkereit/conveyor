@@ -36,7 +36,7 @@ struct Data {
 			puckID(puckID), hb(), cm(ContextMotor::getInstance()), cs(
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
-					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(), sc(
+					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(InfoMessage::getInfoMessage()), sc(
 					skidcounter), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
@@ -49,7 +49,7 @@ struct Data {
 	bool finished;
 	bool bothSkidsfull;
 	int posInVector;
-	InfoMessage im;
+	InfoMessage* im;
 	int *sc;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
@@ -223,7 +223,7 @@ private:
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
-						if(data->im.istBand2RutscheVoll()){
+						if(data->im->istBand2RutscheVoll()){
 							data->bothSkidsfull = true;
 							new (this) EndOfTheEnd;
 						}
@@ -262,9 +262,9 @@ private:
 			*data->sc = temp;
 			LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
 			if (*data->sc > 3) {
-				LOG_DEBUG << "Rutsche 1 voll (noch nicht gesetzt): " << data->im.istBand1RutscheVoll() << "\n";
-				data->im.setBand1RutscheVoll();
-				LOG_DEBUG << "Rutsche 1 voll: " << data->im.istBand1RutscheVoll() << "\n";
+				LOG_DEBUG << "Rutsche 1 voll (noch nicht gesetzt): " << data->im->istBand1RutscheVoll() << "\n";
+				data->im->setBand1RutscheVoll();
+				LOG_DEBUG << "Rutsche 1 voll: " << data->im->istBand1RutscheVoll() << "\n";
 				LOG_DEBUG << "Rutsche 1 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
@@ -307,7 +307,7 @@ private:
 				data->cm->setSpeed(MOTOR_STOP);
 				data->cm->transact();
 				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";
-				while (!(data->im.istBand2Frei())) {
+				while (!(data->im->istBand2Frei())) {
 				}
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();

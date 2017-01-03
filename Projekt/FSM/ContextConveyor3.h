@@ -36,7 +36,7 @@
 struct Data3 {
 	Data3(int puckID, std::vector<Puck>* puckVector) :
 			cswitch(ContextSwitch::getInstance()), cto1(), cto2(), cto3(), hb(), cm(ContextMotor::getInstance()), puck(-1), puck2(-1), puck3(-1), id(0),
-			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(), im(), blinkRed(), blinkYellow(), cafm(&cto1, &cto2, &cto3), ccefm(&cto1, &cto2, &cto3) {
+			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(), im(InfoMessage::getInfoMessage()), blinkRed(), blinkYellow(), cafm(&cto1, &cto2, &cto3), ccefm(&cto1, &cto2, &cto3) {
 	}
 
 	ContextSwitch* cswitch;
@@ -56,7 +56,7 @@ struct Data3 {
 	bool finished;
 	std::vector<Puck>* puckVector;
 	WorkpieceMessage wpm;
-	InfoMessage im;
+	InfoMessage* im;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
 	ContextAltimetryFailManagement cafm;
@@ -303,8 +303,10 @@ private:
 	};
 
 	struct AltimetryAndConveyorEndFailManagement_TOP: public PucksOnConveyor3{
+
+		//ConveyorAltimetryFailManagment - Altimetry not interrupted transaction
 	    virtual void signalLBAltimetryNotInterrupted(){
-	        data->ccefm.signalLBAltimetryNotInterrupted();
+	        data->cafm.signalLBAltimetryNotInterrupted();
 	        if(data->cafm.puckAdded()){
                 data->cm->setSpeed(MOTOR_STOP);
                 data->cm->transact();
@@ -314,8 +316,9 @@ private:
 	        }
 	    }
 
+	    //ConveyorAltimetryFailManagment - Altimetry interrupted transaction
 	    virtual void signalLBAltimetryInterrupted(){
-	        data->ccefm.signalLBAltimetryInterrupted();
+	        data->cafm.signalLBAltimetryInterrupted();
 	    }
 
 	    virtual void signalLBSwitchInterrupted(){
@@ -323,6 +326,7 @@ private:
 	        data->cswitch->transact();
 	    }
 
+	    //ConveyorEndFailManagement - End interrupted transaction
 	    virtual void signalLBEndInterrupted(){
 	        data->cswitch->resetSwitchOpen();
 	        data->cswitch->transact();
@@ -330,6 +334,7 @@ private:
 	        data->ccefm.signalLBEndInterrupted();
 	    }
 
+	    //ConveyorEndFailManagement - End not interrupted transaction
 	    virtual void signalLBEndNotInterrupted(){
 	        data->ccefm.signalLBEndNotInterrupted();
 	        if(data->ccefm.puckAdded()){
@@ -382,7 +387,7 @@ private:
 
                 cout << data->puck3.getPuckType() << endl;
 
-                data->finished = true;
+                new (this) EndOfTheEnd;
 	        }
 	    }
 	};
@@ -413,6 +418,9 @@ private:
 
 	struct EndOfTheEnd: public PucksOnConveyor3 {
 	    virtual void signalLBBeginInterrupted() {
+            data->cm->resetSpeed(MOTOR_STOP);
+            data->cm->transact();
+            data->finished = true;
         }
         virtual void signalLBEndInterrupted() {
         }

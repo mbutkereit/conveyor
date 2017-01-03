@@ -24,12 +24,12 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 struct TOPData {
 	TOPData(int puckID, std::vector<Puck>* puckVector, int *skidcounter) :
 			cc1(puckID, puckVector, skidcounter), cm(
-					ContextMotor::getInstance()), hb(), im(){
+					ContextMotor::getInstance()), hb(), im(InfoMessage::getInfoMessage()){
 	}
 	ContextConveyor1 cc1;
 	ContextMotor *cm;
 	HalBuilder hb;
-	InfoMessage im;
+	InfoMessage* im;
 };
 
 /**
@@ -113,8 +113,8 @@ private:
 			LOG_DEBUG <<"State: MainState \n";
 
 			data->cc1.signalLBSwitchInterrupted();
-			if (data->im.istBand1RutscheVoll()
-					&& data->im.istBand2RutscheVoll()) {
+			if (data->im->istBand1RutscheVoll()
+					&& data->im->istBand2RutscheVoll()) {
 
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->hb.getHardware()->getTL()->turnRedOn();
@@ -147,7 +147,7 @@ private:
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-				data->im.setESTOP();
+				data->im->setESTOP();
 			}
 			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
 			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
@@ -197,9 +197,9 @@ private:
 
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			data->im.removeESTOP();
+			data->im->removeESTOP();
 
-			if (data->im.wurdeUeberallQuitiert()) {
+			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 				new (this) MainState;
@@ -221,8 +221,8 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			data->cm->transact();
 			data->cc1.sensorMeasurementCompleted();
-			data->im.setBand1RutscheLeer();
-			data->im.setBand2RutscheLeer();
+			data->im->setBand1RutscheLeer();
+			data->im->setBand2RutscheLeer();
 			new (this) MainState;
 		}
 	};

@@ -20,17 +20,6 @@
  */
 class InfoMessage {
 public:
-
-	/**
-	 * Konstruktor
-	 */
-	InfoMessage();
-
-	/*
-	 * Destruktor
-	 */
-	~InfoMessage();
-
 	/*
 	 *Gibt die einzige existierende Instanz zurück.
 	 *@return die Instanz
@@ -154,6 +143,16 @@ public:
 
 private:
 
+
+	/**
+	 * Konstruktor
+	 */
+	InfoMessage();
+
+	/*
+	 * Destruktor
+	 */
+	~InfoMessage();
 
 	/**
 	 * Die Struktur enthält das Paket mit den Informationen.

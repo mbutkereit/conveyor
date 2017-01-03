@@ -23,12 +23,12 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct TOPData3 {
 	TOPData3(int puckID, std::vector<Puck>* puckVector) :
-			cc3(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im() {
+			cc3(puckID, puckVector), cm(ContextMotor::getInstance()), hb(), im(InfoMessage::getInfoMessage()) {
 	}
 	ContextConveyor3 cc3;
 	ContextMotor *cm;
 	HalBuilder hb;
-	InfoMessage im;
+	InfoMessage* im;
 };
 
 /**
@@ -122,7 +122,7 @@ private:
 			data->cm->setSpeed(MOTOR_STOP);
 			data->cm->transact();
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-				data->im.setESTOP();
+				data->im->setESTOP();
 			}
 			LOG_DEBUG <<"E-STOPP WURDE GEDRUECKT \n";
 			cout<<"!!!!!!!!!!! E-STOPP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
@@ -167,8 +167,8 @@ private:
 			LOG_DEBUG <<"State: E-Stopp \n";
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			data->im.removeESTOP();
-			if (data->im.wurdeUeberallQuitiert()) {
+			data->im->removeESTOP();
+			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
 				data->cm->transact();
 

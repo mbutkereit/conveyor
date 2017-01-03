@@ -32,7 +32,7 @@ struct Data2 {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), skidOfConveyor2Full(
-					false), im(), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(), cto() {
+					false), im(InfoMessage::getInfoMessage()), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(), cto() {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -45,7 +45,7 @@ struct Data2 {
 	bool bothSkidsfull;
 	int posInVector;
 	bool skidOfConveyor2Full;
-	InfoMessage im;
+	InfoMessage* im;
 	int *sc2;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
@@ -123,7 +123,7 @@ private:
 		//TRANSACTION/LEAVE
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: TransportToEntry Conveyor2\n";
-			data->im.setBand2NichtFrei();
+			data->im->setBand2NichtFrei();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
 			data->cm->transact();
@@ -252,8 +252,8 @@ private:
 						LOG_DEBUG << "Skid Not Full\n";
 						new (this) SortOutThroughSkid;
 					} else {
-						LOG_DEBUG << "Rutsche voll: " << data->im.istBand1RutscheVoll() << "\n";
-						if(data->im.istBand1RutscheVoll()){
+						LOG_DEBUG << "Rutsche voll: " << data->im->istBand1RutscheVoll() << "\n";
+						if(data->im->istBand1RutscheVoll()){
 							LOG_DEBUG << "Both Skids full\n";
 							data->bothSkidsfull = true;
 							new (this) EndOfTheEnd;
@@ -264,7 +264,7 @@ private:
 							data->hb.getHardware()->getTL()->turnYellowOn();
 							data->cm->setSpeed(MOTOR_STOP);
 							data->cm->transact();
-							data->im.setBand2RutscheVoll();
+							data->im->setBand2RutscheVoll();
 						}
 					}
 				}
@@ -299,7 +299,7 @@ private:
 			*data->sc2 = temp;
 			LOG_DEBUG << "Skidcounter: " << *data->sc2 << "\n";
 			if (*data->sc2 > 3) {
-				data->im.setBand2RutscheVoll();
+				data->im->setBand2RutscheVoll();
 				LOG_DEBUG << "Rutsche 2 voll\n";
 			}
 			if (data->puckVector->size() > 0) {
@@ -322,7 +322,7 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
 			data->cm->transact();
-			data->im.setBand2Frei();
+			data->im->setBand2Frei();
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
@@ -415,7 +415,7 @@ private:
 		virtual void signalReset() {
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
-			data->im.setBand2Frei();
+			data->im->setBand2Frei();
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
