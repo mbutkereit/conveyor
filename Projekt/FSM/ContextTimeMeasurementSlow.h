@@ -80,7 +80,7 @@ public:
     void signalTimerTick();
 
 private:
-    struct TimereadingFast { //top-level state
+    struct TimereadingSlow { //top-level state
         virtual void signalLBBeginInterrupted() {
         }
         virtual void signalLBEndInterrupted() {
@@ -122,47 +122,54 @@ private:
         Datactms* data;
     }*statePtr;   // a pointer to current state. Used for polymorphism.
 
-    struct TransportToEntry: public TimereadingFast {
-        virtual void signalLBBeginInterrupted() {
-            data->cm->setSpeed(MOTOR_SLOW);
+    struct TransportToEntry: public TimereadingSlow {
+            virtual void signalLBBeginInterrupted() {
+                data->cm->setSpeed(MOTOR_FAST);
+                data->hb.getHardware()->getMotor()->slow();
+                new (this) MotorOn;
+            }
+        };
 
-            new (this) MotorOn;
-        }
-    };
+        struct MotorOn: public TimereadingSlow{
+            virtual void signalLBBeginNotInterrupted() {
+                data->tickX = &data->t0_th;
+                new (this) TransportToAltimetry;
+            }
+        };
 
-    struct MotorOn: public TimereadingFast{
-        virtual void signalLBBeginNotInterrupted() {
-            data->tickX = &data->t0_th;
-            new (this) TransportToAltimetry;
-        }
-    };
+        struct TransportToAltimetry: public TimereadingSlow{
+            virtual void signalLBAltimetryInterrupted() {
+                data->tickX = &data->th_tw;
+                new (this) LeaveAltimetry;
+            }
+        };
 
-    struct TransportToAltimetry: public TimereadingFast{
-        virtual void signalLBAltimetryInterrupted() {
-            data->tickX = &data->th_tw;
-            new (this) TransportToSkid;
-        }
-    };
+        struct LeaveAltimetry: public TimereadingSlow{
+        	virtual void signalLBAltimetryNotInterrupted() {
+        		new (this) TransportToSkid;
+        	}
+        };
 
-    struct TransportToSkid: public TimereadingFast{
-        virtual void signalLBSwitchInterrupted() {
-            data->tickX = &data->tw_te;
-            data->cswitch->setSwitchOpen();
-            new (this) TransportToDelivery;
-        }
-    };
+        struct TransportToSkid: public TimereadingSlow{
+            virtual void signalLBSwitchInterrupted() {
+                data->tickX = &data->tw_te;
+                data->cswitch->setSwitchOpen();
+                new (this) TransportToDelivery;
+            }
+        };
 
-    struct TransportToDelivery: public TimereadingFast {
-        virtual void signalLBEndInterrupted() {
-            data->tickX = NULL;
-            data->cswitch->resetSwitchOpen();
-            data->cm->setSpeed(MOTOR_STOP);
-            cout << "DELTA_T0_TH: " << data->t0_th << endl;
-            cout << "DELTA_TH_TW: " << data->th_tw << endl;
-            cout << "DELTA_TW_TE: " << data->tw_te << endl;
-            data->finished = true;
-        }
-    };
+        struct TransportToDelivery: public TimereadingSlow {
+            virtual void signalLBEndInterrupted() {
+                data->tickX = NULL;
+                data->cswitch->resetSwitchOpen();
+                data->cm->setSpeed(MOTOR_STOP);
+
+                cout << "DELTA_T0_TH: " << data->t0_th << endl;
+                cout << "DELTA_TH_TW: " << data->th_tw << endl;
+                cout << "DELTA_TW_TE: " << data->tw_te << endl;
+                data->finished = true;
+            }
+        };
 
     TransportToEntry stateMember; //The memory for the state is part of context object
     Datactms ctmsdata;

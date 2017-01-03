@@ -13,10 +13,6 @@ class WorkpieceMessage
 {
 public:
 
-    /**
-     * Konstruktor
-     */
-    WorkpieceMessage();
 	/**
 	 * Singleton
 	 *@return gibt die einzige Instanz, dieser Klasse zurück.
@@ -48,12 +44,20 @@ public:
      */
     struct workpiece_package_without_ch getWorkpieceInfo();
 
-    /**
-     * Destruktor
-     */
-    ~WorkpieceMessage();
 private:
 
+
+
+    /**
+	 * Destruktor
+	 */
+	~WorkpieceMessage();
+
+
+    /**
+     * Konstruktor
+     */
+    WorkpieceMessage();
 
    /*
     * Enthält die empfangenen Informationen, bis sie benötigt werden.

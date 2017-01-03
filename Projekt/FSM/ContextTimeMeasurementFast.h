@@ -138,14 +138,14 @@ private:
     struct TransportToAltimetry: public TimereadingFast{
         virtual void signalLBAltimetryInterrupted() {
             data->tickX = &data->th_tw;
-            data->cm->setSpeed(MOTOR_SLOW);
+            data->hb.getHardware()->getMotor()->slow();
             new (this) LeaveAltimetry;
         }
     };
 
     struct LeaveAltimetry: public TimereadingFast{
     	virtual void signalLBAltimetryNotInterrupted() {
-    		data->cm->resetSpeed(MOTOR_SLOW);
+    		data->hb.getHardware()->getMotor()->fast();
     		new (this) TransportToSkid;
     	}
     };

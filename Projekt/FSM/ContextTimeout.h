@@ -12,15 +12,18 @@
 #include "TimeoutOptions.h"
 using namespace std;
 
+#define DEFAULT
 #ifdef DEFAULT
     #define DELTA_T0_TH 999
     #define DELTA_TH_TW 999
     #define DELTA_TW_TE 999
+
+    #define DELTA_TH_TE 1000
 #else
     #define DELTA_T0_TH 1000
-    #define DELTA_TH_TW 1000
-    #define DELTA_TW_TE 1000
+
 #endif
+#define TOLERANCE 5
 
 struct Datacto{
 	Datacto():ticksPL(0), timeout(false){}

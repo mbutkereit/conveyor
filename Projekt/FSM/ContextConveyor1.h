@@ -37,7 +37,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(InfoMessage::getInfoMessage()), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(), cto() {
+					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(0) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -53,8 +53,9 @@ struct Data {
 	int *sc;
 	BlinkRedThread blinkRed;
 	BlinkYellowThread blinkYellow;
-	WorkpieceMessage wpm;
+	WorkpieceMessage* wpm;
 	ContextTimeout cto;
+	int delta_X;
 };
 
 /**
@@ -105,6 +106,7 @@ private:
 		}
 		virtual void signalTimerTick() {
 			data->cto.signalTimerTick();
+			data->delta_X -= 1;
 			if (data->cto.timeoutOccured()) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
@@ -126,7 +128,6 @@ private:
 			LOG_DEBUG << "State: TransportToEntry \n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
-
 			new (this) MotorOn;
 		}
 	};
@@ -135,7 +136,7 @@ private:
 		//LEAVE
 		void signalLBBeginNotInterrupted() {
 			LOG_DEBUG << "State: MotorOn\n";
-			//TODO t0 = GIVE TIME, START TIMER(t0)!
+			data->delta_X = DELTA_T0_TH;//Give ticks T0
 			data->cto.startTimerT0();
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
@@ -147,10 +148,10 @@ private:
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
-
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
-			if (1) {   //TODO DELTA t0 and tH OK
+			if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+				data->delta_X = DELTA_TH_TW; //TODO Give ticks TW
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
 				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
@@ -166,7 +167,7 @@ private:
 					data->puck.setPuckType(NO_DRILL_HOLE);
 				}
 				new (this) PuckInHeightMeasurement;
-			} else if (0) { //TODO DELTA t0 AND tH TOO LOW
+			} else { //TODO DELTA t0 AND tH TOO HIGH
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
@@ -192,7 +193,6 @@ private:
 	struct TransportToSwitch: public PuckOnConveyor1 {
 		virtual void signalLBSwitchInterrupted() {
 			LOG_DEBUG << "State: TransportToSwitch \n";
-			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
 			data->cto.stopTimerTH();
 			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
@@ -209,7 +209,9 @@ private:
 	struct Sorting: public PuckOnConveyor1 {
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting \n";
-			if (1) { //TODO DELTA tH and tW OK
+			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
+			if (data->delta_X <= TOLERANCE) { //TODO DELTA tH and tW OK
+				data->delta_X = DELTA_TW_TE; //TODO Give ticks TE
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
@@ -234,7 +236,7 @@ private:
 						}
 					}
 				}
-			} else if (0) { //TODO DELTA tH AND tW TOO LOW
+			} else { //TODO DELTA tH AND tW TOO HIGH
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
@@ -300,7 +302,7 @@ private:
 			data->cswitch->resetSwitchOpen();
 			LOG_DEBUG << "State: TransportToDelivery --> Timer3 \n";
 			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
-			if (1) { //TODO DELTA tW and tE OK
+			if (data->delta_X <= TOLERANCE) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
 
 				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";
@@ -310,7 +312,7 @@ private:
 
 				LOG_DEBUG << "State: TransportToDelivery --> Before next State\n";
 				new (this) TransportToConveyor2;
-			} else if (0) { //TODO DELTA tW AND tE TOO LOW
+			} else { //TODO DELTA tW AND tE TOO HIGH
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
@@ -360,7 +362,7 @@ private:
 				break;
 
 			}
-			data->wpm.send(data->puck.getHeightReading1(),
+			data->wpm->send(data->puck.getHeightReading1(),
 					data->puck.getHeightReading2(), sendPuckType,
 					data->puck.getId());
 			LOG_DEBUG << "Daten gesendet \n";

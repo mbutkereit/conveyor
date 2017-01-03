@@ -7,8 +7,8 @@
 
 #include "ContextAltimetryFailManagement.h"
 
-ContextAltimetryFailManagement::ContextAltimetryFailManagement(ContextTimeout* cto1, ContextTimeout* cto2, ContextTimeout* cto3) :
-			statePtr(&stateMember), cafm(cto1,cto2,cto3) // assigning start state
+ContextAltimetryFailManagement::ContextAltimetryFailManagement(ContextTimeout* cto1, ContextTimeout* cto2, ContextTimeout* cto3, int* delta1, int* delta2, int* delta3) :
+			statePtr(&stateMember), cafm(cto1,cto2,cto3,delta1,delta2,delta3) // assigning start state
 	{
 		statePtr->data = &cafm;
 	}

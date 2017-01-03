@@ -18,8 +18,8 @@
 #include "ContextTimeout.h"
 
 struct Dataccefm {
-	Dataccefm(ContextTimeout* cto1, ContextTimeout* cto2, ContextTimeout* cto3) :
-			hb(), cswitch(ContextSwitch::getInstance()), finished(false), puckAdded(false), ccefmto1(cto1), ccefmto2(cto2), ccefmto3(cto3) {
+	Dataccefm(ContextTimeout* cto1, ContextTimeout* cto2, ContextTimeout* cto3, int* delta1, int* delta2, int* delta3) :
+			hb(), cswitch(ContextSwitch::getInstance()), finished(false), puckAdded(false), ccefmto1(cto1), ccefmto2(cto2), ccefmto3(cto3), ccefmdelta1(delta1), ccefmdelta2(delta2), ccefmdelta3(delta3) {
 	}
 	HalBuilder hb;
 	ContextSwitch* cswitch;
@@ -28,11 +28,14 @@ struct Dataccefm {
 	ContextTimeout* ccefmto1;
 	ContextTimeout* ccefmto2;
 	ContextTimeout* ccefmto3;
+	int* ccefmdelta1;
+	int* ccefmdelta2;
+	int* ccefmdelta3;
 };
 
 class ContextConveyorEndFailManagement{
 public:
-	ContextConveyorEndFailManagement(ContextTimeout*,ContextTimeout*,ContextTimeout*);
+	ContextConveyorEndFailManagement(ContextTimeout*,ContextTimeout*,ContextTimeout*,int*,int*,int*);
 	virtual ~ContextConveyorEndFailManagement();
 
 	bool isContextimEnzustand() {
@@ -124,32 +127,27 @@ private:
 		Dataccefm* data;
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
+	/*
 	struct Puck1Recognized_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndNotInterrupted() {
-			if(0){//TODO Delta not ok
-				data->puckAdded = true;
+			if(*data->ccefmdelta1 <= TOLERANCE){
+				new (this) Puck2Ready_CEFM;
 			}
 			else{
-				new (this) Puck2Ready_CEFM;
+				data->puckAdded = true;
 			}
 		}
 	};
+	*/
 
 	struct Puck2Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
 			data->ccefmto2->stopTimerTH();
-			//TODO t_E2, Delta of t_H2 and t_E2
-			new (this) Puck2Recognized_CEFM;
-		}
-	};
-
-	struct Puck2Recognized_CEFM: public ConveyorEndFailManagement {
-		virtual void signalLBEndNotInterrupted(){
-			if(0){//TODO Delta not ok
-				data->puckAdded = true;
+			if(*data->ccefmdelta2 <= TOLERANCE){
+				new (this) Puck3Ready_CEFM;
 			}
 			else{
-				new (this) Puck3Ready_CEFM;
+				data->puckAdded = true;
 			}
 		}
 	};
@@ -157,21 +155,20 @@ private:
 	struct Puck3Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
 			data->ccefmto3->stopTimerTH();
-			//TODO t_E3, Delta of t_H3 and t_E3
-			new (this) Puck3Recognized_CEFM;
-		}
-	};
-
-	struct Puck3Recognized_CEFM: public ConveyorEndFailManagement {
-		virtual void signalLBEndNotInterrupted(){
-			if(0){//TODO Delta not ok
+			if(*data->ccefmdelta3 <= TOLERANCE){
+				data->finished = true;
+				new (this) EndOfTheEnd;
+			}
+			else{
 				data->puckAdded = true;
 			}
-			data->finished = true;
 		}
 	};
 
-	Puck1Recognized_CEFM stateMember; //The memory for the state is part of context object
+	struct EndOfTheEnd: public ConveyorEndFailManagement {
+	};
+
+	Puck2Ready_CEFM stateMember; //The memory for the state is part of context object
 	Dataccefm ccefm;
 };
 #endif /* CONTEXTCONVEYORENDFAILMANAGEMENT_H_ */
