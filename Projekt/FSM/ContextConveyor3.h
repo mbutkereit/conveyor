@@ -323,13 +323,11 @@ private:
 
 	    virtual void signalLBSwitchInterrupted(){
 	        data->cswitch->setSwitchOpen();
-	        data->cswitch->transact();
 	    }
 
 	    //ConveyorEndFailManagement - End interrupted transaction
 	    virtual void signalLBEndInterrupted(){
 	        data->cswitch->resetSwitchOpen();
-	        data->cswitch->transact();
 	        data->cto1.stopTimerTH();
 	        data->ccefm.signalLBEndInterrupted();
 	    }

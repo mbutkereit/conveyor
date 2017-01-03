@@ -215,7 +215,6 @@ private:
 				if (data->cs->getSequenceOk()) {
 					LOG_DEBUG << "Sequence OK \n";
 					data->cswitch->setSwitchOpen();
-					data->cswitch->transact();
 					new (this) TransportToDelivery;
 				} else {
 					LOG_DEBUG << "Sequence not OK \n";
@@ -231,7 +230,6 @@ private:
 							LOG_DEBUG << "Skid Full\n";
 							data->hb.getHardware()->getTL()->turnYellowOn();
 							data->cswitch->setSwitchOpen();
-							data->cswitch->transact();
 							new (this) TransportToDelivery;
 						}
 					}
@@ -301,7 +299,6 @@ private:
 			LOG_DEBUG << "State: TransportToDelivery --> Timer2 \n";
 			data->cswitch->resetSwitchOpen();
 			LOG_DEBUG << "State: TransportToDelivery --> Timer3 \n";
-			data->cswitch->transact();
 			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
 			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);

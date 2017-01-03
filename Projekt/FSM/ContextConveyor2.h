@@ -243,7 +243,6 @@ private:
 				if (data->cs->getSequenceOk()) {
 					LOG_DEBUG << "Sequence OK \n";
 					data->cswitch->setSwitchOpen();
-					data->cswitch->transact();
 					new (this) TransportToDelivery;
 				} else {
 					LOG_DEBUG << "Sequence not OK \n";
@@ -333,7 +332,6 @@ private:
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
 			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
-			data->cswitch->transact();
 			if (1) {   //TODO DELTA tW and tE OK
 				cout << "ID: " <<
 

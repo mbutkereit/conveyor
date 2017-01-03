@@ -25,22 +25,24 @@ class ContextSwitch {
 public:
 	static ContextSwitch* getInstance();
     virtual ~ContextSwitch(){};
-
-    void transact() {
-		statePtr->transact();
-	} // context delegates signals to state
     
     void setSwitchOpen()
     {
         cswdata.openCounter++;
+        transact();
     }
 
     void resetSwitchOpen()
     {
         cswdata.openCounter--;
+        transact();
     }
 
 private:
+    void transact() {
+		statePtr->transact();
+	} // context delegates signals to state
+
 	struct SwitchOfConveyor { //top-level state
 		Datacsw* data;
 		virtual void transact() {

@@ -148,7 +148,6 @@ private:
         virtual void signalLBSwitchInterrupted() {
             data->tickX = &data->tw_te;
             data->cswitch->setSwitchOpen();
-            data->cswitch->transact();
             new (this) TransportToDelivery;
         }
     };
@@ -157,9 +156,7 @@ private:
         virtual void signalLBEndInterrupted() {
             data->tickX = NULL;
             data->cswitch->resetSwitchOpen();
-            data->cswitch->transact();
             data->cm->setSpeed(MOTOR_STOP);
-
             cout << "DELTA_T0_TH: " << data->t0_th << endl;
             cout << "DELTA_TH_TW: " << data->th_tw << endl;
             cout << "DELTA_TW_TE: " << data->tw_te << endl;
