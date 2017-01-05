@@ -142,6 +142,7 @@ private:
 
 	struct Puck2Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
+			LOG_DEBUG << "Puck2Ready_CEFM (2. Werkstück angekommen)\n";
 			data->ccefmto2->stopTimerTH();
 			//if(*data->ccefmdelta2 <= TOLERANCE){
 			if(1){
@@ -155,10 +156,10 @@ private:
 
 	struct Puck3Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
+			LOG_DEBUG << "Puck3Ready_CEFM (3. Werkstück angekommen)\n";
 			data->ccefmto3->stopTimerTH();
 			//if(*data->ccefmdelta3 <= TOLERANCE){
 			if(1){
-				data->finished = true;
 				new (this) EndOfTheEnd;
 			}
 			else{
@@ -168,6 +169,10 @@ private:
 	};
 
 	struct EndOfTheEnd: public ConveyorEndFailManagement {
+		virtual void signalLBEndNotInterrupted(){
+			LOG_DEBUG << "Letztes Werkstück durchgelassen(EndFailManagement)\n";
+			data->finished = true;
+		}
 	};
 
 	Puck2Ready_CEFM stateMember; //The memory for the state is part of context object
