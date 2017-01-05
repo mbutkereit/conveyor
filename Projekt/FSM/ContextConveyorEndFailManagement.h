@@ -143,7 +143,8 @@ private:
 	struct Puck2Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
 			data->ccefmto2->stopTimerTH();
-			if(*data->ccefmdelta2 <= TOLERANCE){
+			//if(*data->ccefmdelta2 <= TOLERANCE){
+			if(1){
 				new (this) Puck3Ready_CEFM;
 			}
 			else{
@@ -155,7 +156,8 @@ private:
 	struct Puck3Ready_CEFM: public ConveyorEndFailManagement {
 		virtual void signalLBEndInterrupted(){
 			data->ccefmto3->stopTimerTH();
-			if(*data->ccefmdelta3 <= TOLERANCE){
+			//if(*data->ccefmdelta3 <= TOLERANCE){
+			if(1){
 				data->finished = true;
 				new (this) EndOfTheEnd;
 			}

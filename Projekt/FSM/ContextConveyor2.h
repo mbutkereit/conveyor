@@ -180,7 +180,8 @@ private:
 
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			//if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			if (1) {   //TODO DELTA t0 and tH OK
 				data->delta_X = DELTA_TH_TW;
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
@@ -240,7 +241,8 @@ private:
 	struct Sorting: public PuckOnConveyor2 {
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting\n";
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA tH and tW OK
+			//if (data->delta_X <= TOLERANCE) {   //TODO DELTA tH and tW OK
+			if (1) {   //TODO DELTA t0 and tH OK
 				data->delta_X = DELTA_TW_TE;
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
@@ -336,7 +338,8 @@ private:
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
 			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA tW and tE OK
+			//if (data->delta_X <= TOLERANCE) {   //TODO DELTA tW and tE OK
+			if (1) {   //TODO DELTA tW and tE OK
 				cout << "ID: " <<
 
 				cout << data->puck.getId() << endl;

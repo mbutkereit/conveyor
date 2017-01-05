@@ -150,7 +150,8 @@ private:
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			//if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			if (1) {   //TODO DELTA t0 and tH OK
 				data->delta_X = DELTA_TH_TW; //TODO Give ticks TW
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(20);
@@ -210,7 +211,8 @@ private:
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting \n";
 			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
-			if (data->delta_X <= TOLERANCE) { //TODO DELTA tH and tW OK
+			//if (data->delta_X <= TOLERANCE) { //TODO DELTA tH and tW OK
+			if (1) { //TODO DELTA tH and tW OK
 				data->delta_X = DELTA_TW_TE; //TODO Give ticks TE
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
@@ -302,7 +304,8 @@ private:
 			data->cswitch->resetSwitchOpen();
 			LOG_DEBUG << "State: TransportToDelivery --> Timer3 \n";
 			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
-			if (data->delta_X <= TOLERANCE) { //TODO DELTA tW and tE OK
+			//if (data->delta_X <= TOLERANCE) { //TODO DELTA tW and tE OK
+			if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
 
 				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";

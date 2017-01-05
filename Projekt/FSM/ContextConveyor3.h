@@ -286,7 +286,8 @@ private:
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG <<"State: EndRecieving\n";
 			data->cto1.stopTimerT0();
-			if (data->delta1 <= TOLERANCE){
+			//if (data->delta1 <= TOLERANCE){
+			if (1){
 				data->delta1 = DELTA_TH_TE;
 				data->cto1.startTimerTH();
 				new (this) AltimetryFailManagement_TOP;
@@ -330,7 +331,8 @@ private:
 		virtual void signalLBEndInterrupted(){
 			data->cswitch->resetSwitchOpen();
 			data->cto1.stopTimerTH();
-			if(data->delta1 <= TOLERANCE){
+			//if(data->delta1 <= TOLERANCE){
+			if(1){
 				new (this) ConveyorEndFailManagement_TOP;
 			}else{
                 data->cm->setSpeed(MOTOR_STOP);
