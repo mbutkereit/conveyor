@@ -85,43 +85,37 @@ private:
 
 	struct MainState: public TOPFSM {
 		void signalLBBeginInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBBeginInterrupted();
 		}
 		void signalLBBeginNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBBeginNotInterrupted();
 		}
 		void signalLBEndInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBEndInterrupted();
 		}
 		void signalLBEndNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "signalLBEndNotInterrupted arrived in TOPFSM3\n";
 			data->cc3.signalLBEndNotInterrupted();
 		}
 		void signalLBAltimetryInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBAltimetryInterrupted();
 		}
 		void signalLBAltimetryNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBAltimetryNotInterrupted();
 		}
 
 		void signalLBSwitchInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSwitchInterrupted();
 		}
 		void signalLBSwitchNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
-			LOG_DEBUG <<"State: MainState \n";
+			data->cc3.signalEStop();
 			data->cm->setSpeed(MOTOR_STOP);
 
 			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+				LOG_DEBUG <<"(((((((((((((((((Set E-STOPP wurde  gesetzt)))))))))))))))))) \n";
 				data->im->setESTOP();
 			}
 			LOG_DEBUG <<"E-STOPP WURDE GEDRUECKT \n";
@@ -131,34 +125,30 @@ private:
 		}
 
 		void signalStart() {
-			LOG_DEBUG <<"State: MainState \n";
 		}
 
 		void signalStop() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalStop();
 		}
 
 		void signalReset() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalReset();
 		}
 
 		void signalLBSkidInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSkidInterrupted();
 		}
 		void signalLBSkidNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
 			data->cc3.signalLBSkidNotInterrupted();
 		}
 		void signalAltimetryCompleted() {
-			LOG_DEBUG <<"State: MainState \n";
+			data->cc3.signalLBSkidNotInterrupted();
 		}
 		void signalLBNextConveyor() {
-		    LOG_DEBUG <<"State: MainState \n";
+			data->cc3.signalLBSkidNotInterrupted();
 		}
 		void signalTimerTick(){
+			data->cc3.signalTimerTick();
 		}
 	};
 
@@ -170,8 +160,6 @@ private:
 			data->im->removeESTOP();
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
-
-
 				new (this) MainState;
 			} else {
 				new (this) E_Stopp;

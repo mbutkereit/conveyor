@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     c1.join();
     registerISR();
    LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-   SerialMessageWatchdogThread::notify();
+ //  SerialMessageWatchdogThread::notify();
 
     SignalHandlerThread thread_automat;
    SerialMessageRecvThread threadRecv;
@@ -31,8 +31,6 @@ int main(int argc, char *argv[]) {
 //	message->setBand1RutscheVoll();
 
     LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-
-
 
 
 //    while(1){

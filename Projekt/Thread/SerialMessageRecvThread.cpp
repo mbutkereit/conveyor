@@ -44,6 +44,7 @@ void SerialMessageRecvThread::execute(void*) {
 				hb.getHardware()->getSerial()->recvPacket((void*) &messageInfo,
 						sizeof(struct info_package_without_ch));
 				message->update(&messageInfo);
+
 				if (message->isESTOPGedrueckt()) {
 					int error = MsgSendPulse(isrtConnection_, 10, 0xE, ESTOP);
 					LOG_DEBUG << "Estop steht im Paket.\n";
@@ -64,6 +65,7 @@ void SerialMessageRecvThread::execute(void*) {
 				}
 
 				usleep(20000);
+
 //				if (message->istBand2RutscheVoll()) {
 //					LOG_DEBUG << "Die Rutsche von Band 2 ist voll.!!!!!\n";
 //				}

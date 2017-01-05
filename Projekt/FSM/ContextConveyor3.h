@@ -29,7 +29,7 @@
 struct Data3 {
 	Data3(int puckID, std::vector<Puck>* puckVector) :
 			cswitch(ContextSwitch::getInstance()), cto1(), cto2(), cto3(), hb(), cm(ContextMotor::getInstance()), puck(-1), puck2(-1), puck3(-1), id(0),
-			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(WorkpieceMessage::getWorkpieceMessage()), im(InfoMessage::getInfoMessage()), blinkRed(), blinkYellow(), cafm(&cto1, &cto2, &cto3, &delta1, &delta2, &delta3), ccefm(&cto1, &cto2, &cto3, &delta1, &delta2, &delta3) {
+			height(-1), delta1(0), delta2(0), delta3(0), finished(false), puckVector(puckVector), wpm(WorkpieceMessage::getWorkpieceMessage()), im(InfoMessage::getInfoMessage()), blinkRed(), blinkYellow(), cafm(&cto1, &cto2, &cto3, &delta1, &delta2, &delta3), ccefm(&cto1, &cto2, &cto3, &delta1, &delta2, &delta3){
 	}
 
 	ContextSwitch* cswitch;
@@ -81,7 +81,7 @@ private:
 		}
 		virtual void signalLBBeginNotInterrupted() {
 		}
-		virtual void signalLBEndInNotInterrupted() {
+		virtual void signalLBEndNotInterrupted() {
 		}
 		virtual void signalLBAltimetryNotInterrupted() {
 		}
@@ -112,8 +112,8 @@ private:
             	data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
-
-				cout << "TIMEOUT" << endl;
+				LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
+				cerr << "TIMEOUT" << endl;
 				data->puckVector->clear();
                 new (this) PuckLost;
             }
@@ -126,6 +126,7 @@ private:
 			LOG_DEBUG <<"State:Recieving Pucks\n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			new (this) Puck1Recognized;
 		}
 	};
@@ -166,8 +167,10 @@ private:
 			data->puckVector->push_back(data->puck);
 			data->delta1 = DELTA_T0_TH;
 			data->cto1.startTimerT0();
+			usleep(250000);
+			LOG_DEBUG << "ICH STOPPE NUN DEN AUTOMATEN\n";
 			data->cm->setSpeed(MOTOR_STOP);
-
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			new (this) Puck2Ready;
 		}
 
@@ -178,8 +181,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 2 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->setSpeed(MOTOR_FAST);
-
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			new (this) Puck2Recognized;
 		}
 
@@ -220,8 +222,9 @@ private:
 			data->puckVector->push_back(data->puck2);
 			data->delta2 = DELTA_T0_TH;
 			data->cto2.startTimerT0();
+			usleep(250000);
 			data->cm->setSpeed(MOTOR_STOP);
-
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			new (this) Puck3Ready;
 		}
 
@@ -231,9 +234,7 @@ private:
 		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG <<"State: Puck 3 Ready\n";
 			data->cm->resetSpeed(MOTOR_STOP);
-
-			data->cm->setSpeed(MOTOR_FAST);
-
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			new (this) Puck3Recognized;
 		}
 
@@ -274,8 +275,7 @@ private:
 			data->puckVector->push_back(data->puck3);
 			data->delta3 = DELTA_T0_TH;
 			data->cto3.startTimerT0();
-			data->cm->resetSpeed(MOTOR_STOP);
-			data->cm->setSpeed(MOTOR_FAST);//Wirklich nötig? Vorheriger Zustand setzt bereits Fast. Bitte auch ohne testen./MC
+			//data->cm->resetSpeed(MOTOR_STOP);
 			new (this) EndReceiving;
 
 		}
@@ -294,6 +294,7 @@ private:
 			}
 			else{
 				data->cm->setSpeed(MOTOR_STOP);
+				LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				new (this) PuckAdded;
@@ -302,7 +303,6 @@ private:
 	};
 
 	struct AltimetryFailManagement_TOP: public PucksOnConveyor3{
-
 		//ConveyorAltimetryFailManagment - Altimetry not interrupted transaction
 		/*
 	    virtual void signalLBAltimetryNotInterrupted(){
@@ -312,9 +312,11 @@ private:
 
 	    //ConveyorAltimetryFailManagment - Altimetry interrupted transaction
 	    virtual void signalLBAltimetryInterrupted(){
+	    	LOG_DEBUG <<"State: AltimetryFailManagement_TOP(Altimetry)\n";
 	        data->cafm.signalLBAltimetryInterrupted();
 	        if(data->cafm.puckAdded()){
                 data->cm->setSpeed(MOTOR_STOP);
+                LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
                 data->hb.getHardware()->getTL()->turnGreenOff();
                 data->blinkRed.start(NULL);
                 new (this) PuckAdded;
@@ -322,6 +324,7 @@ private:
 	    }
 
 	    virtual void signalLBSwitchInterrupted(){
+	    	LOG_DEBUG <<"State: AltimetryFailManagement_TOP(Switch)\n";
 	        data->cswitch->setSwitchOpen();
 	        new (this) TransportToSwitch;
 	    }
@@ -329,6 +332,7 @@ private:
 
 	struct TransportToSwitch: public PucksOnConveyor3 {
 		virtual void signalLBEndInterrupted(){
+			LOG_DEBUG <<"State: TransportToSwitch (1. Werkstück angekommen)\n";
 			data->cswitch->resetSwitchOpen();
 			data->cto1.stopTimerTH();
 			//if(data->delta1 <= TOLERANCE){
@@ -336,6 +340,7 @@ private:
 				new (this) ConveyorEndFailManagement_TOP;
 			}else{
                 data->cm->setSpeed(MOTOR_STOP);
+                LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
                 data->hb.getHardware()->getTL()->turnGreenOff();
                 data->blinkRed.start(NULL);
 				new (this) PuckAdded;
@@ -346,66 +351,78 @@ private:
 	struct ConveyorEndFailManagement_TOP: public PucksOnConveyor3{
 		//ConveyorEndFailManagement - End interrupted transaction
 		virtual void signalLBEndInterrupted(){
+			LOG_DEBUG << "ConveyorEndFailManagement_TOP\n";
 			data->ccefm.signalLBEndInterrupted();
 			if(data->ccefm.puckAdded()){
+				LOG_DEBUG << "Puck hinzugefuegt\n";
 				data->cm->setSpeed(MOTOR_STOP);
-
+				LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				new (this) PuckAdded;
 			}
-			else if(data->ccefm.isContextimEnzustand()){
+		}
+
+		virtual void signalLBEndNotInterrupted(){
+			LOG_DEBUG << "Letztes Werkstück durchgelassen(TOP)\n";
+			data->ccefm.signalLBEndNotInterrupted();
+			if (!data->ccefm.isContextimEnzustand()){LOG_DEBUG << "Noch nicht fertig!\n";}else{LOG_DEBUG << "Fertig!\n";}
+			if(data->ccefm.isContextimEnzustand()){
+				LOG_DEBUG << "ConveyorEndFailManagement ist im Endzustand\n";
 				//Puck 1
-				cout << "ID Puck 1: " <<
+				cerr << "ID Puck 1: " <<
 
-				cout << data->puck.getId() << endl;
-				cout << "Height on Conveyor1 Puck 1: " <<
+				cerr << (int) data->puck.getId() << endl;
+				cerr << "Height on Conveyor1 Puck 1: " <<
 
-				cout << data->puck.getHeightReading1() << endl;
-				cout << "Height on Conveyor2 Puck 1: " <<
+				cerr << (int) data->puck.getHeightReading1() << endl;
+				cerr << "Height on Conveyor2 Puck 1: " <<
 
-				cout << data->puck.getHeightReading2() << endl;
-				cout << "Puck Type Puck 1: " <<
+				cerr << (int) data->puck.getHeightReading2() << endl;
+				cerr << "Puck Type Puck 1: " <<
 
-				cout << data->puck.getPuckType() << endl;
+				cerr << data->puck.getPuckType() << endl;
 
 				//Puck 2
-				cout << "ID Puck 2: " <<
+				cerr << "ID Puck 2: " <<
 
-				cout << data->puck2.getId() << endl;
-				cout << "Height on Conveyor1 Puck 2: " <<
+				cerr << (int) data->puck2.getId() << endl;
+				cerr << "Height on Conveyor1 Puck 2: " <<
 
-				cout << data->puck2.getHeightReading1() << endl;
-				cout << "Height on Conveyor2 Puck 2: " <<
+				cerr << (int) data->puck2.getHeightReading1() << endl;
+				cerr << "Height on Conveyor2 Puck 2: " <<
 
-				cout << data->puck2.getHeightReading2() << endl;
-				cout << "Puck Type Puck 2: " <<
+				cerr << (int) data->puck2.getHeightReading2() << endl;
+				cerr << "Puck Type Puck 2: " <<
 
-				cout << data->puck2.getPuckType() << endl;
+				cerr << data->puck2.getPuckType() << endl;
 
 				//Puck 3
-				cout << "ID Puck 3: " <<
+				cerr << "ID Puck 3: " <<
 
-				cout << data->puck3.getId() << endl;
-				cout << "Height on Conveyor1 Puck 3: " <<
+				cerr << (int) data->puck3.getId() << endl;
+				cerr << "Height on Conveyor1 Puck 3: " <<
 
-				cout << data->puck3.getHeightReading1() << endl;
-				cout << "Height on Conveyor2 Puck 3: " <<
+				cerr << (int) data->puck3.getHeightReading1() << endl;
+				cerr << "Height on Conveyor2 Puck 3: " <<
 
-				cout << data->puck3.getHeightReading2() << endl;
-				cout << "Puck Type Puck 3: " <<
+				cerr << (int) data->puck3.getHeightReading2() << endl;
+				cerr << "Puck Type Puck 3: " <<
 
-				cout << data->puck3.getPuckType() << endl;
-
-				new (this) EndOfTheEnd;
+				cerr << data->puck3.getPuckType() << endl;
+				usleep(1300000);
+				data->cm->setSpeed(MOTOR_STOP);
+				LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
+				new (this) BeforeEnd;
 			}
 		}
 	};
 
 	struct PuckAdded: public PucksOnConveyor3 {
 		virtual void SignalReset() {
+			LOG_DEBUG << "State: PuckAdded \n";
 			data->cm->resetSpeed(MOTOR_STOP);
-
+			LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
 			data->blinkRed.stop();
 			data->finished = true;
 			new (this) EndOfTheEnd;
@@ -415,22 +432,29 @@ private:
 
 	struct PuckLost: public PucksOnConveyor3 { //TODO: ErrorMessage ausgben!!!!!!!!!!!!!
 	    virtual void signalReset(){
+	    	LOG_DEBUG << "State: PuckLost\n";
 	        data->blinkYellow.stop();
 	        data->hb.getHardware()->getTL()->turnYellowOff();
 	        data->hb.getHardware()->getTL()->turnGreenOn();
 	        data->cm->resetSpeed(MOTOR_STOP);
-
 	        data->finished = true;
 	        new (this) EndOfTheEnd;
 	    }
 
 	};
 
+	struct BeforeEnd: public PucksOnConveyor3 {
+	    virtual void signalLBBeginInterrupted() {
+	    	LOG_DEBUG << "State: EndOfTheEnd\n";
+            data->cm->resetSpeed(MOTOR_STOP);
+            LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";
+            data->finished = true;
+            new (this) EndOfTheEnd;
+        }
+	};
+
 	struct EndOfTheEnd: public PucksOnConveyor3 {
 	    virtual void signalLBBeginInterrupted() {
-            data->cm->resetSpeed(MOTOR_STOP);
-
-            data->finished = true;
         }
         virtual void signalLBEndInterrupted() {
         }
@@ -489,7 +513,8 @@ public:
 		statePtr->signalLBBeginNotInterrupted();
 	}
 	void signalLBEndNotInterrupted() {
-		statePtr->signalLBEndInNotInterrupted();
+		LOG_DEBUG << "signalLBEndNotInterrupted arrived in Conveyor3\n";
+		statePtr->signalLBEndNotInterrupted();
 	}
 	void signalLBAltimetryNotInterrupted() {
 		statePtr->signalLBAltimetryNotInterrupted();

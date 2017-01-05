@@ -1,6 +1,5 @@
 #include "Thread/SignalHandlerThread.h"
 
-
 int coid = 0;
 int coid2 = 0;
 int isrtChannel_ = 0;
@@ -25,9 +24,9 @@ SignalHandlerThread::~SignalHandlerThread() {
  */
 void SignalHandlerThread::execute(void*) {
 	struct _pulse pulse;
-	int globalerID_Zaehler=0;
+	int globalerID_Zaehler = 0;
 	std::vector<Puck> puckvector;
-	int skidcounter =0;
+	int skidcounter = 0;
 	//TODO delete von Dispatcher fehlt noch
 	Dispatcher* disp = new Dispatcher();
 	std::vector<ContextI*> contextContainer;
@@ -43,12 +42,11 @@ void SignalHandlerThread::execute(void*) {
 			exit(EXIT_FAILURE);
 		}
 		short pulsecode = pulse.code;
-			//LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
+		//LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 		if (pulsecode == 0xE) {
 
 			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
-		    //	<< pulse.value.sival_int << "\n";
-
+			//	<< pulse.value.sival_int << "\n";
 
 			int code = pulse.value.sival_int;
 
@@ -69,26 +67,29 @@ void SignalHandlerThread::execute(void*) {
 
 				ContextI* context;
 
-				if(skidcounter == 0){
-					context = new ContextTopFSM3(globalerID_Zaehler++,&puckvector);
+				if (skidcounter == 0) {
+					context = new ContextTopFSM3(globalerID_Zaehler++,
+							&puckvector);
+					LOG_DEBUG <<"#######Erstelle ein Automaten!&&&&&& \n";
 					skidcounter++;
-				}else{
-					if(skidcounter == 3){
-
+				} else {
+					if (skidcounter == 2) {
+						LOG_DEBUG <<"#######Skidcounter resetet = 0 !&&&&&& \n";
 						skidcounter = 0;
+					} else {
+						LOG_DEBUG <<"#######Skidcounter erhˆht !&&&&&& \n";
+						skidcounter++;
 					}
-
-					skidcounter++;
 				}
 
 #endif
 #if defined BAND && BAND == 4
 
-				ContextI* context =  new ContextTimeMeasurementFast(globalerID_Zaehler++,&puckvector);
+				ContextI* context = new ContextTimeMeasurementFast(globalerID_Zaehler++,&puckvector);
 #endif
 #if defined BAND && BAND == 5
 
-                ContextI* context =  new ContextTimeMeasurementSlow(globalerID_Zaehler++,&puckvector);
+				ContextI* context = new ContextTimeMeasurementSlow(globalerID_Zaehler++,&puckvector);
 #endif
 
 				//TODO extract Method
@@ -163,18 +164,19 @@ void SignalHandlerThread::execute(void*) {
 				disp->callListeners(STOPSIGNAL);
 			}
 			if (code & LIGHT_BARRIER_NEXT_CONVEYOR) {
-				 LOG_DEBUG <<"##########Der Signal Handler hat das Ereignis erhalten,\n";
+				LOG_DEBUG
+						<< "##########Der Signal Handler hat das Ereignis erhalten,\n";
 				disp->callListeners(LBNEXTCONVEYOR);
 			}
 
 			if (code & TIMER_INTERRUPT) {
-			    disp->callListeners(TIMINTR);
+				disp->callListeners(TIMINTR);
 			}
 
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gel√∂scht.
 			for (uint8_t i = 0; i < contextContainer.size(); i++) {
 				if (contextContainer[i]->isContextimEnzustand()) {
-					LOG_DEBUG << "Ich toete gleich einen Automaten1. \n";
+
 
 					//TODO extract Method
 					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
@@ -199,15 +201,15 @@ void SignalHandlerThread::execute(void*) {
 					disp->remListeners(contextContainer[i], ESTOPSIGNAL);
 					disp->remListeners(contextContainer[i], STOPSIGNAL);
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
-					LOG_DEBUG << "Ich toete gleich einen Automaten2. \n";
+
 					disp->remListeners(contextContainer[i], TIMINTR);
-					LOG_DEBUG << "Ich toete gleich einen Automaten3. \n";
+
 
 #if defined BAND && BAND == 1
 
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
 					contextContainer.erase(contextContainer.begin() + i);
-			//		delete contextpointer;
+					//		delete contextpointer;
 #endif
 #if defined BAND && BAND == 2
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
@@ -220,30 +222,31 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 3
 					ContextI *contextpointer = (ContextI*) contextContainer[i];
+					LOG_DEBUG <<"###Ich toete ein Automaten#### \n";
 					contextContainer.erase(contextContainer.begin() + i);
 					//delete contextpointer;
 #endif
 #if defined BAND && BAND == 4
-                    ContextI *contextpointer = (ContextI*) contextContainer[i];
-                    contextContainer.erase(contextContainer.begin() + i);
-                    //delete contextpointer;
+					ContextI *contextpointer = (ContextI*) contextContainer[i];
+					contextContainer.erase(contextContainer.begin() + i);
+					//delete contextpointer;
 #endif
 #if defined BAND && BAND == 5
-                    ContextI *contextpointer = (ContextI*) contextContainer[i];
-                    contextContainer.erase(contextContainer.begin() + i);
-                    //delete contextpointer;
+					ContextI *contextpointer = (ContextI*) contextContainer[i];
+					contextContainer.erase(contextContainer.begin() + i);
+					//delete contextpointer;
 #endif
-					LOG_DEBUG << "Ich toete jetzt einen Automaten. \n";
+
 				}
 			}
 
 		} else {
-		/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
-				//SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
-			} else {
-				LOG_WARNING << "Einen nicht bekannten Code erhalten."
-						<< pulsecode << "\n";
-			}*/
+			/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
+			 //SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
+			 } else {
+			 LOG_WARNING << "Einen nicht bekannten Code erhalten."
+			 << pulsecode << "\n";
+			 }*/
 		}
 
 	} while (1);

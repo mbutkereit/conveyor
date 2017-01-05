@@ -29,6 +29,7 @@ void ContextTopFSM3::signalLBEndInterrupted()  {
 	statePtr->signalLBEndInterrupted();
 }
 void ContextTopFSM3::signalLBEndNotInterrupted()  {
+	LOG_DEBUG << "signalLBEndNotInterrupted arrived in TOPFSM3\n";
 	statePtr->signalLBEndNotInterrupted();
 }
 
@@ -38,7 +39,6 @@ void ContextTopFSM3::signalLBAltimetryInterrupted(){
 void ContextTopFSM3::signalLBAltimetryNotInterrupted(){
 	statePtr->signalLBAltimetryNotInterrupted();
 }
-
 
 void ContextTopFSM3::signalLBSwitchInterrupted(){
 	statePtr->signalLBSwitchInterrupted();
