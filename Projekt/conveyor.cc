@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     c1.join();
     registerISR();
    LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-   SerialMessageWatchdogThread::notify();
+ //  SerialMessageWatchdogThread::notify();
 
     SignalHandlerThread thread_automat;
    SerialMessageRecvThread threadRecv;
@@ -37,13 +37,9 @@ int main(int argc, char *argv[]) {
 
 
 
-	while(1){
-		message->InhaltdesPaketesausgeben();
-
-		if(message->istBand1RutscheVoll()){
-			LOG_DEBUG <<"####################Die Rutsche 1 ist Voll.\n";
-		}
-	}
+//	while(1){
+//		message->InhaltdesPaketesausgeben();
+//	}
 
 
 //    while(1){

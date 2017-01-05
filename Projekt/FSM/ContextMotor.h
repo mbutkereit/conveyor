@@ -122,9 +122,8 @@ private:
                     data->hb.getHardware()->getMotor()->slow();
                     new (this) Slow;
                 }
-                else if (data->slowCounter == 0)
+                else
                 {
-
                     data->timer->setMode(TIMER_FAST);
                     data->timer->continueTimer();
                     data->hb.getHardware()->getMotor()->right();
@@ -149,6 +148,10 @@ private:
 
 public:
 	static ContextMotor* getInstance();
+
+	int showStopCounter(){
+		return cmdata.stopCounter;
+	}
 
 	void setSpeed(MotorOptions mo) {
 		switch (mo) {
