@@ -28,27 +28,19 @@ int main(int argc, char *argv[]) {
     thread_automat.start(NULL);
 	threadWatchdog.start(NULL);
 	threadRecv.start(NULL);
+//	message->setBand1RutscheVoll();
 
     LOG_DEBUG <<"##########Let's Go!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 
-    sleep(5);
 
-
-
-
-
-	while(1){
-		message->InhaltdesPaketesausgeben();
-
-		if(message->istBand1RutscheVoll()){
-			LOG_DEBUG <<"####################Die Rutsche 1 ist Voll.\n";
-		}
-	}
 
 
 //    while(1){
-//    	sleep(30);
-//    	message->setBand2RutscheLeer();
+//    	sleep(5);
+//    	if(message->istBand2RutscheVoll()){
+//    		LOG_DEBUG <<"Die Rutsche von Band 2 ist voll.!!!!!\n";
+//    	}
+//
 //    }
 
 

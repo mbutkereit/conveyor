@@ -198,8 +198,10 @@ private:
 			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
+					LOG_DEBUG << "State TransportToSwitch: With Metal\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
 				} else {
+					LOG_DEBUG << "State TransportToSwitch: With Plastic(Barbie Girl!)\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				}
 			}
@@ -228,11 +230,10 @@ private:
 					} else {
 						if(data->im->istBand2RutscheVoll()){
 							data->bothSkidsfull = true;
-							new (this) EndOfTheEnd;
+							//new (this) EndOfTheEnd;
 						}
 						else{
 							LOG_DEBUG << "Skid Full\n";
-							data->hb.getHardware()->getTL()->turnYellowOn();
 							data->cswitch->setSwitchOpen();
 							new (this) TransportToDelivery;
 						}
@@ -264,10 +265,17 @@ private:
 			*data->sc = temp;
 			LOG_DEBUG << "Skidcounter: " << *data->sc << "\n";
 			if (*data->sc > 3) {
+//				if (data->im->istBand2RutscheVoll()){
+//					data->hb.getHardware()->getTL()->turnGreenOff();
+//					data->hb.getHardware()->getTL()->turnRedOn();
+//					LOG_DEBUG << "Beide Rutschen voll\n";
+//				} else {
 				LOG_DEBUG << "Rutsche 1 voll (noch nicht gesetzt): " << data->im->istBand1RutscheVoll() << "\n";
+				data->hb.getHardware()->getTL()->turnYellowOn();
 				data->im->setBand1RutscheVoll();
 				LOG_DEBUG << "Rutsche 1 voll: " << data->im->istBand1RutscheVoll() << "\n";
 				LOG_DEBUG << "Rutsche 1 voll\n";
+//				}
 			}
 			if (data->puckVector->size() > 0) {
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band1 nicht leer \n";

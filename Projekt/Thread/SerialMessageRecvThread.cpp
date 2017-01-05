@@ -22,8 +22,7 @@ void SerialMessageRecvThread::execute(void*) {
 
 	//Ein Band muss starten
 #if defined BAND && BAND == 1
-	hb.getHardware()->getSerial()->sendPacket(
-			(void *) message->getMessage(),
+	hb.getHardware()->getSerial()->sendPacket((void *) message->getMessage(),
 			sizeof(struct info_package));
 #endif
 	for (;;) {
@@ -32,20 +31,19 @@ void SerialMessageRecvThread::execute(void*) {
 		hb.getHardware()->getSerial()->recvPacket((void*) &header,
 				sizeof(struct common_header));
 
-	//	LOG_DEBUG << "Nachricht erhalten\n";
+		//	LOG_DEBUG << "Nachricht erhalten\n";
 
 		if (header.version == MESSAGE_VERSION) {
 			switch ((int) header.typ) {
 			case MESSAGE_TYPE_INFO: {
 
-			//	LOG_DEBUG << "Nachricht erhalten\n";
+				//	LOG_DEBUG << "Nachricht erhalten\n";
 
 				struct info_package_without_ch messageInfo;
 				memset(&messageInfo, 0, sizeof(struct info_package_without_ch));
 				hb.getHardware()->getSerial()->recvPacket((void*) &messageInfo,
 						sizeof(struct info_package_without_ch));
 				message->update(&messageInfo);
-		//		message->InhaltdesPaketesausgeben();
 				if (message->isESTOPGedrueckt()) {
 					int error = MsgSendPulse(isrtConnection_, 10, 0xE, ESTOP);
 					LOG_DEBUG << "Estop steht im Paket.\n";
@@ -66,6 +64,10 @@ void SerialMessageRecvThread::execute(void*) {
 				}
 
 				usleep(20000);
+//				if (message->istBand2RutscheVoll()) {
+//					LOG_DEBUG << "Die Rutsche von Band 2 ist voll.!!!!!\n";
+//				}
+
 				hb.getHardware()->getSerial()->sendPacket(
 						(void *) message->getMessage(),
 						sizeof(struct info_package));
