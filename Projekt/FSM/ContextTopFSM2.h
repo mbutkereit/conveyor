@@ -23,12 +23,13 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct TOPData2 {
 	TOPData2(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
-			cc2(puckID, puckVector, skidcounter2), cm(ContextMotor::getInstance()), hb(), im(InfoMessage::getInfoMessage()) {
+			cc2(puckID, puckVector, skidcounter2), cm(ContextMotor::getInstance()), hb(), im(InfoMessage::getInfoMessage()), sk(skidcounter2) {
 	}
 	ContextConveyor2 cc2;
 	ContextMotor *cm;
 	HalBuilder hb;
 	InfoMessage* im;
+	int* sk;
 };
 
 /**
@@ -230,6 +231,7 @@ private:
 			LOG_DEBUG <<"State: BothSkidsFull \n";
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
+			*data->sk = 0;
 			data->cm->resetSpeed(MOTOR_STOP);
 
 			data->cc2.sensorMeasurementCompleted();

@@ -110,7 +110,7 @@ private:
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 
-				cout << "TIMEOUT" << endl;
+				cerr << "TIMEOUT" << endl;
 				data->puckVector->erase(
 						data->puckVector->begin() + data->posInVector);
 				new (this) PuckLost;
@@ -189,7 +189,7 @@ private:
 				LOG_DEBUG << "Hoehenwert2: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
 						<< "\n";
-				cout << "Hoehenwert2: " << data->puck.getHeightReading2() << endl;
+				cerr << "Hoehenwert2: " << data->puck.getHeightReading2() << endl;
 				if (data->puck.getHeightReading2() > 3200) {
 					LOG_DEBUG << "DRILL_HOLE_UPSIDE\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE);
@@ -203,7 +203,7 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 
-				cout
+				cerr
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
 				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEFÜGT \n";
@@ -223,14 +223,16 @@ private:
 
 	struct TransportToSwitch: public PuckOnConveyor2 {
 		virtual void signalLBSwitchInterrupted() {
-			LOG_DEBUG << "State: TransoprtToSwitch \n";
+			LOG_DEBUG << "State: TransportToSwitch \n";
 			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
 			data->cto.stopTimerTH();
 			data->cto.startTimerTW();
 			if (data->puck.getPuckType() == DRILL_HOLE_UPSIDE) {
 				if (data->hb.getHardware()->getMT()->isItemMetal()) {
+					LOG_DEBUG << "State: TransportToSwitch --> with Metal\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_METAL);
 				} else {
+					LOG_DEBUG << "State: TransportToSwitch --> with Plastic (Barbie Girl)\n";
 					data->puck.setPuckType(DRILL_HOLE_UPSIDE_PLASTIC);
 				}
 			}
@@ -258,17 +260,18 @@ private:
 					} else {
 						LOG_DEBUG << "Rutsche voll: " << data->im->istBand1RutscheVoll() << "\n";
 						if(data->im->istBand1RutscheVoll()){
+							data->im->setBand2RutscheVoll();
 							LOG_DEBUG << "Both Skids full\n";
 							data->bothSkidsfull = true;
-							new (this) EndOfTheEnd;
+//							new (this) EndOfTheEnd;
 						}
 						else{
 						LOG_DEBUG << "Skid Full\n";
-							data->hb.getHardware()->getTL()->turnGreenOff();
-							data->hb.getHardware()->getTL()->turnYellowOn();
 							data->cm->setSpeed(MOTOR_STOP);
 
 							data->im->setBand2RutscheVoll();
+							LOG_DEBUG << "Skid Full 2 gesetzt\n";
+							data->im->InhaltdesPaketesausgeben();
 						}
 					}
 				}
@@ -277,7 +280,7 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 
-				cout
+				cerr
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
 				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEFÜGT \n";
@@ -303,8 +306,16 @@ private:
 			*data->sc2 = temp;
 			LOG_DEBUG << "Skidcounter: " << *data->sc2 << "\n";
 			if (*data->sc2 > 3) {
-				data->im->setBand2RutscheVoll();
-				LOG_DEBUG << "Rutsche 2 voll\n";
+				if(data->im->istBand1RutscheVoll()){
+					data->hb.getHardware()->getTL()->turnRedOn();
+					data->hb.getHardware()->getTL()->turnGreenOff();
+					LOG_DEBUG << "Beide Rutschen voll\n";
+				}
+				else {
+					data->hb.getHardware()->getTL()->turnYellowOn();
+					data->im->setBand2RutscheVoll();
+					LOG_DEBUG << "Rutsche 2 voll\n";
+				}
 			}
 			if (data->puckVector->size() > 0) {
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 nicht leer \n";
@@ -314,7 +325,7 @@ private:
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 leer \n";
 				data->cm->setSpeed(MOTOR_STOP);
 				LOG_DEBUG << "State: SortOutThroughSkid --> Band2 leer --> Motor gestoppt\n";
-
+				data->im->setBand2Frei();
 				new (this) Conveyor2Empty;
 			}
 		}
@@ -326,7 +337,7 @@ private:
 			data->cm->resetSpeed(MOTOR_STOP);
 			LOG_DEBUG << "State: Conveyor1Empty --> Motor reset stopp\n";
 
-			data->im->setBand2Frei();
+
 			data->finished = true;
 			new (this) EndOfTheEnd;
 		}
@@ -340,18 +351,18 @@ private:
 			data->cswitch->resetSwitchOpen();
 			//if (data->delta_X <= TOLERANCE) {   //TODO DELTA tW and tE OK
 			if (1) {   //TODO DELTA tW and tE OK
-				cout << "ID: " <<
+				cerr << "ID: " <<
 
-				cout << data->puck.getId() << endl;
-				cout << "Height on Conveyor1: " <<
+				cerr << (int) data->puck.getId() << endl;
+				cerr << "Height on Conveyor1: " <<
 
-				cout << data->puck.getHeightReading1() << endl;
-				cout << "Height on Conveyor2: " <<
+				cerr << (int) data->puck.getHeightReading1() << endl;
+				cerr << "Height on Conveyor2: " <<
 
-				cout << data->puck.getHeightReading2() << endl;
-				cout << "Puck Type: " <<
+				cerr << (int) data->puck.getHeightReading2() << endl;
+				cerr << "Puck Type: " <<
 
-				cout << data->puck.getPuckType() << endl;
+				cerr << data->puck.getPuckType() << endl;
 
 				new (this) DeliverToConveyor3;
 
@@ -360,7 +371,7 @@ private:
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 
-				cout
+				cerr
 						<< "FEHLER!!!!!!!!!!! PUCK WURDE HINZUGEFÜGT!!!!!!!!!!!!!!!!!!!!!!!!"
 						<< endl;
 				LOG_DEBUG << "Fehler: PUCK WURDE HINZUGEFÜGT \n";
@@ -405,11 +416,13 @@ private:
 			data->wpm->send(data->puck.getHeightReading1(),
 					data->puck.getHeightReading2(), sendPuckType,
 					data->puck.getId());
-
+			LOG_DEBUG << "State: DeliverToConveyor3: Puck wird gleich geloescht \n";
+			LOG_DEBUG << "Puckvector: " << data->puckVector->size() << "\n";
 			data->puckVector->erase(
 					data->puckVector->begin() + data->posInVector);
+			LOG_DEBUG << "State: DeliverToConveyor3: Puck wurde geloescht \n";
 			data->cm->setSpeed(MOTOR_STOP);
-
+			data->im->setBand2Frei();
 			new (this) Conveyor2Empty;
 
 		}

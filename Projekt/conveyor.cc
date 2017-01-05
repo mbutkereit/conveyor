@@ -37,18 +37,21 @@ int main(int argc, char *argv[]) {
 
 
 
-	while(1){
-		message->InhaltdesPaketesausgeben();
-
-		if(message->istBand1RutscheVoll()){
-			LOG_DEBUG <<"####################Die Rutsche 1 ist Voll.\n";
-		}
-	}
+//	while(1){
+//		message->InhaltdesPaketesausgeben();
+//
+//		if(message->istBand1RutscheVoll()){
+//			LOG_DEBUG <<"####################Die Rutsche 1 ist Voll.\n";
+//		}
+//	}
 
 
 //    while(1){
-//    	sleep(30);
-//    	message->setBand2RutscheLeer();
+//    	sleep(5);
+//    	if(message->istBand1RutscheVoll()){
+//    		 LOG_DEBUG <<"Die Rutsche von Band 1 ist voll!!!!!!!!\n";
+//    	}
+//
 //    }
 
 

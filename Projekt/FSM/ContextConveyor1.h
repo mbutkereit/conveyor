@@ -228,7 +228,7 @@ private:
 					} else {
 						if(data->im->istBand2RutscheVoll()){
 							data->bothSkidsfull = true;
-							new (this) EndOfTheEnd;
+//							new (this) EndOfTheEnd;
 						}
 						else{
 							LOG_DEBUG << "Skid Full\n";
