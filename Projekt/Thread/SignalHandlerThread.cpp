@@ -160,7 +160,10 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & START) {
-				message->setStartBit();
+				if(message->wurdeStartgedrueckt() != 0){
+				   message->setStartBit();
+				}
+				LOG_DEBUG <<" WIR HABEN EINEN START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n";
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
@@ -246,12 +249,12 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 		} else {
-			/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
+				if (pulsecode == WATCHDOG_PULSE_CODE) {
 			 //SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
 			 } else {
 			 LOG_WARNING << "Einen nicht bekannten Code erhalten."
 			 << pulsecode << "\n";
-			 }*/
+			 }
 		}
 
 	} while (1);
