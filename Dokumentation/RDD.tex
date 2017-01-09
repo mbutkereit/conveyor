@@ -52,7 +52,7 @@
 \newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
 
 %Versionsnummer
-\newcommand{\version}{0.6}
+\newcommand{\version}{0.7}
 
 % Tabellenabschnitt linksbündig
 \newcommand{\ltab}{\raggedright\arraybackslash}
@@ -127,15 +127,28 @@
 
 \newpage
 
+\begin{table}[H]
+    \begin{tabularx}{\textwidth}{|c|c|c|X|}
+    \hline
+    \textbf{Version} & \textbf{Author} & \textbf{Datum} & \centering \arraybackslash \textbf{Anmerkungen/Änderungen}\\
+    \hline
+    0.7&Mehmet Cakir&2017-01-09&Timer in Design umformuliert. Screenshots zu ISR, Threads und Dispatcher geändert. Zwei Unterkapitel aus Testen entfernt. Einleitung umformuliert. Verweis zu Milestones in Teamorganisation und Prozess geändert. Testkonzept für die Abnahme aktualisiert.\\
+    \hline
+    \end{tabularx}
+\label{changes}
+\end{table}
+
+\newpage
+
 \tableofcontents
 
 \newpage
 
 \section{Einleitung}
-Diese Dokumentation beschreibt für dieses Projekt im Rahmen des ESEP Praktikum im Wintersemester 2016/2017 sämtliche Beschlüsse, Schritte und Maßnahmen die während des Projekt- bzw. Entwicklungszeitraums getroffen wurden. Das Projekt umfasst die Implementierung von Software zur Ansteuerung von drei baugleichen Förderbändern und die Kommunikation dieser untereinander des Unternehmens Festo, womit eine Werkstück-Sortieranlage realisiert werden soll. Über einen eigenen GEME-Rechner erfolgt die Ansteuerung der Förderbänder. Zur Kommunikation der Förderbänder untereinander werden die GEME-Rechner über serielle Schnittstellen gekoppelt.
+Diese Dokumentation beschreibt für dieses Projekt im Rahmen des ESE Praktika im Wintersemester 2016/2017 sämtliche Beschlüsse, Schritte und Maßnahmen die während des Projekt- bzw. Entwicklungszeitraums getroffen wurden. Das Projekt umfasst die Implementierung von Software zur Ansteuerung von drei baugleichen Förderbändern und die Kommunikation dieser untereinander des Unternehmens Festo, womit eine Werkstück-Sortieranlage realisiert werden soll. Über einen eigenen GEME-Rechner erfolgt die Ansteuerung pro Förderband. Zur Kommunikation der Förderbänder untereinander werden die GEME-Rechner über serielle Schnittstellen gekoppelt.
 
 \section{Teamorganisation}
-Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Bei jedem Meeting werden die Aufgaben verteilt, worüber im folgenden Meeting über den Fortschritt diskutiert wird. Falls ein Mitglied seine Aufgabe fertiggestellt hat, übernimmt er eine Neue. Bei Nichteinhaltung des Zeitplans werden entsprechend der Zeitpuffer andere Aufgaben zurückgestellt. Die Aufgaben richten sich nach den zu bewältigenden Milestones(siehe \cite{esep}) zum jeweiligen Praktikumstermin. Für die Projektleitung und die Pflege des RDD-Dokuments wurde jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden kann.
+Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Bei jedem Meeting werden die Aufgaben verteilt, worüber im folgenden Meeting über den Fortschritt diskutiert wird. Falls ein Mitglied seine Aufgabe fertiggestellt hat, übernimmt er eine Neue. Bei Nichteinhaltung des Zeitplans werden entsprechend der Zeitpuffer andere Aufgaben zurückgestellt. Die Aufgaben richten sich nach den festgelegten Milestones im zum Projekt angefertigten Gantt Diagramm. Für die Projektleitung und die Pflege des RDD-Dokuments wurde jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden kann.
 
 \subsection{Verantwortlichkeiten}\label{vantw}
 \begin{table}[h]
@@ -173,7 +186,7 @@ Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein
 Für die Gewährleistung einer guten Teamarbeit, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-Das Projekt wird auf Grundlage der vorgeschlagenen Milestones umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Die Visualisierung sollte vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen, sowie sie zu lösen. In der Tabelle \ref{visuals} sind für die jeweiligen Spezifikationen die festgelegte Modellierung aufgelistet.
+Das Projekt wird auf Grundlage der festgelegten Milestones im zum Projekt angefertigten Gantt Diagramm umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Die Visualisierung sollte vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen, sowie sie zu lösen. In der Tabelle \ref{visuals} sind für die jeweiligen Spezifikationen die festgelegte Modellierung aufgelistet.
 
 \begin{table}[h]
 \centering
@@ -673,7 +686,8 @@ Die Systemarchitektur setzt sich aus den internen Architekturen der drei Förder
         \hline
         Interrupt Verarbeiter&Verarbeitet Interrupts aus Timer, Signal Verarbeiter und Hardware.\\
         \hline
-        Timer&Zeiterfassung für zeitkritische Abläufe.\\
+        Timer&Dient zur Zeiterfassung und Überprüfung von verschwundenen oder fehlerhaft hinzugefügten 
+        Werkstücken.\\
         \hline
         Signal Verarbeiter&Verarbeitet Signale aus Interrupt Verarbeiter, Timer, Statemachine und Kommunikation seriell.\\
         \hline
@@ -844,9 +858,9 @@ Das Programm benutzt zwei Interrupt-Service-Routinen um externe Events auszuwert
 \stepcounter{imgcounter}
 \begin{figure}[h]
 \centering 
-    \includegraphics[scale=0.7]{ISR/regisr.png}
+    \includegraphics[scale=0.6]{ISR/regisr.png}
     
-    \small Abbildung \theimgcounter : registerISR Methode
+    \small Abbildung \theimgcounter : registerISR Methode aus InterruptHandler.cpp.
     \label{regisr}
 \end{figure}
 
@@ -859,7 +873,7 @@ Die ISR von der Digitalkarte läuft so ab, dass zuerst überprüft wird, ob der 
 \centering 
     \includegraphics[scale=0.7]{ISR/isrdig.png}
     
-    \small Abbildung \theimgcounter : Ausschnitt aus der ISR der Digitalkarte
+    \small Abbildung \theimgcounter : Ausschnitt aus InterruptHandler.cpp zur Digitalkarte.
     \label{isrdig}
 \end{figure}
 
@@ -873,9 +887,9 @@ Der SignalHandlerthread empfängt alle eingehenden Pulse von der ISR(Kernel) und
 \stepcounter{imgcounter}
 \begin{figure}[H]
 \centering 
-    \includegraphics[scale=0.7]{ISR/sighandler.png}
+    \includegraphics[scale=0.5]{ISR/sighandler.png}
     
-    \small Abbildung \theimgcounter : Ausschnitt aus dem SignalHandler. Bei Unterbrechung der vorderen Lichtschranke werden immer neue Automaten erstellt.
+    \small Abbildung \theimgcounter : Ausschnitt aus SignalHandlerThread.cpp. Bei Unterbrechung der vorderen Lichtschranke werden immer neue Automaten erstellt.
     \label{sighandler}
 \end{figure}
 
@@ -884,9 +898,9 @@ Der SignalHandlerthread empfängt alle eingehenden Pulse von der ISR(Kernel) und
 \stepcounter{imgcounter}
 \begin{figure}[H]
 \centering 
-    \includegraphics[scale=0.7]{ISR/dellist.png}
+    \includegraphics[scale=0.6]{ISR/dellist.png}
     
-    \small Abbildung \theimgcounter : Ausschnitt aus dem SignalHandler. Ist ein Automat im Endzustand, wird er gelöscht.
+    \small Abbildung \theimgcounter : Ausschnitt aus SignalHandlerThread.cpp. Ist ein Automat im Endzustand, wird er gelöscht.
     \label{dellist}
 \end{figure}
 
@@ -900,7 +914,7 @@ Der Dispatcher wendet das Observer Pattern an. Es gibt eine Methode um Listener 
 \centering 
     \includegraphics[scale=0.7]{ISR/dispatcher.png}
     
-    \small Abbildung \theimgcounter : Die drei wichtigsten Methoden im Dispatcher
+    \small Abbildung \theimgcounter : Die drei wichtigsten Methoden aus Dispatcher.cpp.
     \label{dispatcher}
 \end{figure}
 
@@ -1097,38 +1111,54 @@ Basierend auf unseren Schnittstellen der seriellen Schnittstelle haben wir uns v
 
 \newpage
 
-\subsection{Anlagensteuerung pro Band}
-\textcolor{red}{Hier erscheinen bald die Tests zur Anlagensteuerung pro Band sowie deren Auswertung.}
-
-\subsection{Ablaufsteuerung über alle drei Bänder}
-\textcolor{red}{Hier erscheinen bald die Tests zur Ablaufsteuerung über alle drei Bänder sowie deren Auswertung.}
-
 \subsection{Testkonzept für die Abnahme} 
 \begin{table}[H]
 \center
-    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \begin{tabularx}{\textwidth}{|l|X|l|l|}
         \hline
-        \textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
+        \textbf{ID}&\textbf{Funktion}&\textbf{Erfolgreich?}&\textbf{Datum}\\
         \hline
         1&Erkennung der Werkstücke am Anfang jedes Förderbandes.&&\\
         \hline
         2&Flache Werkstücke werden auf dem ersten und zweiten Förderband aussortiert.&&\\
         \hline
-        3&Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte entsprechend vom ersten und zweiten Förderband.&&\\
+        3&Werkstücke mit der Bohrung nach unten werden auf dem ersten und zweiten Förderband 
+        aussortiert.&&\\
         \hline
-        4&Werkstücke mit der Bohrung nach unten werden auf dem ersten und zweiten Förderband aussortiert.&&\\
+        4&Bei voller Rutsche des ersten Förderbandes wird eine Fehlermeldung ausgegeben	und die gelbe 
+        Leuchte leuchtet.&&\\
         \hline
-        5&Bei Förderband 1, Fehlermeldung bei voller Rutsche.&&\\
+        5&Bei voller Rutsche des zweiten Förderbandes wird eine Fehlermeldung auf der eigenen Konsole 
+        ausgegeben. Das zweite Förderband stoppt und die gelbe Leuchte leuchtet.&&\\
         \hline
-        6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche.&&\\
+        6&Bei voller Rutsche vom ersten und zweiten Förderband, stoppen das erste und zweite Förderband. 
+        Die rote Leuchte vom ersten und zweiten Förderband leuchtet.&&\\
         \hline
-        7&Stopp beim leeren Förderband.&&\\
+        7&Die Förderbänder stoppen jeweils, wenn sich auf ihnen keinen Werkstück befindet.&&\\
         \hline
-        8&Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
+        8&Die Förderbänder stoppen jeweils, wenn ein Werkstück auf ihnen verschwindet. Entsprechend wird 
+        eine Fehlermeldung auf der eigenen Konsole ausgegeben und eigene gelbe Leuchte blinkt.&&\\
         \hline
-        9&Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
+        9&Die Förderbänder stoppen jeweils, wenn ein Werkstück mitten auf dem eigenen Laufband hinzugefügt 
+        wird. Entsprechend wird eine Fehlermeldung auf der eigenen Konsole ausgegeben und die eigene rote 
+        Leuchte blinkt.&&\\
         \hline
-        10&Am Ende vom zweiten Förderband soll die gewünschte Reihenfolge der Werkstücke entstehen.&&\\
+        10&Das erste Förderband sortiert die gewünschte Reihenfolge bis die eigene Rutsche voll ist.&&\\
+        \hline
+        11&Am Ende vom zweiten Förderband entsteht die gewünschte Reihenfolge.&&\\
+        \hline
+        12&Am Ende vom zweiten Förderband werden die Werkstückdaten auf der eigenen Konsole ausgegeben.&&\\
+        \hline
+        13&Am Ende vom dritten Förderband werden die Werkstückdaten als dreier Gruppe auf der eigenen
+        Konsole ausgegeben.&&\\
+        \hline
+        14&Das dritte Förderband transportiert die Werkstücke erst dann bis zum Ende des Laufbandes, wenn 
+        die dreier Gruppe vollständig ist.&&\\
+        \hline
+        15&Wenn der E-Stopp an einem der drei Förderbänder gedrückt wird, halten alle Förderbänder an.&&\\
+        \hline
+        16&Erst wenn alle Förderbänder nach einem Fehlerzustand quittiert wurden, kann die Anlage wieder 
+        gestartet werden.&&\\
         \hline
     \end{tabularx}
     \caption{Testauswertung der Abnahmetests(Teil 1)}
@@ -1139,9 +1169,9 @@ Basierend auf unseren Schnittstellen der seriellen Schnittstelle haben wir uns v
 
 \begin{table}[H]
 \center
-    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \begin{tabularx}{\textwidth}{|l|X|l|l|}
         \hline
-        \textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
+        \textbf{ID}&\textbf{Funktion}&\textbf{Erfolgreich?}&\textbf{Datum}\\
         \hline
 
         12&Am Ende vom dritten Förderband werden die Werkstückdaten auf der Konsole als 3er Gruppe ausgegeben.&&\\
@@ -1208,14 +1238,6 @@ Die folgenden Auflistungen zeigen Punkte auf, welche uns gut gefallen haben und 
 \medskip
 \item Bei drei Anlagen war es immer schwer alle Förderbänder und Kabel parat zu haben, weshalb die Planung verändert/verzögert werden musste.
 \end{compactenum}
-
-\section{Anhang}
-
-\subsection{Glossar}
-\textcolor{red}{Eindeutige Begriffserklärungen}
-
-\subsection{Abkürzungen}
-\textcolor{red}{Listen sie alle Abkürzungen auf, die sie in diesem Dokument benutzt haben.}
 
 \end{document}
 
