@@ -52,6 +52,11 @@ void SignalHandlerThread::execute(void*) {
 
 			if (code & ESTOP) {
 				disp->callListeners(ESTOPSIGNAL);
+				if (hb.getHardware()->getHMI()->isButtonEStopPressed() == 0) {
+					message->setESTOP();
+				} else {
+					message->removeESTOP();
+				}
 			}
 
 			if (code & LIGHT_BARRIER_BEGIN_INTERRUPTED) {
@@ -60,8 +65,9 @@ void SignalHandlerThread::execute(void*) {
 				ContextI* context= new ContextTopFSM1(globalerID_Zaehler++, &puckvector, &skidcounter);
 #endif
 #if defined BAND && BAND == 2
-				ContextI* context = new ContextTopFSM2(globalerID_Zaehler++,&puckvector,&skidcounter);
-				LOG_DEBUG <<"Neuer Automat erstellt. \n";
+				ContextI* context = new ContextTopFSM2(globalerID_Zaehler++,
+						&puckvector, &skidcounter);
+				LOG_DEBUG << "Neuer Automat erstellt. \n";
 #endif
 #if defined BAND && BAND == 3
 
@@ -177,7 +183,6 @@ void SignalHandlerThread::execute(void*) {
 			for (uint8_t i = 0; i < contextContainer.size(); i++) {
 				if (contextContainer[i]->isContextimEnzustand()) {
 
-
 					//TODO extract Method
 					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
 					disp->remListeners(contextContainer[i],
@@ -203,7 +208,6 @@ void SignalHandlerThread::execute(void*) {
 					disp->remListeners(contextContainer[i], ALTEMETRYCOMPLETE);
 
 					disp->remListeners(contextContainer[i], TIMINTR);
-
 
 #if defined BAND && BAND == 1
 

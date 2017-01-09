@@ -114,10 +114,6 @@ private:
 			data->cc3.signalEStop();
 			data->cm->setSpeed(MOTOR_STOP);
 
-			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-				LOG_DEBUG <<"(((((((((((((((((Set E-STOPP wurde  gesetzt)))))))))))))))))) \n";
-				data->im->setESTOP();
-			}
 			LOG_DEBUG <<"E-STOPP WURDE GEDRUECKT \n";
 			cout<<"!!!!!!!!!!! E-STOPP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
 
@@ -157,7 +153,6 @@ private:
 			LOG_DEBUG <<"State: E-Stopp \n";
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			data->im->removeESTOP();
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
 				new (this) MainState;

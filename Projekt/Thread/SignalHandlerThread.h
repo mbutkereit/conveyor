@@ -28,6 +28,7 @@ using namespace thread;
 extern int coid; ///<
 extern struct sigevent isrtEvent_; ///<
 extern int isrtConnection_; ///<
+extern HalBuilder hb;
 
 /**
  * @file

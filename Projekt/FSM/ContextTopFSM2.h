@@ -23,7 +23,9 @@ extern HalBuilder hb; ///< Der HalBuilder um sicher und zentral auf die Hardware
 
 struct TOPData2 {
 	TOPData2(int puckID, std::vector<Puck>* puckVector, int *skidcounter2) :
-			cc2(puckID, puckVector, skidcounter2), cm(ContextMotor::getInstance()), hb(), im(InfoMessage::getInfoMessage()), sk(skidcounter2) {
+			cc2(puckID, puckVector, skidcounter2), cm(
+					ContextMotor::getInstance()), hb(), im(
+					InfoMessage::getInfoMessage()), sk(skidcounter2) {
 	}
 	ContextConveyor2 cc2;
 	ContextMotor *cm;
@@ -41,7 +43,7 @@ struct TOPData2 {
  *
  * Example: http://prg.phoenix.uberspace.de/2016/04/19/state-machine/
  */
-class ContextTopFSM2: public  ContextI {
+class ContextTopFSM2: public ContextI {
 private:
 	struct TOPFSM { //top-level state
 		virtual void signalLBBeginInterrupted() {
@@ -77,7 +79,7 @@ private:
 
 		virtual void signalLBNextConveyor() {
 		}
-		virtual void signalTimerTick(){
+		virtual void signalTimerTick() {
 		}
 
 		TOPData2* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -86,38 +88,38 @@ private:
 	struct MainState: public TOPFSM {
 
 		void signalLBBeginInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBBeginInterrupted();
 		}
 		void signalLBBeginNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBBeginNotInterrupted();
 		}
 		void signalLBEndInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBEndInterrupted();
 		}
 		void signalLBEndNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBEndNotInterrupted();
 		}
 		void signalLBAltimetryInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBAltimetryInterrupted();
 		}
 		void signalLBAltimetryNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBAltimetryNotInterrupted();
 		}
 
 		void signalLBSwitchInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBSwitchInterrupted();
 			if (data->im->istBand1RutscheVoll()
@@ -126,95 +128,97 @@ private:
 				data->hb.getHardware()->getTL()->turnRedOn();
 				data->cm->setSpeed(MOTOR_STOP);
 
-				LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
-				cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				LOG_DEBUG << "Fehler: BEIDE RUTSCHEN SIND VOLL \n";
+				cout
+						<< "FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"
+						<< endl;
 
 				new (this) BothSkidsFull;
 			} else {
 				data->cc2.sensorMeasurementCompleted();
-				if(data->cc2.bothSkidsFull()){
+				if (data->cc2.bothSkidsFull()) {
 					data->hb.getHardware()->getTL()->turnGreenOff();
 					data->hb.getHardware()->getTL()->turnRedOn();
 					data->cm->setSpeed(MOTOR_STOP);
 
-					LOG_DEBUG <<"Fehler: BEIDE RUTSCHEN SIND VOLL \n";
-					cout<<"FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+					LOG_DEBUG << "Fehler: BEIDE RUTSCHEN SIND VOLL \n";
+					cout
+							<< "FEHLER!!!!!!!!!!! BEIDE RUTSCHEN SIND VOLL!!!!!!!!!!!!!!!!!!!!!!!!"
+							<< endl;
 					new (this) BothSkidsFull;
-				}
-				else if (data->im->istBand2RutscheVoll()) {
-					LOG_DEBUG <<"Fehler:RUTSCHE 2 IST VOLL \n";
-					cout<<"FEHLER!!!!!!!!!!! RUTSCHE 2 IST VOLL!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+				} else if (data->im->istBand2RutscheVoll()) {
+					LOG_DEBUG << "Fehler:RUTSCHE 2 IST VOLL \n";
+					cout
+							<< "FEHLER!!!!!!!!!!! RUTSCHE 2 IST VOLL!!!!!!!!!!!!!!!!!!!!!!!!"
+							<< endl;
 					new (this) SkidOfConveyor2Full;
 				}
 			}
 		}
 		void signalLBSwitchNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
-														//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
+			LOG_DEBUG << "State: MainState \n";
+			//ACTUALLY NOT EXECUTABLE BECAUSE OF signalLBSwitchInterrupted()
 			data->cc2.signalLBSwitchNotInterrupted();
 		}
 		void signalEStop() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cm->setSpeed(MOTOR_STOP);
 
-			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-				data->im->setESTOP();
-			}
-			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
-			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+			LOG_DEBUG << "E-STOP WURDE GEDRUECKT \n";
+			cout << "!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"
+					<< endl;
 
 			new (this) E_Stopp;
 		}
 
 		void signalStart() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 		}
 
 		void signalStop() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalStop();
 		}
 
 		void signalReset() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalReset();
 		}
 
 		void signalLBSkidInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBSkidInterrupted();
 		}
 		void signalLBSkidNotInterrupted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBSkidNotInterrupted();
 		}
 		void signalAltimetryCompleted() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 		}
 		void signalLBNextConveyor() {
-			LOG_DEBUG <<"State: MainState \n";
+			LOG_DEBUG << "State: MainState \n";
 
 			data->cc2.signalLBNextConveyor();
 		}
 		void signalTimerTick() {
-		    data->cc2.signalTimerTick();
+			data->cc2.signalTimerTick();
 		}
 	};
 
 	struct E_Stopp: public TOPFSM {
 		void signalReset() {
-			LOG_DEBUG <<"State: E_Stopp \n";
+			LOG_DEBUG << "State: E_Stopp \n";
 
-			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed() == 0) {
 			}
-			data->im->removeESTOP();
 
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
@@ -224,11 +228,12 @@ private:
 				new (this) E_Stopp;
 			}
 		}
+
 	};
 
 	struct BothSkidsFull: public TOPFSM {
 		void signalReset() {
-			LOG_DEBUG <<"State: BothSkidsFull \n";
+			LOG_DEBUG << "State: BothSkidsFull \n";
 			data->hb.getHardware()->getTL()->turnRedOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			*data->sk = 0;
@@ -244,7 +249,7 @@ private:
 
 	struct SkidOfConveyor2Full: public TOPFSM {
 		virtual void signalReset() {
-			LOG_DEBUG <<"State: SkidOfConveyor2Full \n";
+			LOG_DEBUG << "State: SkidOfConveyor2Full \n";
 			data->hb.getHardware()->getTL()->turnYellowOff();
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cc2.skidOfConveyor2Cleared();

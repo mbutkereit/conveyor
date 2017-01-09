@@ -148,14 +148,8 @@ private:
 		virtual void signalEStop() {
 
 			data->cm->setSpeed(MOTOR_STOP);
-
-			if (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
-				data->im->setESTOP();
-			}
 			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
 			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-
-
 			new (this) E_Stopp;
 		}
 
@@ -200,7 +194,6 @@ private:
 
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
 			}
-			data->im->removeESTOP();
 
 			if (data->im->wurdeUeberallQuitiert()) {
 				data->cm->resetSpeed(MOTOR_STOP);
