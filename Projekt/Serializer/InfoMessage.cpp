@@ -33,6 +33,37 @@ void InfoMessage::update(struct info_package_without_ch* infoUpdate){
 #endif
 }
 
+void InfoMessage::setStartBit(){
+#if defined BAND && BAND == 1
+	this->info.info_a = this->info.info_a | START_BIT;
+#endif
+#if defined BAND && BAND == 2
+	this->info.info_b = this->info.info_b | START_BIT;
+#endif
+#if defined BAND && BAND == 3
+	this->info.info_c = this->info.info_c | START_BIT ;
+#endif
+};
+
+bool InfoMessage::wurdeStartgedrueckt(){
+	if((this->info.info_a & START_BIT) ||
+			(this->info.info_b & START_BIT) ||
+			(this->info.info_c & START_BIT)){
+
+#if defined BAND && BAND == 1
+	this->info.info_a = this->info.info_a & ~START_BIT;
+#endif
+#if defined BAND && BAND == 2
+	this->info.info_b = this->info.info_b & ~START_BIT;
+#endif
+#if defined BAND && BAND == 3
+	this->info.info_c = this->info.info_c & ~START_BIT ;
+#endif
+		return true;
+	}
+	return false;
+}
+
 void InfoMessage::setLBinterruptedBit(){
 #if defined BAND && BAND == 1
 	this->info.info_a = this->info.info_a |LB_INTERRUPTED ;

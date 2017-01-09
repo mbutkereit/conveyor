@@ -160,6 +160,7 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & START) {
+				message->setStartBit();
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {

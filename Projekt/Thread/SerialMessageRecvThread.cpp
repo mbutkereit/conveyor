@@ -45,9 +45,17 @@ void SerialMessageRecvThread::execute(void*) {
 						sizeof(struct info_package_without_ch));
 				message->update(&messageInfo);
 
-				if (message->isESTOPGedrueckt()) {
+				if(message->wurdeStartgedrueckt()){
+					int error = MsgSendPulse(isrtConnection_, 10, 0xE, START);
+						if (error < 0) {
+							LOG_ERROR
+									<< "CRITICAL: Message Start kann nicht gesendet werden .";
+						}
+				}
+
+				if (message->isESTOPGedrueckt() ) {
 					int error = MsgSendPulse(isrtConnection_, 10, 0xE, ESTOP);
-					LOG_DEBUG << "Estop steht im Paket.\n";
+				//	LOG_DEBUG << "Estop steht im Paket.\n";
 					if (error < 0) {
 						LOG_ERROR
 								<< "CRITICAL: Message ESTOP kann nicht gesendet werden .";

@@ -188,11 +188,11 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
-		virtual void signalReset() {
+		virtual void signalStart() {
 			LOG_DEBUG <<"State: E-Stopp \n";
 
 
-			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed()) {
+			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed() == 0) {
 			}
 
 			if (data->im->wurdeUeberallQuitiert()) {
@@ -204,7 +204,6 @@ private:
 			else {
 				new (this) E_Stopp;
 			}
-
 		}
 	};
 
