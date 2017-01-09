@@ -14,7 +14,7 @@
 #define LB_INTERRUPTED 0x10
 #define START_BIT 0x20
 
-#define BAND 1
+#define BAND 3
 
 
 

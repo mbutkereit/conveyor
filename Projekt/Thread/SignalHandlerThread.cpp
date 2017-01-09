@@ -158,10 +158,9 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & START) {
-				if(message->wurdeStartgedrueckt() != 0){
-				   message->setStartBit();
+				if(hb.getHardware()->getHMI()->isButtonStartPressed() != 0){
+					message->setStartBit();
 				}
-				LOG_DEBUG <<" WIR HABEN EINEN START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n";
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
