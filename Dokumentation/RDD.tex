@@ -52,11 +52,7 @@
 \newcommand{\ekz}{$>$\xspace} %> mit anschließendem Leerzeichen
 
 %Versionsnummer
-<<<<<<< HEAD
-\newcommand{\version}{0.6}
-=======
 \newcommand{\version}{0.7}
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 
 % Tabellenabschnitt linksbündig
 \newcommand{\ltab}{\raggedright\arraybackslash}
@@ -131,14 +127,12 @@
 
 \newpage
 
-<<<<<<< HEAD
-=======
 \begin{table}[H]
     \begin{tabularx}{\textwidth}{|c|c|c|X|}
     \hline
     \textbf{Version} & \textbf{Author} & \textbf{Datum} & \centering \arraybackslash \textbf{Anmerkungen/Änderungen}\\
     \hline
-    0.7&Mehmet Cakir&2017-01-09&Timer in Design umformuliert. Screenshots zu ISR, Threads und Dispatcher geändert. Zwei Unterkapitel aus Testen entfernt. Einleitung umformuliert. Verweis zu Milestones in Teamorganisation und Prozess geändert. Testkonzept für die Abnahme aktualisiert.\\
+    0.7&Mehmet Cakir&2017-01-09&Timer in Design umformuliert. Screenshots zu ISR, Threads und Dispatcher geändert. Zwei Unterkapitel aus Testen entfernt. Einleitung umformuliert. Verweis zu Milestones in Teamorganisation und Prozess geändert. Testkonzept für die Abnahme aktualisiert. SW-Architektur/Komponentendiagramm aktualisiert. Testszenarien hinzugefügt.\\
     \hline
     \end{tabularx}
 \label{changes}
@@ -146,23 +140,15 @@
 
 \newpage
 
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 \tableofcontents
 
 \newpage
 
 \section{Einleitung}
-<<<<<<< HEAD
-Diese Dokumentation beschreibt für dieses Projekt im Rahmen des ESEP Praktikum im Wintersemester 2016/2017 sämtliche Beschlüsse, Schritte und Maßnahmen die während des Projekt- bzw. Entwicklungszeitraums getroffen wurden. Das Projekt umfasst die Implementierung von Software zur Ansteuerung von drei baugleichen Förderbändern und die Kommunikation dieser untereinander des Unternehmens Festo, womit eine Werkstück-Sortieranlage realisiert werden soll. Über einen eigenen GEME-Rechner erfolgt die Ansteuerung der Förderbänder. Zur Kommunikation der Förderbänder untereinander werden die GEME-Rechner über serielle Schnittstellen gekoppelt.
-
-\section{Teamorganisation}
-Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Bei jedem Meeting werden die Aufgaben verteilt, worüber im folgenden Meeting über den Fortschritt diskutiert wird. Falls ein Mitglied seine Aufgabe fertiggestellt hat, übernimmt er eine Neue. Bei Nichteinhaltung des Zeitplans werden entsprechend der Zeitpuffer andere Aufgaben zurückgestellt. Die Aufgaben richten sich nach den zu bewältigenden Milestones(siehe \cite{esep}) zum jeweiligen Praktikumstermin. Für die Projektleitung und die Pflege des RDD-Dokuments wurde jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden kann.
-=======
 Diese Dokumentation beschreibt für dieses Projekt im Rahmen des ESE Praktika im Wintersemester 2016/2017 sämtliche Beschlüsse, Schritte und Maßnahmen die während des Projekt- bzw. Entwicklungszeitraums getroffen wurden. Das Projekt umfasst die Implementierung von Software zur Ansteuerung von drei baugleichen Förderbändern und die Kommunikation dieser untereinander des Unternehmens Festo, womit eine Werkstück-Sortieranlage realisiert werden soll. Über einen eigenen GEME-Rechner erfolgt die Ansteuerung pro Förderband. Zur Kommunikation der Förderbänder untereinander werden die GEME-Rechner über serielle Schnittstellen gekoppelt.
 
 \section{Teamorganisation}
 Grundsätzlich kann jedes Teammitglied eine Aufgabe seiner Wahl übernehmen. Bei jedem Meeting werden die Aufgaben verteilt, worüber im folgenden Meeting über den Fortschritt diskutiert wird. Falls ein Mitglied seine Aufgabe fertiggestellt hat, übernimmt er eine Neue. Bei Nichteinhaltung des Zeitplans werden entsprechend der Zeitpuffer andere Aufgaben zurückgestellt. Die Aufgaben richten sich nach den festgelegten Milestones im zum Projekt angefertigten Gantt Diagramm. Für die Projektleitung und die Pflege des RDD-Dokuments wurde jeweils eine Person bestimmt, welche im Unterkapitel \ref{vantw} eingesehen werden kann.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 
 \subsection{Verantwortlichkeiten}\label{vantw}
 \begin{table}[h]
@@ -200,11 +186,7 @@ Das Projekt wird mit dem Versionskontrollsystem Git verwaltet. Zentral wurde ein
 Für die Gewährleistung einer guten Teamarbeit, werden in den folgenden Kapiteln erklärt wie die Teammitglieder mit ihren Aufgaben umgehen bzw. wann eine gegenseitige Benachrichtigung über ihren Fortschritt spätestens stattfinden sollte.
 
 \subsection{Prozess}
-<<<<<<< HEAD
-Das Projekt wird auf Grundlage der vorgeschlagenen Milestones umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Die Visualisierung sollte vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen, sowie sie zu lösen. In der Tabelle \ref{visuals} sind für die jeweiligen Spezifikationen die festgelegte Modellierung aufgelistet.
-=======
 Das Projekt wird auf Grundlage der festgelegten Milestones im zum Projekt angefertigten Gantt Diagramm umgesetzt. Für jede Implementierung ist zuvor ein geeignetes, sowie selbsterklärendes bzw. verständliches, aber auch möglichst vollständiges Diagramm anzufertigen. Die Visualisierung sollte vor der Implementierung allen anderen Teammitgliedern vorgestellt werden, um mögliche Verbesserungen einzuholen und ggf. Konflikte früh zu erkennen, sowie sie zu lösen. In der Tabelle \ref{visuals} sind für die jeweiligen Spezifikationen die festgelegte Modellierung aufgelistet.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 
 \begin{table}[h]
 \centering
@@ -704,12 +686,8 @@ Die Systemarchitektur setzt sich aus den internen Architekturen der drei Förder
         \hline
         Interrupt Verarbeiter&Verarbeitet Interrupts aus Timer, Signal Verarbeiter und Hardware.\\
         \hline
-<<<<<<< HEAD
-        Timer&Zeiterfassung für zeitkritische Abläufe.\\
-=======
         Timer&Dient zur Zeiterfassung und Überprüfung von verschwundenen oder fehlerhaft hinzugefügten 
         Werkstücken.\\
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
         \hline
         Signal Verarbeiter&Verarbeitet Signale aus Interrupt Verarbeiter, Timer, Statemachine und Kommunikation seriell.\\
         \hline
@@ -880,15 +858,9 @@ Das Programm benutzt zwei Interrupt-Service-Routinen um externe Events auszuwert
 \stepcounter{imgcounter}
 \begin{figure}[h]
 \centering 
-<<<<<<< HEAD
-    \includegraphics[scale=0.7]{ISR/regisr.png}
-    
-    \small Abbildung \theimgcounter : registerISR Methode
-=======
     \includegraphics[scale=0.6]{ISR/regisr.png}
     
     \small Abbildung \theimgcounter : registerISR Methode aus InterruptHandler.cpp.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
     \label{regisr}
 \end{figure}
 
@@ -901,11 +873,7 @@ Die ISR von der Digitalkarte läuft so ab, dass zuerst überprüft wird, ob der 
 \centering 
     \includegraphics[scale=0.7]{ISR/isrdig.png}
     
-<<<<<<< HEAD
-    \small Abbildung \theimgcounter : Ausschnitt aus der ISR der Digitalkarte
-=======
     \small Abbildung \theimgcounter : Ausschnitt aus InterruptHandler.cpp zur Digitalkarte.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
     \label{isrdig}
 \end{figure}
 
@@ -918,16 +886,10 @@ Der SignalHandlerthread empfängt alle eingehenden Pulse von der ISR(Kernel) und
 
 \stepcounter{imgcounter}
 \begin{figure}[H]
-\centering 
-<<<<<<< HEAD
-    \includegraphics[scale=0.7]{ISR/sighandler.png}
-    
-    \small Abbildung \theimgcounter : Ausschnitt aus dem SignalHandler. Bei Unterbrechung der vorderen Lichtschranke werden immer neue Automaten erstellt.
-=======
+\centering
     \includegraphics[scale=0.5]{ISR/sighandler.png}
     
     \small Abbildung \theimgcounter : Ausschnitt aus SignalHandlerThread.cpp. Bei Unterbrechung der vorderen Lichtschranke werden immer neue Automaten erstellt.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
     \label{sighandler}
 \end{figure}
 
@@ -935,16 +897,10 @@ Der SignalHandlerthread empfängt alle eingehenden Pulse von der ISR(Kernel) und
 
 \stepcounter{imgcounter}
 \begin{figure}[H]
-\centering 
-<<<<<<< HEAD
-    \includegraphics[scale=0.7]{ISR/dellist.png}
-    
-    \small Abbildung \theimgcounter : Ausschnitt aus dem SignalHandler. Ist ein Automat im Endzustand, wird er gelöscht.
-=======
+\centering
     \includegraphics[scale=0.6]{ISR/dellist.png}
     
     \small Abbildung \theimgcounter : Ausschnitt aus SignalHandlerThread.cpp. Ist ein Automat im Endzustand, wird er gelöscht.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
     \label{dellist}
 \end{figure}
 
@@ -958,11 +914,7 @@ Der Dispatcher wendet das Observer Pattern an. Es gibt eine Methode um Listener 
 \centering 
     \includegraphics[scale=0.7]{ISR/dispatcher.png}
     
-<<<<<<< HEAD
-    \small Abbildung \theimgcounter : Die drei wichtigsten Methoden im Dispatcher
-=======
     \small Abbildung \theimgcounter : Die drei wichtigsten Methoden aus Dispatcher.cpp.
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
     \label{dispatcher}
 \end{figure}
 
@@ -1159,49 +1111,65 @@ Basierend auf unseren Schnittstellen der seriellen Schnittstelle haben wir uns v
 
 \newpage
 
-<<<<<<< HEAD
-\subsection{Anlagensteuerung pro Band}
-\textcolor{red}{Hier erscheinen bald die Tests zur Anlagensteuerung pro Band sowie deren Auswertung.}
+\subsection{Testszenarien}
+\begin{compactenum}[1.]
+    \item $\text{Flaches Werkstück} \rightarrow \text{Höhenmessung} \rightarrow$
+        Band\_1 sortiert aus $\rightarrow \text{grüne Leuchte an}$
+        
+        [Rutsche\_1 = 1]\medskip
+    \item Werkstück Bohrung unten $\rightarrow$ Höhenmessung $\rightarrow$ Band\_1 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+        [Rutsche\_1 = 2]\medskip
+    \item Werkstück Bohrung oben mit Metall $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+        [Rutsche\_1 = 3]\medskip
+    \item Werkstück verschwindet $\rightarrow$ Timeout $\rightarrow$ Band stoppt $\rightarrow$ gelbe Leuchte blinkt \medskip
+    \item Werkstück Bohrung oben ohne Metall $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1\_OK $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_2\_OK 
+    $\rightarrow$ Band\_3\_wartet $\rightarrow$ grüne Leuchte an 
+    
+    [Band\_3 = 1]\medskip
+    \item Werkstück Bohrung oben ohne Metall $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1\_OK $\rightarrow$ Werkstück\_überschlagen $\rightarrow$ 
+    Höhenmessung $\rightarrow$ Band\_2 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+    [Rutsche\_2 = 1]\medskip
+    \item Werkstück Bohrung oben mit Metall $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+    [Rutsche\_1 = 4] $\rightarrow$ gelbe Leuchte an\medskip
+    \item Flaches Werkstück $\rightarrow$ Band\_1\_RutscheVoll $\rightarrow$ Höhenmessung $\rightarrow$ Band\_2 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+    [Rutsche\_2 = 2]\medskip
+    \item Werkstück hinzufügen $\rightarrow$ Timeout $\rightarrow$ Band stoppt $\rightarrow$ rote Leuchte blinkt\medskip
+    \item Werkstück Bohrung oben ohne Metall $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1\_OK $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_2\_OK 
+    $\rightarrow$ Band\_3\_wartet $\rightarrow$ grüne Leuchte an
+    
+    [Band\_3 = 2]\medskip
+    \item Werkstück Bohrung unten $\rightarrow$ Band\_1\_RutscheVoll $\rightarrow$ Höhenmessung $\rightarrow$ Band\_2 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+    [Rutsche\_2 = 3]\medskip
+    \item Werkstück Bohrung oben mit Metall $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1\_OK $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion 
+    $\rightarrow$ Band\_2\_OK $\rightarrow$ Band\_3\_wartet $\rightarrow$ Band\_3 Transport und Ausgabe der 3er Gruppe $\rightarrow$ grüne Leuchte an
+    
+    [Band\_3 = 3]\medskip
+    \item Werkstück Bohrung oben ohne Metall $\rightarrow$ Höhenmessung $\rightarrow$ Metalldetektion $\rightarrow$ Band\_1\_OK $\rightarrow$ Werkstück\_überschlagen $\rightarrow$ 
+    Höhenmessung $\rightarrow$ Band\_2 sortiert aus $\rightarrow$ grüne Leuchte an
+    
+    [Rutsche\_2 = 4]\medskip 
+    \item Rutsche\_1 und Rutsche\_2 voll $\rightarrow$ Alle Förderbänder anhalten $\rightarrow$ rote Leuchte an
+\end{compactenum}
 
-\subsection{Ablaufsteuerung über alle drei Bänder}
-\textcolor{red}{Hier erscheinen bald die Tests zur Ablaufsteuerung über alle drei Bänder sowie deren Auswertung.}
+\newpage
 
-\subsection{Testkonzept für die Abnahme} 
-\begin{table}[H]
-\center
-    \begin{tabularx}{\textwidth}{|l|X|X|X|}
-        \hline
-        \textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
-=======
 \subsection{Testkonzept für die Abnahme} 
 \begin{table}[H]
 \center
     \begin{tabularx}{\textwidth}{|l|X|l|l|}
         \hline
         \textbf{ID}&\textbf{Funktion}&\textbf{Erfolgreich?}&\textbf{Datum}\\
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
         \hline
         1&Erkennung der Werkstücke am Anfang jedes Förderbandes.&&\\
         \hline
         2&Flache Werkstücke werden auf dem ersten und zweiten Förderband aussortiert.&&\\
         \hline
-<<<<<<< HEAD
-        3&Bei der Aussortierung der flachen Werkstücke blinkt die gelbe Leuchte entsprechend vom ersten und zweiten Förderband.&&\\
-        \hline
-        4&Werkstücke mit der Bohrung nach unten werden auf dem ersten und zweiten Förderband aussortiert.&&\\
-        \hline
-        5&Bei Förderband 1, Fehlermeldung bei voller Rutsche.&&\\
-        \hline
-        6&Bei Förderband 2, Fehlermeldung und Stopp von Förderband 1 und Förderband 2 bei voller Rutsche.&&\\
-        \hline
-        7&Stopp beim leeren Förderband.&&\\
-        \hline
-        8&Beim Verschwinden von Werkstücken wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
-        \hline
-        9&Beim Hinzufügen von Werkstücken mitten auf dem Förderband wird eine Fehlermeldung ausgegeben und das Förderband stoppt.&&\\
-        \hline
-        10&Am Ende vom zweiten Förderband soll die gewünschte Reihenfolge der Werkstücke entstehen.&&\\
-=======
         3&Werkstücke mit der Bohrung nach unten werden auf dem ersten und zweiten Förderband 
         aussortiert.&&\\
         \hline
@@ -1239,7 +1207,6 @@ Basierend auf unseren Schnittstellen der seriellen Schnittstelle haben wir uns v
         \hline
         16&Erst wenn alle Förderbänder nach einem Fehlerzustand quittiert wurden, kann die Anlage wieder 
         gestartet werden.&&\\
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
         \hline
     \end{tabularx}
     \caption{Testauswertung der Abnahmetests(Teil 1)}
@@ -1250,20 +1217,14 @@ Basierend auf unseren Schnittstellen der seriellen Schnittstelle haben wir uns v
 
 \begin{table}[H]
 \center
-<<<<<<< HEAD
-    \begin{tabularx}{\textwidth}{|l|X|X|X|}
-        \hline
-        \textbf{ID}&\textbf{Funktion}&\textbf{Test erfolgreich?}&\textbf{Anmerkung}\\
-=======
     \begin{tabularx}{\textwidth}{|l|X|l|l|}
         \hline
         \textbf{ID}&\textbf{Funktion}&\textbf{Erfolgreich?}&\textbf{Datum}\\
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
         \hline
 
-        12&Am Ende vom dritten Förderband werden die Werkstückdaten auf der Konsole als 3er Gruppe ausgegeben.&&\\
+        17&Am Ende vom dritten Förderband werden die Werkstückdaten auf der Konsole als 3er Gruppe ausgegeben.&&\\
         \hline
-        13&Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
+        18&Förderband 3 transportiert die Werkstücke erst dann bis zum Ende des Bandes wenn die 3er Gruppe vollständig ist.&&\\
         \hline
         \end{tabularx}
     \caption{Testauswertung der Abnahmetests(Teil 2)}
@@ -1326,17 +1287,6 @@ Die folgenden Auflistungen zeigen Punkte auf, welche uns gut gefallen haben und 
 \item Bei drei Anlagen war es immer schwer alle Förderbänder und Kabel parat zu haben, weshalb die Planung verändert/verzögert werden musste.
 \end{compactenum}
 
-<<<<<<< HEAD
-\section{Anhang}
-
-\subsection{Glossar}
-\textcolor{red}{Eindeutige Begriffserklärungen}
-
-\subsection{Abkürzungen}
-\textcolor{red}{Listen sie alle Abkürzungen auf, die sie in diesem Dokument benutzt haben.}
-
-=======
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 \end{document}
 
 % Weitere Syntax für verschiedene Anwendungsfelder
