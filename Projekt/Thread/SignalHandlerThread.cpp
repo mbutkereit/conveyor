@@ -160,7 +160,9 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & START) {
-				message->setStartBit();
+				if(hb.getHardware()->getHMI()->isButtonStartPressed() != 0){
+					message->setStartBit();
+				}
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
