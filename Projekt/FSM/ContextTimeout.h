@@ -14,6 +14,7 @@ using namespace std;
 
 #define DEFAULT
 #ifdef DEFAULT
+
     #define DELTA_T0_TH 23
     #define DELTA_TH_TW 12
     #define DELTA_TW_TE 22
@@ -23,6 +24,7 @@ using namespace std;
     #define DELTA_T0_TH 1000
 
 #endif
+
 #define TOLERANCE 50
 
 struct Datacto{

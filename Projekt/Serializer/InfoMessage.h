@@ -17,6 +17,7 @@
 #define BAND 1
 
 
+
 /**
  * Diese Klasse enthält ein Paket, das von jeder Anlage mit Informationen gefüllt werden kann.
  */

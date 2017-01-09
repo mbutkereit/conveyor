@@ -19,6 +19,7 @@
 struct Datactmf {
     Datactmf() :
             hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), delta_t0_tH(0), delta_tH_tW(0), delta_tW_tE(0), delta_t0_tE(0), tickX(NULL), tickGesamtSchnell(NULL) ,finished(false) {
+
     }
     HalBuilder hb;
     ContextMotor* cm;
@@ -121,9 +122,6 @@ private:
                	*data->tickX += 1;
                 *data->tickGesamtSchnell += 1;
             }
-            LOG_DEBUG << "AFTER signalTimerTick\n";
-            LOG_DEBUG << "AFTER signalTimerTick\n";
-            LOG_DEBUG << "AFTER signalTimerTick\n";
         }
 
         Datactmf* data;

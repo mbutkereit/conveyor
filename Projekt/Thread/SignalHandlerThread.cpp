@@ -37,19 +37,16 @@ void SignalHandlerThread::execute(void*) {
 	}
 	// LOG_DEBUG << "Starte den Automaten Handler mit Channel Nummer: "<< isrtChannel_ <<"\n";
 	do {
-		LOG_DEBUG << "DO WHILE BEGIN\n";
-		LOG_DEBUG << "DO WHILE BEGIN\n";
-		LOG_DEBUG << "DO WHILE BEGIN\n";
 		if (MsgReceivePulse(isrtChannel_, &pulse, sizeof(pulse), NULL) == -1) {
 			LOG_DEBUG << "Fehler beim Signal Handler Message Recieve.";
 			exit(EXIT_FAILURE);
 		}
 		short pulsecode = pulse.code;
-		LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
+		//LOG_DEBUG << "Aktueller Pulse CODE: "<< (int)pulsecode <<"\n" ;
 		if (pulsecode == 0xE) {
 
-			LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:" << pulse.value.sival_int << "\n";
-			LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:" << pulse.value.sival_int << "\n";
+			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
+			//	<< pulse.value.sival_int << "\n";
 			int code = pulse.value.sival_int;
 
 			if (code & ESTOP) {
@@ -92,7 +89,6 @@ void SignalHandlerThread::execute(void*) {
 
 #endif
 #if defined BAND && BAND == 4
-
 				ContextI* context = new ContextTimeMeasurementFast();
 #endif
 #if defined BAND && BAND == 5
@@ -123,7 +119,6 @@ void SignalHandlerThread::execute(void*) {
 				disp->callListeners(LBBEGININTERRUPTED);
 				LOG_DEBUG << "LBBeginInterrupted" << endl;
 				message->setLBinterruptedBit();
-
 			}
 			if (code & LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED) {
 				disp->callListeners(LBBEGINNOTINTERRUPTED);
@@ -163,9 +158,10 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & START) {
-				if(hb.getHardware()->getHMI()->isButtonStartPressed() != 0){
-					message->setStartBit();
+				if(message->wurdeStartgedrueckt() != 0){
+				   message->setStartBit();
 				}
+				LOG_DEBUG <<" WIR HABEN EINEN START !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n";
 				disp->callListeners(STARTSIGNAL);
 			}
 			if (code & RESET) {
@@ -249,11 +245,16 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 		} else {
+
 			/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
+=======
+				if (pulsecode == WATCHDOG_PULSE_CODE) {
+>>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 			 //SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
 			 } else {
 			 LOG_WARNING << "Einen nicht bekannten Code erhalten."
 			 << pulsecode << "\n";
+<<<<<<< HEAD
 			 }*/
 		}
 

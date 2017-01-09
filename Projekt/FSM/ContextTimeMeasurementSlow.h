@@ -20,6 +20,7 @@
 struct Datactms {
     Datactms() :
             hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), delta_t0_tE(0), tickGesamtLangsam(NULL), finished(false) {
+
     }
     HalBuilder hb;
     ContextMotor* cm;
