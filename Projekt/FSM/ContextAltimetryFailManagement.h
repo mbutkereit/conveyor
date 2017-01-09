@@ -125,24 +125,11 @@ private:
 		Datacafm* data;
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
-	/**
-	struct Puck1Recognized_AFM: public AltimetryFailManagement {
-		virtual void signalLBAltimetryNotInterrupted() {
-			if(0){//TODO Delta not ok
-				data->puckAdded = true;
-			}
-			else{
-				new (this) Puck2Ready_AFM;
-			}
-		}
-	};
-	*/
-
 	struct Puck2Ready_AFM: public AltimetryFailManagement {
 		virtual void signalAltimetryInterrupted(){
 			data->cafmto2->stopTimerT0();
-			if(*data->cafmdelta2 <= TOLERANCE){
-			//if(1){
+			//if(*data->cafmdelta2 <= TOLERANCE){
+			if(1){
 				*data->cafmdelta2 = DELTA_TH_TE;
 				data->cafmto2->startTimerTH();
 				new (this) Puck3Ready_AFM;
@@ -152,24 +139,11 @@ private:
 		}
 	};
 
-	/*
-	struct Puck2Recognized_AFM: public AltimetryFailManagement{
-		virtual void signalAltimetryNotInterrupted(){
-			if(0){//TODO Delta not ok
-				data->puckAdded = true;
-			}
-			else{
-				new (this) Puck3Ready_AFM;
-			}
-		}
-	};
-*/
-
 	struct Puck3Ready_AFM: public AltimetryFailManagement{
 		virtual void signalAltimetryInterrupted(){
 			data->cafmto3->stopTimerT0();
-			if(*data->cafmdelta3 <= TOLERANCE){
-			//if(1){
+			//if(*data->cafmdelta3 <= TOLERANCE){
+			if(1){
 				*data->cafmdelta3 = DELTA_TH_TE;
 				data->cafmto3->startTimerTH();
 				data->finished = true;
