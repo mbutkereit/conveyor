@@ -370,46 +370,83 @@ private:
 			if(data->ccefm.isContextimEnzustand()){
 				LOG_DEBUG << "ConveyorEndFailManagement ist im Endzustand\n";
 				//Puck 1
-				cerr << "ID Puck 1: " <<
 
-				cerr << (int) data->puck.getId() << endl;
-				cerr << "Height on Conveyor1 Puck 1: " <<
+								cerr << "ID Puck 1: " <<
 
-				cerr << (int) data->puck.getHeightReading1() << endl;
-				cerr << "Height on Conveyor2 Puck 1: " <<
+								cerr << (int) data->puck.getId() << endl;
+								cerr << "Height on Conveyor1 Puck 1: " <<
 
-				cerr << (int) data->puck.getHeightReading2() << endl;
-				cerr << "Puck Type Puck 1: " <<
+								cerr << (int) data->puck.getHeightReading1() << endl;
+								cerr << "Height on Conveyor2 Puck 1: " <<
 
-				cerr << data->puck.getPuckType() << endl;
+								cerr << (int) data->puck.getHeightReading2() << endl;
+								cerr << "Puck Type Puck 1: " << endl;
 
-				//Puck 2
-				cerr << "ID Puck 2: " <<
+								switch(data->puck.getPuckType()){
+										case DRILL_HOLE_UPSIDE: cerr <<"DRILL_HOLE_UPSIDE"<<endl;
+										break;
+										case DRILL_HOLE_UPSIDE_METAL: cerr <<"DRILL_HOLE_UPSIDE_METAL"<<endl;
+										break;
+										case NO_DRILL_HOLE: cerr <<"NO_DRILL_HOLE"<<endl;
+										break;
+										case DRILL_HOLE_UPSIDE_PLASTIC: cerr <<"DRILL_HOLE_UPSIDE_PLASTIC"<<endl;
+										break;
+										default:    cerr <<"TYPE404PT"<<endl;
+										break;
+								}
 
-				cerr << (int) data->puck2.getId() << endl;
-				cerr << "Height on Conveyor1 Puck 2: " <<
 
-				cerr << (int) data->puck2.getHeightReading1() << endl;
-				cerr << "Height on Conveyor2 Puck 2: " <<
+								//Puck 2
+								cerr << "ID Puck 2: " <<
 
-				cerr << (int) data->puck2.getHeightReading2() << endl;
-				cerr << "Puck Type Puck 2: " <<
+								cerr << (int) data->puck2.getId() << endl;
+								cerr << "Height on Conveyor1 Puck 2: " <<
 
-				cerr << data->puck2.getPuckType() << endl;
+								cerr << (int) data->puck2.getHeightReading1() << endl;
+								cerr << "Height on Conveyor2 Puck 2: " <<
 
-				//Puck 3
-				cerr << "ID Puck 3: " <<
+								cerr << (int) data->puck2.getHeightReading2() << endl;
+								cerr << "Puck Type Puck 2: " << endl;
 
-				cerr << (int) data->puck3.getId() << endl;
-				cerr << "Height on Conveyor1 Puck 3: " <<
+								switch(data->puck2.getPuckType()){
+										case DRILL_HOLE_UPSIDE: cerr <<"DRILL_HOLE_UPSIDE"<<endl;
+										break;
+										case DRILL_HOLE_UPSIDE_METAL: cerr <<"DRILL_HOLE_UPSIDE_METAL"<<endl;
+										break;
+										case NO_DRILL_HOLE: cerr <<"NO_DRILL_HOLE"<<endl;
+										break;
+										case DRILL_HOLE_UPSIDE_PLASTIC: cerr <<"DRILL_HOLE_UPSIDE_PLASTIC"<<endl;
+										break;
+										default:    cerr <<"TYPE404PT"<<endl;
+										break;
+								}
 
-				cerr << (int) data->puck3.getHeightReading1() << endl;
-				cerr << "Height on Conveyor2 Puck 3: " <<
 
-				cerr << (int) data->puck3.getHeightReading2() << endl;
-				cerr << "Puck Type Puck 3: " <<
 
-				cerr << data->puck3.getPuckType() << endl;
+
+								//Puck 3
+								cerr << "ID Puck 3: " <<
+
+								cerr << std::dec() <<(int) data->puck3.getId() << endl;
+								cerr << "Height on Conveyor1 Puck 3: " <<
+
+								cerr << (int) data->puck3.getHeightReading1() << endl;
+								cerr << "Height on Conveyor2 Puck 3: " <<
+
+								cerr << (int) data->puck3.getHeightReading2() << endl;
+								cerr << "Puck Type Puck 3: " << endl;
+								switch(data->puck3.getPuckType()){
+									case DRILL_HOLE_UPSIDE: cerr <<"DRILL_HOLE_UPSIDE"<<endl;
+									break;
+									case DRILL_HOLE_UPSIDE_METAL: cerr <<"DRILL_HOLE_UPSIDE_METAL"<<endl;
+									break;
+									case NO_DRILL_HOLE: cerr <<"NO_DRILL_HOLE"<<endl;
+									break;
+									case DRILL_HOLE_UPSIDE_PLASTIC: cerr <<"DRILL_HOLE_UPSIDE_PLASTIC"<<endl;
+									break;
+									default:    cerr <<"TYPE404PT"<<endl;
+									break;
+								}
 				usleep(1300000);
 				data->cm->setSpeed(MOTOR_STOP);
 				LOG_DEBUG << "StopCounter:" << data->cm->showStopCounter() <<"\n";

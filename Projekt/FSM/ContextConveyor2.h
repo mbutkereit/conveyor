@@ -423,6 +423,34 @@ private:
 			LOG_DEBUG << "State: DeliverToConveyor3: Puck wurde geloescht \n";
 			data->cm->setSpeed(MOTOR_STOP);
 			data->im->setBand2Frei();
+			cerr << "ID: " <<
+
+			cerr << (int) data->puck.getId() << endl;
+			cerr << "Height on Conveyor1 Puck 1: " <<
+
+			cerr << (int) data->puck.getHeightReading1() << endl;
+			cerr << "Height on Conveyor2 Puck 1: " <<
+
+			cerr << (int) data->puck.getHeightReading2() << endl;
+			cerr << "Puck Type Puck 1: " << endl;
+
+			switch (data->puck.getPuckType()) {
+			case DRILL_HOLE_UPSIDE:
+				cerr << "DRILL_HOLE_UPSIDE" << endl;
+				break;
+			case DRILL_HOLE_UPSIDE_METAL:
+				cerr << "DRILL_HOLE_UPSIDE_METAL" << endl;
+				break;
+			case NO_DRILL_HOLE:
+				cerr << "NO_DRILL_HOLE" << endl;
+				break;
+			case DRILL_HOLE_UPSIDE_PLASTIC:
+				cerr << "DRILL_HOLE_UPSIDE_PLASTIC" << endl;
+				break;
+			default:
+				cerr << "TYPE404PT" << endl;
+				break;
+			}
 			new (this) Conveyor2Empty;
 
 		}
