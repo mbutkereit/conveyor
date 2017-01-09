@@ -152,7 +152,6 @@ private:
 		virtual void signalStart() {
 			LOG_DEBUG <<"State: E-Stopp \n";
 
-
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed() == 0) {
 			}
 
