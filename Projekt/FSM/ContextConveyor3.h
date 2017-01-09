@@ -427,7 +427,7 @@ private:
 								//Puck 3
 								cerr << "ID Puck 3: " <<
 
-								cerr << std::dec() <<(int) data->puck3.getId() << endl;
+								cerr <<(int) data->puck3.getId() << endl;
 								cerr << "Height on Conveyor1 Puck 3: " <<
 
 								cerr << (int) data->puck3.getHeightReading1() << endl;
