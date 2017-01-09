@@ -12,8 +12,9 @@
 #define BAND_FREI 0x08
 #define ESTOP_BIT 0x02
 #define LB_INTERRUPTED 0x10
+#define START_BIT 0x20
 
-#define BAND 2
+#define BAND 3
 
 
 /**
@@ -35,6 +36,10 @@ public:
 	 * @return Gibt true zurück, wenn die Rutsche voll ist und false wenn die Rutsche leer ist.
 	 */
 	bool istBand1RutscheVoll();
+
+	void setStartBit();
+
+	bool wurdeStartgedrueckt();
 
 	/**
 	 * Gibt an, ob die Rutsche2 voll ist.

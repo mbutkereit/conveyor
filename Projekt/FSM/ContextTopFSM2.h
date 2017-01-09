@@ -214,8 +214,8 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
-		void signalReset() {
-			LOG_DEBUG << "State: E_Stopp \n";
+		virtual void signalStart() {
+			LOG_DEBUG << "State: E-Stopp \n";
 
 			while (data->hb.getHardware()->getHMI()->isButtonEStopPressed() == 0) {
 			}
@@ -224,7 +224,9 @@ private:
 				data->cm->resetSpeed(MOTOR_STOP);
 
 				new (this) MainState;
-			} else {
+			}
+
+			else {
 				new (this) E_Stopp;
 			}
 		}
