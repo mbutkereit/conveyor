@@ -1,0 +1,131 @@
+\hypertarget{class_traffic_light}{}\section{Traffic\+Light Klassenreferenz}
+\label{class_traffic_light}\index{Traffic\+Light@{Traffic\+Light}}
+
+
+{\ttfamily \#include $<$Traffic\+Light.\+h$>$}
+
+
+
+Zusammengehörigkeiten von Traffic\+Light\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{class_traffic_light__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Öffentliche Methoden}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_traffic_light_ac34af2ea06577584a1c30a4f40e2d521}{Traffic\+Light} (\hyperlink{class_adapter}{Adapter} $\ast$adapt)
+\item 
+\hyperlink{class_traffic_light_a3dd2a89a028c1586ced0ab587dda8cc1}{$\sim$\+Traffic\+Light} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_a9477c1e61facd79e308b297877e3beee}{turn\+Green\+On} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_a958814eefaf288da1e103bf32c5c38b9}{turn\+Green\+Off} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_a74b400dafd029a2cfde6c27434111d21}{turn\+Yellow\+On} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_a17723c3478b4eb754aa8b163234aa8be}{turn\+Yellow\+Off} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_acd3d36d6884744b2230bd234bff27357}{turn\+Red\+On} ()
+\item 
+uint8\+\_\+t \hyperlink{class_traffic_light_a2ca2808ea156abc199a14939c2ab0c92}{turn\+Red\+Off} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Beschreibung der Konstruktoren und Destruktoren}
+\hypertarget{class_traffic_light_ac34af2ea06577584a1c30a4f40e2d521}{}\label{class_traffic_light_ac34af2ea06577584a1c30a4f40e2d521} 
+\index{Traffic\+Light@{Traffic\+Light}!Traffic\+Light@{Traffic\+Light}}
+\index{Traffic\+Light@{Traffic\+Light}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{Traffic\+Light()}{TrafficLight()}}
+{\footnotesize\ttfamily Traffic\+Light\+::\+Traffic\+Light (\begin{DoxyParamCaption}\item[{\hyperlink{class_adapter}{Adapter} $\ast$}]{adapt }\end{DoxyParamCaption})}
+
+Constructor der Ampel
+
+
+\begin{DoxyParams}{Parameter}
+{\em adapt} & \hyperlink{class_adapter}{Adapter} für die Steuerung der Ampel. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_traffic_light_a3dd2a89a028c1586ced0ab587dda8cc1}{}\label{class_traffic_light_a3dd2a89a028c1586ced0ab587dda8cc1} 
+\index{Traffic\+Light@{Traffic\+Light}!````~Traffic\+Light@{$\sim$\+Traffic\+Light}}
+\index{````~Traffic\+Light@{$\sim$\+Traffic\+Light}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{$\sim$\+Traffic\+Light()}{~TrafficLight()}}
+{\footnotesize\ttfamily Traffic\+Light\+::$\sim$\+Traffic\+Light (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Destructor der Ampel. 
+
+\subsection{Dokumentation der Elementfunktionen}
+\hypertarget{class_traffic_light_a958814eefaf288da1e103bf32c5c38b9}{}\label{class_traffic_light_a958814eefaf288da1e103bf32c5c38b9} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Green\+Off@{turn\+Green\+Off}}
+\index{turn\+Green\+Off@{turn\+Green\+Off}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Green\+Off()}{turnGreenOff()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Green\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die gruene Lampe der Ampel aus.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
+\hypertarget{class_traffic_light_a9477c1e61facd79e308b297877e3beee}{}\label{class_traffic_light_a9477c1e61facd79e308b297877e3beee} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Green\+On@{turn\+Green\+On}}
+\index{turn\+Green\+On@{turn\+Green\+On}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Green\+On()}{turnGreenOn()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Green\+On (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die gruene Lampe der Ampel an.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
+\hypertarget{class_traffic_light_a2ca2808ea156abc199a14939c2ab0c92}{}\label{class_traffic_light_a2ca2808ea156abc199a14939c2ab0c92} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Red\+Off@{turn\+Red\+Off}}
+\index{turn\+Red\+Off@{turn\+Red\+Off}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Red\+Off()}{turnRedOff()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Red\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die rote Lampe der Ampel aus.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
+\hypertarget{class_traffic_light_acd3d36d6884744b2230bd234bff27357}{}\label{class_traffic_light_acd3d36d6884744b2230bd234bff27357} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Red\+On@{turn\+Red\+On}}
+\index{turn\+Red\+On@{turn\+Red\+On}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Red\+On()}{turnRedOn()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Red\+On (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die rote Lampe der Ampel an.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
+\hypertarget{class_traffic_light_a17723c3478b4eb754aa8b163234aa8be}{}\label{class_traffic_light_a17723c3478b4eb754aa8b163234aa8be} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Yellow\+Off@{turn\+Yellow\+Off}}
+\index{turn\+Yellow\+Off@{turn\+Yellow\+Off}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Yellow\+Off()}{turnYellowOff()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Yellow\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die gelbe Lampe der Ampel aus.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt constant 0 zurueck. 
+\end{DoxyReturn}
+\hypertarget{class_traffic_light_a74b400dafd029a2cfde6c27434111d21}{}\label{class_traffic_light_a74b400dafd029a2cfde6c27434111d21} 
+\index{Traffic\+Light@{Traffic\+Light}!turn\+Yellow\+On@{turn\+Yellow\+On}}
+\index{turn\+Yellow\+On@{turn\+Yellow\+On}!Traffic\+Light@{Traffic\+Light}}
+\subsubsection{\texorpdfstring{turn\+Yellow\+On()}{turnYellowOn()}}
+{\footnotesize\ttfamily uint8\+\_\+t Traffic\+Light\+::turn\+Yellow\+On (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Macht die gelbe Lampe der Ampel aus.
+
+\begin{DoxyReturn}{Rückgabe}
+Gibt Konstant 0 zurueck. 
+\end{DoxyReturn}
+
+
+Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Dateien\+:\begin{DoxyCompactItemize}
+\item 
+Hal/\hyperlink{_traffic_light_8h}{Traffic\+Light.\+h}\item 
+Hal/\hyperlink{_traffic_light_8cpp}{Traffic\+Light.\+cpp}\end{DoxyCompactItemize}

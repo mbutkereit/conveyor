@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="ESEP - Embedded System Engineering Praktikum" company="HAW Hamburg" webLink="https://github.com/mbutkereit/conveyor" view-date="2016-10-03" view-index="0" gantt-divider-location="670" resource-divider-location="602" version="2.7.2" locale="de">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Vorgang" width="83" order="0"/>
+        <field id="tpd4" name="Anfang" width="8" order="1"/>
+        <field id="tpd5" name="Ende" width="7" order="2"/>
+        <option id="taskLabelUp" value=""/>
+        <option id="taskLabelDown" value=""/>
+        <option id="taskLabelLeft" value="name"/>
+        <option id="taskLabelRight" value="length"/>
+        <option id="color.recent"><![CDATA[#ff0000 #009900 #000000 #ffff99 #ffffcc #cc99ff #990099]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Ressource" width="81" order="0"/>
+        <field id="1" name="Rolle" width="18" order="1"/>
+    </view>
+    <!-- -->
+    <calendars base-id="Nichts">
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="true"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+        <date year="2016" month="10" date="5" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 1]]></date>
+        <date year="2016" month="10" date="13" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 2]]></date>
+        <date year="2016" month="10" date="19" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 3]]></date>
+        <date year="2016" month="10" date="26" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 4]]></date>
+        <date year="2016" month="11" date="3" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 5]]></date>
+        <date year="2016" month="11" date="10" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 6]]></date>
+        <date year="2016" month="11" date="16" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 7]]></date>
+        <date year="2016" month="11" date="23" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 8]]></date>
+        <date year="2016" month="12" date="1" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 9]]></date>
+        <date year="2016" month="12" date="7" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 10]]></date>
+        <date year="2016" month="12" date="14" type="NEUTRAL" color="#ffff99"><![CDATA[Meeting 11]]></date>
+        <date year="2016" month="12" date="22" type="NEUTRAL" color="#ffff99"/>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="10" name="Erstellung des C++-Projektes/erste Programmierung" meeting="false" start="2016-09-28" duration="8" complete="100" expand="true">
+            <task id="11" name="Ansteuerung der Ampel der Anlage" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-09-28" duration="8" complete="100" expand="true"/>
+        </task>
+        <task id="12" name="Anpassung/Erweiterung der Aufgabenstellung" meeting="false" start="2016-10-05" duration="8" complete="100" expand="true">
+            <task id="13" name="Genaue Spezifikaton" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="8" complete="100" expand="true"/>
+            <task id="14" name="Erweiterung um das dritte Band" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="8" complete="100" expand="true"/>
+        </task>
+        <task id="90" name="Meilenstein 1 (1. Praktikumstermin) - Erste Programmierung, Ansteuerung der Ampelanlage" color="#009900" meeting="true" start="2016-10-05" duration="0" complete="100" expand="true"/>
+        <task id="1" name="Anforderungsanalyse" color="#000000" meeting="false" start="2016-10-05" duration="14" complete="100" expand="true">
+            <task id="16" name="Ausarbeitung drei typischer Anwendungsszenarien (Use Cases)" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="8" complete="100" expand="true"/>
+            <task id="17" name="Ausarbeitung von Software Requirements" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="14" complete="100" expand="true"/>
+            <task id="18" name="Testkonzept für die Abnahme" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="9" complete="100" expand="true"/>
+        </task>
+        <task id="19" name="Definition der Software Architektur" color="#000000" meeting="false" start="2016-10-19" duration="16" complete="100" expand="true">
+            <task id="21" name="Struktur, interne Kommunikation, Pattern-Einsatz, Datenmodell" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-19" duration="1" complete="100" expand="true"/>
+            <task id="102" name="Visualisierung" color="#009900" meeting="false" start="2016-10-20" duration="6" complete="100" expand="true"/>
+            <task id="72" name="Darstellung der Architektur als Komponenten-Diagramm" color="#009900" meeting="false" start="2016-10-26" duration="9" complete="100" expand="true"/>
+        </task>
+        <task id="20" name="Projektmanagement" meeting="false" start="2016-10-05" duration="30" complete="100" expand="true">
+            <task id="146" name="Erstellung Terminplan" color="#009900" meeting="false" start="2016-10-05" duration="8" complete="100" expand="true"/>
+            <task id="29" name="Defintion von Arbeitspaketen" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-05" duration="14" complete="100" expand="true"/>
+            <task id="118" name="Erstellung eines Gantt Diagramms" color="#009900" meeting="false" start="2016-10-19" duration="16" complete="100" expand="true"/>
+        </task>
+        <task id="3" name="HAL der Aktorik" color="#000000" meeting="false" start="2016-10-13" duration="18" complete="100" expand="true">
+            <task id="31" name="Definiton der Schnittstelle" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-13" duration="1" complete="100" expand="true"/>
+            <task id="32" name="Erstellung des Klassendiagramms" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-13" duration="6" complete="100" expand="true"/>
+            <task id="33" name="Implementation" color="#009900" shape="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0" meeting="false" start="2016-10-13" duration="14" complete="100" expand="true"/>
+            <task id="34" name="Testen inkl. Testprotokoll" color="#009900" meeting="false" start="2016-10-27" duration="4" complete="100" expand="true"/>
+        </task>
+        <task id="4" name="Serielle Kommunikation" color="#000000" meeting="false" start="2016-10-19" duration="8" complete="100" expand="true">
+            <task id="39" name="Konzept" color="#009900" meeting="false" start="2016-10-19" duration="1" complete="100" expand="true"/>
+            <task id="40" name="Implementation" color="#009900" meeting="false" start="2016-10-19" duration="8" complete="100" expand="true"/>
+            <task id="41" name="Testen inkl. Testprotokoll" color="#009900" meeting="false" start="2016-10-26" duration="1" complete="100" expand="true"/>
+        </task>
+        <task id="320" name="Meilenstein 2 (3. Praktikumstermin) - Software Architektur, Projektmanagement, HAL der Aktorik &amp; Serielle Kommunikation" color="#009900" meeting="true" start="2016-10-26" duration="0" complete="100" expand="true"/>
+        <task id="5" name="Modellierung/Design der Anlagensteuerung" color="#000000" meeting="false" start="2016-10-19" duration="23" complete="100" expand="true">
+            <task id="44" name="Modellierung der drei Förderbänder mit Zustandsautomaten (mit Ausnahmebehandlung)" color="#000000" meeting="false" start="2016-10-19" duration="23" complete="100" expand="true">
+                <task id="211" name="Zustandautomat für Band 1" color="#009900" meeting="false" start="2016-10-19" duration="23" complete="100" expand="true"/>
+                <task id="213" name="Zustandautomat für Band 2" color="#009900" meeting="false" start="2016-10-27" duration="15" complete="100" expand="true"/>
+                <task id="215" name="Zustandautomat für Band 3" color="#009900" meeting="false" start="2016-11-03" duration="8" complete="100" expand="true"/>
+            </task>
+            <task id="42" name="Konzept für die Weiterleitung der Sensordaten zu den verarbeitenden Komponenten" color="#009900" meeting="false" start="2016-11-03" duration="5" complete="100" expand="true"/>
+            <task id="43" name="Pattern/Design für die Verarbeitung der Sensordaten" color="#009900" meeting="false" start="2016-11-03" duration="5" complete="100" expand="true"/>
+        </task>
+        <task id="6" name="HAL der Sensorik" color="#000000" meeting="false" start="2016-11-03" duration="13" complete="100" expand="true">
+            <task id="52" name="Definition der Schnittstelle" color="#009900" meeting="false" start="2016-11-08" duration="2" complete="100" expand="true"/>
+            <task id="49" name="Erstellung des Klassendiagramms" color="#009900" meeting="false" start="2016-11-08" duration="6" complete="100" expand="true"/>
+            <task id="50" name="Realisierung basierend auf ISRs und Pulse-Messages" color="#009900" meeting="false" start="2016-11-03" duration="13" complete="100" expand="true"/>
+            <task id="51" name="Testen inkl. Testprotokoll" color="#009900" meeting="false" start="2016-11-15" duration="1" complete="100" expand="true"/>
+        </task>
+        <task id="322" name="Meilenstein 3 (4. Praktikumstermin) - Modellierung der Anlagensteuerung &amp; HAL der Sensorik" color="#8cb6ce" meeting="true" start="2016-11-16" duration="0" complete="0" expand="true"/>
+        <task id="64" name="Architektur und Zustandautomat für die Anlagensteuerung" color="#000000" meeting="false" start="2016-11-11" duration="12" complete="9" expand="true">
+            <task id="66" name="Implementation" color="#8cb6ce" meeting="false" start="2016-11-11" duration="12" complete="10" expand="true"/>
+            <task id="67" name="Testen inkl. Testprotokoll" color="#8cb6ce" meeting="false" start="2016-11-22" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="68" name="Entwurf der Kommunikation zwischen den drei Förderbändern" color="#000000" meeting="false" start="2016-11-16" duration="1" complete="5" expand="true">
+            <task id="331" name="Konzept" color="#8cb6ce" meeting="false" start="2016-11-16" duration="1" complete="10" expand="true"/>
+            <task id="332" name="Visualisierung" color="#8cb6ce" meeting="false" start="2016-11-16" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="325" name="Meilenstein 4 (5. Praktikumstermin) - Implementation/Test der Anlagensteuerung" color="#ff0000" meeting="true" start="2016-11-23" duration="0" complete="0" expand="true"/>
+        <task id="7" name="Ablauf Fertigungsstraße" color="#000000" meeting="false" start="2016-11-16" duration="21" complete="0" expand="true">
+            <task id="61" name="Ablaufsteuerung über alle drei Förderbänder (ohne Ausnahmebehandlung)" meeting="false" start="2016-11-16" duration="15" complete="0" expand="true">
+                <task id="57" name="Implementation" color="#ff0000" meeting="false" start="2016-11-16" duration="14" complete="0" expand="true"/>
+                <task id="58" name="Testen inkl. Testprotokoll" color="#ff0000" meeting="false" start="2016-11-30" duration="1" complete="0" expand="true"/>
+            </task>
+            <task id="60" name="Timer" meeting="false" start="2016-11-23" duration="14" complete="0" expand="true">
+                <task id="63" name="Diskussion des Timingverhaltens bzgl. HW- und BS-Timer" color="#ff0000" meeting="false" start="2016-11-23" duration="1" complete="0" expand="true"/>
+                <task id="62" name="Implementation der Timerklasse" color="#ff0000" meeting="false" start="2016-11-23" duration="14" complete="0" expand="true"/>
+            </task>
+        </task>
+        <task id="328" name="Meilenstein 5 (6. Praktikumstermin) - Ablaufsteuerung über alle drei Förderbänder &amp; Timer" color="#ff0000" meeting="true" start="2016-12-07" duration="0" complete="0" expand="true"/>
+        <task id="317" name="Endgültige Abnahme" meeting="false" start="2016-12-07" duration="8" complete="0" expand="true">
+            <task id="9" name="Abschluss der Implementation und der Tests" color="#ff0000" meeting="false" start="2016-12-07" duration="8" complete="0" expand="true"/>
+            <task id="318" name="Dokumentation der Lessons Learned" color="#ff0000" meeting="false" start="2016-12-07" duration="8" complete="0" expand="true"/>
+            <task id="319" name="Abschlussreflexion über das Projekt" color="#ff0000" meeting="false" start="2016-12-14" duration="1" complete="0" expand="true"/>
+        </task>
+        <task id="330" name="Meilenstein 6 (7. Praktikumstermin) - Endgültige Abnahme" color="#ff0000" meeting="true" start="2016-12-14" duration="0" complete="0" expand="true"/>
+        <task id="28" name="RDD" color="#000000" meeting="false" start="2016-10-13" duration="70" complete="49" expand="true">
+            <task id="480" name="1. Teamorganisation" color="#009900" meeting="false" start="2016-10-13" duration="6" complete="100" expand="true"/>
+            <task id="481" name="2. Projektmanagement" color="#009900" meeting="false" start="2016-10-13" duration="6" complete="100" expand="true"/>
+            <task id="482" name="3. Randbedingungen" color="#009900" meeting="false" start="2016-10-13" duration="6" complete="100" expand="true"/>
+            <task id="483" name="4. Requirements und Use Cases" color="#009900" meeting="false" start="2016-10-19" duration="7" complete="100" expand="true"/>
+            <task id="484" name="5. Design" meeting="false" start="2016-11-04" duration="17" complete="60" expand="true">
+                <task id="489" name="a) Systemarchitektur (Komponentendiagramm)" color="#009900" meeting="false" start="2016-11-04" duration="6" complete="100" expand="true"/>
+                <task id="490" name="b) Datenmodellierung (HAL)" meeting="false" start="2016-11-04" duration="17" complete="60" expand="true">
+                    <task id="507" name="HAL der Aktorik" color="#009900" meeting="false" start="2016-11-04" duration="6" complete="100" expand="true"/>
+                    <task id="508" name="HAL der Sensorik" color="#8cb6ce" meeting="false" start="2016-11-17" duration="4" complete="0" expand="true"/>
+                </task>
+                <task id="491" name="c) Verhaltensmodellierung (Zustandautomaten)" color="#8cb6ce" meeting="false" start="2016-11-17" duration="4" complete="0" expand="true"/>
+            </task>
+            <task id="485" name="6. Implementierung" color="#ff0000" meeting="false" start="2016-12-07" duration="7" complete="0" expand="true"/>
+            <task id="486" name="7. Testen" meeting="false" start="2016-10-19" duration="56" complete="43" expand="true">
+                <task id="492" name="a) HAL der Aktorik" color="#009900" meeting="false" start="2016-11-04" duration="6" complete="100" expand="true"/>
+                <task id="493" name="b) HAL der Sensorik" color="#8cb6ce" meeting="false" start="2016-11-17" duration="4" complete="0" expand="true"/>
+                <task id="494" name="c) Anlagensteuerung pro Band" color="#ff0000" meeting="false" start="2016-11-24" duration="7" complete="0" expand="true"/>
+                <task id="495" name="d) Ablaufsteuerung über alle Bänder" color="#ff0000" meeting="false" start="2016-12-08" duration="6" complete="0" expand="true"/>
+                <task id="496" name="e) Testkonzept für die Abnahme" color="#009900" meeting="false" start="2016-10-19" duration="7" complete="100" expand="true"/>
+            </task>
+            <task id="487" name="8. Lessons Learned" color="#ff0000" meeting="false" start="2016-12-15" duration="7" complete="0" expand="true"/>
+            <task id="488" name="9. Anhang" color="#ff0000" meeting="false" start="2016-12-15" duration="7" complete="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Mona Lüdemann" function="Default:1" contacts="mona.luedemann1@haw-hamburg.de" phone=""/>
+        <resource id="1" name="Marvin Butkereit" function="SoftwareDevelopment:2" contacts="marvin.butkereit@haw-hamburg.de" phone=""/>
+        <resource id="2" name="Wilhelm Schumacher" function="SoftwareDevelopment:2" contacts="wilhelm.schumacher@haw-hamburg.de" phone=""/>
+        <resource id="3" name="Anushavan Melkonyan" function="SoftwareDevelopment:10" contacts="anushavan.melkonyan@haw-hamburg.de" phone=""/>
+        <resource id="4" name="Marco Colbow" function="SoftwareDevelopment:10" contacts="marco.colbow@haw-hamburg.de" phone=""/>
+        <resource id="5" name="Mehmet Cakir" function="SoftwareDevelopment:3" contacts="mehmet.cakir@haw-hamburg.de" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="13" resource-id="0" function="Default:1" responsible="true" load="15.0"/>
+        <allocation task-id="14" resource-id="0" function="Default:1" responsible="true" load="15.0"/>
+        <allocation task-id="17" resource-id="0" function="Default:1" responsible="true" load="20.0"/>
+        <allocation task-id="18" resource-id="0" function="Default:1" responsible="false" load="15.0"/>
+        <allocation task-id="21" resource-id="0" function="Default:1" responsible="false" load="10.0"/>
+        <allocation task-id="146" resource-id="0" function="Default:1" responsible="true" load="15.0"/>
+        <allocation task-id="29" resource-id="0" function="Default:1" responsible="false" load="40.0"/>
+        <allocation task-id="118" resource-id="0" function="Default:1" responsible="true" load="50.0"/>
+        <allocation task-id="211" resource-id="0" function="Default:1" responsible="false" load="40.0"/>
+        <allocation task-id="213" resource-id="0" function="Default:1" responsible="false" load="10.0"/>
+        <allocation task-id="215" resource-id="0" function="Default:1" responsible="false" load="45.0"/>
+        <allocation task-id="66" resource-id="0" function="Default:1" responsible="false" load="100.0"/>
+        <allocation task-id="331" resource-id="0" function="Default:1" responsible="false" load="10.0"/>
+        <allocation task-id="67" resource-id="0" function="Default:1" responsible="true" load="10.0"/>
+        <allocation task-id="63" resource-id="0" function="Default:1" responsible="true" load="10.0"/>
+        <allocation task-id="62" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="0" function="Default:1" responsible="true" load="50.0"/>
+        <allocation task-id="318" resource-id="0" function="Default:1" responsible="true" load="50.0"/>
+        <allocation task-id="319" resource-id="0" function="Default:1" responsible="true" load="10.0"/>
+        <allocation task-id="68" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="11" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="31" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="32" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="15.0"/>
+        <allocation task-id="33" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="75.0"/>
+        <allocation task-id="39" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="40" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="30.0"/>
+        <allocation task-id="41" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="42" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="20.0"/>
+        <allocation task-id="43" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="52" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="49" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="15.0"/>
+        <allocation task-id="50" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="80.0"/>
+        <allocation task-id="331" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
+        <allocation task-id="332" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="50.0"/>
+        <allocation task-id="57" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="58" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="318" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="319" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="17" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="20.0"/>
+        <allocation task-id="13" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="14" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="16" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="80.0"/>
+        <allocation task-id="31" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="33" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="75.0"/>
+        <allocation task-id="34" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="100.0"/>
+        <allocation task-id="39" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="40" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="41" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="42" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="20.0"/>
+        <allocation task-id="43" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="52" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="50" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="80.0"/>
+        <allocation task-id="51" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="10.0"/>
+        <allocation task-id="331" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="332" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="57" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="58" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="100.0"/>
+        <allocation task-id="9" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="318" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="50.0"/>
+        <allocation task-id="319" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="10.0"/>
+        <allocation task-id="11" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="100.0"/>
+        <allocation task-id="17" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="20.0"/>
+        <allocation task-id="18" resource-id="3" function="SoftwareDevelopment:10" responsible="true" load="10.0"/>
+        <allocation task-id="29" resource-id="3" function="SoftwareDevelopment:10" responsible="true" load="65.0"/>
+        <allocation task-id="211" resource-id="3" function="SoftwareDevelopment:10" responsible="true" load="50.0"/>
+        <allocation task-id="213" resource-id="3" function="SoftwareDevelopment:10" responsible="true" load="15.0"/>
+        <allocation task-id="215" resource-id="3" function="SoftwareDevelopment:10" responsible="true" load="10.0"/>
+        <allocation task-id="331" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="332" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="57" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="100.0"/>
+        <allocation task-id="58" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="100.0"/>
+        <allocation task-id="9" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="318" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="319" resource-id="3" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="13" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="14" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="17" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="20.0"/>
+        <allocation task-id="18" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="20.0"/>
+        <allocation task-id="21" resource-id="4" function="SoftwareDevelopment:10" responsible="true" load="10.0"/>
+        <allocation task-id="102" resource-id="4" function="SoftwareDevelopment:10" responsible="true" load="100.0"/>
+        <allocation task-id="72" resource-id="4" function="SoftwareDevelopment:10" responsible="true" load="100.0"/>
+        <allocation task-id="29" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="15.0"/>
+        <allocation task-id="215" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="100.0"/>
+        <allocation task-id="66" resource-id="4" function="SoftwareDevelopment:10" responsible="true" load="100.0"/>
+        <allocation task-id="67" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="63" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="62" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="100.0"/>
+        <allocation task-id="9" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="318" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="50.0"/>
+        <allocation task-id="319" resource-id="4" function="SoftwareDevelopment:10" responsible="false" load="10.0"/>
+        <allocation task-id="11" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="100.0"/>
+        <allocation task-id="21" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="10.0"/>
+        <allocation task-id="31" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="10.0"/>
+        <allocation task-id="33" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="20.0"/>
+        <allocation task-id="213" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="20.0"/>
+        <allocation task-id="211" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="60.0"/>
+        <allocation task-id="66" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="70.0"/>
+        <allocation task-id="67" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="10.0"/>
+        <allocation task-id="63" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="10.0"/>
+        <allocation task-id="62" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="100.0"/>
+        <allocation task-id="9" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="40.0"/>
+        <allocation task-id="318" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="40.0"/>
+        <allocation task-id="319" resource-id="5" function="SoftwareDevelopment:3" responsible="false" load="10.0"/>
+        <allocation task-id="480" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="25.0"/>
+        <allocation task-id="481" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="25.0"/>
+        <allocation task-id="482" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="25.0"/>
+        <allocation task-id="483" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="489" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="507" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="508" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="491" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="485" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="492" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="493" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="494" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="495" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="496" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="487" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+        <allocation task-id="488" resource-id="5" function="SoftwareDevelopment:3" responsible="true" load="10.0"/>
+    </allocations>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd3" order="0" width="544" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="56" visible="true"/>
+        <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd5" order="2" width="51" visible="true"/>
+        <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd12" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd13" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd2" order="-1" width="75" visible="false"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>

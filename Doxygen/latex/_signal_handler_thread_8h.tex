@@ -1,0 +1,191 @@
+\hypertarget{_signal_handler_thread_8h}{}\section{Thread/\+Signal\+Handler\+Thread.h-\/\+Dateireferenz}
+\label{_signal_handler_thread_8h}\index{Thread/\+Signal\+Handler\+Thread.\+h@{Thread/\+Signal\+Handler\+Thread.\+h}}
+{\ttfamily \#include $<$pthread.\+h$>$}\newline
+{\ttfamily \#include $<$cstdlib$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$hw/inout.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Logger/\+Logger.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}src/lib/\+H\+Waccess.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}src/lib/\+H\+A\+W\+Thread.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}F\+S\+M/\+Context.\+h\char`\"{}}\newline
+Include-\/\+Abhängigkeitsdiagramm für Signal\+Handler\+Thread.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_signal_handler_thread_8h__incl}
+\end{center}
+\end{figure}
+Dieser Graph zeigt, welche Datei direkt oder indirekt diese Datei enthält\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{_signal_handler_thread_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Klassen}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_signal_handler_thread}{Signal\+Handler\+Thread}
+\end{DoxyCompactItemize}
+\subsection*{Makrodefinitionen}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_aabdbe5a94653ed44948a15bbf036879a}{E\+S\+T\+OP}~0x400
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_ab702106cf3b3e96750b6845ded4e0299}{R\+E\+S\+ET}~0x800
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a3018c7600b7bb9866400596a56a57af7}{S\+T\+A\+RT}~0x1000
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_ae19b6bb2940d2fbe0a79852b070eeafd}{S\+T\+OP}~0x2000
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_ad9d94366567c4133fe6f387674374952}{A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED}~0x4000
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a600d1e2412a5e1cd7d26e9d0c97ec961}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x1
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a23d93678f5db5275b2f02ed3284654c9}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x100
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_ac21fd62a2b41998c58196bf4f500521f}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x10
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a5db01668a51133f2ecc97869433e7494}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x4
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_af4d58c404d85b6bbdd8340c87880e0e6}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x40
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_aad8d11530f588337b473b7f878383b4f}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x2
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_abe1866cb55284f0549b00763459fc529}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x200
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a58af236b436e5c9d4398f648b193a970}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x20
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_a1c8a5f4a435da678aa014bc7de2c4a21}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x8
+\item 
+\#define \hyperlink{_signal_handler_thread_8h_aa214896edf04214f7e4e222662c3c76b}{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}~0x80
+\end{DoxyCompactItemize}
+\subsection*{Variablen}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d}{coid}
+\item 
+struct sigevent \hyperlink{_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552}{isrt\+Event\+\_\+}
+\item 
+int \hyperlink{_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4}{isrt\+Connection\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Ausführliche Beschreibung}
+\hypertarget{_signal_handler_thread_8h_DESCRIPTION}{}\subsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{_signal_handler_thread_8h_DESCRIPTION}
+Eine Klasse um die Signale zu verarbeiten. 
+
+\subsection{Makro-\/\+Dokumentation}
+\hypertarget{_signal_handler_thread_8h_ad9d94366567c4133fe6f387674374952}{}\label{_signal_handler_thread_8h_ad9d94366567c4133fe6f387674374952} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED@{A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED}}
+\index{A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED@{A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED}{ALTIMETRY\_COMPLETED}}
+{\footnotesize\ttfamily \#define A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+C\+O\+M\+P\+L\+E\+T\+ED~0x4000}
+
+\hypertarget{_signal_handler_thread_8h_aabdbe5a94653ed44948a15bbf036879a}{}\label{_signal_handler_thread_8h_aabdbe5a94653ed44948a15bbf036879a} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!E\+S\+T\+OP@{E\+S\+T\+OP}}
+\index{E\+S\+T\+OP@{E\+S\+T\+OP}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{E\+S\+T\+OP}{ESTOP}}
+{\footnotesize\ttfamily \#define E\+S\+T\+OP~0x400}
+
+\hypertarget{_signal_handler_thread_8h_a5db01668a51133f2ecc97869433e7494}{}\label{_signal_handler_thread_8h_a5db01668a51133f2ecc97869433e7494} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_ALTIMETRY\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x4}
+
+\hypertarget{_signal_handler_thread_8h_a1c8a5f4a435da678aa014bc7de2c4a21}{}\label{_signal_handler_thread_8h_a1c8a5f4a435da678aa014bc7de2c4a21} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_ALTIMETRY\_NOT\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+A\+L\+T\+I\+M\+E\+T\+R\+Y\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x8}
+
+\hypertarget{_signal_handler_thread_8h_a600d1e2412a5e1cd7d26e9d0c97ec961}{}\label{_signal_handler_thread_8h_a600d1e2412a5e1cd7d26e9d0c97ec961} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_BEGIN\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x1}
+
+\hypertarget{_signal_handler_thread_8h_aad8d11530f588337b473b7f878383b4f}{}\label{_signal_handler_thread_8h_aad8d11530f588337b473b7f878383b4f} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_BEGIN\_NOT\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+B\+E\+G\+I\+N\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x2}
+
+\hypertarget{_signal_handler_thread_8h_a23d93678f5db5275b2f02ed3284654c9}{}\label{_signal_handler_thread_8h_a23d93678f5db5275b2f02ed3284654c9} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_END\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x100}
+
+\hypertarget{_signal_handler_thread_8h_abe1866cb55284f0549b00763459fc529}{}\label{_signal_handler_thread_8h_abe1866cb55284f0549b00763459fc529} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_END\_NOT\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+E\+N\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x200}
+
+\hypertarget{_signal_handler_thread_8h_af4d58c404d85b6bbdd8340c87880e0e6}{}\label{_signal_handler_thread_8h_af4d58c404d85b6bbdd8340c87880e0e6} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_SKID\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x40}
+
+\hypertarget{_signal_handler_thread_8h_aa214896edf04214f7e4e222662c3c76b}{}\label{_signal_handler_thread_8h_aa214896edf04214f7e4e222662c3c76b} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_SKID\_NOT\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+K\+I\+D\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x80}
+
+\hypertarget{_signal_handler_thread_8h_ac21fd62a2b41998c58196bf4f500521f}{}\label{_signal_handler_thread_8h_ac21fd62a2b41998c58196bf4f500521f} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_SWITCH\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x10}
+
+\hypertarget{_signal_handler_thread_8h_a58af236b436e5c9d4398f648b193a970}{}\label{_signal_handler_thread_8h_a58af236b436e5c9d4398f648b193a970} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}}
+\index{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED@{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED}{LIGHT\_BARRIER\_SWITCH\_NOT\_INTERRUPTED}}
+{\footnotesize\ttfamily \#define L\+I\+G\+H\+T\+\_\+\+B\+A\+R\+R\+I\+E\+R\+\_\+\+S\+W\+I\+T\+C\+H\+\_\+\+N\+O\+T\+\_\+\+I\+N\+T\+E\+R\+R\+U\+P\+T\+ED~0x20}
+
+\hypertarget{_signal_handler_thread_8h_ab702106cf3b3e96750b6845ded4e0299}{}\label{_signal_handler_thread_8h_ab702106cf3b3e96750b6845ded4e0299} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!R\+E\+S\+ET@{R\+E\+S\+ET}}
+\index{R\+E\+S\+ET@{R\+E\+S\+ET}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{R\+E\+S\+ET}{RESET}}
+{\footnotesize\ttfamily \#define R\+E\+S\+ET~0x800}
+
+\hypertarget{_signal_handler_thread_8h_a3018c7600b7bb9866400596a56a57af7}{}\label{_signal_handler_thread_8h_a3018c7600b7bb9866400596a56a57af7} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!S\+T\+A\+RT@{S\+T\+A\+RT}}
+\index{S\+T\+A\+RT@{S\+T\+A\+RT}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{S\+T\+A\+RT}{START}}
+{\footnotesize\ttfamily \#define S\+T\+A\+RT~0x1000}
+
+\hypertarget{_signal_handler_thread_8h_ae19b6bb2940d2fbe0a79852b070eeafd}{}\label{_signal_handler_thread_8h_ae19b6bb2940d2fbe0a79852b070eeafd} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!S\+T\+OP@{S\+T\+OP}}
+\index{S\+T\+OP@{S\+T\+OP}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{S\+T\+OP}{STOP}}
+{\footnotesize\ttfamily \#define S\+T\+OP~0x2000}
+
+
+
+\subsection{Variablen-\/\+Dokumentation}
+\hypertarget{_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d}{}\label{_signal_handler_thread_8h_a6d681673a747ebd2a1081956c60eab7d} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!coid@{coid}}
+\index{coid@{coid}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{coid}{coid}}
+{\footnotesize\ttfamily int coid}
+
+\hypertarget{_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4}{}\label{_signal_handler_thread_8h_ab83e6ae3fe04c77821d71057e99990e4} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!isrt\+Connection\+\_\+@{isrt\+Connection\+\_\+}}
+\index{isrt\+Connection\+\_\+@{isrt\+Connection\+\_\+}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{isrt\+Connection\+\_\+}{isrtConnection\_}}
+{\footnotesize\ttfamily int isrt\+Connection\+\_\+}
+
+\hypertarget{_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552}{}\label{_signal_handler_thread_8h_a098cf06afe8e07f0e3a7b627dff0c552} 
+\index{Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}!isrt\+Event\+\_\+@{isrt\+Event\+\_\+}}
+\index{isrt\+Event\+\_\+@{isrt\+Event\+\_\+}!Signal\+Handler\+Thread.\+h@{Signal\+Handler\+Thread.\+h}}
+\subsubsection{\texorpdfstring{isrt\+Event\+\_\+}{isrtEvent\_}}
+{\footnotesize\ttfamily struct sigevent isrt\+Event\+\_\+}
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.13"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Foerderband: Hal/ISR/InterruptHandler.cpp-Dateireferenz</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Foerderband
+   &#160;<span id="projectnumber">0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Erzeugt von Doxygen 1.8.13 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Suchen');
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+$(function() {
+  initMenu('',true,false,'search.php','Suchen');
+  $(document).ready(function() { init_search(); });
+});
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_8d97af1d9fc459606e14b1b1a566c5e0.html">Hal</a></li><li class="navelem"><a class="el" href="dir_4589eb605f154e89e6c9ffae58eaa987.html">ISR</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funktionen</a>  </div>
+  <div class="headertitle">
+<div class="title">InterruptHandler.cpp-Dateireferenz</div>  </div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="_interrupt_handler_8h_source.html">InterruptHandler.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include-Abhängigkeitsdiagramm für InterruptHandler.cpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="_interrupt_handler_8cpp__incl.png" border="0" usemap="#_hal_2_i_s_r_2_interrupt_handler_8cpp" alt=""/></div>
+<map name="_hal_2_i_s_r_2_interrupt_handler_8cpp" id="_hal_2_i_s_r_2_interrupt_handler_8cpp">
+<area shape="rect" id="node2" href="_interrupt_handler_8h.html" title="InterruptHandler.h" alt="" coords="219,79,347,104"/>
+<area shape="rect" id="node7" href="_hal_builder_8h.html" title="Hal/HalBuilder.h" alt="" coords="815,152,932,177"/>
+<area shape="rect" id="node8" href="_adapter_8h.html" title="Hal/Adapter.h" alt="" coords="920,372,1022,397"/>
+<area shape="rect" id="node10" href="_mutexo_8h.html" title="Hal/Mutexo.h" alt="" coords="1106,445,1206,471"/>
+<area shape="rect" id="node12" href="_hardware_8h.html" title="Hal/Hardware.h" alt="" coords="762,225,876,251"/>
+<area shape="rect" id="node13" href="_motor_8h.html" title="Hal/Motor.h" alt="" coords="890,299,980,324"/>
+<area shape="rect" id="node18" href="_human_machine_interface_8h.html" title="Hal/HumanMachineInterface.h" alt="" coords="387,299,589,324"/>
+<area shape="rect" id="node19" href="_measuring_tool_8h.html" title="Hal/MeasuringTool.h" alt="" coords="1003,299,1146,324"/>
+<area shape="rect" id="node20" href="_traffic_light_8h.html" title="Hal/TrafficLight.h" alt="" coords="613,299,734,324"/>
+<area shape="rect" id="node21" href="_altimetry_8h.html" title="Hal/Altimetry.h" alt="" coords="759,299,866,324"/>
+<area shape="rect" id="node14" href="_logger_8h.html" title="Logger/Logger.h" alt="" coords="525,372,643,397"/>
+</map>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Funktionen</h2></td></tr>
+<tr class="memitem:a49921d5b1ec6e2220ad8512461dd1fda"><td class="memItemLeft" align="right" valign="top">const struct sigevent *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interrupt_handler_8cpp.html#a49921d5b1ec6e2220ad8512461dd1fda">ISR_DIO</a> (void *arg, int id)</td></tr>
+<tr class="separator:a49921d5b1ec6e2220ad8512461dd1fda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b37c04f77701c7b0afd5bfb452b42f"><td class="memItemLeft" align="right" valign="top">const struct sigevent *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interrupt_handler_8cpp.html#ab2b37c04f77701c7b0afd5bfb452b42f">ISR_AIO</a> (void *arg, int id)</td></tr>
+<tr class="separator:ab2b37c04f77701c7b0afd5bfb452b42f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b07c4e8d0a4cc62de1f9f580b7efb05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interrupt_handler_8cpp.html#a2b07c4e8d0a4cc62de1f9f580b7efb05">registerISR</a> (void)</td></tr>
+<tr class="separator:a2b07c4e8d0a4cc62de1f9f580b7efb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b47b94bea6857baac4d86fabea1cc67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_interrupt_handler_8cpp.html#a6b47b94bea6857baac4d86fabea1cc67">unregisterISR</a> (void)</td></tr>
+<tr class="separator:a6b47b94bea6857baac4d86fabea1cc67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentation der Funktionen</h2>
+<a id="ab2b37c04f77701c7b0afd5bfb452b42f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b37c04f77701c7b0afd5bfb452b42f">&sect;&nbsp;</a></span>ISR_AIO()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const struct sigevent* ISR_AIO </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>ISR fuer die AIO. Sendet eine Pulse Message an den isrtChannel_ falls ein Interrupt behandelt werden konnte. </p>
+
+</div>
+</div>
+<a id="a49921d5b1ec6e2220ad8512461dd1fda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49921d5b1ec6e2220ad8512461dd1fda">&sect;&nbsp;</a></span>ISR_DIO()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const struct sigevent* ISR_DIO </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>ISR fuer die DIO. Sendet eine Pulse Message an den isrtChannel_ falls ein Interrupt behandelt werden konnte. </p>
+
+</div>
+</div>
+<a id="a2b07c4e8d0a4cc62de1f9f580b7efb05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b07c4e8d0a4cc62de1f9f580b7efb05">&sect;&nbsp;</a></span>registerISR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void registerISR </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Registriert die beiden ISR fuer AIO und DIO. </p>
+
+</div>
+</div>
+<a id="a6b47b94bea6857baac4d86fabea1cc67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b47b94bea6857baac4d86fabea1cc67">&sect;&nbsp;</a></span>unregisterISR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void unregisterISR </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Entfernt die beiden ISR vom System. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Erzeugt von &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.13
+</small></address>
+</body>
+</html>
