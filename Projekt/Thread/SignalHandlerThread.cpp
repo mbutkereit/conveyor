@@ -47,7 +47,6 @@ void SignalHandlerThread::execute(void*) {
 
 			//LOG_DEBUG << "Signalhandler hat einen Puls erhalten mit Code E:"
 			//	<< pulse.value.sival_int << "\n";
-
 			int code = pulse.value.sival_int;
 
 			if (code & ESTOP) {
@@ -90,12 +89,11 @@ void SignalHandlerThread::execute(void*) {
 
 #endif
 #if defined BAND && BAND == 4
-
-				ContextI* context = new ContextTimeMeasurementFast(globalerID_Zaehler++,&puckvector);
+				ContextI* context = new ContextTimeMeasurementFast();
 #endif
 #if defined BAND && BAND == 5
 
-				ContextI* context = new ContextTimeMeasurementSlow(globalerID_Zaehler++,&puckvector);
+				ContextI* context = new ContextTimeMeasurementSlow();
 #endif
 
 				//TODO extract Method
@@ -182,11 +180,9 @@ void SignalHandlerThread::execute(void*) {
 			if (code & TIMER_INTERRUPT) {
 				disp->callListeners(TIMINTR);
 			}
-
 			//Checkt ob ein Automat den Endzustand erreicht und wenn dies so ist, dann wird der Automat gelöscht.
 			for (uint8_t i = 0; i < contextContainer.size(); i++) {
 				if (contextContainer[i]->isContextimEnzustand()) {
-
 					//TODO extract Method
 					disp->remListeners(contextContainer[i], LBBEGININTERRUPTED);
 					disp->remListeners(contextContainer[i],
@@ -249,12 +245,17 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 		} else {
+
+			/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
+=======
 				if (pulsecode == WATCHDOG_PULSE_CODE) {
+>>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
 			 //SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
 			 } else {
 			 LOG_WARNING << "Einen nicht bekannten Code erhalten."
 			 << pulsecode << "\n";
-			 }
+<<<<<<< HEAD
+			 }*/
 		}
 
 	} while (1);

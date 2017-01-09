@@ -141,8 +141,8 @@ private:
 	struct Puck2Ready_AFM: public AltimetryFailManagement {
 		virtual void signalAltimetryInterrupted(){
 			data->cafmto2->stopTimerT0();
-			//if(*data->cafmdelta2 <= TOLERANCE){
-			if(1){
+			if(*data->cafmdelta2 <= TOLERANCE){
+			//if(1){
 				*data->cafmdelta2 = DELTA_TH_TE;
 				data->cafmto2->startTimerTH();
 				new (this) Puck3Ready_AFM;
@@ -168,8 +168,8 @@ private:
 	struct Puck3Ready_AFM: public AltimetryFailManagement{
 		virtual void signalAltimetryInterrupted(){
 			data->cafmto3->stopTimerT0();
-			//if(*data->cafmdelta3 <= TOLERANCE){
-			if(1){
+			if(*data->cafmdelta3 <= TOLERANCE){
+			//if(1){
 				*data->cafmdelta3 = DELTA_TH_TE;
 				data->cafmto3->startTimerTH();
 				data->finished = true;

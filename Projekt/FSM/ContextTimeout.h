@@ -14,16 +14,18 @@ using namespace std;
 
 #define DEFAULT
 #ifdef DEFAULT
-    #define DELTA_T0_TH 999
-    #define DELTA_TH_TW 999
-    #define DELTA_TW_TE 999
+
+    #define DELTA_T0_TH 23
+    #define DELTA_TH_TW 12
+    #define DELTA_TW_TE 22
 
     #define DELTA_TH_TE 1000
 #else
     #define DELTA_T0_TH 1000
 
 #endif
-#define TOLERANCE 5
+
+#define TOLERANCE 50
 
 struct Datacto{
 	Datacto():ticksPL(0), timeout(false){}
@@ -103,7 +105,7 @@ private:
     struct StartT0_TH: public TimeOut {
     	virtual void signalTimerTick(){
     		data->ticksPL--;
-    		if(data->ticksPL == 0){
+    		if(data->ticksPL+TOLERANCE == 0){
     			data->timeout = true;
     		}
     	}
@@ -116,7 +118,7 @@ private:
     struct StartTH_TW: public TimeOut {
     	virtual void signalTimerTick(){
     		data->ticksPL--;
-    		if(data->ticksPL == 0){
+    		if(data->ticksPL+TOLERANCE == 0){
     			data->timeout = true;
     		}
     	}
@@ -129,7 +131,7 @@ private:
     struct StartTW_TE: public TimeOut {
     	virtual void signalTimerTick(){
     		data->ticksPL--;
-    		if(data->ticksPL == 0){
+    		if(data->ticksPL+TOLERANCE == 0){
     			data->timeout = true;
     		}
     	}
