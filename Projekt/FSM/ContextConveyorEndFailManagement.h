@@ -144,8 +144,8 @@ private:
 		virtual void signalLBEndInterrupted(){
 			LOG_DEBUG << "Puck2Ready_CEFM (2. Werkstück angekommen)\n";
 			data->ccefmto2->stopTimerTH();
-			//if(*data->ccefmdelta2 <= TOLERANCE){
-			if(1){
+			if(*data->ccefmdelta2 <= TOLERANCE){
+			//if(1){
 				new (this) Puck3Ready_CEFM;
 			}
 			else{
@@ -158,8 +158,8 @@ private:
 		virtual void signalLBEndInterrupted(){
 			LOG_DEBUG << "Puck3Ready_CEFM (3. Werkstück angekommen)\n";
 			data->ccefmto3->stopTimerTH();
-			//if(*data->ccefmdelta3 <= TOLERANCE){
-			if(1){
+			if(*data->ccefmdelta3 <= TOLERANCE){
+			//if(1){
 				new (this) EndOfTheEnd;
 			}
 			else{

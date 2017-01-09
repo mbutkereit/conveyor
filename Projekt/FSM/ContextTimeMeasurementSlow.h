@@ -19,15 +19,14 @@
 
 struct Datactms {
     Datactms() :
-            hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), t0_th(0), th_tw(0), tw_te(0), tickX(NULL), finished(false) {
+            hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), delta_t0_tE(0), tickGesamtLangsam(NULL), finished(false) {
+
     }
     HalBuilder hb;
     ContextMotor* cm;
     ContextSwitch* cswitch;
-    int t0_th;
-    int th_tw;
-    int tw_te;
-    int *tickX;
+    int delta_t0_tE;
+    int *tickGesamtLangsam;
     bool finished;
 };
 
@@ -116,7 +115,9 @@ private:
         virtual void signalLBNextConveyor() {
         }
         virtual void signalTimerTick(){
-            *data->tickX += 1;
+        	if(data->tickGesamtLangsam != NULL){
+                *data->tickGesamtLangsam += 1;
+        	}
         }
 
         Datactms* data;
@@ -124,49 +125,33 @@ private:
 
     struct TransportToEntry: public TimereadingSlow {
             virtual void signalLBBeginInterrupted() {
-                data->cm->setSpeed(MOTOR_FAST);
-                data->hb.getHardware()->getMotor()->slow();
+            	LOG_DEBUG << "TimereadingSlow State: TransportToEntry\n";
+                data->cm->setSpeed(MOTOR_SLOW);
                 new (this) MotorOn;
             }
         };
 
         struct MotorOn: public TimereadingSlow{
             virtual void signalLBBeginNotInterrupted() {
-                data->tickX = &data->t0_th;
-                new (this) TransportToAltimetry;
+            	LOG_DEBUG << "TimereadingSlow State: MotorOn(signalLBBeginNotInterrupted)\n";
+                data->tickGesamtLangsam = &data->delta_t0_tE;
             }
-        };
 
-        struct TransportToAltimetry: public TimereadingSlow{
-            virtual void signalLBAltimetryInterrupted() {
-                data->tickX = &data->th_tw;
-                new (this) LeaveAltimetry;
-            }
-        };
-
-        struct LeaveAltimetry: public TimereadingSlow{
-        	virtual void signalLBAltimetryNotInterrupted() {
-        		new (this) TransportToSkid;
-        	}
-        };
-
-        struct TransportToSkid: public TimereadingSlow{
-            virtual void signalLBSwitchInterrupted() {
-                data->tickX = &data->tw_te;
-                data->cswitch->setSwitchOpen();
-                new (this) TransportToDelivery;
+            virtual void signalLBSwitchInterrupted(){
+            	LOG_DEBUG << "TimereadingSlow State: MotorOn(signalLBSwitchInterrupted)\n";
+            	data->cswitch->setSwitchOpen();
+            	new (this) TransportToDelivery;
             }
         };
 
         struct TransportToDelivery: public TimereadingSlow {
             virtual void signalLBEndInterrupted() {
-                data->tickX = NULL;
+            	LOG_DEBUG << "TimereadingSlow State: TransportToDelivery\n";
+                data->tickGesamtLangsam = NULL;
                 data->cswitch->resetSwitchOpen();
                 data->cm->setSpeed(MOTOR_STOP);
 
-                cout << "DELTA_T0_TH: " << data->t0_th << endl;
-                cout << "DELTA_TH_TW: " << data->th_tw << endl;
-                cout << "DELTA_TW_TE: " << data->tw_te << endl;
+                cout << "DELTA_T0_TE: " << data->delta_t0_tE << endl;
                 data->finished = true;
             }
         };

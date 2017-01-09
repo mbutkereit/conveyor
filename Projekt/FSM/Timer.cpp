@@ -77,14 +77,14 @@ void Timer::continueTimer(){
 void Timer::setMode(enum TimerOptions to){
     switch (to) {
         case TIMER_FAST:
-            // Configure Timer to send every two seconds.
+            // Configure Timer to send every x seconds.
             timerSpec_.it_value.tv_sec = SECONDS_FAST;
             timerSpec_.it_value.tv_nsec = NSECONDS_FAST;
             timerSpec_.it_interval.tv_sec = INTERVAL_SECONDS_FAST;
             timerSpec_.it_interval.tv_nsec = INTERVAL_NSECONDS_FAST;
             break;
         case TIMER_SLOW:
-            // Configure Timer to send every two seconds.
+            // Configure Timer to send every x seconds.
             timerSpec_.it_value.tv_sec = SECONDS_SLOW;
             timerSpec_.it_value.tv_nsec = NSECONDS_SLOW;
             timerSpec_.it_interval.tv_sec = INTERVAL_SECONDS_SLOW;

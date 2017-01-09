@@ -18,15 +18,18 @@
 
 struct Datactmf {
     Datactmf() :
-            hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), t0_th(0), th_tw(0), tw_te(0), tickX(NULL), finished(false) {
+            hb(), cm(ContextMotor::getInstance()), cswitch(ContextSwitch::getInstance()), delta_t0_tH(0), delta_tH_tW(0), delta_tW_tE(0), delta_t0_tE(0), tickX(NULL), tickGesamtSchnell(NULL) ,finished(false) {
+
     }
     HalBuilder hb;
     ContextMotor* cm;
     ContextSwitch* cswitch;
-    int t0_th;
-    int th_tw;
-    int tw_te;
+    int delta_t0_tH;
+    int delta_tH_tW;
+    int delta_tW_tE;
+    int delta_t0_tE;
     int *tickX;
+    int *tickGesamtSchnell;
     bool finished;
 };
 
@@ -115,7 +118,10 @@ private:
         virtual void signalLBNextConveyor() {
         }
         virtual void signalTimerTick(){
-            *data->tickX += 1;
+            if(data->tickX != NULL && data->tickGesamtSchnell != NULL){
+               	*data->tickX += 1;
+                *data->tickGesamtSchnell += 1;
+            }
         }
 
         Datactmf* data;
@@ -123,6 +129,7 @@ private:
 
     struct TransportToEntry: public TimereadingFast {
         virtual void signalLBBeginInterrupted() {
+        	LOG_DEBUG << "TimereadingFast State: TransportToEntry\n";
             data->cm->setSpeed(MOTOR_FAST);
             new (this) MotorOn;
         }
@@ -130,29 +137,25 @@ private:
 
     struct MotorOn: public TimereadingFast{
         virtual void signalLBBeginNotInterrupted() {
-            data->tickX = &data->t0_th;
+        	LOG_DEBUG << "TimereadingFast State: MotorOn\n";
+            data->tickX = &data->delta_t0_tH;
+            data->tickGesamtSchnell = &data->delta_t0_tE;
             new (this) TransportToAltimetry;
         }
     };
 
     struct TransportToAltimetry: public TimereadingFast{
         virtual void signalLBAltimetryInterrupted() {
-            data->tickX = &data->th_tw;
-            data->hb.getHardware()->getMotor()->slow();
-            new (this) LeaveAltimetry;
+        	LOG_DEBUG << "TimereadingFast State: TransportToAltimetry\n";
+            data->tickX = &data->delta_tH_tW;
+            new (this) TransportToSwitch;
         }
     };
 
-    struct LeaveAltimetry: public TimereadingFast{
-    	virtual void signalLBAltimetryNotInterrupted() {
-    		data->hb.getHardware()->getMotor()->fast();
-    		new (this) TransportToSkid;
-    	}
-    };
-
-    struct TransportToSkid: public TimereadingFast{
+    struct TransportToSwitch: public TimereadingFast{
         virtual void signalLBSwitchInterrupted() {
-            data->tickX = &data->tw_te;
+        	LOG_DEBUG << "TimereadingFast State: TransportToSwitch\n";
+            data->tickX = &data->delta_tW_tE;
             data->cswitch->setSwitchOpen();
             new (this) TransportToDelivery;
         }
@@ -160,13 +163,16 @@ private:
 
     struct TransportToDelivery: public TimereadingFast {
         virtual void signalLBEndInterrupted() {
+        	LOG_DEBUG << "TimereadingFast State: TransportToDelivery\n";
             data->tickX = NULL;
+            data->tickGesamtSchnell = NULL;
             data->cswitch->resetSwitchOpen();
             data->cm->setSpeed(MOTOR_STOP);
 
-            cout << "DELTA_T0_TH: " << data->t0_th << endl;
-            cout << "DELTA_TH_TW: " << data->th_tw << endl;
-            cout << "DELTA_TW_TE: " << data->tw_te << endl;
+            cout << "DELTA_T0_TH: " << data->delta_t0_tH << endl;
+            cout << "DELTA_TH_TW: " << data->delta_tH_tW << endl;
+            cout << "DELTA_TW_TE: " << data->delta_tW_tE << endl;
+            cout << "DELTA_T0_TE: " << data->delta_t0_tE << endl;
             data->finished = true;
         }
     };

@@ -11,7 +11,8 @@
 HalBuilder hb;
 
 int main(int argc, char *argv[]) {
-	Logger::getLogger().setLoggingLevel(DEBUG);
+	Logger::getLogger().setLoggingLevel(ERROR);
+
 	ConveyorThread c1;
 	InfoMessage* message = InfoMessage::getInfoMessage();
 	c1.start(NULL);

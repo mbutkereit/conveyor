@@ -19,7 +19,8 @@
 #include "FSM/ContextTopFSM1.h"
 #include "FSM/ContextTopFSM2.h"
 #include "FSM/ContextTopFSM3.h"
-#include "FSM/ContextTimeMeasurement.h"
+#include "FSM/ContextTimeMeasurementFast.h"
+#include "FSM/ContextTimeMeasurementSlow.h"
 
 
 
