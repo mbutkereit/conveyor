@@ -9,6 +9,7 @@
 #define CONTEXTCONVEYOR1_H_
 #define HEIGHT_DRILL 0
 #define HEIGHT_NO_DRILL 0
+#define DELAY 7
 
 #include <iostream>
 #include "Logger/Logger.h"
@@ -34,7 +35,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(InfoMessage::getInfoMessage()), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(0) {
+					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(0), delay(DELAY), delayEnable(false) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -53,6 +54,8 @@ struct Data {
 	WorkpieceMessage* wpm;
 	ContextTimeout cto;
 	int delta_X;
+	int delay;
+	bool delayEnable;
 };
 
 /**
@@ -104,6 +107,14 @@ private:
 		virtual void signalTimerTick() {
 			data->cto.signalTimerTick();
 			data->delta_X -= 1;
+
+			if(data->delayEnable && data->delay > 0){
+				data->delay -=1;
+			}else if (data->delayEnable && data->delay <= 0){
+				data->delayEnable = false;
+				new (this) TransportToHeightMeasurement;
+			}
+
 			if (data->cto.timeoutOccured()) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
@@ -114,13 +125,15 @@ private:
 				new (this) PuckLost;
 			}
 		}
+		virtual void delayAtBeginExpired() {
+		}
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.
 
 	struct TransportToEntry: public PuckOnConveyor1 {
 		//TRANSACTION/LEAVE
-		void signalLBBeginInterrupted() {
+		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: TransportToEntry \n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
@@ -130,13 +143,13 @@ private:
 
 	struct MotorOn: public PuckOnConveyor1 {
 		//LEAVE
-		void signalLBBeginNotInterrupted() {
+		virtual void signalLBBeginNotInterrupted() {
 			LOG_DEBUG << "State: MotorOn\n";
 			data->delta_X = DELTA_T0_TH;//Give ticks T0
 			data->cto.startTimerT0();
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
-			new (this) TransportToHeightMeasurement;
+			data->delayEnable = true;
 		}
 	};
 
@@ -510,6 +523,8 @@ public:
 	void signalLBNextConveyor();
 
 	void signalTimerTick();
+
+	void delayAtBeginExpired();
 };
 
 #endif /* CONTEXTCONVEYOR1_H_ */
