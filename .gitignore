@@ -36,6 +36,6 @@ RDD.log
 
 # mehkir specific ignores
 Dokumentation/Teildokumente/
-
+Projek/x86
 .DS_STORE
 

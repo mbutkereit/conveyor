@@ -70,7 +70,7 @@ void SignalHandlerThread::execute(void*) {
 #endif
 #if defined BAND && BAND == 3
 
-				ContextI* context;
+				ContextI* context = NULL;
 
 				if (skidcounter == 0) {
 					context = new ContextTopFSM3(globalerID_Zaehler++,
@@ -95,40 +95,46 @@ void SignalHandlerThread::execute(void*) {
 
 				ContextI* context = new ContextTimeMeasurementSlow();
 #endif
+				if (context != NULL) {
+					//TODO extract Method
+					disp->addListener(context, LBBEGININTERRUPTED);
+					disp->addListener(context, LBBEGINNOTINTERRUPTED);
+					disp->addListener(context, LBENDINTERRUPTED);
+					disp->addListener(context, LBENDNOTINTERRUPTED);
+					disp->addListener(context, LBALTIMETRYINTERRUPTED);
+					disp->addListener(context, LBALTIMETRYNOTINTERRUPTED);
+					disp->addListener(context, LBSKIDINTERRUPTED);
+					disp->addListener(context, LBSKIDNOTINTERRUPTED);
+					disp->addListener(context, LBSWITCHINTERRUPTED);
+					disp->addListener(context, LBSWITCHNOTINTERRUPTED);
+					disp->addListener(context, RESETSIGNAL);
+					disp->addListener(context, STARTSIGNAL);
+					disp->addListener(context, ESTOPSIGNAL);
+					disp->addListener(context, STOPSIGNAL);
+					disp->addListener(context, ALTEMETRYCOMPLETE);
+					disp->addListener(context, LBNEXTCONVEYOR);
 
-				//TODO extract Method
-				disp->addListener(context, LBBEGININTERRUPTED);
-				disp->addListener(context, LBBEGINNOTINTERRUPTED);
-				disp->addListener(context, LBENDINTERRUPTED);
-				disp->addListener(context, LBENDNOTINTERRUPTED);
-				disp->addListener(context, LBALTIMETRYINTERRUPTED);
-				disp->addListener(context, LBALTIMETRYNOTINTERRUPTED);
-				disp->addListener(context, LBSKIDINTERRUPTED);
-				disp->addListener(context, LBSKIDNOTINTERRUPTED);
-				disp->addListener(context, LBSWITCHINTERRUPTED);
-				disp->addListener(context, LBSWITCHNOTINTERRUPTED);
-				disp->addListener(context, RESETSIGNAL);
-				disp->addListener(context, STARTSIGNAL);
-				disp->addListener(context, ESTOPSIGNAL);
-				disp->addListener(context, STOPSIGNAL);
-				disp->addListener(context, ALTEMETRYCOMPLETE);
-				disp->addListener(context, LBNEXTCONVEYOR);
-
-				disp->addListener(context, TIMINTR);
-				contextContainer.push_back(context);
+					disp->addListener(context, TIMINTR);
+					contextContainer.push_back(context);
+				}
 				disp->callListeners(LBBEGININTERRUPTED);
+
 				LOG_DEBUG << "LBBeginInterrupted" << endl;
 				message->setLBinterruptedBit();
 			}
+
 			if (code & LIGHT_BARRIER_BEGIN_NOT_INTERRUPTED) {
 				disp->callListeners(LBBEGINNOTINTERRUPTED);
 			}
+
 			if (code & LIGHT_BARRIER_ALTIMETRY_INTERRUPTED) {
 				disp->callListeners(LBALTIMETRYINTERRUPTED);
 			}
+
 			if (code & LIGHT_BARRIER_ALTIMETRY_NOT_INTERRUPTED) {
 				disp->callListeners(LBALTIMETRYNOTINTERRUPTED);
 			}
+
 			if (code & LIGHT_BARRIER_SWITCH_INTERRUPTED) {
 				disp->callListeners(LBSWITCHINTERRUPTED);
 			}
@@ -244,17 +250,12 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 		} else {
-
-			/*	if (pulsecode == WATCHDOG_PULSE_CODE) {
-=======
-				if (pulsecode == WATCHDOG_PULSE_CODE) {
->>>>>>> 0cf31b2c130c0144237c5c8d9e378b860ed61844
-			 //SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
-			 } else {
-			 LOG_WARNING << "Einen nicht bekannten Code erhalten."
-			 << pulsecode << "\n";
-<<<<<<< HEAD
-			 }*/
+			if (pulsecode == WATCHDOG_PULSE_CODE) {
+				SerialMessageWatchdogThread::notify(); // Schauen ob der Automat am leben ist.
+			} else {
+				LOG_WARNING << "Einen nicht bekannten Code erhalten."
+						<< pulsecode << "\n";
+			}
 		}
 
 	} while (1);
