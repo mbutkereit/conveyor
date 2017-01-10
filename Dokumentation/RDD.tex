@@ -745,25 +745,31 @@ Mit der Klasse HAL werden die Hardwarekomponenten eines Förderbandes angesteuer
 
 \newpage
 
+%Abbildungszähler
+\newcounter{imgcounter}
+\setcounter{imgcounter}{4}
+
+\stepcounter{imgcounter}
 \includepdf[scale=1, landscape=true, pages=1,offset=0 0, pagecommand=
 \vspace*{25cm}
-\hspace*{3cm} Abbildung 5: UML-Diagramm zur HAL]{images/HAL_UML.jpg}\label{sec:umlhal}
+\hspace*{3cm} Abbildung \theimgcounter : UML-Diagramm zur HAL]{images/HAL_UML.jpg}\label{sec:umlhal}
 \newpage
 
 \subsection{Zeitmessung}
-Auf allen Förderbändern müssen Zeitmessungen durchgeführt werden, um Zeiten zu erfassen, mit denen im Normalbetrieb unsachgemäß hinzugefügte Werkstücke oder das Verschwinden von Werkstücken erkannt werden können.
+Auf dem ersten und zweiten Förderband müssen Zeitmessungen durchgeführt werden, um Zeiten zu erfassen, mit denen im Normalbetrieb unsachgemäß hinzugefügte Werkstücke oder das Verschwinden von Werkstücken erkannt werden kann.
 
 \subsubsection{Vorbedingungen}
-Für die Zeitmessung muss die gleiche Implementation der Förderbandlogik ablaufen, die auch im Normalbetrieb für die Förderbänder ablaufen wird, wobei die Höhenmessung ausgelassen wird und das Werkstück bedingungslos durchgelassen wird. Falls in der Routine Geschwindigkeitsänderungen des Bandes vorliegen, müssen diese jedoch miteinbezogen werden.
+Für die Zeitmessung muss die gleiche Implementation der Förderbandlogik ablaufen, die auch im Normalbetrieb für die beiden ersten Förderbänder ablaufen wird, wobei die Höhenmessung ausgelassen wird und das Werkstück bedingungslos durchgelassen wird. Falls in der Routine Geschwindigkeitsänderungen des Bandes vorliegen, müssen diese jedoch miteinbezogen werden.
 Da ein Werkstück am Anfang des ersten Förderbändes unterschiedlich hinzugefügt werden kann (siehe Abbildung \hyperref[sec:Messpunkte]{6}) und der Timer eine relativ hohe Zeitauflösung hat, müssen \textbf{best} und \textbf{worst case} Zeiten ermittelt werden. 
 
 \subsubsection{Ausführung}
 Für den \textbf{\textcolor{ForestGreen}{best case}} wird das Werkstück beim Hinzufügen von der ersten Lichtschranke aus gesehen am \textbf{\textcolor{ForestGreen}{linken Rand}} der Führung angelegt, während beim \textbf{\textcolor{OrangeRed}{worst case}} am \textbf{\textcolor{OrangeRed}{rechten Rand}} angelegt werden muss. Dabei muss das Werkstück die erste Lichtschranke \textbf{LS\_A} auch unterbrechen, was auch im Normalbetrieb beim Hinzufügen weiterer Werkstücke beachtet werden muss! Die Zeitmessung beginnt, nachdem das Werkstück die Lichtschranke am Anfang nicht mehr unterbricht. Unterbricht das Werkstück die nachfolgenden Lichtschranken, wird jeweils die Zeit gestoppt. Die nachfolgende Abbildung \hyperref[sec:Messpunkte]{6} zeigt wann die Zeiten $t_0, t_H, t_W$ und $t_E$ erfasst werden.
 
+\stepcounter{imgcounter}
 \begin{figure}[h]
 \centering 
     \includegraphics[scale=0.6]{images/Zeitmessung_Platzierung.png}
-    \caption*{Abbildung 6: Stoppen der Zeit an den Lichtschranken: \textit{LS\_A, LS\_H, LS\_W, LS\_E}}
+    \caption*{Abbildung \theimgcounter : Stoppen der Zeit an den Lichtschranken: \textit{LS\_A, LS\_H, LS\_W, LS\_E}}
     \label{sec:Messpunkte}
 \end{figure}
 
@@ -786,43 +792,42 @@ Für den \textbf{\textcolor{ForestGreen}{best case}} wird das Werkstück beim Hi
 \label{lbdesc}
 \end{table}
 
-\noindent Auf der nachfolgenden Seite ist der endliche Automat in Abbildung \hyperref[sec:timemeasure]{7} zur Zeitmessung abgebildet.
-
-\includepdf[scale=0.9,pages=1, landscape=true, offset=0 20, pagecommand=
+\noindent Auf der nachfolgenden Seite sind die endlichen Automaten in Abbildung \hyperref[sec:timemeasure]{7} zur Zeitmessung abgebildet.
+\stepcounter{imgcounter}
+\includepdf[scale=0.9,pages=5, landscape=true, offset=0 0, pagecommand=
 \vspace*{25cm}
-\hspace*{3cm} Abbildung 7: FSM zur Zeitmessung]{images/Zeitmessung_FSM.pdf}\label{sec:timemeasure}
+\hspace*{0.5cm} Abbildung \theimgcounter : FSM zur Zeitmessung für schnellen und langsamen Bandlauf]{FSM/Statemachines.pdf}\label{sec:timemeasure}
 
 \newpage
 
 \subsection{Verhaltensmodellierung}
-Das Verhalten der drei Förderbänder ist mithilfe von hierarchischen Zustandsautomaten realisiert. Die Abbildungen \hyperref[sec:hsm1]{8}, \hyperref[sec:hsm2]{9} und \hyperref[sec:hsm3]{10} auf den folgenden Seiten bilde die Förderbänder 1, 2 und 3 ab.
+Das Verhalten der drei Förderbänder ist mithilfe von hierarchischen Zustandsautomaten realisiert. Die Abbildungen \hyperref[sec:hsm1]{8}, \hyperref[sec:hsm2]{9} und \hyperref[sec:hsm3]{10} auf den folgenden Seiten bilden die Förderbänder 1, 2 und 3 ab. Anschließend sind in Abbildung \hyperref[sec:hsm4]{11} die Zustandsautomaten zu den Förderbandkomponenten und dem Timer sowie zum Timeout zu sehen. Die Förderbandkomponenten Motor und Weiche sowie der Timer sind für jedes Förderband auch in Software nur \textbf{einmal} vorhanden. Der Timeout Automat wird jedoch für jeden einzelnen Puck einmal erstellt und verwendet.
 
 \newpage
-
-\includepdf[scale=0.87,pages=2, landscape=true, offset=0 13, pagecommand=
+\stepcounter{imgcounter}
+\includepdf[scale=0.87,pages=1, landscape=true, offset=0 13, pagecommand=
 \vspace*{25cm}
-\hspace*{3cm} Abbildung 8: HSM zu Förderband 1]{FSM/Statemachines.pdf}\label{sec:hsm1}
+\hspace*{3cm} Abbildung \theimgcounter : HSM zu Förderband 1]{FSM/Statemachines.pdf}\label{sec:hsm1}
 
 \newpage
-
-\includepdf[scale=0.86,pages=4, landscape=true, offset=0 15, pagecommand=
+\stepcounter{imgcounter}
+\includepdf[scale=0.86,pages=2, landscape=true, offset=0 15, pagecommand=
 \vspace*{24.9cm}
-\hspace*{3cm} Abbildung 9: HSM zu Förderband 2]{FSM/Statemachines.pdf}\label{sec:hsm2}
+\hspace*{3cm} Abbildung \theimgcounter : HSM zu Förderband 2]{FSM/Statemachines.pdf}\label{sec:hsm2}
 
 \newpage
-
-\includepdf[scale=0.86,pages=6, landscape=true, offset=0 13, pagecommand=
+\stepcounter{imgcounter}
+\includepdf[scale=0.86,pages=3, landscape=true, offset=0 13, pagecommand=
 \vspace*{24.9cm}
-\hspace*{3cm} Abbildung 10: HSM zu Förderband 3]{FSM/Statemachines.pdf}\label{sec:hsm3}
+\hspace*{3cm} Abbildung \theimgcounter : HSM zu Förderband 3]{FSM/Statemachines.pdf}\label{sec:hsm3}
 
 \newpage
+\stepcounter{imgcounter}
+\includepdf[scale=0.86,pages=4, landscape=true, offset=0 13, pagecommand=
+\vspace*{24.9cm}
+\hspace*{3cm} Abbildung \theimgcounter : \text{HSM zu Motor, Weiche, Timer und Timeout}]{FSM/Statemachines.pdf}\label{sec:hsm4}
 
-
-%Abbildungszähler
-
-\newcounter{imgcounter}
-\setcounter{imgcounter}{10}
-
+\newpage
 
 \section{Implementierung}
 Für die Implementierung der Software, welche die Logik der Werkstück-Sortieranlage realisiert, ist das Reagieren auf Änderungen an Sensoren sowie die Kommunikation unter den Förderbändern essentiell.
