@@ -8,6 +8,10 @@
 #ifndef CONTEXTCONVEYOR2_H_
 #define CONTEXTCONVEYOR2_H_
 
+#define DELAYBEGIN_CONVEYOR2 15
+#define DELAYSWITCH_CONVEYOR2 7
+#define DELAYEND_CONVEYOR2 18
+
 #include <iostream>
 #include "Logger/Logger.h"
 #include "Hal/HalBuilder.h"
@@ -32,7 +36,7 @@ struct Data2 {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), skidOfConveyor2Full(
-					false), im(InfoMessage::getInfoMessage()), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(0) {
+					false), im(InfoMessage::getInfoMessage()), sc2(skidcounter2), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(NULL), delayBegin(DELAYBEGIN_CONVEYOR2), delayBeginEnable(false), delaySwitch(DELAYSWITCH_CONVEYOR2), delaySwitchEnable(false), delayEnd(DELAYEND_CONVEYOR2), delayEndEnable(false), delta_t0_tH(DELTA_T0_TH), delta_tH_tW(DELTA_TH_TW), delta_tW_tE(DELTA_TW_TE) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -51,7 +55,16 @@ struct Data2 {
 	BlinkYellowThread blinkYellow;
 	WorkpieceMessage* wpm;
 	ContextTimeout cto;
-	int delta_X;
+	int *delta_X;
+	int delayBegin;
+	bool delayBeginEnable;
+	int delaySwitch;
+	bool delaySwitchEnable;
+	int delayEnd;
+	bool delayEndEnable;
+	int delta_t0_tH;
+	int delta_tH_tW;
+	int delta_tW_tE;
 };
 
 /**
@@ -104,15 +117,44 @@ private:
 		}
 		virtual void signalTimerTick() {
 			data->cto.signalTimerTick();
-			data->delta_X -= 1;
+			if(data->delta_X != NULL){
+			    *data->delta_X -= 1;
+			}
+
+			//BEGIN DELAY
+			if(data->delayBeginEnable && data->delayBegin > 0){
+				data->delayBegin -= 1;
+			}else if (data->delayBeginEnable && data->delayBegin <= 0){
+				data->delayBeginEnable = false;
+				new (this) TransportToHeightMeasurement;
+			}
+
+			//SWITCH DELAY
+			if(data->delaySwitchEnable && data->delaySwitch > 0){
+				LOG_DEBUG << "DELAY SWITCH: " << data->delaySwitch << "\n";
+				data->delaySwitch -= 1;
+			}else if (data->delaySwitchEnable && data->delaySwitch <= 0){
+				data->delaySwitchEnable = false;
+				data->cswitch->resetSwitchOpen();
+			}
+
+			//END DELAY
+			if(data->delayEndEnable && data->delayEnd > 0){
+				data->delayEnd -= 1;
+			}else if (data->delayEndEnable && data->delayEnd <= 0){
+				data->delayEndEnable = false;
+				new (this) TransportToDelivery;
+			}
+
+			//TIMEOUT
 			if (data->cto.timeoutOccured()) {
+				data->cto.stopTimer();
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
 
 				cerr << "TIMEOUT" << endl;
-				data->puckVector->erase(
-						data->puckVector->begin() + data->posInVector);
+				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
 				new (this) PuckLost;
 			}
 		}
@@ -167,24 +209,27 @@ private:
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
 			//TODO t0 = GIVE TIME!
-			data->delta_X = DELTA_T0_TH;
+			data->delta_X = &data->delta_t0_tH;
 			data->cto.startTimerT0();
-			new (this) TransportToHeightMeasurement;
+			data->delayBeginEnable = true;
+			new (this) WaitDelayBegin;
 		}
+	};
+
+	struct WaitDelayBegin: public PuckOnConveyor2{
 	};
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
-
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
 			//if (1) {   //TODO DELTA t0 and tH OK
-				data->delta_X = DELTA_TH_TW;
+				data->delta_X = &data->delta_tH_tW;
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
-				usleep(20);
+				usleep(8);
 				data->puck.setHeightReading2(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert2: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
@@ -243,22 +288,26 @@ private:
 	struct Sorting: public PuckOnConveyor2 {
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting\n";
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA tH and tW OK
+			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA tH and tW OK
 			//if (1) {   //TODO DELTA t0 and tH OK
-				data->delta_X = DELTA_TW_TE;
+				data->delta_X = &data->delta_tW_tE;
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
-					LOG_DEBUG << "Sequence OK \n";
+				    LOG_DEBUG << "SEQUENZ OK, NICHT AUSSORTIERT\n";
 					data->cswitch->setSwitchOpen();
-					new (this) TransportToDelivery;
+					data->delaySwitchEnable = true;
+					data->delayEndEnable = true;
+					//new (this) TransportToDelivery;
+					new (this) WaitDelayEnd;
 				} else {
-					LOG_DEBUG << "Sequence not OK \n";
-					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+					if (*data->sc2 <= 3) {
+					    LOG_DEBUG << "SEQUENZ NICHT OK, AUSSORTIERT\n";
 						LOG_DEBUG << "Skid Not Full\n";
+						data->cto.stopTimer();
 						new (this) SortOutThroughSkid;
 					} else {
-						LOG_DEBUG << "Rutsche voll: " << data->im->istBand1RutscheVoll() << "\n";
+					    LOG_DEBUG << "SEQUENZ NICHT OK, NICHT AUSSORTIERT, SKID FULL\n";
 						if(data->im->istBand1RutscheVoll()){
 							data->im->setBand2RutscheVoll();
 							LOG_DEBUG << "Both Skids full\n";
@@ -266,7 +315,7 @@ private:
 //							new (this) EndOfTheEnd;
 						}
 						else{
-						LOG_DEBUG << "Skid Full\n";
+						    LOG_DEBUG << "SEQUENZ NICHT OK, NICHT AUSSORTIERT, SKID FULL\n";
 							data->cm->setSpeed(MOTOR_STOP);
 
 							data->im->setBand2RutscheVoll();
@@ -287,6 +336,9 @@ private:
 				new (this) PuckAdded;
 			}
 		}
+
+		struct WaitDelayEnd: public PuckOnConveyor2 {
+		};
 
 		virtual void skidOfConveyor2Cleared() {
 			LOG_DEBUG << "State: skidOfConveyor2Cleared \n";
@@ -349,7 +401,7 @@ private:
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
 			data->cto.stopTimerTW();
 			data->cswitch->resetSwitchOpen();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA tW and tE OK
+			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA tW and tE OK
 			//if (1) {   //TODO DELTA tW and tE OK
 				cerr << "ID: " <<
 
@@ -457,6 +509,8 @@ private:
 	};
 
 	struct PuckAdded: public PuckOnConveyor2 {
+        virtual void signalTimerTick() {
+        }
 		virtual void signalReset() {
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
@@ -467,6 +521,8 @@ private:
 	};
 
 	struct PuckLost: public PuckOnConveyor2 {
+        virtual void signalTimerTick() {
+        }
 		virtual void signalReset() {
 			data->blinkYellow.stop();
 			data->hb.getHardware()->getTL()->turnYellowOff();

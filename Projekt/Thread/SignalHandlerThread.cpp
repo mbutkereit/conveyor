@@ -136,6 +136,7 @@ void SignalHandlerThread::execute(void*) {
 			}
 
 			if (code & LIGHT_BARRIER_SWITCH_INTERRUPTED) {
+				LOG_DEBUG << "Licht ding unterbroche. "<<endl;
 				disp->callListeners(LBSWITCHINTERRUPTED);
 			}
 

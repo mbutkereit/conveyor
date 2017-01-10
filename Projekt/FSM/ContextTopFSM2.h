@@ -214,6 +214,8 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
+        virtual void signalTimerTick(){
+        }
 		virtual void signalStart() {
 			LOG_DEBUG << "State: E-Stopp \n";
 
@@ -234,6 +236,8 @@ private:
 	};
 
 	struct BothSkidsFull: public TOPFSM {
+        virtual void signalTimerTick(){
+        }
 		void signalReset() {
 			LOG_DEBUG << "State: BothSkidsFull \n";
 			data->hb.getHardware()->getTL()->turnRedOff();
@@ -256,6 +260,7 @@ private:
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cc2.skidOfConveyor2Cleared();
 			data->im->setBand2RutscheLeer();
+			*data->sk = 0;
 			data->cm->resetSpeed(MOTOR_STOP);
 
 			new (this) MainState;

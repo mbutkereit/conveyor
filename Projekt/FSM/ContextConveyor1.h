@@ -9,6 +9,9 @@
 #define CONTEXTCONVEYOR1_H_
 #define HEIGHT_DRILL 0
 #define HEIGHT_NO_DRILL 0
+#define DELAYBEGIN_CONVEYOR1 15
+#define DELAYSWITCH_CONVEYOR1 7
+#define DELAYEND_CONVEYOR1 18
 
 #include <iostream>
 #include "Logger/Logger.h"
@@ -34,7 +37,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(InfoMessage::getInfoMessage()), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(0) {
+					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(NULL), delayBegin(DELAYBEGIN_CONVEYOR1), delayBeginEnable(false), delaySwitch(DELAYSWITCH_CONVEYOR1), delaySwitchEnable(false), delayEnd(DELAYEND_CONVEYOR1), delayEndEnable(false), delta_t0_tH(DELTA_T0_TH), delta_tH_tW(DELTA_TH_TW), delta_tW_tE(DELTA_TW_TE) {
 	}
 	int puckID;
 	HalBuilder hb;
@@ -52,7 +55,16 @@ struct Data {
 	BlinkYellowThread blinkYellow;
 	WorkpieceMessage* wpm;
 	ContextTimeout cto;
-	int delta_X;
+	int *delta_X;
+	int delayBegin;
+	bool delayBeginEnable;
+	int delaySwitch;
+	bool delaySwitchEnable;
+	int delayEnd;
+	bool delayEndEnable;
+	int delta_t0_tH;
+	int delta_tH_tW;
+	int delta_tW_tE;
 };
 
 /**
@@ -103,8 +115,38 @@ private:
 		}
 		virtual void signalTimerTick() {
 			data->cto.signalTimerTick();
-			data->delta_X -= 1;
+			if(data->delta_X != NULL){
+			    *data->delta_X -= 1;
+			}
+
+			//BEGIN DELAY
+			if(data->delayBeginEnable && data->delayBegin > 0){
+				data->delayBegin -= 1;
+			}else if (data->delayBeginEnable && data->delayBegin <= 0){
+				data->delayBeginEnable = false;
+				new (this) TransportToHeightMeasurement;
+			}
+
+			//SWITCH DELAY
+			if(data->delaySwitchEnable && data->delaySwitch > 0){
+				LOG_DEBUG << "DELAY SWITCH: " << data->delaySwitch << "\n";
+				data->delaySwitch -= 1;
+			}else if (data->delaySwitchEnable && data->delaySwitch <= 0){
+				data->delaySwitchEnable = false;
+				data->cswitch->resetSwitchOpen();
+			}
+
+			//END DELAY
+			if(data->delayEndEnable && data->delayEnd > 0){
+				data->delayEnd -= 1;
+			}else if (data->delayEndEnable && data->delayEnd <= 0){
+				data->delayEndEnable = false;
+				new (this) TransportToDelivery;
+			}
+
+			//TIMEOUT
 			if (data->cto.timeoutOccured()) {
+				data->cto.stopTimer();
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkYellow.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
@@ -113,6 +155,7 @@ private:
 				data->puckVector->erase(data->puckVector->begin() + data->posInVector);
 				new (this) PuckLost;
 			}
+
 		}
 
 		Data* data; // pointer to data, which physically resides inside the context class (contextdata)
@@ -120,7 +163,7 @@ private:
 
 	struct TransportToEntry: public PuckOnConveyor1 {
 		//TRANSACTION/LEAVE
-		void signalLBBeginInterrupted() {
+		virtual void signalLBBeginInterrupted() {
 			LOG_DEBUG << "State: TransportToEntry \n";
 			data->hb.getHardware()->getTL()->turnGreenOn();
 			data->cm->setSpeed(MOTOR_FAST);
@@ -130,14 +173,18 @@ private:
 
 	struct MotorOn: public PuckOnConveyor1 {
 		//LEAVE
-		void signalLBBeginNotInterrupted() {
+		virtual void signalLBBeginNotInterrupted() {
 			LOG_DEBUG << "State: MotorOn\n";
-			data->delta_X = DELTA_T0_TH;//Give ticks T0
+			data->delta_X = &data->delta_t0_tH;//Give ticks T0
 			data->cto.startTimerT0();
 			data->puckVector->push_back(data->puck);
 			data->posInVector = data->puckVector->size() - 1;
-			new (this) TransportToHeightMeasurement;
+			data->delayBeginEnable = true;
+			new (this) WaitDelayBegin;
 		}
+	};
+
+	struct WaitDelayBegin: public PuckOnConveyor1{
 	};
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor1 {
@@ -146,11 +193,11 @@ private:
 			data->cm->setSpeed(MOTOR_SLOW);
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
-			if (data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
+			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
 			//if (1) {   //TODO DELTA t0 and tH OK
-				data->delta_X = DELTA_TH_TW; //TODO Give ticks TW
+				data->delta_X = &data->delta_tH_tW; //TODO Give ticks TW
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
-				usleep(20);
+				usleep(8);
 				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert1: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
@@ -209,28 +256,37 @@ private:
 		virtual void sensorMeasurementCompleted() {
 			LOG_DEBUG << "State: Sorting \n";
 			//TODO GIVE TIME tW, DELTA th AND tW CALCULATION
-			if (data->delta_X <= TOLERANCE) { //TODO DELTA tH and tW OK
+			if (*data->delta_X <= TOLERANCE) { //TODO DELTA tH and tW OK
 			//if (1) { //TODO DELTA tH and tW OK
-				data->delta_X = DELTA_TW_TE; //TODO Give ticks TE
+				data->delta_X = &data->delta_tW_tE; //TODO Give ticks TE
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
-					LOG_DEBUG << "Sequence OK \n";
+					LOG_DEBUG << "SEQUENZ OK, NICHT AUSSORTIERT\n";
 					data->cswitch->setSwitchOpen();
-					new (this) TransportToDelivery;
+					data->delaySwitchEnable = true;
+					data->delayEndEnable = true;
+					//new (this) TransportToDelivery;
+					new (this) WaitDelayEnd;
 				} else {
-					LOG_DEBUG << "Sequence not OK \n";
-					if (data->hb.getHardware()->getMT()->isSkidFull()) {
+					//if (data->hb.getHardware()->getMT()->isSkidFull()) {
+				    if (*data->sc <= 3){
+						LOG_DEBUG << "SEQUENZ NICHT OK, AUSSORTIERT\n";
 						LOG_DEBUG << "Skid Not Full\n";
+						data->cto.stopTimer();
 						new (this) SortOutThroughSkid;
 					} else {
 						if(data->im->istBand2RutscheVoll()){
 							data->bothSkidsfull = true;
 						}
 						else{
-							LOG_DEBUG << "Skid Full\n";
+							LOG_DEBUG << "SEQUENZ NICHT OK, NICHT AUSSORTIERT, SKID FULL\n";
 							data->cswitch->setSwitchOpen();
-							new (this) TransportToDelivery;
+							LOG_DEBUG << "SWITCHENABLE TRUE\n";
+							data->delaySwitchEnable = true;
+							data->delayEndEnable = true;
+							//new (this) TransportToDelivery;
+							new (this) WaitDelayEnd;
 						}
 					}
 				}
@@ -246,6 +302,9 @@ private:
 				new (this) PuckAdded;
 			}
 		}
+	};
+
+	struct WaitDelayEnd: public PuckOnConveyor1 {
 	};
 
 	struct SortOutThroughSkid: public PuckOnConveyor1 {
@@ -301,22 +360,14 @@ private:
 		virtual void signalLBEndInterrupted() {
 			LOG_DEBUG << "State: TransportToDelivery \n";
 			//TODO tE = GIVE TIME, CALCULATE tW AND tE
-			LOG_DEBUG << "State: TransportToDelivery --> Timer1 \n";
 			data->cto.stopTimerTW();
-			LOG_DEBUG << "State: TransportToDelivery --> Timer2 \n";
-			data->cswitch->resetSwitchOpen();
-			LOG_DEBUG << "State: TransportToDelivery --> Timer3 \n";
-			LOG_DEBUG << "State: TransportToDelivery --> Before if {1} \n";
-			if (data->delta_X <= TOLERANCE) { //TODO DELTA tW and tE OK
+			//data->cswitch->resetSwitchOpen();
+			if (*data->delta_X <= TOLERANCE) { //TODO DELTA tW and tE OK
 			//if (1) { //TODO DELTA tW and tE OK
 				data->cm->setSpeed(MOTOR_STOP);
-
-				LOG_DEBUG << "State: TransportToDelivery --> Before while\n";
 				while (!(data->im->istBand2Frei())) {
 				}
 				data->cm->resetSpeed(MOTOR_STOP);
-
-				LOG_DEBUG << "State: TransportToDelivery --> Before next State\n";
 				new (this) TransportToConveyor2;
 			} else { //TODO DELTA tW AND tE TOO HIGH
 				data->hb.getHardware()->getTL()->turnGreenOff();
@@ -389,6 +440,8 @@ private:
 	};
 
 	struct PuckAdded: public PuckOnConveyor1 {
+		virtual void signalTimerTick() {
+		}
 		virtual void signalReset() {
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
@@ -399,6 +452,8 @@ private:
 	};
 
 	struct PuckLost: public PuckOnConveyor1 {
+		virtual void signalTimerTick(){
+		}
 		virtual void signalReset() {
 			data->blinkYellow.stop();
 			data->hb.getHardware()->getTL()->turnYellowOff();
@@ -510,6 +565,8 @@ public:
 	void signalLBNextConveyor();
 
 	void signalTimerTick();
+
+	void delayAtBeginExpired();
 };
 
 #endif /* CONTEXTCONVEYOR1_H_ */

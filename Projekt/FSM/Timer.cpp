@@ -65,13 +65,16 @@ void Timer::startTimer(){
 }
 
 void Timer::stopTimer(){
+	//timer_settime(timerId_, 0, &timerSpec_, &backup_);
     timerSpec_.it_value.tv_sec = 0;
     timerSpec_.it_value.tv_nsec = 0;
-	timer_settime(timerId_, 0, &timerSpec_, &backup_);
+    timerSpec_.it_interval.tv_sec = 0;
+    timerSpec_.it_interval.tv_nsec = 0;
+	timer_settime(timerId_, 0, &timerSpec_, NULL);
 }
 
 void Timer::continueTimer(){
-	timer_settime(timerId_, 0, &backup_, NULL);
+	timer_settime(timerId_, 0, &timerSpec_, NULL);
 }
 
 void Timer::setMode(enum TimerOptions to){
@@ -91,8 +94,6 @@ void Timer::setMode(enum TimerOptions to){
             timerSpec_.it_interval.tv_nsec = INTERVAL_NSECONDS_SLOW;
             break;
         default:
-            timerSpec_.it_value.tv_sec = 0;
-            timerSpec_.it_value.tv_nsec = 0;
             break;
     }
 }

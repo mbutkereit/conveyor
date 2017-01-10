@@ -22,6 +22,7 @@ public:
 	Puck(int id) :
 			ID(id), heightReading_1(NOT_DEFINED), heightReading_2(NOT_DEFINED), pucktype(
 					TYPE404PT) {
+		std::cerr << "Konstruktor id ist" << id <<"\n";
 	}
 	virtual ~Puck() {
 	}
@@ -42,7 +43,10 @@ public:
 		heightReading_2 = heightReading2;
 	}
 
-	int getId() const {
+	int getId(){
+		if(ID == 0){
+			std::cerr << "IST 0";
+		}
 		return ID;
 	}
 
