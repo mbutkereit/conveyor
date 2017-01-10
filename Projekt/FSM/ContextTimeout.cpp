@@ -49,3 +49,7 @@ void ContextTimeout::signalTimerTick(){
 bool ContextTimeout::timeoutOccured(){
 	return ctodata.timeout;
 }
+
+void ContextTimeout::stopTimer(){
+	statePtr->stopTimer();
+}

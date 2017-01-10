@@ -62,6 +62,10 @@ private:
 		virtual void signalLBSwitchNotInterrupted() {
 		}
 		virtual void signalEStop() {
+			data->cm->setSpeed(MOTOR_STOP);
+			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
+			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+			new (this) E_Stopp;
 		}
 		virtual void signalStart() {
 		}
@@ -145,16 +149,8 @@ private:
 
 			data->cc1.signalLBSwitchNotInterrupted();
 		}
-		virtual void signalEStop() {
-
-			data->cm->setSpeed(MOTOR_STOP);
-			LOG_DEBUG <<"E-STOP WURDE GEDRUECKT \n";
-			cout<<"!!!!!!!!!!! E-STOP WURDE GEDRUECKT!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-			new (this) E_Stopp;
-		}
 
 		virtual void signalStart() {
-
 		}
 
 		virtual void signalStop() {
@@ -188,6 +184,8 @@ private:
 	};
 
 	struct E_Stopp: public TOPFSM {
+		virtual void signalTimerTick(){
+		}
 		virtual void signalStart() {
 			LOG_DEBUG <<"State: E-Stopp \n";
 
@@ -208,6 +206,8 @@ private:
 	};
 
 	struct BothSkidsFull: public TOPFSM {
+		virtual void signalTimerTick(){
+		}
 		void signalReset() {
 			LOG_DEBUG <<"State: BothSkidsFull \n";
 

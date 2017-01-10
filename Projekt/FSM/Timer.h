@@ -13,7 +13,7 @@
 #ifndef TIMER_H_
 #define TIMER_H_
 
-#define SLOW 249122807
+#define SLOW 274576271
 #define FAST 100000000
 
 #define SECONDS_SLOW 0

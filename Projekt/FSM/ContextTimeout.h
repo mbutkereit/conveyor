@@ -10,12 +10,13 @@
 
 #include <iostream>
 #include "TimeoutOptions.h"
+#include "Logger/Logger.h"
 using namespace std;
 
 #define DEFAULT
 #ifdef DEFAULT
 
-    #define DELTA_T0_TH 23
+    #define DELTA_T0_TH 25
     #define DELTA_TH_TW 12
     #define DELTA_TW_TE 22
 
@@ -25,12 +26,15 @@ using namespace std;
 
 #endif
 
-#define TOLERANCE 50
+#define TOLERANCE 10
 
 struct Datacto{
-	Datacto():ticksPL(0), timeout(false){}
-	int ticksPL;
+	Datacto():ticksPL(NULL), timeout(false), delta_t0_tH(DELTA_T0_TH), delta_tH_tW(DELTA_TH_TW), delta_tW_tE(DELTA_TW_TE){}
+	int *ticksPL;
 	bool timeout;
+	int delta_t0_tH;
+	int delta_tH_tW;
+	int delta_tW_tE;
 };
 
 class ContextTimeout {
@@ -53,6 +57,8 @@ public:
 	void stopTimerTW();
 
 	void signalTimerTick();
+
+	void stopTimer();
 
 	bool timeoutOccured();
 private:
@@ -82,21 +88,25 @@ private:
     	virtual void signalTimerTick(){
     	}
 
+    	virtual void stopTimer(){
+    		new (this) StateStart;
+    	}
+
     }*statePtr;   // a pointer to current state. Used for polymorphism.
 
     struct StateStart: public TimeOut {
     	virtual void startTimerT0(){
-    		data->ticksPL = DELTA_T0_TH;
+    		data->ticksPL = &data->delta_t0_tH;
     		new (this) StartT0_TH;
     	}
 
     	virtual void startTimerTH(){
-    		data->ticksPL = DELTA_TH_TW;
+    		data->ticksPL = &data->delta_tH_tW;
     		new (this) StartTH_TW;
     	}
 
     	virtual void startTimerTW(){
-    		data->ticksPL = DELTA_TW_TE;
+    		data->ticksPL = &data->delta_tW_tE;
     		new (this) StartTW_TE;
     	}
 
@@ -104,8 +114,9 @@ private:
 
     struct StartT0_TH: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->ticksPL--;
-    		if(data->ticksPL+TOLERANCE == 0){
+    		*data->ticksPL -= 1;
+    		if(*data->ticksPL+TOLERANCE == 0){
+    			LOG_DEBUG << "TIMEOUT AT T0_TH " << *data->ticksPL << "\n";
     			data->timeout = true;
     		}
     	}
@@ -117,8 +128,9 @@ private:
 
     struct StartTH_TW: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->ticksPL--;
-    		if(data->ticksPL+TOLERANCE == 0){
+    		*data->ticksPL -= 1;
+    		if(*data->ticksPL+TOLERANCE == 0){
+    			LOG_DEBUG << "TIMEOUT AT TH_TW: " << *data->ticksPL << "\n";
     			data->timeout = true;
     		}
     	}
@@ -130,8 +142,9 @@ private:
 
     struct StartTW_TE: public TimeOut {
     	virtual void signalTimerTick(){
-    		data->ticksPL--;
-    		if(data->ticksPL+TOLERANCE == 0){
+    		*data->ticksPL-= 1;
+    		if(*data->ticksPL+TOLERANCE == 0){
+    			LOG_DEBUG << "TIMEOUT AT TW_TE: " << *data->ticksPL << "\n";
     			data->timeout = true;
     		}
     	}

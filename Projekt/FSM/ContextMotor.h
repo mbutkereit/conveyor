@@ -41,10 +41,11 @@ private:
 
     struct StateStart: public MotorOfConveyor {
         virtual void transact() {
-			LOG_DEBUG << "Transact \n";
+        	LOG_DEBUG << "Statestart State\n";
             data->hb.getHardware()->getMotor()->stop();
             if (data->stopCounter > 0)
             {
+            	LOG_DEBUG << "StateStart State: Switch to Stop\n";
                 data->timer->setMode(TIMER_STOP);
                 data->hb.getHardware()->getMotor()->stop();
                 data->timer->startTimer();
@@ -52,6 +53,7 @@ private:
             }
             else if (data->slowCounter > 0)
             {
+            	LOG_DEBUG << "StateStart State: Switch to Slow\n";
                 data->timer->setMode(TIMER_SLOW);
                 data->hb.getHardware()->getMotor()->right();
                 data->hb.getHardware()->getMotor()->slow();
@@ -60,6 +62,7 @@ private:
             }
             else if (data->fastFlag)
             {
+            	LOG_DEBUG << "StateStart State: Switch to Fast\n";
                 data->timer->setMode(TIMER_FAST);
                 data->fastFlag = 0;
                 data->hb.getHardware()->getMotor()->right();
@@ -72,8 +75,10 @@ private:
 
     struct Fast: public MotorOfConveyor {
         virtual void transact() {
+        	LOG_DEBUG << "Fast State\n";
             if (data->stopCounter > 0)
             {
+            	LOG_DEBUG << "Fast State: Switch to Stop\n";
                 data->timer->setMode(TIMER_STOP);
                 data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->stop();
@@ -81,6 +86,7 @@ private:
             }
             else if (data->slowCounter > 0)
             {
+            	LOG_DEBUG << "Fast State: Switch to Slow\n";
                 data->timer->setMode(TIMER_SLOW);
                 data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->right();
@@ -92,8 +98,10 @@ private:
 
     struct Slow: public MotorOfConveyor {
         virtual void transact() {
+        	LOG_DEBUG << "Slow State\n";
             if (data->stopCounter > 0)
             {
+            	LOG_DEBUG << "Slow State: Switch to Stop\n";
                 data->timer->setMode(TIMER_STOP);
                 data->timer->stopTimer();
                 data->hb.getHardware()->getMotor()->stop();
@@ -101,6 +109,7 @@ private:
             }
             else if (data->slowCounter == 0)
             {
+            	LOG_DEBUG << "Slow State: Switch to Fast\n";
                 data->timer->setMode(TIMER_FAST);
                 data->timer->startTimer();
                 data->hb.getHardware()->getMotor()->right();
@@ -112,10 +121,12 @@ private:
 
     struct Stop: public MotorOfConveyor {
         virtual void transact() {
+        	LOG_DEBUG << "Stop State\n";
             if (data->stopCounter == 0)
             {
                 if (data->slowCounter > 0)
                 {
+                	LOG_DEBUG << "Stop State: Switch to Slow\n";
                     data->timer->setMode(TIMER_SLOW);
                     data->timer->continueTimer();
                     data->hb.getHardware()->getMotor()->right();
@@ -124,6 +135,7 @@ private:
                 }
                 else
                 {
+                	LOG_DEBUG << "Stop State: Switch to Fast\n";
                     data->timer->setMode(TIMER_FAST);
                     data->timer->continueTimer();
                     data->hb.getHardware()->getMotor()->right();
