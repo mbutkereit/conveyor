@@ -195,7 +195,6 @@ private:
 			data->cto.startTimerTH();
 			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
 			//if (1) {   //TODO DELTA t0 and tH OK
-				LOG_DEBUG << "DELTA: " << *data->delta_X << "\n";
 				data->delta_X = &data->delta_tH_tW; //TODO Give ticks TW
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
 				usleep(8);
@@ -213,8 +212,6 @@ private:
 				}
 				new (this) PuckInHeightMeasurement;
 			} else { //TODO DELTA t0 AND tH TOO HIGH
-				LOG_DEBUG << "PUCK ADDED: ID:" << data->puck.getId() << "\n";
-				LOG_DEBUG << "DELTA: " << *data->delta_X << "\n";
 				data->hb.getHardware()->getTL()->turnGreenOff();
 				data->blinkRed.start(NULL);
 				data->cm->setSpeed(MOTOR_STOP);
@@ -445,7 +442,6 @@ private:
 	struct PuckAdded: public PuckOnConveyor1 {
 		virtual void signalTimerTick() {
 		}
-
 		virtual void signalReset() {
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
@@ -457,7 +453,6 @@ private:
 
 	struct PuckLost: public PuckOnConveyor1 {
 		virtual void signalTimerTick(){
-
 		}
 		virtual void signalReset() {
 			data->blinkYellow.stop();

@@ -108,12 +108,15 @@ private:
 		virtual void signalAltimetryCompleted() {
 		}
 		virtual void signalTimerTick() {
+		    /*
 			data->cto1.signalTimerTick();
 			data->cto2.signalTimerTick();
 			data->cto3.signalTimerTick();
+
 			data->delta1 -= 1;
 			data->delta2 -= 1;
 			data->delta3 -= 1;
+
 			if (data->cto1.timeoutOccured() || data->cto2.timeoutOccured()
 					|| data->cto3.timeoutOccured()) {
 				data->hb.getHardware()->getTL()->turnGreenOff();
@@ -125,6 +128,7 @@ private:
 				data->puckVector->clear();
 				new (this) PuckLost;
 			}
+			*/
 		}
 		Data3* data; // pointer to data, which physically resides inside the context class (contextdata)
 	}*statePtr;   // a pointer to current state. Used for polymorphism.

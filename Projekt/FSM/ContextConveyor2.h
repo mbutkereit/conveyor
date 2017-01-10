@@ -216,21 +216,20 @@ private:
 		}
 	};
 
-	struct WaitDelayBegin: public PuckOnConveyor1{
+	struct WaitDelayBegin: public PuckOnConveyor2{
 	};
 
 	struct TransportToHeightMeasurement: public PuckOnConveyor2 {
 		virtual void signalLBAltimetryInterrupted() {
 			LOG_DEBUG << "State: TransportToHeightMeasurement \n";
 			data->cm->setSpeed(MOTOR_SLOW);
-
 			data->cto.stopTimerT0();
 			data->cto.startTimerTH();
 			if (*data->delta_X <= TOLERANCE) {   //TODO DELTA t0 and tH OK
 			//if (1) {   //TODO DELTA t0 and tH OK
 				data->delta_X = &data->delta_tH_tW;
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
-				usleep(20);
+				usleep(8);
 				data->puck.setHeightReading2(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert2: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
@@ -295,19 +294,20 @@ private:
 				data->cs->setCurrentPt(data->puck.getPuckType());
 				data->cs->transact();
 				if (data->cs->getSequenceOk()) {
-					LOG_DEBUG << "Sequence OK \n";
+				    LOG_DEBUG << "SEQUENZ OK, NICHT AUSSORTIERT\n";
 					data->cswitch->setSwitchOpen();
 					data->delaySwitchEnable = true;
 					data->delayEndEnable = true;
 					//new (this) TransportToDelivery;
 					new (this) WaitDelayEnd;
 				} else {
-					LOG_DEBUG << "Sequence not OK \n";
 					if (*data->sc2 <= 3) {
+					    LOG_DEBUG << "SEQUENZ NICHT OK, AUSSORTIERT\n";
 						LOG_DEBUG << "Skid Not Full\n";
+						data->cto.stopTimer();
 						new (this) SortOutThroughSkid;
 					} else {
-						LOG_DEBUG << "Rutsche voll: " << data->im->istBand1RutscheVoll() << "\n";
+					    LOG_DEBUG << "SEQUENZ NICHT OK, NICHT AUSSORTIERT, SKID FULL\n";
 						if(data->im->istBand1RutscheVoll()){
 							data->im->setBand2RutscheVoll();
 							LOG_DEBUG << "Both Skids full\n";
@@ -315,7 +315,7 @@ private:
 //							new (this) EndOfTheEnd;
 						}
 						else{
-						LOG_DEBUG << "Skid Full\n";
+						    LOG_DEBUG << "SEQUENZ NICHT OK, NICHT AUSSORTIERT, SKID FULL\n";
 							data->cm->setSpeed(MOTOR_STOP);
 
 							data->im->setBand2RutscheVoll();
@@ -337,7 +337,7 @@ private:
 			}
 		}
 
-		struct WaitDelayEnd: public PuckOnConveyor1 {
+		struct WaitDelayEnd: public PuckOnConveyor2 {
 		};
 
 		virtual void skidOfConveyor2Cleared() {
@@ -509,6 +509,8 @@ private:
 	};
 
 	struct PuckAdded: public PuckOnConveyor2 {
+        virtual void signalTimerTick() {
+        }
 		virtual void signalReset() {
 			LOG_DEBUG << "State: PuckAdded \n";
 			data->blinkRed.stop();
@@ -519,6 +521,8 @@ private:
 	};
 
 	struct PuckLost: public PuckOnConveyor2 {
+        virtual void signalTimerTick() {
+        }
 		virtual void signalReset() {
 			data->blinkYellow.stop();
 			data->hb.getHardware()->getTL()->turnYellowOff();
