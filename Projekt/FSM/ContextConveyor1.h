@@ -9,9 +9,9 @@
 #define CONTEXTCONVEYOR1_H_
 #define HEIGHT_DRILL 0
 #define HEIGHT_NO_DRILL 0
-#define DELAYBEGIN 15
-#define DELAYSWITCH 7
-#define DELAYEND 18
+#define DELAYBEGIN_CONVEYOR1 15
+#define DELAYSWITCH_CONVEYOR1 7
+#define DELAYEND_CONVEYOR1 18
 
 #include <iostream>
 #include "Logger/Logger.h"
@@ -37,7 +37,7 @@ struct Data {
 					ContextSorting::getInstance()), cswitch(
 					ContextSwitch::getInstance()), puck(puckID), puckVector(
 					puckVector), finished(false), bothSkidsfull(false), posInVector(0), im(InfoMessage::getInfoMessage()), sc(
-					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(NULL), delayBegin(DELAYBEGIN), delayBeginEnable(false), delaySwitch(DELAYSWITCH), delaySwitchEnable(false), delayEnd(DELAYEND), delayEndEnable(false), delta_t0_tH(DELTA_T0_TH), delta_tH_tW(DELTA_TH_TW), delta_tW_tE(DELTA_TW_TE) {
+					skidcounter), blinkRed(), blinkYellow(), wpm(WorkpieceMessage::getWorkpieceMessage()), cto(), delta_X(NULL), delayBegin(DELAYBEGIN_CONVEYOR1), delayBeginEnable(false), delaySwitch(DELAYSWITCH_CONVEYOR1), delaySwitchEnable(false), delayEnd(DELAYEND_CONVEYOR1), delayEndEnable(false), delta_t0_tH(DELTA_T0_TH), delta_tH_tW(DELTA_TH_TW), delta_tW_tE(DELTA_TW_TE) {
 	}
 	int puckID;
 	HalBuilder hb;
