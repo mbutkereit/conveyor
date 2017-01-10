@@ -11,7 +11,7 @@
 HalBuilder hb;
 
 int main(int argc, char *argv[]) {
-	Logger::getLogger().setLoggingLevel(ERROR);
+	Logger::getLogger().setLoggingLevel(DEBUG);
 
 	ConveyorThread c1;
 	InfoMessage* message = InfoMessage::getInfoMessage();
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
 
 
     thread_automat.start(NULL);
-	threadWatchdog.start(NULL);
+	//threadWatchdog.start(NULL);
 	threadRecv.start(NULL);
 //	message->setBand1RutscheVoll();
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 
 
-	threadWatchdog.join();
+	//threadWatchdog.join();
 	threadRecv.join();
 	thread_automat.join();
 

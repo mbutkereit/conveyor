@@ -150,7 +150,7 @@ private:
 			//if (1) {   //TODO DELTA t0 and tH OK
 				data->delta_X = DELTA_TH_TW; //TODO Give ticks TW
 				data->hb.getHardware()->getAltimetry()->startAltimetry();
-				usleep(20);
+				usleep(8);
 				data->puck.setHeightReading1(data->hb.getHardware()->getAltimetry()->getHeight());
 				LOG_DEBUG << "Hoehenwert1: "
 						<< (int) data->hb.getHardware()->getAltimetry()->getHeight()
